@@ -1,13 +1,13 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
-import { SampleDto, SampleResponse } from '../interfaces/sampleInterface';
-import { api } from '../request';
-import { apiRoute } from '../routes/apiRoutes';
+import { SampleDto, SampleResponse } from "../interfaces/sampleInterface";
+import { api } from "../request";
+import { apiRoute } from "../routes/apiRoutes";
 
 export const useFetchSample = () => {
   return useQuery<SampleResponse, AxiosError>({
-    queryKey: ['useFetchSample'],
+    queryKey: ["useFetchSample"],
     queryFn: () => api.get(apiRoute.sample),
     refetchOnWindowFocus: false,
     retry: false,

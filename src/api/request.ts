@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 interface CustomAxiosInstance extends AxiosInstance {
   getUri(config?: AxiosRequestConfig): string;
@@ -25,8 +25,8 @@ interface CustomAxiosInstance extends AxiosInstance {
 }
 
 const headers = {
-  json: { 'content-type': 'application/json' },
-  multipart: { 'content-type': 'multipart/form-data' },
+  json: { "content-type": "application/json" },
+  multipart: { "content-type": "multipart/form-data" },
 } as const;
 
 const request: CustomAxiosInstance = axios.create({
@@ -69,7 +69,7 @@ export const api = {
   delete: <T>(url: string) => request.delete<T>(url),
   postDownload: <T>(url: string, data: unknown) =>
     request.post<T>(url, data, {
-      responseType: 'blob',
+      responseType: "blob",
     }),
   postFile: <T>(url: string, data: unknown) =>
     request.post<T>(url, data, {
