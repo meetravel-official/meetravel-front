@@ -1,5 +1,5 @@
 import { MainContainer } from "./Main/MainContainer";
-import { SampleContainer } from "./SampleRoute/SampleContainer";
+import { SampleContainer } from "./Sample/SampleContainer";
 
 export const pageRoutes = {
   ROOT: "/",
