@@ -1,3 +1,10 @@
+import { SampleComponent } from "./components/SampleComponent";
+
 export const SampleContainer = () => {
-  return <h1>sample</h1>;
+  return (
+    <div>
+      <h1>sample</h1>
+      <SampleComponent />
+    </div>
+  );
 };
