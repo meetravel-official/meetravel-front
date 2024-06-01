@@ -1,3 +1,3 @@
 export const SampleContainer = () => {
-  return <div></div>;
+  return <h1>sample</h1>;
 };
