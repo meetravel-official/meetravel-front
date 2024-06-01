@@ -70,7 +70,7 @@ module.exports = {
       {
         bracketSpacing: true,
         jsxBracketSameLine: false,
-        jsxSingleQuote: true,
+        jsxSingleQuote: false,
         printWidth: 80,
         semi: true,
         singleQuote: false,
