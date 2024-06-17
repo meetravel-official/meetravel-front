@@ -1,6 +1,9 @@
+import { Global } from "@emotion/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import { cssGlobalStyle } from "@/styles/globalStyle";
 
 import { MainLayout } from "./components/Layout/MainLayout/MainLayout";
 import reportWebVitals from "./reportWebVitals";
@@ -21,6 +24,7 @@ const router = createBrowserRouter([
 
 root.render(
   <React.StrictMode>
+    <Global styles={cssGlobalStyle} />
     <RouterProvider router={router} />
   </React.StrictMode>
 );
