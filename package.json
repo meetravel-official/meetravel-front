@@ -58,7 +58,7 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject",
-    "s3-upload": "pnpm build && aws s3 sync ./build s3://meetravel-front --profile=FE"
+    "deploy:prod": "pnpm build && aws s3 sync ./build s3://meetravel.life --profile=FE && aws cloudfront create-invalidation --distribution-id E378PWWN376STM --paths '/*'"
   },
   "eslintConfig": {
     "extends": [
