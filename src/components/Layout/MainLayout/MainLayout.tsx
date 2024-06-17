@@ -1,9 +1,10 @@
 import { Outlet } from "react-router-dom";
 
+import { cssMainLayoutStyle } from "./MainLayout.styles";
+
 export const MainLayout = () => {
   return (
-    <div>
-      <header>헤더</header>
+    <div css={cssMainLayoutStyle}>
       <main>
         <Outlet />
       </main>
