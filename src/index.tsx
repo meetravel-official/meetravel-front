@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { cssGlobalStyle } from "@/styles/globalStyle";
 
-import { MainLayout } from "./components/Layout/MainLayout/MainLayout";
+import { MainLayout } from "./components/MainLayout/MainLayout";
 import reportWebVitals from "./reportWebVitals";
 import { containerRoutes, pageRoutes } from "./routes";
 
