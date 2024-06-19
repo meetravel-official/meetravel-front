@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 
+import { WIDTH } from "./breakpoint";
 import { COLORS } from "./color";
 
 export const cssGlobalStyle = css`
@@ -14,6 +15,11 @@ export const cssGlobalStyle = css`
       BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
       "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic",
       "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+
+    @media screen and (max-width: ${WIDTH.SM}) {
+      overflow-x: scroll;
+      background: ${COLORS.WHITE};
+    }
   }
 
   a {
