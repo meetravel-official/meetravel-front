@@ -7,8 +7,6 @@ import { SignInContainer } from "./SignIn/SignInContainer";
 
 export const pageRoutes = {
   ROOT: "/",
-  SAMPLE: "/sample",
-
   CHAT: "/chat",
   SHOP: "/shop",
   PROFILE: "/profile",
