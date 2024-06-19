@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { cssGlobalStyle } from "@/styles/globalStyle";
 
 import { MainLayout } from "./components/MainLayout/MainLayout";
+import { SimpleLayout } from "./components/SimpleLayout/SimpleLayout";
 import reportWebVitals from "./reportWebVitals";
 import { containerRoutes, pageRoutes } from "./routes";
 
@@ -17,9 +18,19 @@ const router = createBrowserRouter([
   {
     path: pageRoutes.ROOT,
     element: <MainLayout />,
-    children: [{ path: pageRoutes.ROOT, Component: containerRoutes.MAIN }],
+    children: [
+      { path: pageRoutes.ROOT, Component: containerRoutes.HOME },
+      { path: pageRoutes.CHAT, Component: containerRoutes.CHAT },
+      { path: pageRoutes.SHOP, Component: containerRoutes.SHOP },
+      { path: pageRoutes.PROFILE, Component: containerRoutes.PROFILE },
+    ],
   },
-  { path: pageRoutes.SAMPLE, Component: containerRoutes.SAMPLE },
+  {
+    element: <SimpleLayout />,
+    children: [
+      { path: pageRoutes.SIGN_IN, Component: containerRoutes.SIGN_IN },
+    ],
+  },
 ]);
 
 root.render(
