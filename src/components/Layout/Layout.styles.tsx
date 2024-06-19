@@ -1,11 +1,12 @@
 import { css } from "@emotion/react";
 
+import { WIDTH } from "@/styles/breakpoint";
 import { COLORS } from "@/styles/color";
 
 export const cssLayoutStyle = css`
   background: ${COLORS.WHITE};
   width: 100%;
-  max-width: 540px;
+  max-width: ${WIDTH.SM};
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -27,5 +28,5 @@ export const cssLayoutFixedFooterStyle = css`
   position: fixed;
   bottom: 0;
   width: 100%;
-  max-width: 540px;
+  max-width: ${WIDTH.SM};
 `;
