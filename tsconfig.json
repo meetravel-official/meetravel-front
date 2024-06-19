@@ -19,6 +19,7 @@
     "paths": {
       "@/config/*": ["./config/*"],
       "@/api/*": ["./api/*"],
+      "@/assets/*": ["./assets/*"],
       "@/hooks": ["./hooks/index"],
       "@/hooks/*": ["./hooks/*"],
       "@/components": ["./components/index"],
