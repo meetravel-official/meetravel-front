@@ -1,18 +1,19 @@
 import { Global } from "@emotion/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { HelmetProvider } from "react-helmet-async";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { cssGlobalStyle } from "@/styles/globalStyle";
 
 import { MainLayout } from "./components/MainLayout/MainLayout";
+import { Meta } from "./components/Meta/Meta";
 import { SimpleLayout } from "./components/SimpleLayout/SimpleLayout";
 import reportWebVitals from "./reportWebVitals";
 import { containerRoutes, pageRoutes } from "./routes";
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
+const container = document.getElementById("root");
+const root = ReactDOM.createRoot(container as HTMLElement);
 
 const router = createBrowserRouter([
   {
@@ -33,12 +34,27 @@ const router = createBrowserRouter([
   },
 ]);
 
-root.render(
-  <React.StrictMode>
-    <Global styles={cssGlobalStyle} />
-    <RouterProvider router={router} />
-  </React.StrictMode>
-);
+if (container?.hasChildNodes()) {
+  ReactDOM.hydrateRoot(
+    container,
+    <HelmetProvider>
+      <React.StrictMode>
+        <Meta />
+        <Global styles={cssGlobalStyle} />
+        <RouterProvider router={router} />
+      </React.StrictMode>
+    </HelmetProvider>
+  );
+} else
+  root.render(
+    <HelmetProvider>
+      <React.StrictMode>
+        <Meta />
+        <Global styles={cssGlobalStyle} />
+        <RouterProvider router={router} />
+      </React.StrictMode>
+    </HelmetProvider>
+  );
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
