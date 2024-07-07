@@ -19,15 +19,11 @@ export const cssNavBarItemStyle = css`
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  font-weight: 700;
-  font-size: 12px;
-  line-height: 14.32px;
-  text-align: center;
   padding: 0 22px;
-  text-decoration: none;
-  color: ${COLORS.GRAY2};
   &.active {
-    color: ${COLORS.PINK3};
+    .typography {
+      color: ${COLORS.PINK3};
+    }
     svg {
       path {
         stroke: ${COLORS.PINK3};

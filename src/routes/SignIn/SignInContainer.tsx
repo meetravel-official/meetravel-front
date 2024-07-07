@@ -1,3 +1,5 @@
+import { Typography } from "@/components/Typography/Typography";
+
 export const SignInContainer = () => {
-  return <div>로그인</div>;
+  return <Typography>로그인</Typography>;
 };

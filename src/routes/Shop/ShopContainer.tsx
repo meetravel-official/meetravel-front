@@ -1,3 +1,5 @@
+import { Typography } from "@/components/Typography/Typography";
+
 export const ShopContainer = () => {
-  return <div>샵</div>;
+  return <Typography>샵</Typography>;
 };
