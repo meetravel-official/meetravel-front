@@ -1,5 +1,4 @@
-import { Bar } from "@/components/Bar/Bar";
-import { Typography } from "@/components/Typography/Typography";
+import { Bar, Typography } from "@/components";
 import { cssAlignVerticalStyle } from "@/styles/align";
 
 export const HomeContainer = () => {

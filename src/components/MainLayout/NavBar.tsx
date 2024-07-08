@@ -4,10 +4,10 @@ import { ReactComponent as ChatIcon } from "@/assets/icons/chat.svg";
 import { ReactComponent as HomeIcon } from "@/assets/icons/home.svg";
 import { ReactComponent as ProfileIcon } from "@/assets/icons/profile.svg";
 import { ReactComponent as ShopIcon } from "@/assets/icons/shop.svg";
+import { Typography } from "@/components";
 import { pageRoutes } from "@/routes";
 import { COLORS } from "@/styles/color";
 
-import { Typography } from "../Typography/Typography";
 import { cssNavBarItemStyle, cssNavBarStyle } from "./NavBar.styles";
 
 export const NavBar = () => {
