@@ -21,6 +21,8 @@ export const cssLayoutContentStyle = ({
 }: {
   fixedFooterHeight?: number;
 }) => css`
+  padding: 16px;
+  padding-top: 60px;
   padding-bottom: ${(fixedFooterHeight || 0) + 16}px;
 `;
 
