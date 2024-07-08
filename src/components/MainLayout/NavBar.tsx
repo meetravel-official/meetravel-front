@@ -4,7 +4,9 @@ import { ReactComponent as ChatIcon } from "@/assets/icons/chat.svg";
 import { ReactComponent as HomeIcon } from "@/assets/icons/home.svg";
 import { ReactComponent as ProfileIcon } from "@/assets/icons/profile.svg";
 import { ReactComponent as ShopIcon } from "@/assets/icons/shop.svg";
+import { Typography } from "@/components";
 import { pageRoutes } from "@/routes";
+import { COLORS } from "@/styles/color";
 
 import { cssNavBarItemStyle, cssNavBarStyle } from "./NavBar.styles";
 
@@ -23,19 +25,27 @@ export const NavBar = () => {
     <div css={cssNavBarStyle}>
       <NavLink css={cssNavBarItemStyle} to={navBarItem.HOME.path}>
         <HomeIcon />
-        {navBarItem.HOME.title}
+        <Typography size="12" weight="bold" color={COLORS.GRAY2}>
+          {navBarItem.HOME.title}
+        </Typography>
       </NavLink>
       <NavLink css={cssNavBarItemStyle} to={navBarItem.CHAT.path}>
         <ChatIcon />
-        {navBarItem.CHAT.title}
+        <Typography size="12" weight="bold" color={COLORS.GRAY2}>
+          {navBarItem.CHAT.title}
+        </Typography>
       </NavLink>
       <NavLink css={cssNavBarItemStyle} to={navBarItem.SHOP.path}>
         <ShopIcon />
-        {navBarItem.SHOP.title}
+        <Typography size="12" weight="bold" color={COLORS.GRAY2}>
+          {navBarItem.SHOP.title}
+        </Typography>
       </NavLink>
       <NavLink css={cssNavBarItemStyle} to={navBarItem.PROFILE.path}>
         <ProfileIcon />
-        {navBarItem.PROFILE.title}
+        <Typography size="12" weight="bold" color={COLORS.GRAY2}>
+          {navBarItem.PROFILE.title}
+        </Typography>
       </NavLink>
     </div>
   );

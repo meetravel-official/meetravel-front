@@ -4,11 +4,9 @@ import ReactDOM from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import { MainLayout, Meta, SimpleLayout } from "@/components";
 import { cssGlobalStyle } from "@/styles/globalStyle";
 
-import { MainLayout } from "./components/MainLayout/MainLayout";
-import { Meta } from "./components/Meta/Meta";
-import { SimpleLayout } from "./components/SimpleLayout/SimpleLayout";
 import reportWebVitals from "./reportWebVitals";
 import { containerRoutes, pageRoutes } from "./routes";
 

@@ -1,3 +1,5 @@
+import { Typography } from "@/components";
+
 export const ProfileContainer = () => {
-  return <div>프로필</div>;
+  return <Typography>프로필</Typography>;
 };

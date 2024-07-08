@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 
-import { Layout } from "../Layout/Layout";
+import { Layout } from "@/components";
 
 export const SimpleLayout = () => {
   return (
