@@ -29,3 +29,10 @@ export const cssStepDotStyle = ({
   padding: 0;
   cursor: ${disabled ? "not-allowed" : active ? "default" : "pointer"};
 `;
+
+export const cssStepContentStyle = (detailStyle?: SerializedStyles) => css`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  ${detailStyle}
+`;
