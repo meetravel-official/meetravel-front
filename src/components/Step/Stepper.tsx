@@ -4,7 +4,7 @@ import { useStepConsumer } from "./Step";
 import { cssStepDotStyle, cssStepperStyle } from "./Step.styles";
 
 /**
- * Step - Stepper
+ * Step Stepper - 현재 스텝 표시 및 스텝 선택 가능
  * @param disabled 스텝 도트 클릭 시 동작 제한
  * @param detailedStyle 상세 스타일 지정
  */

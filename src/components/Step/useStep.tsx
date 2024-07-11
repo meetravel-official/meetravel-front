@@ -2,6 +2,10 @@ import { useState } from "react";
 
 import { StepInstance, StepKey } from "./StepInterface";
 
+/**
+ * Step useStep - 스텝을 쓰기 위해 필요한 상태와 함수를 제공
+ * @returns [StepInstance] - 스텝을 위한 상태와 함수
+ */
 export const useStep: () => [StepInstance] = () => {
   const [current, setCurrent] = useState<StepKey>(0);
   const [max, setMax] = useState(0);

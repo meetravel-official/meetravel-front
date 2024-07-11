@@ -13,9 +13,9 @@ export const useStepConsumer = () => {
 };
 
 /**
- * Step
- * @param step useStep 을 이용해서 index 등의 상태를 공유합니다.
- * @param stepList 각 단계들을 넣어주세요
+ * Step - 모든 스텝 세부 컴포넌트를 감싸는 영역
+ * @param step useStep 을 이용해서 현재 위치 등의 상태 공유
+ * @param stepList 스텝의 각 단계 지정
  */
 export const Step = ({ step, stepList, children }: StepProps) => {
   const { current, setCurrent, setMax } = step;
