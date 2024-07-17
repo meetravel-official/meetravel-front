@@ -1,4 +1,5 @@
 export * from "./Bar/Bar";
+export * from "./Button/Button";
 export * from "./Layout/Layout";
 export * from "./MainLayout/MainLayout";
 export * from "./Meta/Meta";
