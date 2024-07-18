@@ -6,13 +6,14 @@ import { IButtonStyle } from "./Button";
 
 export const cssButtonStyle = ({
   size,
+  width,
   bgColor,
   color,
   align,
   disabled,
   detailStyle,
 }: IButtonStyle) => css`
-  width: 100%;
+  width: ${width}%;
   display: flex;
   justify-content: center;
   align-items: center;
