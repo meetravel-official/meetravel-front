@@ -15,6 +15,7 @@ export const ShopContainer = () => {
           height="200px"
           src={"https://soopool.art/image/acnh/animal/Flurry.png"}
           alt="뽀야미"
+          objectFit="contain"
         />
         <Image
           width="100%"
@@ -22,6 +23,7 @@ export const ShopContainer = () => {
             "https://www.10wallpaper.com/wallpaper/1366x768/1409/Cute_Little_Puppy-photography_HD_wallpaper_1366x768.jpg"
           }
           alt="뽀야미"
+          draggable
         />
         <Image
           src={
