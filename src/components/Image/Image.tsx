@@ -19,7 +19,6 @@ interface ImageProps extends ImageStyle {
   src: string;
   alt: string;
   draggable?: boolean;
-  loading?: HTMLImageElement["loading"];
 }
 
 export const Image = ({
