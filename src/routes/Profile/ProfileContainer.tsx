@@ -17,7 +17,9 @@ export const ProfileContainer = () => {
       >
         빠듯하게
       </Button>
-      <Button disabled>비활성 버튼</Button>
+      <Button disabled width={200}>
+        비활성 버튼
+      </Button>
     </div>
   );
 };

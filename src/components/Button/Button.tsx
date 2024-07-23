@@ -8,7 +8,7 @@ import { cssButtonStyle } from "./Button.styles";
 export interface IButtonStyle {
   icon?: React.ReactNode;
   size?: "regular" | "large" | number;
-  width?: number;
+  width?: number | string;
   bgColor?: string;
   color?: string;
   align?: "start" | "end" | "center" | "justify";

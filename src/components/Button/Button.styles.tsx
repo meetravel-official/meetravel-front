@@ -13,7 +13,7 @@ export const cssButtonStyle = ({
   disabled,
   detailStyle,
 }: IButtonStyle) => css`
-  width: ${width}%;
+  width: ${typeof width === "number" ? `${width}px` : width};
   display: flex;
   justify-content: center;
   align-items: center;
