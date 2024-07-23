@@ -33,7 +33,7 @@ export const Button = ({
   children,
   icon,
   size = "regular",
-  width = 100,
+  width = "100%",
   bgColor = COLORS.GRAY1,
   color = COLORS.PINK1,
   align = "center",
