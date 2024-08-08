@@ -5,9 +5,10 @@ import { COLORS } from "@/styles/color";
 
 import { cssButtonStyle } from "./Button.styles";
 
+type TButtonHeightProps = "regular" | "large";
 export interface IButtonStyle {
   icon?: React.ReactNode;
-  size?: "regular" | "large" | number;
+  height?: TButtonHeightProps | number | string;
   width?: number | string;
   bgColor?: string;
   color?: string;
@@ -20,7 +21,7 @@ type TButtonProps = PropsWithChildren & IButtonStyle;
 /**
  * Button component
  * @param icon button icon, default: undefined
- * @param size button size, default: regular
+ * @param height button height, default: regular
  * @param width button width, default: 100%
  * @param bgColor button background color, default: #F5F5F5(GRAY1)
  * @param color button color, default: #FFD0E1(PINK1)
@@ -32,7 +33,7 @@ type TButtonProps = PropsWithChildren & IButtonStyle;
 export const Button = ({
   children,
   icon,
-  size = "regular",
+  height = "regular",
   width = "100%",
   bgColor = COLORS.GRAY1,
   color = COLORS.PINK1,
@@ -40,18 +41,18 @@ export const Button = ({
   disabled,
   detailStyle,
 }: TButtonProps) => {
-  const buttonSize = (size: number | string) => {
-    if (typeof size === "number") {
-      return size;
-    } else {
-      switch (size) {
+  const buttonHeight = (height: TButtonHeightProps | number | string) => {
+    if (typeof height === "string") {
+      switch (height) {
         case "regular":
           return 48;
         case "large":
           return 52;
         default:
-          return 48;
+          return height;
       }
+    } else {
+      return height;
     }
   };
 
@@ -59,7 +60,7 @@ export const Button = ({
     <button
       className="button"
       css={cssButtonStyle({
-        size: buttonSize(size),
+        height: buttonHeight(height),
         width,
         bgColor,
         color,

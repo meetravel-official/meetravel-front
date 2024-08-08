@@ -5,7 +5,7 @@ import { COLORS } from "@/styles/color";
 import { IButtonStyle } from "./Button";
 
 export const cssButtonStyle = ({
-  size,
+  height,
   width,
   bgColor,
   color,
@@ -18,7 +18,7 @@ export const cssButtonStyle = ({
   justify-content: center;
   align-items: center;
   text-align: ${align};
-  height: ${size}px;
+  height: ${typeof height === "number" ? `${height}px` : height};
   background-color: ${disabled ? COLORS.GRAY2 : bgColor};
   color: ${disabled ? COLORS.GRAY3 : color};
   border: none;
