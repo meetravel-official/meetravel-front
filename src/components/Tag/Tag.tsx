@@ -19,8 +19,8 @@ type TButtonProps = PropsWithChildren & ITagStyle;
  * Button component
  * @param icon button icon, default: undefined
  * @param width button width, default: fit-content
- * @param bgColor button background color, default: #F5F5F5(GRAY1)
- * @param color button color, default: #FFD0E1(PINK1)
+ * @param bgColor button background color, default: #FFD0E1(PINK1)
+ * @param color button color, default: #6F6969(GRAY4)
  * @param align text align, default: center
  * @param detailStyle 기타 세부 css 전달
  */
