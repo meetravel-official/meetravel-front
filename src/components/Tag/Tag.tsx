@@ -14,13 +14,13 @@ export interface ITagStyle {
   detailStyle?: SerializedStyles;
 }
 
-type TButtonProps = PropsWithChildren & ITagStyle;
+type TTagProps = PropsWithChildren & ITagStyle;
 /**
- * Button component
- * @param icon button icon, default: undefined
- * @param width button width, default: fit-content
- * @param bgColor button background color, default: #FFD0E1(PINK1)
- * @param color button color, default: #6F6969(GRAY4)
+ * Tag component
+ * @param icon tag icon, default: undefined
+ * @param width tag width, default: fit-content
+ * @param bgColor tag background color, default: #FFD0E1(PINK1)
+ * @param color tag color, default: #6F6969(GRAY4)
  * @param align text align, default: center
  * @param detailStyle 기타 세부 css 전달
  */
@@ -33,7 +33,7 @@ export const Tag = ({
   color = COLORS.GRAY4,
   align = "center",
   detailStyle,
-}: TButtonProps) => {
+}: TTagProps) => {
   return (
     <div
       className="tag"
