@@ -6,5 +6,6 @@ export * from "./MainLayout/MainLayout";
 export * from "./Meta/Meta";
 export * from "./SimpleLayout/SimpleLayout";
 export * from "./Step";
+export * from "./Tag/Tag";
 export * from "./Typography/Typography";
 export * from "./UserAvatar/UserAvatar";
