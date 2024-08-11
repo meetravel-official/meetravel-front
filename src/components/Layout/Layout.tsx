@@ -10,10 +10,21 @@ import {
 import {
   cssLayoutContentStyle,
   cssLayoutFixedFooterStyle,
+  cssLayoutFixedHeaderStyle,
   cssLayoutStyle,
 } from "./Layout.styles";
 
-const LayoutContext = createContext<{ fixedFooterHeight?: number }>({});
+export interface FixedHeight {
+  footer?: number;
+  header?: number;
+}
+
+interface LayoutContext {
+  fixedHeight?: FixedHeight;
+}
+
+const LayoutContext = createContext<LayoutContext>({});
+
 const useLayoutConsumer = () => {
   return useContext(LayoutContext);
 };
@@ -22,17 +33,21 @@ const LayoutHeader = ({
   children,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => {
-  return <header {...props}>{children}</header>;
+  return (
+    <header css={cssLayoutFixedHeaderStyle} {...props}>
+      {children}
+    </header>
+  );
 };
 
 const LayoutContent = ({
   children,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => {
-  const { fixedFooterHeight } = useLayoutConsumer();
-  // 콘텐츠 내용이 fixed footer에 가려지지 않도록 패딩 추가
+  const { fixedHeight } = useLayoutConsumer();
+  // 콘텐츠 내용이 헤더나 고정 푸터에 가려지지 않도록 패딩 추가
   return (
-    <main css={cssLayoutContentStyle({ fixedFooterHeight })} {...props}>
+    <main css={cssLayoutContentStyle({ fixedHeight })} {...props}>
       {children}
     </main>
   );
@@ -57,21 +72,25 @@ const LayoutFixedFooter = ({
 };
 
 export const Layout = ({ children }: PropsWithChildren) => {
+  const [fixedHeaderHeight, setFixedHeaderHeight] = useState<number>();
   const [fixedFooterHeight, setFixedFooterHeight] = useState<number>();
 
   useEffect(() => {
-    // 자동으로 fixed footer의 높이를 계산
+    // 자동으로 fixed header, footer의 높이를 계산
     setFixedFooterHeight(
       window.document.querySelector("footer.fixed")?.getBoundingClientRect()
         .height
+    );
+    setFixedHeaderHeight(
+      window.document.querySelector("header")?.getBoundingClientRect().height
     );
   }, []);
 
   const layoutValue = useMemo(
     () => ({
-      fixedFooterHeight: fixedFooterHeight,
+      fixedHeight: { footer: fixedFooterHeight, header: fixedHeaderHeight },
     }),
-    [fixedFooterHeight]
+    [fixedFooterHeight, fixedHeaderHeight]
   );
 
   return (
