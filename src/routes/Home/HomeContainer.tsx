@@ -66,6 +66,9 @@ export const HomeContainer = () => {
             <button>포스트 4번</button>
           </Link>
         </div>
+        <a href={pageRoutes.TOS} target="_blank" rel="noreferrer">
+          <button>이용약관</button>
+        </a>
       </div>
     </div>
   );
