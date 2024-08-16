@@ -1,7 +1,10 @@
+import { Link } from "react-router-dom";
+
 import { Step, Typography } from "@/components";
 import { BarStep } from "@/components/BarStep/BarStep";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 
+import { pageRoutes } from "..";
 import { HomeStep } from "./components/HomeStep";
 
 export const HomeContainer = () => {
@@ -49,6 +52,23 @@ export const HomeContainer = () => {
             <button onClick={step2.handleOnClickNext}>&gt;</button>
           </div>
         </div>
+        <div css={cssAlignHorizontalStyle}>
+          <Link to={`${pageRoutes.POST}/1`}>
+            <button>포스트 1번</button>
+          </Link>
+          <Link to={`${pageRoutes.POST}/2`}>
+            <button>포스트 2번</button>
+          </Link>
+          <Link to={`${pageRoutes.POST}/3`}>
+            <button>포스트 3번</button>
+          </Link>
+          <Link to={`${pageRoutes.POST}/4`}>
+            <button>포스트 4번</button>
+          </Link>
+        </div>
+        <a href={pageRoutes.TOS} target="_blank" rel="noreferrer">
+          <button>이용약관</button>
+        </a>
       </div>
     </div>
   );
