@@ -22,10 +22,17 @@ import { DatePicker } from "./DatePicker";
 import { RangePicker } from "./RangePicker";
 
 interface CalendarProps {
-  defaultDate?: string; // YYYY-MM
-  tripDayNum: 1 | 2 | 3; // 당일치기 - 1, 1박 2일 - 2, 2박 3일 - 3
+  defaultDate?: string;
+  tripDayNum: 1 | 2 | 3;
   formItemName?: [string, string];
 }
+
+/**
+ * 캘린더 - 여행할 기간을 선택할 수 있는 컴포넌트
+ * @param defaultDate - 기본 연월(YYYY-MM)
+ * @param tripDayNum - 여행 일수(당일치기 - 1, 1박 2일 - 2, 2박 3일 - 3)
+ * @param formItemName - input name(기본값: ["beginDate", "endDate"])
+ */
 export const Calendar = ({
   defaultDate,
   tripDayNum,
