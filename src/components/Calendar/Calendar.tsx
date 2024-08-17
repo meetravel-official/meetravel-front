@@ -24,7 +24,6 @@ import { RangePicker } from "./RangePicker";
 interface CalendarProps {
   defaultDate?: string; // YYYY-MM
   tripDayNum: 1 | 2 | 3; // 당일치기 - 1, 1박 2일 - 2, 2박 3일 - 3
-  onSelectDate?: (date: string) => void;
 }
 export const Calendar = ({ defaultDate, tripDayNum }: CalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(
