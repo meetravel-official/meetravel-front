@@ -30,10 +30,7 @@ export const Calendar = ({ defaultDate, tripDayNum }: CalendarProps) => {
     defaultDate || dayjs().format("YYYY-MM")
   );
 
-  const [selectDate, setSelectDate] = useState<[Dayjs, Dayjs]>([
-    dayjs(),
-    dayjs(),
-  ]);
+  const [selectDate, setSelectDate] = useState<[Dayjs, Dayjs]>();
 
   const availableDayRange: [number, number] =
     tripDayNum === 1 || tripDayNum === 2 ? [5, 6] : [4, 6];

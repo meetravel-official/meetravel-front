@@ -10,7 +10,7 @@ import { DatePickItem } from "./DatePickItem";
 interface DatePickerProps {
   currentMonth: string;
   dateList: Dayjs[];
-  selectDate: [Dayjs, Dayjs];
+  selectDate?: [Dayjs, Dayjs];
   availableDayRange: [number, number];
   onSelectDate: (date: [Dayjs, Dayjs]) => void;
 }
@@ -37,7 +37,7 @@ export const DatePicker = ({
           <DatePickItem
             key={date.format("MM-DD")}
             date={date}
-            selected={selectDate[0].isSame(date)}
+            selected={selectDate ? selectDate[0].isSame(date) : false}
             onSelectDate={onSelectDate}
           />
         ) : (

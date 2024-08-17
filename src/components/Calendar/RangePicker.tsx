@@ -12,7 +12,7 @@ interface RangePickerProps {
   currentMonth: string;
   dateList: Dayjs[];
   availableDayRange: [number, number];
-  selectDate: [Dayjs, Dayjs];
+  selectDate?: [Dayjs, Dayjs];
   onSelectDate: (date: [Dayjs, Dayjs]) => void;
 }
 
@@ -75,7 +75,7 @@ export const RangePicker = ({
           <DatePickItem
             key={date[0].format("MM-DD")}
             date={date}
-            selected={selectDate[0].isSame(date[0])}
+            selected={selectDate ? selectDate[0].isSame(date[0]) : false}
             onSelectDate={onSelectDate}
           />
         ) : (
