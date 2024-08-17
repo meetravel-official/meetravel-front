@@ -24,8 +24,13 @@ import { RangePicker } from "./RangePicker";
 interface CalendarProps {
   defaultDate?: string; // YYYY-MM
   tripDayNum: 1 | 2 | 3; // 당일치기 - 1, 1박 2일 - 2, 2박 3일 - 3
+  formItemName?: [string, string];
 }
-export const Calendar = ({ defaultDate, tripDayNum }: CalendarProps) => {
+export const Calendar = ({
+  defaultDate,
+  tripDayNum,
+  formItemName = ["beginDate", "endDate"],
+}: CalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(
     defaultDate || dayjs().format("YYYY-MM")
   );
@@ -69,21 +74,24 @@ export const Calendar = ({ defaultDate, tripDayNum }: CalendarProps) => {
     setCurrentMonth(getMonthByDist(month, dist));
   }, []);
 
-  const handleOnSelectDate = useCallback((date: [Dayjs, Dayjs]) => {
-    setSelectDate(date);
-    document
-      .getElementsByName("beginDate")[0]
-      .setAttribute("value", date[0].format("YYYY-MM-DD"));
-    document
-      .getElementsByName("endDate")[0]
-      .setAttribute("value", date[1].format("YYYY-MM-DD"));
-  }, []);
+  const handleOnSelectDate = useCallback(
+    (date: [Dayjs, Dayjs]) => {
+      setSelectDate(date);
+      document
+        .getElementsByName(formItemName[0])[0]
+        .setAttribute("value", date[0].format("YYYY-MM-DD"));
+      document
+        .getElementsByName(formItemName[1])[0]
+        .setAttribute("value", date[1].format("YYYY-MM-DD"));
+    },
+    [formItemName]
+  );
 
   return (
     <div css={cssCalendarContainerStyle}>
       <div css={cssCalendarInputStyle}>
-        <input type="date" name="beginDate" />
-        <input type="date" name="endDate" />
+        <input type="date" name={formItemName[0]} />
+        <input type="date" name={formItemName[1]} />
       </div>
       <div css={cssCalendarControlStyle}>
         <button
