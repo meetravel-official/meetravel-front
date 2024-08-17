@@ -28,3 +28,7 @@ export const cssCalendarStyle = css`
   justify-items: center;
   align-items: center;
 `;
+
+export const cssCalendarInputStyle = css`
+  display: none;
+`;

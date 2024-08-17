@@ -15,6 +15,7 @@ import {
   cssCalendarContainerStyle,
   cssCalendarControlBtnStyle,
   cssCalendarControlStyle,
+  cssCalendarInputStyle,
   cssCalendarStyle,
 } from "./Calendar.styles";
 import { DatePicker } from "./DatePicker";
@@ -69,8 +70,22 @@ export const Calendar = ({ defaultDate, tripDayNum }: CalendarProps) => {
     setCurrentMonth(getMonthByDist(month, dist));
   }, []);
 
+  const handleOnSelectDate = useCallback((date: [Dayjs, Dayjs]) => {
+    setSelectDate(date);
+    document
+      .getElementsByName("beginDate")[0]
+      .setAttribute("value", date[0].format("YYYY-MM-DD"));
+    document
+      .getElementsByName("endDate")[0]
+      .setAttribute("value", date[1].format("YYYY-MM-DD"));
+  }, []);
+
   return (
     <div css={cssCalendarContainerStyle}>
+      <div css={cssCalendarInputStyle}>
+        <input type="date" name="beginDate" />
+        <input type="date" name="endDate" />
+      </div>
       <div css={cssCalendarControlStyle}>
         <button
           css={cssCalendarControlBtnStyle}
@@ -115,7 +130,7 @@ export const Calendar = ({ defaultDate, tripDayNum }: CalendarProps) => {
             currentMonth={currentMonth}
             dateList={allDayList}
             selectDate={selectDate}
-            onSelectDate={setSelectDate}
+            onSelectDate={handleOnSelectDate}
             availableDayRange={availableDayRange}
           />
         ) : (
@@ -123,7 +138,7 @@ export const Calendar = ({ defaultDate, tripDayNum }: CalendarProps) => {
             currentMonth={currentMonth}
             dateList={allDayList}
             selectDate={selectDate}
-            onSelectDate={setSelectDate}
+            onSelectDate={handleOnSelectDate}
             availableDayRange={availableDayRange}
           />
         )}
