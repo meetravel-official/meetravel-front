@@ -40,7 +40,8 @@
     "react-scripts": "5.0.1",
     "tsconfig-paths-webpack-plugin": "^4.1.0",
     "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
     "@emotion/babel-preset-css-prop": "^11.11.0",

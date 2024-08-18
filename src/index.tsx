@@ -4,7 +4,13 @@ import ReactDOM from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { MainLayout, Meta, SimpleLayout } from "@/components";
+import {
+  BackLayout,
+  CloseLayout,
+  MainLayout,
+  Meta,
+  SimpleLayout,
+} from "@/components";
 import { cssGlobalStyle } from "@/styles/globalStyle";
 
 import reportWebVitals from "./reportWebVitals";
@@ -23,6 +29,26 @@ const router = createBrowserRouter([
       { path: pageRoutes.SHOP, Component: containerRoutes.SHOP },
       { path: pageRoutes.PROFILE, Component: containerRoutes.PROFILE },
       { path: pageRoutes.SIGN_UP, Component: containerRoutes.SIGN_UP }, //TODO: 페이지 작업 시 적절한 레이아웃으로 변경
+    ],
+  },
+  {
+    element: <BackLayout />,
+    children: [
+      {
+        path: `${pageRoutes.POST}/:postId`,
+        caseSensitive: true,
+        Component: containerRoutes.POST,
+      },
+    ],
+  },
+  {
+    element: <CloseLayout />,
+    children: [
+      {
+        path: pageRoutes.TOS,
+        caseSensitive: true,
+        Component: containerRoutes.TOS,
+      },
     ],
   },
   {

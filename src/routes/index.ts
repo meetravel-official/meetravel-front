@@ -1,10 +1,12 @@
 import { ChatContainer } from "./Chat/ChatContainer";
 import { HomeContainer } from "./Home/HomeContainer";
+import { PostContainer } from "./Post/PostContainer";
 import { ProfileContainer } from "./Profile/ProfileContainer";
 import { SampleContainer } from "./Sample/SampleContainer";
 import { ShopContainer } from "./Shop/ShopContainer";
 import { SignInContainer } from "./SignIn/SignInContainer";
 import { SignUpContainer } from "./SignUp/SignUpContainer";
+import { TermsOfServiceContainer } from "./TermsOfService/TermsOfServiceContainer";
 
 export const pageRoutes = {
   ROOT: "/",
@@ -13,6 +15,8 @@ export const pageRoutes = {
   PROFILE: "/profile",
   SIGN_IN: "auth/sign-in",
   SIGN_UP: "/auth/sign-up",
+  POST: "/post",
+  TOS: "/terms-of-service",
 };
 
 export const containerRoutes = {
@@ -23,4 +27,6 @@ export const containerRoutes = {
   PROFILE: ProfileContainer,
   SIGN_IN: SignInContainer,
   SIGN_UP: SignUpContainer,
+  POST: PostContainer,
+  TOS: TermsOfServiceContainer,
 };
