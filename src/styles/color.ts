@@ -7,7 +7,7 @@ export const COLORS = {
   GRAY5: "#393636",
   PINK1: "#FFD0E1",
   PINK2: "#FF96AF",
-  PINK3: "#FF6B9C",
+  PINK3: "#FF6895",
   PINK4: "#B1375C",
   SITUATION1: "#FF6868",
   SITUATION2: "#31C26B",
