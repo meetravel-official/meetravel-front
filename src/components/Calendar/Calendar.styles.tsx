@@ -22,7 +22,8 @@ export const cssCalendarControlBtnStyle = css`
 
 export const cssCalendarStyle = css`
   display: grid;
-  grid-template-columns: repeat(7, 28px);
+  width: 100%;
+  grid-template-columns: repeat(7, minmax(28px, 1fr));
   row-gap: 12px;
   column-gap: 17px;
   justify-items: center;
