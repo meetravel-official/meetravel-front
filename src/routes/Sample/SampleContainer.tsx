@@ -15,36 +15,30 @@ export interface UserForm {
 }
 
 export const SampleContainer = () => {
-  const { form, registerField, isValid, resetFields, invalidFields } =
-    useForm<UserForm>({
-      initialValues: {
-        hobby: "initial hobby text",
-        email: "",
-        age: undefined,
-        requiredTest1: "",
-        requiredTest2: "",
-        notRequiredTest: "",
-      },
-      required: ["age", "requiredTest1", "requiredTest2"],
-      validate: {
-        hobby: (value) =>
-          value.length < 1 ? "취미는 한글자 이상이어야 합니다." : undefined,
-        email: (value) =>
-          !value.includes("@") ? "올바른 이메일 형식이 아닙니다." : undefined,
-        age: (value) =>
-          value && value < 0 ? "나이는 0보다 작을 수 없습니다." : undefined,
-      },
-    });
-
-  const [testReset, setTestReset] = useState(false);
-
-  console.log("///////");
+  const { form, registerField, isValid, invalidFields } = useForm<UserForm>({
+    initialValues: {
+      hobby: "initial hobby text",
+      email: "",
+      age: undefined,
+      requiredTest1: "",
+      requiredTest2: "",
+      notRequiredTest: "",
+    },
+    required: ["age", "requiredTest1", "requiredTest2"],
+    validate: {
+      hobby: (value) =>
+        value.length < 1 ? "취미는 한글자 이상이어야 합니다." : undefined,
+      email: (value) =>
+        !value.includes("@") ? "올바른 이메일 형식이 아닙니다." : undefined,
+      age: (value) =>
+        value && value < 0 ? "나이는 0보다 작을 수 없습니다." : undefined,
+    },
+  });
 
   const handleSubmit = () => {
     invalidFields();
     if (isValid()) {
       console.log("Form submitted:", form);
-      resetFields();
     } else {
       console.log("Form has errors");
     }
@@ -96,12 +90,7 @@ export const SampleContainer = () => {
         />
       </FormItem>
 
-      <button type="submit" onClick={() => setTestReset(false)}>
-        제출
-      </button>
-      <button type="submit" onClick={() => setTestReset(true)}>
-        제출 후 리셋
-      </button>
+      <button type="submit">제출</button>
     </Form>
   );
 };
