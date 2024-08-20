@@ -58,7 +58,7 @@
     "react-snap": "^1.23.0"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "PORT=3030 craco start",
     "build": "craco build",
     "postbuild": "react-snap",
     "test": "craco test",
