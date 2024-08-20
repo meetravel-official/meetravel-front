@@ -55,6 +55,7 @@ const router = createBrowserRouter([
     element: <SimpleLayout />,
     children: [
       { path: pageRoutes.SIGN_IN, Component: containerRoutes.SIGN_IN },
+      { path: pageRoutes.SAMPLE, Component: containerRoutes.SAMPLE },
     ],
   },
 ]);
