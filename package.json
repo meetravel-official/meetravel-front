@@ -68,6 +68,9 @@
   "reactSnap": {
     "include": [
       "/"
+    ],
+    "puppeteerArgs": [
+      "--no-sandbox"
     ]
   },
   "eslintConfig": {
