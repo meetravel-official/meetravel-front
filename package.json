@@ -70,7 +70,8 @@
       "/"
     ],
     "puppeteerArgs": [
-      "--no-sandbox"
+      "--no-sandbox",
+      "--disable-setuid-sandbox"
     ]
   },
   "eslintConfig": {
