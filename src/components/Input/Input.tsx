@@ -14,6 +14,7 @@ export interface InputStyle {
 /**
  * Input - form 대응
  * @param inputStyle Input의 style을 설정
+ * @params form 대응 - vlue, onChange, error 필요
  */
 const Input = ({
   value,
