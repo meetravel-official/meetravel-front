@@ -3,6 +3,7 @@ export * from "./Bar/Bar";
 export * from "./CloseLayout/CloseLayout";
 export * from "./Header/Header";
 export * from "./Button/Button";
+export * from "./Calendar/Calendar";
 export * from "./Image/Image";
 export * from "./Layout/Layout";
 export * from "./MainLayout/MainLayout";
