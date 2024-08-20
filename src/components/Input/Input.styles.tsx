@@ -5,7 +5,8 @@ import { COLORS } from "@/styles/color";
 import { InputStyle } from "./Input";
 
 export const cssInputStyle = (inputStyle: InputStyle, error?: string) => css`
-  border: ${error ? `1.5px solid ${COLORS.SITUATION1}` : "none"};
+  outline: ${error ? `1.5px solid ${COLORS.SITUATION1}` : "none"};
+  border: none;
   width: ${inputStyle?.width || "328px"};
   height: ${inputStyle?.height || "48px"};
   border-radius: 8px;
@@ -16,7 +17,9 @@ export const cssInputStyle = (inputStyle: InputStyle, error?: string) => css`
   ::placeholder {
     color: ${COLORS.PINK1};
   }
-  :focus-visible {
-    border: 1px solid ${COLORS.SITUATION2};
+  &:focus-visible {
+    outline: ${error
+      ? `1.5px solid ${COLORS.SITUATION1}`
+      : `1.5px solid ${COLORS.PINK1}`};
   }
 `;
