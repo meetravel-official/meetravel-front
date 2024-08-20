@@ -24,7 +24,11 @@ const Form = ({ children, value, onSubmit }: FormProps) => {
       return React.Children.map(
         children as React.ReactElement[],
         (child: React.ReactElement) => {
-          if (value && typeof child?.type === "function") {
+          if (
+            value &&
+            (child?.type as React.JSXElementConstructor<any>)?.name ===
+              "FormItem"
+          ) {
             return React.cloneElement(child, {
               value: value,
             });
