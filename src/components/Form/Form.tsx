@@ -4,16 +4,16 @@ import { FormValues } from "./useForm";
 
 interface FormProps {
   children: React.ReactNode;
-  value?: FormValues<any>;
+  formValue?: FormValues<any>;
   onSubmit?: () => void;
 }
 
 /**
  * Form - Form 전체를 감싸는 컴포넌트
- * @param value useForm에서 공유하는 form value
+ * @param formValue useForm에서 공유하는 form value
  * @param onSubmit form 전송 시 실행할 함수
  */
-const Form = ({ children, value, onSubmit }: FormProps) => {
+const Form = ({ children, formValue, onSubmit }: FormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -25,12 +25,12 @@ const Form = ({ children, value, onSubmit }: FormProps) => {
         children as React.ReactElement[],
         (child: React.ReactElement) => {
           if (
-            value &&
+            formValue &&
             (child?.type as React.JSXElementConstructor<any>)?.name ===
               "FormItem"
           ) {
             return React.cloneElement(child, {
-              value: value,
+              value: formValue,
             });
           } else {
             return child;
