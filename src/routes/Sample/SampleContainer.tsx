@@ -15,7 +15,7 @@ export interface UserForm {
 }
 
 export const SampleContainer = () => {
-  const { form, registerField, isValid, invalidFields } = useForm<UserForm>({
+  const { form, registerField, invalidFields } = useForm<UserForm>({
     initialValues: {
       hobby: "initial hobby text",
       email: "",
@@ -36,16 +36,17 @@ export const SampleContainer = () => {
   });
 
   const handleSubmit = () => {
-    invalidFields();
-    if (isValid()) {
-      console.log("Form submitted:", form);
-    } else {
-      console.log("Form has errors");
-    }
+    invalidFields(({ errors, value }) => {
+      if (errors) {
+        console.log("error in if", errors);
+      } else {
+        console.log("error in else", value);
+      }
+    });
   };
 
   return (
-    <Form value={form} onSubmit={handleSubmit}>
+    <Form formValue={form} onSubmit={handleSubmit}>
       <FormItem
         name="hobby"
         label="취미"
@@ -59,6 +60,9 @@ export const SampleContainer = () => {
           {...registerField("email")}
           placeholder="이메일을 입력해주세요"
         />
+      </FormItem>
+      <FormItem name="age" label="나이">
+        <Input {...registerField("age")} />
       </FormItem>
 
       <FormItem

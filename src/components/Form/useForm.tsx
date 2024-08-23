@@ -24,7 +24,7 @@ interface UseFormOptions<T extends Record<string, any>> {
  * @param initialValues Form의 초기값
  * @param required 필수 입력값을 설정하는 key 배열
  * @param validate Form의 각 field에 대한 validation 함수
- * @returns form, handleChange, registerField, isValid, invalidFields, resetFields
+ * @returns form, handleChange, registerField, invalidFields, resetFields
  */
 function useForm<T extends Record<string, any>>({
   initialValues,
@@ -64,26 +64,49 @@ function useForm<T extends Record<string, any>>({
     [form, handleChange]
   );
 
-  const invalidFields = useCallback(() => {
-    const errors: Partial<Record<keyof T, string>> = {};
-    for (const key in form) {
-      if (validate?.[key]) {
-        errors[key] = validate?.[key]?.(form[key].value);
+  const invalidFields = useCallback(
+    (
+      callback: ({
+        value,
+        errors,
+      }: {
+        value: FormValues<T>;
+        errors?: { error: keyof T; errorText: string }[];
+      }) => void
+    ) => {
+      const errors: Partial<Record<keyof T, string>> = {};
+      for (const key in form) {
+        if (validate?.[key]) {
+          errors[key] = validate?.[key]?.(form[key].value);
+        }
+
+        if (required?.includes(key) && !form[key].value && !errors[key]) {
+          errors[key] = "필수 입력값입니다.";
+        }
       }
 
-      if (required?.includes(key) && !form[key].value && !errors[key]) {
-        errors[key] = "필수 입력값입니다.";
-      }
-    }
+      setForm((prevValues) => {
+        const newForm = { ...prevValues };
+        for (const key in newForm) {
+          newForm[key] = { ...newForm[key], error: errors[key] };
+        }
+        return newForm;
+      });
 
-    setForm((prevValues) => {
-      const newForm = { ...prevValues };
-      for (const key in newForm) {
-        newForm[key] = { ...newForm[key], error: errors[key] };
-      }
-      return newForm;
-    });
-  }, [form, required, validate]);
+      const hasErrors = Object.entries(errors)
+        .filter((error) => error[1] !== undefined)
+        .map((error) => ({
+          error: error[0],
+          errorText: error[1] || "useForm error",
+        }));
+
+      callback({
+        value: form,
+        errors: hasErrors.length > 0 ? hasErrors : undefined,
+      });
+    },
+    [form, required, validate]
+  );
 
   const resetFields = useCallback(() => {
     setForm((prevValues) => {
@@ -95,15 +118,10 @@ function useForm<T extends Record<string, any>>({
     });
   }, [initialValues]);
 
-  const isValid = useCallback(() => {
-    return Object.values(form).every((field) => !field.error);
-  }, [form]);
-
   return {
     form: form,
     handleChange,
     registerField,
-    isValid,
     invalidFields,
     resetFields,
   };
