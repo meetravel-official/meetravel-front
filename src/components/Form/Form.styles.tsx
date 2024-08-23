@@ -15,7 +15,7 @@ export const cssFormItemLabelStyle = (labelStyle?: LabelStyle) => css`
 `;
 
 export const cssFormItemErrorStyle = (errorStyle?: ErrorStyle) => css`
-  font-size: "14px";
+  font-size: 14px;
   color: ${COLORS.SITUATION1};
   display: ${errorStyle?.display || "none"};
   margin-top: 8px;
