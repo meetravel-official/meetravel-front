@@ -6,9 +6,7 @@ import {
   cssInputWrapperStyle,
 } from "./Input.styles";
 
-interface InputProps {
-  value?: string | number | readonly string[];
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;
   error?: string;
   suffix?: React.ReactNode;
@@ -21,26 +19,20 @@ interface InputProps {
  * @params form 대응 - vlue, onChange, error 필요
  */
 const Input = ({
-  value,
-  onChange,
   error,
   placeholder,
   detailStyle,
   suffix,
+  ...props
 }: InputProps) => {
   return (
     <div css={cssInputWrapperStyle(error, detailStyle)}>
-      {value && onChange ? (
-        <input
-          type="input"
-          css={cssInputStyle}
-          value={value || ""}
-          onChange={onChange}
-          placeholder={placeholder}
-        />
-      ) : (
-        <input type="input" css={cssInputStyle} placeholder={placeholder} />
-      )}
+      <input
+        {...props}
+        type="input"
+        css={cssInputStyle}
+        placeholder={placeholder}
+      />
       {suffix && <div css={cssInputIconStyle}>{suffix}</div>}
     </div>
   );
