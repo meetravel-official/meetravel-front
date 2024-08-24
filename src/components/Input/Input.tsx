@@ -1,4 +1,10 @@
-import { cssInputStyle } from "./Input.styles";
+import { SerializedStyles } from "@emotion/react";
+
+import {
+  cssInputIconStyle,
+  cssInputStyle,
+  cssInputWrapperStyle,
+} from "./Input.styles";
 
 interface InputProps {
   value?: string | number | readonly string[];
@@ -6,7 +12,10 @@ interface InputProps {
   placeholder?: string;
   inputStyle?: InputStyle;
   error?: string;
+  suffix?: React.ReactNode;
+  detailStyle?: SerializedStyles;
 }
+
 export interface InputStyle {
   width?: string;
   height?: string;
@@ -22,15 +31,26 @@ const Input = ({
   error,
   placeholder,
   inputStyle: style = {},
+  detailStyle,
+  suffix,
 }: InputProps) => {
   return (
-    <input
-      type="input"
-      css={cssInputStyle(style, error)}
-      value={value || ""}
-      onChange={onChange}
-      placeholder={placeholder}
-    />
+    <div>
+      <div css={cssInputWrapperStyle(style, error, detailStyle)}>
+        {value && onChange ? (
+          <input
+            type="input"
+            css={cssInputStyle}
+            value={value || ""}
+            onChange={onChange}
+            placeholder={placeholder}
+          />
+        ) : (
+          <input type="input" css={cssInputStyle} placeholder={placeholder} />
+        )}
+        <div css={cssInputIconStyle}>{suffix}</div>
+      </div>
+    </div>
   );
 };
 
