@@ -13,6 +13,7 @@ export const cssButtonStyle = ({
   disabled,
   detailStyle,
 }: IButtonStyle) => css`
+  position: relative;
   width: ${typeof width === "number" ? `${width}px` : width};
   padding: 16px 20px;
   display: flex;
@@ -31,4 +32,11 @@ export const cssButtonStyle = ({
     filter: brightness(0.95);
   }
   ${detailStyle}
+`;
+
+export const cssLinkStyle = css`
+  position: absolute;
+  right: 21px;
+  top: 50%;
+  transform: translateY(-50%);
 `;
