@@ -9,7 +9,7 @@ export const cssInputStyle = css`
   border-radius: 8px;
   font-size: 16px;
   flex-grow: 1;
-  padding-left: 8px;
+  padding: 0 8px;
   background-color: inherit;
   ::placeholder {
     color: ${COLORS.PINK1};

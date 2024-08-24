@@ -41,7 +41,7 @@ const Input = ({
       ) : (
         <input type="input" css={cssInputStyle} placeholder={placeholder} />
       )}
-      <div css={cssInputIconStyle}>{suffix}</div>
+      {suffix && <div css={cssInputIconStyle}>{suffix}</div>}
     </div>
   );
 };
