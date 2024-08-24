@@ -17,6 +17,7 @@ export const pageRoutes = {
   SIGN_UP: "/auth/sign-up",
   POST: "/post",
   TOS: "/terms-of-service",
+  SAMPLE: "/sample",
 };
 
 export const containerRoutes = {
