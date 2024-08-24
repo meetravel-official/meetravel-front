@@ -18,6 +18,7 @@ export interface IButtonStyle {
   link?: boolean;
   linkColor?: string;
   detailStyle?: SerializedStyles;
+  onClick?: () => void;
 }
 
 type TButtonProps = PropsWithChildren & IButtonStyle;
@@ -33,6 +34,7 @@ type TButtonProps = PropsWithChildren & IButtonStyle;
  * @param link default: false
  * @param linkColor 화살표 아이콘 컬러 default:#FF96AF
  * @param detailStyle 기타 세부 css 전달
+ * @param onClick 버튼 클릭 이벤트
  */
 
 export const Button = ({
@@ -47,6 +49,7 @@ export const Button = ({
   linkColor = COLORS.PINK2,
   disabled,
   detailStyle,
+  onClick,
 }: TButtonProps) => {
   const buttonHeight = (height: TButtonHeightProps | number | string) => {
     if (typeof height === "string") {
@@ -74,8 +77,8 @@ export const Button = ({
         align,
         disabled,
         detailStyle,
-        link,
       })}
+      onClick={onClick}
     >
       {icon}
       {children}
