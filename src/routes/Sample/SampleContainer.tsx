@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { css } from "@emotion/react";
 
+import { ReactComponent as ChatIcon } from "@/assets/icons/chat.svg";
 import Form from "@/components/Form/Form";
 import { FormItem } from "@/components/Form/FormItem";
 import useForm from "@/components/Form/useForm";
 import Input from "@/components/Input/Input";
 import { COLORS } from "@/styles/color";
+
 export interface UserForm {
   hobby: string;
   email: string;
@@ -95,6 +97,15 @@ export const SampleContainer = () => {
       </FormItem>
 
       <button type="submit">제출</button>
+      <br />
+      <br />
+      <Input
+        detailStyle={css`
+          background-color: ${COLORS.WHITE};
+          outline: 1px solid ${COLORS.PINK1};
+        `}
+        suffix={<ChatIcon />}
+      />
     </Form>
   );
 };
