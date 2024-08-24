@@ -1,9 +1,10 @@
 import { SerializedStyles } from "@emotion/react";
 import { PropsWithChildren } from "react";
 
+import { ReactComponent as LinkArrow } from "@/assets/icons/link-arrow.svg";
 import { COLORS } from "@/styles/color";
 
-import { cssButtonStyle } from "./Button.styles";
+import { cssButtonStyle, cssLinkStyle } from "./Button.styles";
 
 type TButtonHeightProps = "regular" | "large";
 export interface IButtonStyle {
@@ -14,6 +15,7 @@ export interface IButtonStyle {
   color?: string;
   align?: "start" | "end" | "center" | "justify";
   disabled?: boolean;
+  link?: boolean;
   detailStyle?: SerializedStyles;
 }
 
@@ -27,6 +29,7 @@ type TButtonProps = PropsWithChildren & IButtonStyle;
  * @param color button color, default: #FFD0E1(PINK1)
  * @param align icon-button align, default: center
  * @param disabled default: false
+ * @param link default: false
  * @param detailStyle 기타 세부 css 전달
  */
 
@@ -38,6 +41,7 @@ export const Button = ({
   bgColor = COLORS.GRAY1,
   color = COLORS.PINK1,
   align = "center",
+  link,
   disabled,
   detailStyle,
 }: TButtonProps) => {
@@ -67,10 +71,12 @@ export const Button = ({
         align,
         disabled,
         detailStyle,
+        link,
       })}
     >
       {icon}
       {children}
+      {link && <LinkArrow css={cssLinkStyle} />}
     </button>
   );
 };
