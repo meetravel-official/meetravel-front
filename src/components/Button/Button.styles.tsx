@@ -14,6 +14,7 @@ export const cssButtonStyle = ({
   detailStyle,
 }: IButtonStyle) => css`
   width: ${typeof width === "number" ? `${width}px` : width};
+  padding: 16px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
