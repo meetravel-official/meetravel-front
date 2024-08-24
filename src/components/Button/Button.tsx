@@ -25,7 +25,7 @@ type TButtonProps = PropsWithChildren & IButtonStyle;
  * @param width button width, default: 100%
  * @param bgColor button background color, default: #F5F5F5(GRAY1)
  * @param color button color, default: #FFD0E1(PINK1)
- * @param align text align, default: center
+ * @param align icon-button align, default: center
  * @param disabled default: false
  * @param detailStyle 기타 세부 css 전달
  */

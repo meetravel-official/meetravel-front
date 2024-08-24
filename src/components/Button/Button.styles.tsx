@@ -14,10 +14,11 @@ export const cssButtonStyle = ({
   detailStyle,
 }: IButtonStyle) => css`
   width: ${typeof width === "number" ? `${width}px` : width};
+  padding: 16px 20px;
   display: flex;
-  justify-content: center;
+  justify-content: ${align};
   align-items: center;
-  text-align: ${align};
+  text-align: center;
   height: ${typeof height === "number" ? `${height}px` : height};
   background-color: ${disabled ? COLORS.GRAY2 : bgColor};
   color: ${disabled ? COLORS.GRAY3 : color};
