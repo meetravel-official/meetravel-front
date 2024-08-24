@@ -2,8 +2,6 @@ import { css, SerializedStyles } from "@emotion/react";
 
 import { COLORS } from "@/styles/color";
 
-import { InputStyle } from "./Input";
-
 export const cssInputStyle = css`
   outline: none;
   border: none;
@@ -18,14 +16,14 @@ export const cssInputStyle = css`
   }
 `;
 
-export const cssInputIconStyle = (inputStyle: InputStyle) => css`
-  padding: 8px 8px 0 8px;
+export const cssInputIconStyle = css`
+  margin: auto;
+  padding-right: 16px;
   width: fit-content;
-  height: ${inputStyle?.height || "48px"};
+  height: fit-content;
 `;
 
 export const cssInputWrapperStyle = (
-  inputStyle: InputStyle,
   error?: string,
   detailStyle?: SerializedStyles
 ) => css`
