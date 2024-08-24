@@ -13,6 +13,7 @@ export const cssButtonStyle = ({
   disabled,
   detailStyle,
 }: IButtonStyle) => css`
+  font-family: inherit;
   position: relative;
   width: ${typeof width === "number" ? `${width}px` : width};
   padding: 16px 20px;
