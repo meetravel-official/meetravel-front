@@ -5,7 +5,6 @@ import Form from "@/components/Form/Form";
 import { FormItem } from "@/components/Form/FormItem";
 import useForm from "@/components/Form/useForm";
 import Input from "@/components/Input/Input";
-import Modal from "@/components/Modal/Modal";
 import { COLORS } from "@/styles/color";
 
 export interface UserForm {
@@ -112,7 +111,6 @@ export const SampleContainer = () => {
       <br />
 
       <button>매칭시작 </button>
-      <Modal />
     </div>
   );
 };
