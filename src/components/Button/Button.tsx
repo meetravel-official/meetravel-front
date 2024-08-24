@@ -16,6 +16,7 @@ export interface IButtonStyle {
   align?: "start" | "end" | "center" | "justify";
   disabled?: boolean;
   link?: boolean;
+  linkColor?: string;
   detailStyle?: SerializedStyles;
 }
 
@@ -30,6 +31,7 @@ type TButtonProps = PropsWithChildren & IButtonStyle;
  * @param align icon-button align, default: center
  * @param disabled default: false
  * @param link default: false
+ * @param linkColor 화살표 아이콘 컬러 default:#FF96AF
  * @param detailStyle 기타 세부 css 전달
  */
 
@@ -42,6 +44,7 @@ export const Button = ({
   color = COLORS.PINK1,
   align = "center",
   link,
+  linkColor = COLORS.PINK2,
   disabled,
   detailStyle,
 }: TButtonProps) => {
@@ -76,7 +79,15 @@ export const Button = ({
     >
       {icon}
       {children}
-      {link && <LinkArrow css={cssLinkStyle} />}
+      {link && (
+        <LinkArrow
+          css={cssLinkStyle}
+          stroke={linkColor}
+          strokeWidth={2}
+          width={8}
+          height={16}
+        />
+      )}
     </button>
   );
 };
