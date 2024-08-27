@@ -2,13 +2,13 @@ import { css } from "@emotion/react";
 
 import { cssAlignVerticalStyle } from "@/styles/align";
 
-export const cssPostCarouselItemStyle = css`
+export const cssBannerCarouselItemStyle = css`
   position: relative;
   width: 100%;
   height: 100%;
 `;
 
-export const cssPostCarouselItemImageStyle = css`
+export const cssBannerCarouselItemImageStyle = css`
   position: absolute;
   top: 0;
   left: 0;
@@ -16,7 +16,7 @@ export const cssPostCarouselItemImageStyle = css`
   height: auto;
 `;
 
-export const cssPostCarouselItemTitleStyle = css`
+export const cssBannerCarouselItemTitleStyle = css`
   position: absolute;
   top: 16px;
   left: 20px;
@@ -26,7 +26,7 @@ export const cssPostCarouselItemTitleStyle = css`
   width: max-content;
 `;
 
-export const cssPostCarouselItemDateStyle = css`
+export const cssBannerCarouselItemDateStyle = css`
   position: absolute;
   bottom: 24px;
   right: 20px;

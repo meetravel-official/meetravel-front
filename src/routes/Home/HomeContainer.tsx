@@ -9,7 +9,7 @@ import Input from "@/components/Input/Input";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
-import { PostCarousel } from "./components/PostCarousel";
+import { BannerCarousel } from "./components/BannerCarousel";
 import { cssHomeContainerStyle } from "./HomeContainer.styles";
 export const HomeContainer = () => {
   const [value, setValue] = useState<string>("");
@@ -31,7 +31,7 @@ export const HomeContainer = () => {
           `}
         />
         <div css={cssAlignVerticalStyle({ gap: 20 })}>
-          <PostCarousel />
+          <BannerCarousel />
           <div css={cssAlignVerticalStyle({ gap: 8 })}>
             <Button
               icon={<Bell />}
