@@ -21,7 +21,7 @@ export interface IButtonStyle {
   onClick?: () => void;
 }
 
-type TButtonProps = PropsWithChildren & IButtonStyle;
+export type TButtonProps = PropsWithChildren & IButtonStyle;
 /**
  * Button component
  * @param icon button icon, default: undefined
