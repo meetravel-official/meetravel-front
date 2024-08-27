@@ -12,7 +12,7 @@ interface CarouselProps {
   children: ReactNode[];
 }
 export const Carousel = ({ children }: CarouselProps) => {
-  const [currentIndex, setCurrentIndex] = React.useState<number>(0);
+  const [currentIndex, setCurrentIndex] = React.useState<number>(1);
 
   const infiniteArray = (arr: ReactNode[]) => {
     const startItem = arr[0];
@@ -38,8 +38,8 @@ export const Carousel = ({ children }: CarouselProps) => {
         {React.Children.map(children, (_child, index) => (
           <button
             key={index}
-            css={cssCarouselDotStyle(index === currentIndex)}
-            onClick={() => handleOnClick(index)}
+            css={cssCarouselDotStyle(index === currentIndex - 1)}
+            onClick={() => handleOnClick(index + 1)}
           />
         ))}
       </div>

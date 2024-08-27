@@ -18,9 +18,7 @@ export const cssCarouselInnerStyle = (index: number, count: number) => css`
 
   transition: all 0.5s;
 
-  transform: translateX(
-    calc(-100% / ${count + 2} - 100% / ${count + 2} * ${index} + 30px)
-  );
+  transform: translateX(calc(-100% / ${count + 2} * ${index} + 30px));
 `;
 
 export const cssCarouselItemStyle = css`
