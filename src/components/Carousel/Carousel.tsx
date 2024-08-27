@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 
 import {
   cssCarouselDotBoxStyle,
@@ -24,6 +24,20 @@ export const Carousel = ({ children }: CarouselProps) => {
   const handleOnClick = (index: number) => {
     setCurrentIndex(index);
   };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => {
+        if (prev === infiniteArray(children).length - 2) {
+          return 1;
+        }
+        return prev + 1;
+      });
+    }, 3000);
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  });
 
   return (
     <div css={cssCarouselStyle}>
