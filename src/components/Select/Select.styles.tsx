@@ -2,58 +2,80 @@ import { css } from "@emotion/react";
 
 import { COLORS } from "@/styles/color";
 
-export const cssSelectStyle = () => css`
+import { ISelectStyle } from "./Select";
+
+type ISelectStyleOmit = Omit<ISelectStyle, "selectOptions" | "onChange">;
+
+interface ISelectStyleProps extends ISelectStyleOmit {
+  isOpen: boolean;
+}
+
+export const cssSelectStyle = ({
+  width,
+  bgColor,
+  color,
+  borderWidth,
+  borderColor,
+  disabled,
+  isOpen,
+  detailStyles,
+}: ISelectStyleProps) => css`
   button {
     all: unset;
   }
-  .selectTrigger {
+  .select-trigger {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 4px;
-    padding: 0 15px;
-    font-size: 13px;
+    padding: 16px 20px;
+    font-size: 16px;
+    font-weight: 700;
     line-height: 1;
-    width: fit-content;
-    height: 35px;
-    gap: 5px;
-    background-color: orange;
-    color: white;
-    box-shadow: 0 2px 10px ${COLORS.GRAY3};
+    width: ${width ? width : "fit-content"};
+    gap: 8px;
+    background-color: ${disabled ? COLORS.GRAY3 : bgColor};
+    border: ${borderWidth}px solid ${borderColor};
+    color: ${disabled ? COLORS.GRAY3 : color};
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: ${isOpen ? "unset" : "8px"};
+    border-bottom-right-radius: ${isOpen ? "unset" : "8px"};
   }
-
-  .SelectTrigger:focus {
-    box-shadow: 0 0 0 2px pink;
-  }
-  .SelectTrigger[data-placeholder] {
-    color: red;
-  }
-
-  .selectContent {
+  .select-content {
     overflow: hidden;
-    background-color: pink;
-    border-radius: 6px;
-    box-shadow: 0px 10px 38px -10px rgba(22, 23, 24, 0.35),
-      0px 10px 20px -15px rgba(22, 23, 24, 0.2);
+    background-color: ${disabled ? COLORS.GRAY3 : bgColor};
+    font-weight: 700;
   }
-  .selectLabel {
-    padding: 0 25px;
-    font-size: 12px;
-    line-height: 25px;
-    color: #c5c0c0;
+  .select-group {
+    border: ${borderWidth}px solid ${borderColor};
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top-left-radius: ${isOpen ? "unset" : "8px"};
+    border-top-right-radius: ${isOpen ? "unset" : "8px"};
+    border-top: unset;
   }
-  .selectItem {
-    font-size: 13px;
+  .select-item {
+    font-size: 16px;
     line-height: 1;
-    color: green;
-    border-radius: 3px;
+    color: ${disabled ? COLORS.GRAY3 : color};
+    border-bottom: ${borderWidth}px solid;
     display: flex;
     align-items: center;
     height: 25px;
-    padding: 0 15px;
+    padding: 16px 20px;
     position: relative;
-    &:hover {
-      background-color: lightblue;
+    &:active {
+      background-color: ${COLORS.PINK1};
     }
+    &:last-child {
+      border-bottom: none;
+    }
+    &:focus-visible {
+      outline: unset;
+    }
+    .select-icon {
+      max-height: 14px;
+    }
+    ${detailStyles}
   }
 `;
