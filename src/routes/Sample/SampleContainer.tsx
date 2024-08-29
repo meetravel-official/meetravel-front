@@ -53,12 +53,8 @@ export const SampleContainer = () => {
   const [modalOpen2, setModalOpen2] = useState(false);
   const [modalOpen3, setModalOpen3] = useState(false);
 
-  const openModal = () => {
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
+  const handleModal = () => {
+    setModalOpen((prev) => !prev);
   };
 
   return (
@@ -126,10 +122,10 @@ export const SampleContainer = () => {
 
       <button>매칭시작 </button>
       <br />
-      <button onClick={openModal}>simple 모달 열기</button>
+      <button onClick={handleModal}>simple 모달 열기</button>
       <Modal
         isOpen={modalOpen}
-        onClose={closeModal}
+        onClose={handleModal}
         title="제목 얍얍"
         modalType="simple"
         footer={

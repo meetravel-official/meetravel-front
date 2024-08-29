@@ -42,20 +42,9 @@ const Modal = ({
   footer,
   children,
 }: ModalProps) => {
-  const [modalVisible, setModalVisible] = useState(isOpen);
-
-  const closeModal = () => {
-    setModalVisible(false);
-    onClose();
-  };
-
-  useEffect(() => {
-    setModalVisible(isOpen);
-  }, [isOpen]);
-
   return (
     <>
-      {modalVisible && (
+      {isOpen && (
         <>
           {modalType !== "full" && <div css={cssOverlayStyle}></div>}
           <div css={cssModalStyle(modalType, modalDetailStyle)}>
@@ -75,7 +64,7 @@ const Modal = ({
                 title
               )}
               {closableIcon && (
-                <button css={cssCrossIcon} onClick={closeModal}>
+                <button css={cssCrossIcon} onClick={onClose}>
                   <CrossIcon />
                 </button>
               )}
