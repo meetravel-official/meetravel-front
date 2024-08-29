@@ -1,74 +1,83 @@
-import { Link } from "react-router-dom";
+import { css } from "@emotion/react";
+import { useState } from "react";
 
-import { Step, Typography } from "@/components";
-import { BarStep } from "@/components/BarStep/BarStep";
+import { ReactComponent as Bell } from "@/assets/icons/bell.svg";
+import { ReactComponent as Pen } from "@/assets/icons/pen.svg";
+import { ReactComponent as Search } from "@/assets/icons/search.svg";
+import { Button, Typography } from "@/components";
+import Input from "@/components/Input/Input";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
+import { COLORS } from "@/styles/color";
 
-import { pageRoutes } from "..";
-import { HomeStep } from "./components/HomeStep";
-
+import { BannerCarousel } from "./components/BannerCarousel";
+import { cssHomeContainerStyle } from "./HomeContainer.styles";
 export const HomeContainer = () => {
-  const [step] = Step.useStep();
-  const [step2] = Step.useStep();
-
-  const stepList = [
-    {
-      title: "A",
-      content: <div>a content</div>,
-    },
-    {
-      title: "B",
-      content: <div>b content</div>,
-    },
-    {
-      title: "C",
-      content: <div>c content</div>,
-    },
-  ];
+  const [value, setValue] = useState<string>("");
 
   return (
-    <div css={cssAlignVerticalStyle({ gap: 16, alignItems: "flex-start" })}>
-      <Typography weight="black" mode="block" align="center">
-        홈
-      </Typography>
-      <div css={cssAlignVerticalStyle({ gap: 40 })}>
-        <div css={cssAlignVerticalStyle({ gap: 16 })}>
-          <BarStep step={step} stepList={stepList} />{" "}
-          <div css={cssAlignHorizontalStyle}>
-            {(!step.isFirst || step.isLast) && (
-              <button onClick={step.handleOnClickPrev}>이전</button>
-            )}
-            {step.isLast ? (
-              <button onClick={step.handleOnReset}>처음으로</button>
-            ) : (
-              <button onClick={step.handleOnClickNext}>확인</button>
-            )}
+    <div css={cssHomeContainerStyle}>
+      <div css={cssAlignVerticalStyle({ gap: 28 })}>
+        <Input
+          value={value}
+          onChange={(e) => {
+            setValue(e.target.value);
+          }}
+          placeholder="어디로 여행을 떠날까요?"
+          suffix={<Search />}
+          detailStyle={css`
+            background: #fff;
+            outline: 1px solid ${COLORS.PINK3};
+            width: 100%;
+          `}
+        />
+        <div css={cssAlignVerticalStyle({ gap: 20 })}>
+          <BannerCarousel />
+          <div css={cssAlignVerticalStyle({ gap: 8 })}>
+            <Button
+              icon={<Bell />}
+              height="large"
+              align="start"
+              link
+              linkColor={COLORS.GRAY2}
+            >
+              <Typography color={COLORS.GRAY4} weight="bold" size={16}>
+                알림 내역
+              </Typography>
+            </Button>
+            <Button
+              icon={<Pen />}
+              height="large"
+              align="start"
+              link
+              linkColor={COLORS.GRAY2}
+            >
+              <div css={cssAlignHorizontalStyle({ gap: 4 })}>
+                <Typography color={COLORS.GRAY4} weight="bold" size={16}>
+                  작성할 수 있는 후기
+                </Typography>
+                <Typography color={COLORS.PINK3} weight="bold" size={16}>
+                  +12
+                </Typography>
+              </div>
+            </Button>
           </div>
         </div>
-        <div css={cssAlignVerticalStyle({ gap: 16 })}>
-          <HomeStep step={step2} stepList={stepList} />
-          <div css={cssAlignHorizontalStyle}>
-            <button onClick={step2.handleOnClickPrev}>&lt;</button>
-            <button onClick={step2.handleOnClickNext}>&gt;</button>
+      </div>
+
+      <div css={cssAlignVerticalStyle({ gap: 16 })}>
+        <Typography color={COLORS.GRAY3} weight="bold" size="16">
+          다양한 사람들과 여행을 떠나볼까요?
+        </Typography>
+        <Button bgColor={COLORS.PINK3}>
+          <div>
+            <Typography color={COLORS.WHITE} weight="bold">
+              매칭 시작!
+            </Typography>{" "}
+            <Typography color={COLORS.PINK1} weight="bold">
+              (매칭 기회 2번)
+            </Typography>
           </div>
-        </div>
-        <div css={cssAlignHorizontalStyle}>
-          <Link to={`${pageRoutes.POST}/1`}>
-            <button>포스트 1번</button>
-          </Link>
-          <Link to={`${pageRoutes.POST}/2`}>
-            <button>포스트 2번</button>
-          </Link>
-          <Link to={`${pageRoutes.POST}/3`}>
-            <button>포스트 3번</button>
-          </Link>
-          <Link to={`${pageRoutes.POST}/4`}>
-            <button>포스트 4번</button>
-          </Link>
-        </div>
-        <a href={pageRoutes.TOS} target="_blank" rel="noreferrer">
-          <button>이용약관</button>
-        </a>
+        </Button>
       </div>
     </div>
   );

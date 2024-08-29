@@ -5,7 +5,11 @@ import { COLORS } from "./color";
 
 export const cssGlobalStyle = css`
   @import url("https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/variable/pretendardvariable-dynamic-subset.min.css");
-
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
   body {
     overflow-x: hidden; // 좌우로 스크롤 땡기지 못하도록 설정
     background: ${COLORS.GRAY2};
