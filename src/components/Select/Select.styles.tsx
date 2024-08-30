@@ -45,8 +45,6 @@ export const cssSelectStyle = ({
     overflow: hidden;
     background-color: ${disabled ? COLORS.GRAY3 : bgColor};
     font-weight: 700;
-  }
-  .select-group {
     border: ${borderWidth}px solid ${borderColor};
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
