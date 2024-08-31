@@ -27,7 +27,6 @@
       "@/container/*": ["./container/*"],
       "@/constants": ["./constants/index"],
       "@/constants/*": ["./constants/*"],
-      // "@/pages/*": ["./pages/*"],
       "@/routes": ["./routes/index"],
       "@/stores": ["./stores/index"],
       "@/stores/*": ["./stores/*"],
@@ -47,7 +46,8 @@
     "**/*.cjs",
     "**/*.mjs",
     "**/*.jsx",
-    "**/*.json"
+    "**/*.json",
+    ".eslintrc.js"
   ],
   "types": ["vitest/globals"]
 }

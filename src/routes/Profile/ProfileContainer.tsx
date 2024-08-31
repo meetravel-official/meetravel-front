@@ -1,11 +1,12 @@
 import { useState } from "react";
-// import type KakaoError from "react-kakao-login";
-import KakaoLogin from "react-kakao-login";
 
+// import type KakaoError from "react-kakao-login";
 import {
   IKakaoSignInResponse,
   IKaKaoSignInResponseProfile,
 } from "@/api/interfaces/kakaoSignUpInterface";
+import { Typography } from "@/components";
+import { cssAlignVerticalStyle } from "@/styles/align";
 export const ProfileContainer = () => {
   const [userInfo, setUserInfo] = useState<any>();
 
@@ -23,14 +24,17 @@ export const ProfileContainer = () => {
   };
 
   return (
-    <div>
-      프로필
-      <KakaoLogin
-        token={kakaoApiKey}
-        onSuccess={kakaoOnSuccess}
-        onFail={kakaoOnFailure}
-      />
-      {userInfo}
+    <div css={cssAlignVerticalStyle({ gap: 16, alignItems: "flex-start" })}>
+      <Typography>프로필</Typography>
+      <div>
+        프로필
+        <KakaoLogin
+          token={kakaoApiKey}
+          onSuccess={kakaoOnSuccess}
+          onFail={kakaoOnFailure}
+        />
+        {userInfo}
+      </div>
     </div>
   );
 };
