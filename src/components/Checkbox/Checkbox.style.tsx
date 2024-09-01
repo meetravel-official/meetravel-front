@@ -2,20 +2,7 @@ import { css, SerializedStyles } from "@emotion/react";
 
 import { COLORS } from "@/styles/color";
 
-import { GridType } from "./RadioGroup";
-
-export const GroupContainer = (
-  gridType: GridType,
-  gridDetailStyle?: SerializedStyles
-) => css`
-  display: grid;
-  grid-auto-flow: ${gridType === "row" ? "row" : "column"};
-  width: fit-content;
-  grid-gap: 8px;
-  ${gridDetailStyle}
-`;
-
-export const RadioLabel = ({
+export const CheckboxLabel = ({
   checked,
   detailStyle,
 }: {
@@ -43,13 +30,5 @@ export const RadioLabel = ({
   line-height: normal;
   border-radius: 8px;
 
-  &:hover {
-    color: ${COLORS.PINK3};
-  }
   ${detailStyle}
-`;
-
-export const RadioInput = css`
-  position: absolute;
-  opacity: 0;
 `;
