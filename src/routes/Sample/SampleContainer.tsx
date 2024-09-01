@@ -7,6 +7,7 @@ import { FormItem } from "@/components/Form/FormItem";
 import useForm from "@/components/Form/useForm";
 import Input from "@/components/Input/Input";
 import Modal from "@/components/Modal/Modal";
+import RadioGroup from "@/components/Radio/RadioGroup";
 import { COLORS } from "@/styles/color";
 
 export interface UserForm {
@@ -56,6 +57,8 @@ export const SampleContainer = () => {
   const handleModal = () => {
     setModalOpen((prev) => !prev);
   };
+
+  const [radioValue, setRadioValue] = useState("a");
 
   return (
     <div>
@@ -162,6 +165,64 @@ export const SampleContainer = () => {
         <p>모달 내용 얍얍</p>
         <p>모달 내용 얍얍</p>
       </Modal>
+      <br />
+      <br />
+      <RadioGroup
+        defaultValue={radioValue}
+        onChange={(e) => {
+          console.log(e);
+          return setRadioValue(e);
+        }}
+      >
+        <RadioGroup.RadioButton value="a">
+          당일 치기
+          <br />
+          <span
+            css={css`
+              font-size: 14px;
+              font-weight: 400;
+            `}
+          >
+            (토/일)
+          </span>
+        </RadioGroup.RadioButton>
+        <RadioGroup.RadioButton
+          value="b"
+          detailStyle={css`
+            width: 200px;
+          `}
+        >
+          항목 B
+        </RadioGroup.RadioButton>
+        <RadioGroup.RadioButton value="c">항목 C</RadioGroup.RadioButton>
+      </RadioGroup>
+      <br />
+      <br />
+      <RadioGroup
+        gridType="row"
+        defaultValue="a"
+        onChange={(e) => {
+          return console.log(e);
+        }}
+        buttonDetailStyle={css`
+          height: 100px;
+        `}
+      >
+        <RadioGroup.RadioButton value="a">
+          당일 치기
+          <br />
+          <span
+            css={css`
+              font-size: 14px;
+              font-weight: 400;
+            `}
+          >
+            (토/일)
+          </span>
+        </RadioGroup.RadioButton>
+        <RadioGroup.RadioButton value="b">항목 B</RadioGroup.RadioButton>
+        <RadioGroup.RadioButton value="c">항목 C</RadioGroup.RadioButton>
+      </RadioGroup>
     </div>
   );
 };
