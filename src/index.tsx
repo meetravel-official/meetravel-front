@@ -28,7 +28,6 @@ const router = createBrowserRouter([
       { path: pageRoutes.CHAT, Component: containerRoutes.CHAT },
       { path: pageRoutes.SHOP, Component: containerRoutes.SHOP },
       { path: pageRoutes.PROFILE, Component: containerRoutes.PROFILE },
-      { path: pageRoutes.SIGN_UP, Component: containerRoutes.SIGN_UP }, //TODO: 페이지 작업 시 적절한 레이아웃으로 변경
     ],
   },
   {
@@ -55,6 +54,7 @@ const router = createBrowserRouter([
     element: <SimpleLayout />,
     children: [
       { path: pageRoutes.SIGN_IN, Component: containerRoutes.SIGN_IN },
+      { path: pageRoutes.SIGN_UP, Component: containerRoutes.SIGN_UP },
       { path: pageRoutes.SAMPLE, Component: containerRoutes.SAMPLE },
     ],
   },
