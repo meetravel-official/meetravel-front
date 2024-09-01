@@ -5645,6 +5645,11 @@ packages:
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
 
+  react-kakao-login@2.1.1:
+    resolution: {integrity: sha512-t9htk41/i0zUY7q92mtqdqVZZ018BPi1DgbSVVrPCmuMKhZGJOnZ9OfaKLVPu3sn8QXbJc3dPwqKOiElpb44hQ==}
+    peerDependencies:
+      react: '>= 15.3.0'
+
   react-refresh@0.11.0:
     resolution: {integrity: sha512-F27qZr8uUqwhWZboondsPx8tnC3Ct3SxZA3V5WyEvujRyyNv0VYPhoBg1gZ8/MV5tubQp76Trw8lTv9hzRBa+A==}
     engines: {node: '>=0.10.0'}
@@ -13429,10 +13434,6 @@ snapshots:
 
   react-fast-compare@3.2.2: {}
 
-  react-kakao-login@2.1.1(react@18.3.1):
-    dependencies:
-      react: 18.3.1
-
   react-helmet-async@2.0.5(react@18.3.1):
     dependencies:
       invariant: 2.2.4
@@ -13445,6 +13446,10 @@ snapshots:
   react-is@17.0.2: {}
 
   react-is@18.3.1: {}
+
+  react-kakao-login@2.1.1(react@18.3.1):
+    dependencies:
+      react: 18.3.1
 
   react-refresh@0.11.0: {}
 
