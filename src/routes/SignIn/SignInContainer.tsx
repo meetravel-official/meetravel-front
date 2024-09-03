@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
+import Cookies from "js-cookie";
+import { Fragment } from "react";
 import KakaoLogin from "react-kakao-login";
-import { useUserState } from "states/useCheckUser";
 
 import {
   IKakaoSignInResponse,
@@ -32,18 +33,18 @@ interface IKaKaoUserData {
 
 export const SignInContainer = () => {
   // zustand
-  const { userToken, setUserToken } = useUserState();
+  const kakaoAccessToken = Cookies.get("kakao_access_token");
 
   const kakaoOnSuccess = (data: IKaKaoUserData) => {
-    const token = data.response.access_token; // 엑세스 토큰 백엔드로 전달
-    setUserToken(token);
+    const accessToken = data.response.access_token; // 엑세스 토큰 백엔드로 전달
+    Cookies.set("kakao_access_token", accessToken);
     // navigate(pageRoutes.ROOT);
   };
   const kakaoOnFailure = (error: IKakaoError) => {
     console.error(error);
   };
   const kakaoOnLogout = () => {
-    setUserToken(undefined);
+    Cookies.remove("kakao_access_token");
   };
   return (
     <div
@@ -83,10 +84,18 @@ export const SignInContainer = () => {
           css={cssKaKaoSignInBtnStyle}
         >
           <div className="btn-wrapper">
-            {!userToken && <Kakao fill={COLORS.GRAY5} width={20} height={20} />}
-            <Typography color={COLORS.GRAY5} size={16} weight="bold">
-              카톡 연동로그인
-            </Typography>
+            {!kakaoAccessToken ? (
+              <Fragment>
+                <Kakao fill={COLORS.GRAY5} width={20} height={20} />
+                <Typography color={COLORS.GRAY5} size={16} weight="bold">
+                  카톡 연동로그인
+                </Typography>
+              </Fragment>
+            ) : (
+              <Typography color={COLORS.GRAY5} size={16} weight="bold">
+                로그아웃
+              </Typography>
+            )}
           </div>
         </KakaoLogin>
       </Button>
