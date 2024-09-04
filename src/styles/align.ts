@@ -28,7 +28,7 @@ export const cssAlignVerticalStyle = (alignProps: AlignStyleProps) => css`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: ${alignProps.gap || 8}px;
+  gap: ${typeof alignProps.gap === "number" ? alignProps.gap : 8}px;
   align-items: ${alignProps.alignItems || "center"};
   justify-content: ${alignProps.justifyContent || "flex-start"};
 `;
