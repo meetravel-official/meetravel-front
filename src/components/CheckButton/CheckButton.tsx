@@ -12,7 +12,7 @@ interface IRadioProps {
 }
 
 /**
- * Checkbox Component
+ * CheckButton Component
  * @param detailStyle checkbox 버튼 세부 스타일, CheckboxGroup에서 buttonDetailStyle 사용시 적용x
  */
 const CheckButton = ({

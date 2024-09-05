@@ -11,7 +11,7 @@ interface IRadioProps {
 }
 
 /**
- * Radio Component
+ * RadioButton Component
  * @param detailStyle radio 버튼 세부 스타일, RadioGroup에서 buttonDetailStyle 사용시 적용x
  */
 const RadioButton = ({

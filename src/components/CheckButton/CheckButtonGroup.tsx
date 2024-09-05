@@ -16,7 +16,7 @@ interface IRadioGroupProps {
 }
 
 /**
- * CheckboxGroup
+ * CheckButtonGroup
  * @param gridType inline grid 설정
  * @param gridDetailStyle grid 세부 설정
  * @param buttonDetailStyle checkbox group 내부 버튼 스타일 통일 필요시 사용
