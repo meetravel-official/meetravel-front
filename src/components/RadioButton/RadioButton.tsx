@@ -1,6 +1,6 @@
 import { css, SerializedStyles } from "@emotion/react";
 
-import { RadioInput, RadioLabel } from "./Radio.style";
+import { RadioInput, RadioButtonLabel } from "./RadioButton.style";
 
 interface IRadioProps {
   children?: React.ReactNode;
@@ -14,7 +14,7 @@ interface IRadioProps {
  * Radio Component
  * @param detailStyle radio 버튼 세부 스타일, RadioGroup에서 buttonDetailStyle 사용시 적용x
  */
-const Radio = ({
+const RadioButton = ({
   children,
   value = "",
   checked = false,
@@ -23,7 +23,7 @@ const Radio = ({
 }: IRadioProps) => {
   return (
     <div>
-      <label css={RadioLabel({ checked, detailStyle })}>
+      <label css={RadioButtonLabel({ checked, detailStyle })}>
         <input
           css={RadioInput}
           type="radio"
@@ -43,4 +43,4 @@ const Radio = ({
   );
 };
 
-export default Radio;
+export default RadioButton;

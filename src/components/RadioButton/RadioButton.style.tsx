@@ -2,7 +2,7 @@ import { css, SerializedStyles } from "@emotion/react";
 
 import { COLORS } from "@/styles/color";
 
-import { GridType } from "./RadioGroup";
+import { GridType } from "./RadioButtonGroup";
 
 export const GroupContainer = (
   gridType: GridType,
@@ -15,7 +15,7 @@ export const GroupContainer = (
   ${gridDetailStyle}
 `;
 
-export const RadioLabel = ({
+export const RadioButtonLabel = ({
   checked,
   detailStyle,
 }: {

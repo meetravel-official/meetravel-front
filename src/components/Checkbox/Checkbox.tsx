@@ -1,6 +1,6 @@
 import { css, SerializedStyles } from "@emotion/react";
 
-import { RadioInput } from "../Radio/Radio.style";
+import { RadioInput } from "../RadioButton/RadioButton.style";
 import { CheckboxLabel } from "./Checkbox.style";
 
 interface IRadioProps {

@@ -1,7 +1,7 @@
 import { SerializedStyles } from "@emotion/react";
 import React, { useState } from "react";
 
-import { GroupContainer } from "../Radio/Radio.style";
+import { GroupContainer } from "../RadioButton/RadioButton.style";
 import Checkbox from "./Checkbox";
 
 export type GridType = "column" | "row";

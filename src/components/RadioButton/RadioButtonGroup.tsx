@@ -1,8 +1,8 @@
 import { css, SerializedStyles } from "@emotion/react";
 import React, { useState } from "react";
 
-import Radio from "./Radio";
-import { GroupContainer } from "./Radio.style";
+import RadioButton from "./RadioButton";
+import { GroupContainer } from "./RadioButton.style";
 
 export type GridType = "column" | "row";
 
@@ -20,7 +20,7 @@ interface IRadioGroupProps {
  * @param gridDetailStyle grid 세부 설정
  * @param buttonDetailStyle radio group 내부 버튼 스타일 통일 필요시 사용
  */
-const RadioGroup = ({
+const RadioButtonGroup = ({
   children,
   defaultValue,
   onChange,
@@ -55,6 +55,6 @@ const RadioGroup = ({
   );
 };
 
-RadioGroup.RadioButton = Radio;
+RadioButtonGroup.RadioButton = RadioButton;
 
-export default RadioGroup;
+export default RadioButtonGroup;

@@ -8,7 +8,7 @@ import { FormItem } from "@/components/Form/FormItem";
 import useForm from "@/components/Form/useForm";
 import Input from "@/components/Input/Input";
 import Modal from "@/components/Modal/Modal";
-import RadioGroup from "@/components/Radio/RadioGroup";
+import RadioButtonGroup from "@/components/RadioButton/RadioButtonGroup";
 import { COLORS } from "@/styles/color";
 
 export interface UserForm {
@@ -168,14 +168,14 @@ export const SampleContainer = () => {
       </Modal>
       <br />
       <br />
-      <RadioGroup
+      <RadioButtonGroup
         defaultValue={radioValue}
         onChange={(e) => {
           console.log(e);
           return setRadioValue(e);
         }}
       >
-        <RadioGroup.RadioButton value="a">
+        <RadioButtonGroup.RadioButton value="a">
           당일 치기
           <br />
           <span
@@ -186,20 +186,22 @@ export const SampleContainer = () => {
           >
             (토/일)
           </span>
-        </RadioGroup.RadioButton>
-        <RadioGroup.RadioButton
+        </RadioButtonGroup.RadioButton>
+        <RadioButtonGroup.RadioButton
           value="b"
           detailStyle={css`
             width: 200px;
           `}
         >
           항목 B
-        </RadioGroup.RadioButton>
-        <RadioGroup.RadioButton value="c">항목 C</RadioGroup.RadioButton>
-      </RadioGroup>
+        </RadioButtonGroup.RadioButton>
+        <RadioButtonGroup.RadioButton value="c">
+          항목 C
+        </RadioButtonGroup.RadioButton>
+      </RadioButtonGroup>
       <br />
       <br />
-      <RadioGroup
+      <RadioButtonGroup
         gridType="row"
         defaultValue="a"
         onChange={(e) => {
@@ -209,7 +211,7 @@ export const SampleContainer = () => {
           height: 100px;
         `}
       >
-        <RadioGroup.RadioButton value="a">
+        <RadioButtonGroup.RadioButton value="a">
           당일 치기
           <br />
           <span
@@ -220,10 +222,14 @@ export const SampleContainer = () => {
           >
             (토/일)
           </span>
-        </RadioGroup.RadioButton>
-        <RadioGroup.RadioButton value="b">항목 B</RadioGroup.RadioButton>
-        <RadioGroup.RadioButton value="c">항목 C</RadioGroup.RadioButton>
-      </RadioGroup>
+        </RadioButtonGroup.RadioButton>
+        <RadioButtonGroup.RadioButton value="b">
+          항목 B
+        </RadioButtonGroup.RadioButton>
+        <RadioButtonGroup.RadioButton value="c">
+          항목 C
+        </RadioButtonGroup.RadioButton>
+      </RadioButtonGroup>
       <br />
       <br />
       <CheckboxGroup
