@@ -2,7 +2,6 @@ import { css } from "@emotion/react";
 import { Fragment, useState } from "react";
 
 import { ReactComponent as ChatIcon } from "@/assets/icons/cross.svg";
-import CheckboxGroup from "@/components/Checkbox/CheckboxGroup";
 import Form from "@/components/Form/Form";
 import { FormItem } from "@/components/Form/FormItem";
 import useForm from "@/components/Form/useForm";
@@ -10,6 +9,7 @@ import Input from "@/components/Input/Input";
 import Modal from "@/components/Modal/Modal";
 import RadioButtonGroup from "@/components/RadioButton/RadioButtonGroup";
 import { COLORS } from "@/styles/color";
+import CheckButtonGroup from "@/components/CheckButton/CheckButtonGroup";
 
 export interface UserForm {
   hobby: string;
@@ -232,13 +232,13 @@ export const SampleContainer = () => {
       </RadioButtonGroup>
       <br />
       <br />
-      <CheckboxGroup
+      <CheckButtonGroup
         defaultValue="a"
         onChange={(e) => {
           return console.log(e);
         }}
       >
-        <CheckboxGroup.CheckboxButton value="a">
+        <CheckButtonGroup.CheckboxButton value="a">
           당일 치기
           <br />
           <span
@@ -249,19 +249,19 @@ export const SampleContainer = () => {
           >
             (토/일)
           </span>
-        </CheckboxGroup.CheckboxButton>
-        <CheckboxGroup.CheckboxButton value="b">
+        </CheckButtonGroup.CheckboxButton>
+        <CheckButtonGroup.CheckboxButton value="b">
           항목 B
-        </CheckboxGroup.CheckboxButton>
-        <CheckboxGroup.CheckboxButton
+        </CheckButtonGroup.CheckboxButton>
+        <CheckButtonGroup.CheckboxButton
           value="c"
           detailStyle={css`
             width: 10px !important;
           `}
         >
           항목 C
-        </CheckboxGroup.CheckboxButton>
-      </CheckboxGroup>
+        </CheckButtonGroup.CheckboxButton>
+      </CheckButtonGroup>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import { css, SerializedStyles } from "@emotion/react";
 
 import { RadioInput } from "../RadioButton/RadioButton.style";
-import { CheckboxLabel } from "./Checkbox.style";
+import { CheckButtonLabel } from "./CheckButton.style";
 
 interface IRadioProps {
   children?: React.ReactNode;
@@ -15,7 +15,7 @@ interface IRadioProps {
  * Checkbox Component
  * @param detailStyle checkbox 버튼 세부 스타일, CheckboxGroup에서 buttonDetailStyle 사용시 적용x
  */
-const Checkbox = ({
+const CheckButton = ({
   children,
   value = "",
   checked = false,
@@ -24,7 +24,7 @@ const Checkbox = ({
 }: IRadioProps) => {
   return (
     <div>
-      <label css={CheckboxLabel({ checked, detailStyle })}>
+      <label css={CheckButtonLabel({ checked, detailStyle })}>
         <input
           css={RadioInput}
           type="checkbox"
@@ -44,4 +44,4 @@ const Checkbox = ({
   );
 };
 
-export default Checkbox;
+export default CheckButton;

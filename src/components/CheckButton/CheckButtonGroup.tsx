@@ -2,7 +2,7 @@ import { SerializedStyles } from "@emotion/react";
 import React, { useState } from "react";
 
 import { GroupContainer } from "../RadioButton/RadioButton.style";
-import Checkbox from "./Checkbox";
+import CheckButton from "./CheckButton";
 
 export type GridType = "column" | "row";
 
@@ -21,7 +21,7 @@ interface IRadioGroupProps {
  * @param gridDetailStyle grid 세부 설정
  * @param buttonDetailStyle checkbox group 내부 버튼 스타일 통일 필요시 사용
  */
-const CheckboxGroup = ({
+const CheckButtonGroup = ({
   children,
   defaultValue,
   onChange,
@@ -60,6 +60,6 @@ const CheckboxGroup = ({
   );
 };
 
-CheckboxGroup.CheckboxButton = Checkbox;
+CheckButtonGroup.CheckboxButton = CheckButton;
 
-export default CheckboxGroup;
+export default CheckButtonGroup;

@@ -2,7 +2,7 @@ import { css, SerializedStyles } from "@emotion/react";
 
 import { COLORS } from "@/styles/color";
 
-export const CheckboxLabel = ({
+export const CheckButtonLabel = ({
   checked,
   detailStyle,
 }: {
