@@ -22,13 +22,17 @@ export const cssModalStyle = (
       box-sizing: border-box;
       width: 100%;
       max-width: ${WIDTH.SM};
-      padding: 16px;
+      padding: 15px;
       margin: 0;
       height: 100%;
+      max-height: 100vh;
+      display: flex;
+      flex-direction: column;
     `,
   };
   return css`
     position: fixed;
+    overflow: hidden;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -52,6 +56,12 @@ export const cssModalStyle = (
     ${modalDetailStyle}
   `;
 };
+export const cssModalContentStyle = css`
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  padding: 1px;
+`;
 
 export const cssOverlayStyle = css`
   position: fixed;
@@ -60,12 +70,12 @@ export const cssOverlayStyle = css`
   background-color: rgba(0, 0, 0, 0.2);
   width: 100%;
   height: 100%;
+  backdrop-filter: blur(3px);
 `;
 
 export const cssCrossIcon = css`
-  position: absolute;
-  top: 16px;
-  right: 20px;
+  position: relative;
+
   cursor: pointer;
   width: 25px;
   height: 25px;

@@ -8,6 +8,7 @@ import { Typography } from "../Typography/Typography";
 import {
   cssCrossIcon,
   cssFooterStyle,
+  cssModalContentStyle,
   cssModalStyle,
   cssOverlayStyle,
 } from "./Modal.style";
@@ -56,28 +57,40 @@ const Modal = ({
         <>
           {modalType !== "full" && <div css={cssOverlayStyle}></div>}
           <div css={cssModalStyle(modalType, modalDetailStyle)}>
-            <div>
-              {typeof title === "string" ? (
-                <Typography
-                  size="16"
-                  weight="bold"
-                  mode="block"
-                  detailStyle={css`
-                    text-align: center;
-                  `}
-                >
-                  {title}
-                </Typography>
-              ) : (
-                title
-              )}
-              {closableIcon && (
-                <button css={cssCrossIcon} onClick={onClose}>
-                  <CrossIcon />
-                </button>
-              )}
+            <div css={cssModalContentStyle}>
+              <div
+                css={css`
+                  display: grid;
+                  grid-template-columns: 1fr auto;
+                  margin: 2px;
+                `}
+              >
+                <div>
+                  {typeof title === "string" ? (
+                    <Typography
+                      size="16"
+                      weight="bold"
+                      mode="block"
+                      detailStyle={css`
+                        text-align: center;
+                        transform: translate(15px, 3px);
+                      `}
+                    >
+                      {title}
+                    </Typography>
+                  ) : (
+                    title
+                  )}
+                </div>
+                {closableIcon && (
+                  <button css={cssCrossIcon} onClick={onClose}>
+                    <CrossIcon />
+                  </button>
+                )}
+              </div>
+
+              {children}
             </div>
-            {children}
             {footer && <div css={cssFooterStyle}>{footer}</div>}
           </div>
         </>
