@@ -7,7 +7,9 @@ import { FormItem } from "@/components/Form/FormItem";
 import useForm from "@/components/Form/useForm";
 import Input from "@/components/Input/Input";
 import Modal from "@/components/Modal/Modal";
+import RadioButtonGroup from "@/components/RadioButton/RadioButtonGroup";
 import { COLORS } from "@/styles/color";
+import CheckButtonGroup from "@/components/CheckButton/CheckButtonGroup";
 
 export interface UserForm {
   hobby: string;
@@ -56,6 +58,8 @@ export const SampleContainer = () => {
   const handleModal = () => {
     setModalOpen((prev) => !prev);
   };
+
+  const [radioValue, setRadioValue] = useState("a");
 
   return (
     <div>
@@ -162,6 +166,102 @@ export const SampleContainer = () => {
         <p>모달 내용 얍얍</p>
         <p>모달 내용 얍얍</p>
       </Modal>
+      <br />
+      <br />
+      <RadioButtonGroup
+        defaultValue={radioValue}
+        onChange={(e) => {
+          console.log(e);
+          return setRadioValue(e);
+        }}
+      >
+        <RadioButtonGroup.RadioButton value="a">
+          당일 치기
+          <br />
+          <span
+            css={css`
+              font-size: 14px;
+              font-weight: 400;
+            `}
+          >
+            (토/일)
+          </span>
+        </RadioButtonGroup.RadioButton>
+        <RadioButtonGroup.RadioButton
+          value="b"
+          detailStyle={css`
+            width: 200px;
+          `}
+        >
+          항목 B
+        </RadioButtonGroup.RadioButton>
+        <RadioButtonGroup.RadioButton value="c">
+          항목 C
+        </RadioButtonGroup.RadioButton>
+      </RadioButtonGroup>
+      <br />
+      <br />
+      <RadioButtonGroup
+        gridType="row"
+        defaultValue="a"
+        onChange={(e) => {
+          return console.log(e);
+        }}
+        buttonDetailStyle={css`
+          height: 100px;
+        `}
+      >
+        <RadioButtonGroup.RadioButton value="a">
+          당일 치기
+          <br />
+          <span
+            css={css`
+              font-size: 14px;
+              font-weight: 400;
+            `}
+          >
+            (토/일)
+          </span>
+        </RadioButtonGroup.RadioButton>
+        <RadioButtonGroup.RadioButton value="b">
+          항목 B
+        </RadioButtonGroup.RadioButton>
+        <RadioButtonGroup.RadioButton value="c">
+          항목 C
+        </RadioButtonGroup.RadioButton>
+      </RadioButtonGroup>
+      <br />
+      <br />
+      <CheckButtonGroup
+        defaultValue="a"
+        onChange={(e) => {
+          return console.log(e);
+        }}
+      >
+        <CheckButtonGroup.CheckboxButton value="a">
+          당일 치기
+          <br />
+          <span
+            css={css`
+              font-size: 14px;
+              font-weight: 400;
+            `}
+          >
+            (토/일)
+          </span>
+        </CheckButtonGroup.CheckboxButton>
+        <CheckButtonGroup.CheckboxButton value="b">
+          항목 B
+        </CheckButtonGroup.CheckboxButton>
+        <CheckButtonGroup.CheckboxButton
+          value="c"
+          detailStyle={css`
+            width: 10px !important;
+          `}
+        >
+          항목 C
+        </CheckButtonGroup.CheckboxButton>
+      </CheckButtonGroup>
     </div>
   );
 };
