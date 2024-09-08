@@ -31,10 +31,10 @@ type TSelectProps = PropsWithChildren & ISelectStyle;
  * @param onChange select components onChange event
  * @param width select width, default: 100%
  * @param bgColor select background color, default: #FFFFFF(WHITE)
- * @param color select color, default: #FF6B9C(PINK3)
+ * @param color select color, default: #B1A7A7(GRAY3)
  * @param borderWidth select border width, default: 1
- * @param borderColor select border color, default: #FF6B9C(PINK3)
- * @param borderStyle select border style, default: #FF6B9C(PINK3)
+ * @param borderColor select border color, default: #B1A7A7(GRAY3)
+ * @param borderStyle select border style, default: solid
  * @param disabled default: false
  * @param detailStyle 기타 세부 css 전달
  */
@@ -46,9 +46,9 @@ const Select = ({
   onChange,
   width,
   bgColor = COLORS.WHITE,
-  color = COLORS.PINK3,
-  borderWidth = 2,
-  borderColor = COLORS.PINK3,
+  color = COLORS.GRAY3,
+  borderWidth = 1,
+  borderColor = COLORS.GRAY3,
   borderStyle = "solid",
   disabled,
   detailStyles,
