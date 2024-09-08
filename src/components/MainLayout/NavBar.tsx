@@ -7,6 +7,7 @@ import { ReactComponent as ProfileIcon } from "@/assets/icons/profile.svg";
 import { ReactComponent as ShopIcon } from "@/assets/icons/shop.svg";
 import { Typography } from "@/components";
 import { pageRoutes } from "@/routes";
+import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
 import { cssNavBarItemStyle, cssNavBarStyle } from "./NavBar.styles";
@@ -29,34 +30,44 @@ export const NavBar = () => {
   return (
     <div css={cssNavBarStyle}>
       <NavLink css={cssNavBarItemStyle} to={navBarItem.HOME.path}>
-        <HomeIcon />
-        <Typography size="12" weight="bold" color={COLORS.GRAY2}>
-          {navBarItem.HOME.title}
-        </Typography>
+        <div css={cssAlignVerticalStyle({ gap: 4 })}>
+          <HomeIcon />
+          <Typography size="12" weight="bold" color={COLORS.GRAY2}>
+            {navBarItem.HOME.title}
+          </Typography>
+        </div>
       </NavLink>
       <NavLink css={cssNavBarItemStyle} to={navBarItem.TRAVEL_INFO.path}>
-        <InfoIcon />
-        <Typography size="12" weight="bold" color={COLORS.GRAY2}>
-          {navBarItem.TRAVEL_INFO.title}
-        </Typography>
+        <div css={cssAlignVerticalStyle({ gap: 4 })}>
+          <InfoIcon />
+          <Typography size="12" weight="bold" color={COLORS.GRAY2}>
+            {navBarItem.TRAVEL_INFO.title}
+          </Typography>
+        </div>
       </NavLink>
       <NavLink css={cssNavBarItemStyle} to={navBarItem.CHAT.path}>
-        <ChatIcon />
-        <Typography size="12" weight="bold" color={COLORS.GRAY2}>
-          {navBarItem.CHAT.title}
-        </Typography>
+        <div css={cssAlignVerticalStyle({ gap: 4 })}>
+          <ChatIcon />
+          <Typography size="12" weight="bold" color={COLORS.GRAY2}>
+            {navBarItem.CHAT.title}
+          </Typography>
+        </div>
       </NavLink>
       <NavLink css={cssNavBarItemStyle} to={navBarItem.SHOP.path}>
-        <ShopIcon />
-        <Typography size="12" weight="bold" color={COLORS.GRAY2}>
-          {navBarItem.SHOP.title}
-        </Typography>
+        <div css={cssAlignVerticalStyle({ gap: 4 })}>
+          <ShopIcon />
+          <Typography size="12" weight="bold" color={COLORS.GRAY2}>
+            {navBarItem.SHOP.title}
+          </Typography>
+        </div>
       </NavLink>
       <NavLink css={cssNavBarItemStyle} to={navBarItem.PROFILE.path}>
-        <ProfileIcon />
-        <Typography size="12" weight="bold" color={COLORS.GRAY2}>
-          {navBarItem.PROFILE.title}
-        </Typography>
+        <div css={cssAlignVerticalStyle({ gap: 4 })}>
+          <ProfileIcon />
+          <Typography size="12" weight="bold" color={COLORS.GRAY2}>
+            {navBarItem.PROFILE.title}
+          </Typography>
+        </div>
       </NavLink>
     </div>
   );
