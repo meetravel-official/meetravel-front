@@ -8,7 +8,7 @@ export type GridType = "column" | "row";
 
 interface IRadioGroupProps {
   children: React.ReactNode;
-  defaultValue: string;
+  defaultValue?: string;
   onChange?: (value: string) => void;
   gridType?: GridType;
   gridDetailStyle?: SerializedStyles;

@@ -6,6 +6,7 @@ import { ReactComponent as Pen } from "@/assets/icons/pen.svg";
 import { ReactComponent as Search } from "@/assets/icons/search.svg";
 import { Button, Typography } from "@/components";
 import Input from "@/components/Input/Input";
+import MatchingButton from "@/components/Matching/Matching";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
@@ -68,16 +69,7 @@ export const HomeContainer = () => {
         <Typography color={COLORS.GRAY3} weight="bold" size="16">
           다양한 사람들과 여행을 떠나볼까요?
         </Typography>
-        <Button bgColor={COLORS.PINK3}>
-          <div>
-            <Typography color={COLORS.WHITE} weight="bold">
-              매칭 시작!
-            </Typography>{" "}
-            <Typography color={COLORS.PINK1} weight="bold">
-              (매칭 기회 2번)
-            </Typography>
-          </div>
-        </Button>
+        <MatchingButton />
       </div>
     </div>
   );
