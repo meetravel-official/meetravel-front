@@ -28,6 +28,7 @@ const router = createBrowserRouter([
       { path: pageRoutes.CHAT, Component: containerRoutes.CHAT },
       { path: pageRoutes.SHOP, Component: containerRoutes.SHOP },
       { path: pageRoutes.PROFILE, Component: containerRoutes.PROFILE },
+      { path: pageRoutes.TRAVEL_INFO, Component: containerRoutes.TRAVEL_INFO },
     ],
   },
   {
