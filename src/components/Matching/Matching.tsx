@@ -75,7 +75,6 @@ const MatchingButton = () => {
         modalType="full"
         modalDetailStyle={css`
           z-index: 100;
-          max-height: 100%-48px;
         `}
         footer={
           <div
@@ -88,7 +87,6 @@ const MatchingButton = () => {
               backdrop-filter: blur(10px);
               height: 60px;
               align-items: center;
-              box-shadow: 1px 1px 3px 3px ${COLORS.WHITE};
             `}
           >
             <Button
@@ -101,14 +99,14 @@ const MatchingButton = () => {
             </Button>
             <Button
               color={COLORS.WHITE}
-              bgColor={COLORS.PINK2}
+              bgColor={step.current === 2 ? COLORS.PINK3 : COLORS.PINK2}
               onClick={() => {
                 if (step.current === 2) {
                   console.log("제출");
                 } else step.handleOnClickNext();
               }}
             >
-              {step.current === 2 ? "제출" : "다음"}
+              {step.current === 2 ? "여행 시작!" : "다음"}
             </Button>
           </div>
         }

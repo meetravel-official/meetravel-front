@@ -24,15 +24,11 @@ export const cssModalStyle = (
       max-width: ${WIDTH.SM};
       padding: 15px;
       margin: 0;
-      height: 100%;
-      max-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      height: calc(var(--vh, 1vh) * 100);
     `,
   };
   return css`
     position: fixed;
-    overflow: hidden;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -59,7 +55,8 @@ export const cssModalStyle = (
 export const cssModalContentStyle = css`
   overflow-y: auto;
   overflow-x: hidden;
-  height: 100%;
+  height: calc(var(--vh, 1vh) * 100 - 85px);
+  margin-bottom: 5px;
   padding: 1px;
 `;
 
@@ -75,7 +72,6 @@ export const cssOverlayStyle = css`
 
 export const cssCrossIcon = css`
   position: relative;
-
   cursor: pointer;
   width: 25px;
   height: 25px;
