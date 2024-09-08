@@ -9,6 +9,7 @@ import { cssSelectStyle } from "./Select.styles";
 
 export interface ISelectStyle {
   selectOptions: { key: string | number; value: string }[];
+  placeholder?: string;
   value?: string;
   onChange: React.Dispatch<React.SetStateAction<string>>;
   width?: number | string;
@@ -25,6 +26,7 @@ type TSelectProps = PropsWithChildren & ISelectStyle;
 /**
  * Select component
  * @param selectOptions select components option items, default: {key: string, value: string}[]
+ * @param placeholder select components placeholder, default: 선택하세요
  * @param value select components default value, default: string
  * @param onChange select components onChange event
  * @param width select width, default: 100%
@@ -39,6 +41,7 @@ type TSelectProps = PropsWithChildren & ISelectStyle;
 
 const Select = ({
   selectOptions,
+  placeholder,
   value,
   onChange,
   width,
@@ -77,7 +80,10 @@ const Select = ({
         onOpenChange={(state) => setIsOpen(state)}
       >
         <RadixSelect.Trigger className="select-trigger">
-          <RadixSelect.Value asChild placeholder="선택하세요" />
+          <RadixSelect.Value
+            asChild
+            placeholder={placeholder || "선택하세요"}
+          />
           {value}
           <div
             className="select-icon"
