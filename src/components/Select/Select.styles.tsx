@@ -51,6 +51,7 @@ export const cssSelectStyle = ({
     border-top-left-radius: ${isOpen ? "unset" : "8px"};
     border-top-right-radius: ${isOpen ? "unset" : "8px"};
     border-top: unset;
+    z-index: 10;
   }
   .select-item {
     font-size: 16px;
