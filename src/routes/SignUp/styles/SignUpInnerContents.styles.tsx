@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 
 export const cssSignUpHeaderStyle = css`
-  width: 100%;
+  margin-bottom: 32px;
 `;
 
 export const cssAgreetoTermsStyle = css`
