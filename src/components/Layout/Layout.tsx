@@ -75,6 +75,19 @@ export const Layout = ({ children }: PropsWithChildren) => {
   const [fixedHeaderHeight, setFixedHeaderHeight] = useState<number>();
   const [fixedFooterHeight, setFixedFooterHeight] = useState<number>();
 
+  const handleResize = () => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  };
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   useEffect(() => {
     // 자동으로 fixed header, footer의 높이를 계산
     setFixedFooterHeight(

@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import { Fragment, useState } from "react";
 
 import { ReactComponent as ChatIcon } from "@/assets/icons/cross.svg";
+import CheckButtonGroup from "@/components/CheckButton/CheckButtonGroup";
 import Form from "@/components/Form/Form";
 import { FormItem } from "@/components/Form/FormItem";
 import useForm from "@/components/Form/useForm";
@@ -9,7 +10,6 @@ import Input from "@/components/Input/Input";
 import Modal from "@/components/Modal/Modal";
 import RadioButtonGroup from "@/components/RadioButton/RadioButtonGroup";
 import { COLORS } from "@/styles/color";
-import CheckButtonGroup from "@/components/CheckButton/CheckButtonGroup";
 
 export interface UserForm {
   hobby: string;
@@ -67,7 +67,10 @@ export const SampleContainer = () => {
         <FormItem
           name="hobby"
           label="취미"
-          labelStyle={{ color: COLORS.GRAY1, fontSize: "30px" }}
+          labelStyle={css`
+            font-size: 30px;
+            color: ${COLORS.GRAY1};
+          `}
         >
           <Input {...registerField("hobby")} placeholder="취미" />
         </FormItem>

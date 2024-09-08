@@ -29,8 +29,10 @@ export const cssButtonStyle = ({
   gap: 8px;
   transition: all 0.3s;
   cursor: pointer;
-  &:hover {
-    filter: brightness(0.95);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      filter: brightness(0.95);
+    }
   }
   ${detailStyle}
 `;

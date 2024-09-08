@@ -108,7 +108,7 @@ export const Calendar = ({
             handleOnChangeMonth(currentMonth, -1);
           }}
         >
-          <ArrowLeft />
+          <ArrowLeft stroke={COLORS.GRAY4} strokeWidth={2} />
         </button>
         <Typography color={COLORS.GRAY5} size="24" weight="medium">
           {dayjs(currentMonth).format("YYYY년 MM월")}

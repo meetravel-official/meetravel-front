@@ -9,6 +9,7 @@ import { cssSelectStyle } from "./Select.styles";
 
 export interface ISelectStyle {
   selectOptions: { key: string | number; value: string }[];
+  placeholder?: string;
   value?: string;
   onChange: React.Dispatch<React.SetStateAction<string>>;
   width?: number | string;
@@ -25,27 +26,29 @@ type TSelectProps = PropsWithChildren & ISelectStyle;
 /**
  * Select component
  * @param selectOptions select components option items, default: {key: string, value: string}[]
+ * @param placeholder select components placeholder, default: 선택하세요
  * @param value select components default value, default: string
  * @param onChange select components onChange event
  * @param width select width, default: 100%
  * @param bgColor select background color, default: #FFFFFF(WHITE)
- * @param color select color, default: #FF6B9C(PINK3)
+ * @param color select color, default: #B1A7A7(GRAY3)
  * @param borderWidth select border width, default: 1
- * @param borderColor select border color, default: #FF6B9C(PINK3)
- * @param borderStyle select border style, default: #FF6B9C(PINK3)
+ * @param borderColor select border color, default: #B1A7A7(GRAY3)
+ * @param borderStyle select border style, default: solid
  * @param disabled default: false
  * @param detailStyle 기타 세부 css 전달
  */
 
 const Select = ({
   selectOptions,
+  placeholder,
   value,
   onChange,
   width,
   bgColor = COLORS.WHITE,
-  color = COLORS.PINK3,
-  borderWidth = 2,
-  borderColor = COLORS.PINK3,
+  color = COLORS.GRAY3,
+  borderWidth = 1,
+  borderColor = COLORS.GRAY3,
   borderStyle = "solid",
   disabled,
   detailStyles,
@@ -77,14 +80,17 @@ const Select = ({
         onOpenChange={(state) => setIsOpen(state)}
       >
         <RadixSelect.Trigger className="select-trigger">
-          <RadixSelect.Value asChild placeholder="선택하세요" />
+          <RadixSelect.Value
+            asChild
+            placeholder={placeholder || "선택하세요"}
+          />
           {value}
           <div
             className="select-icon"
             style={{ transform: isOpen ? "rotate(0deg)" : "rotate(90deg)" }}
           >
             <SelectArrow
-              stroke={COLORS.PINK3}
+              stroke={borderColor}
               strokeWidth={2}
               height="12px"
               width="12px"

@@ -1,3 +1,4 @@
+import { SerializedStyles } from "@emotion/react";
 import React, { ReactElement } from "react";
 
 import {
@@ -14,13 +15,8 @@ interface FormItemProps {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
   children: ReactElement;
-  labelStyle?: LabelStyle;
+  labelStyle?: SerializedStyles;
   errorStyle?: ErrorStyle;
-}
-
-export interface LabelStyle {
-  color: string;
-  fontSize: string;
 }
 export interface ErrorStyle {
   fontSize?: string;

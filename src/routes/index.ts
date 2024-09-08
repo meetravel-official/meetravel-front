@@ -14,7 +14,7 @@ export const pageRoutes = {
   CHAT: "/chat",
   SHOP: "/shop",
   PROFILE: "/profile",
-  SIGN_IN: "auth/sign-in",
+  SIGN_IN: "/auth/sign-in",
   SIGN_UP: "/auth/sign-up",
   POST: "/post",
   TRAVEL_INFO: "/travel-info",

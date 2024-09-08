@@ -26,7 +26,7 @@ export const cssSelectStyle = ({
   .select-trigger {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     padding: 16px 20px;
     font-size: 16px;
     font-weight: 700;
@@ -51,6 +51,7 @@ export const cssSelectStyle = ({
     border-top-left-radius: ${isOpen ? "unset" : "8px"};
     border-top-right-radius: ${isOpen ? "unset" : "8px"};
     border-top: unset;
+    z-index: 10;
   }
   .select-item {
     font-size: 16px;
