@@ -53,6 +53,8 @@ export const TravelInfoContainer = () => {
           })}
         >
           <Select
+            width="106px"
+            placeholder="지역 선택"
             value={searchValue.location}
             selectOptions={[
               { key: "A0502", value: "강원도" },
@@ -64,6 +66,8 @@ export const TravelInfoContainer = () => {
             }}
           />
           <Select
+            width="138px"
+            placeholder="여행 타입 선택"
             selectOptions={[
               { key: "A0502", value: "음식" },
               { key: "A0501", value: "쇼핑" },
