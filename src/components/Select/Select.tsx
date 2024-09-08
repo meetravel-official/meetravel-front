@@ -90,7 +90,7 @@ const Select = ({
             style={{ transform: isOpen ? "rotate(0deg)" : "rotate(90deg)" }}
           >
             <SelectArrow
-              stroke={COLORS.PINK3}
+              stroke={borderColor}
               strokeWidth={2}
               height="12px"
               width="12px"
