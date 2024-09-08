@@ -16,6 +16,7 @@ export const pageRoutes = {
   SIGN_IN: "auth/sign-in",
   SIGN_UP: "/auth/sign-up",
   POST: "/post",
+  TRAVEL_INFO: "/travel-info",
   TOS: "/terms-of-service",
   SAMPLE: "/sample",
 };

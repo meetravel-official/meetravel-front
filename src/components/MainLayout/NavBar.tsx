@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 
 import { ReactComponent as ChatIcon } from "@/assets/icons/chat.svg";
 import { ReactComponent as HomeIcon } from "@/assets/icons/home.svg";
+import { ReactComponent as InfoIcon } from "@/assets/icons/info.svg";
 import { ReactComponent as ProfileIcon } from "@/assets/icons/profile.svg";
 import { ReactComponent as ShopIcon } from "@/assets/icons/shop.svg";
 import { Typography } from "@/components";
@@ -17,6 +18,10 @@ export const NavBar = () => {
       title: "채팅방",
       path: pageRoutes.CHAT,
     },
+    TRAVEL_INFO: {
+      title: "여행 정보",
+      path: pageRoutes.TRAVEL_INFO,
+    },
     SHOP: { title: "샵", path: pageRoutes.SHOP },
     PROFILE: { title: "프로필", path: pageRoutes.PROFILE },
   };
@@ -27,6 +32,12 @@ export const NavBar = () => {
         <HomeIcon />
         <Typography size="12" weight="bold" color={COLORS.GRAY2}>
           {navBarItem.HOME.title}
+        </Typography>
+      </NavLink>
+      <NavLink css={cssNavBarItemStyle} to={navBarItem.TRAVEL_INFO.path}>
+        <InfoIcon />
+        <Typography size="12" weight="bold" color={COLORS.GRAY2}>
+          {navBarItem.TRAVEL_INFO.title}
         </Typography>
       </NavLink>
       <NavLink css={cssNavBarItemStyle} to={navBarItem.CHAT.path}>
