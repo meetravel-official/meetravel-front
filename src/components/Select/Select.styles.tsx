@@ -26,7 +26,7 @@ export const cssSelectStyle = ({
   .select-trigger {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     padding: 16px 20px;
     font-size: 16px;
     font-weight: 700;
