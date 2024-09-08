@@ -7,6 +7,7 @@ import { ShopContainer } from "./Shop/ShopContainer";
 import { SignInContainer } from "./SignIn/SignInContainer";
 import { SignUpContainer } from "./SignUp/SignUpContainer";
 import { TermsOfServiceContainer } from "./TermsOfService/TermsOfServiceContainer";
+import { TravelInfoContainer } from "./TravelInfo/TravelInfoContainer";
 
 export const pageRoutes = {
   ROOT: "/",
@@ -31,4 +32,5 @@ export const containerRoutes = {
   SIGN_UP: SignUpContainer,
   POST: PostContainer,
   TOS: TermsOfServiceContainer,
+  TRAVEL_INFO: TravelInfoContainer,
 };
