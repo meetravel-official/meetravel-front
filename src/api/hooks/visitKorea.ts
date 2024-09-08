@@ -13,17 +13,17 @@ import {
 import { api } from "../request";
 import { apiRoute } from "../routes/apiRoutes";
 
-export const useGetAreaCode = ({ areaCode }: IGetAriaCodeParams) => {
+export const useGetAreaCode = (params?: IGetAriaCodeParams) => {
   return useQuery<IVisitKoreaListResponse<IAriaCode>, AxiosError>({
-    queryKey: ["useGetAreaCode", areaCode],
+    queryKey: ["useGetAreaCode", params?.areaCode],
     queryFn: () =>
-      api.get(apiRoute.areaBasedList, {
+      api.get(apiRoute.areaCode, {
         params: {
           MobileOS: "ETC",
           MobileApp: "미트래블",
           _type: "json",
           serviceKey: process.env.REACT_APP_KOREA_VISIT_API_DECODING_KEY,
-          areaCode,
+          areaCode: params?.areaCode,
         },
         withCredentials: false,
       }),
