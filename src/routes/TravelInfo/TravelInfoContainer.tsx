@@ -5,7 +5,7 @@ import Select from "@/components/Select/Select";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
-import { TravelInfoItem } from "./components/TrabelInfoItem";
+import { TravelInfoItem } from "./components/TravelInfoItem";
 
 export const TravelInfoContainer = () => {
   const [searchValue, setSearchValue] = useState<{

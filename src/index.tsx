@@ -1,4 +1,6 @@
 import { Global } from "@emotion/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
@@ -61,25 +63,41 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      staleTime: 5000,
+      retry: false,
+    },
+  },
+});
+
 if (container?.hasChildNodes()) {
   ReactDOM.hydrateRoot(
     container,
     <HelmetProvider>
-      <React.StrictMode>
-        <Meta />
-        <Global styles={cssGlobalStyle} />
-        <RouterProvider router={router} />
-      </React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools />
+        <React.StrictMode>
+          <Meta />
+          <Global styles={cssGlobalStyle} />
+          <RouterProvider router={router} />
+        </React.StrictMode>
+      </QueryClientProvider>
     </HelmetProvider>
   );
 } else
   root.render(
     <HelmetProvider>
-      <React.StrictMode>
-        <Meta />
-        <Global styles={cssGlobalStyle} />
-        <RouterProvider router={router} />
-      </React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools />
+        <React.StrictMode>
+          <Meta />
+          <Global styles={cssGlobalStyle} />
+          <RouterProvider router={router} />
+        </React.StrictMode>
+      </QueryClientProvider>
     </HelmetProvider>
   );
 
