@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import { Fragment, useState } from "react";
 
 import { ReactComponent as Group } from "@/assets/icons/group.svg";
+import { ReactComponent as Logo } from "@/assets/icons/logo.svg";
 import { COLORS } from "@/styles/color";
 
 import { BarStep } from "../BarStep/BarStep";
@@ -10,6 +11,12 @@ import Modal from "../Modal/Modal";
 import { Step } from "../Step";
 import { Typography } from "../Typography/Typography";
 import First from "./First";
+import {
+  cssModalButtonStyle,
+  cssModalFooterStyle,
+  cssModalTitleStyle,
+  cssModalTitleTextStyle,
+} from "./Matching.styles";
 import Second from "./Second";
 import Third from "./Third";
 
@@ -34,35 +41,24 @@ const MatchingButton = () => {
 
   return (
     <Fragment>
-      <Button bgColor={COLORS.PINK3} onClick={() => setModalOpen3(true)}>
-        <div>
-          <Typography color={COLORS.WHITE} weight="bold">
-            매칭 시작!
-          </Typography>{" "}
-          <Typography color={COLORS.PINK1} weight="bold">
-            (매칭 기회 2번)
-          </Typography>
-        </div>
+      <Button
+        bgColor={COLORS.PINK3}
+        onClick={() => setModalOpen3(true)}
+        detailStyle={cssModalButtonStyle}
+      >
+        <Logo fill={COLORS.WHITE} />
       </Button>
       <Modal
         isOpen={modalOpen3}
         onClose={() => setModalOpen3(false)}
         title={
-          <div
-            css={css`
-              display: flex;
-            `}
-          >
+          <div css={cssModalTitleStyle}>
             <Group stroke={COLORS.GRAY4} />
             <Typography
               color={COLORS.GRAY4}
               weight="bold"
               size="20"
-              detailStyle={css`
-                display: block;
-                margin-bottom: 32px;
-                margin-left: 8px;
-              `}
+              detailStyle={cssModalTitleTextStyle}
             >
               매칭 전{" "}
               <Typography color={COLORS.PINK2} weight="bold" size="20">
@@ -77,18 +73,7 @@ const MatchingButton = () => {
           z-index: 100;
         `}
         footer={
-          <div
-            css={css`
-              width: -webkit-fill-available;
-              display: flex;
-              gap: 8px;
-              bottom: 15px;
-              z-index: 100;
-              backdrop-filter: blur(10px);
-              height: 60px;
-              align-items: center;
-            `}
-          >
+          <div css={cssModalFooterStyle}>
             <Button
               color={COLORS.WHITE}
               bgColor={COLORS.PINK1}

@@ -61,11 +61,3 @@ const Third = () => {
   );
 };
 export default Third;
-
-/**
-font-size: 12px;
-font-weight: 400;
-line-height: 15.29px;
-text-align: center;
-
- */
