@@ -38,6 +38,7 @@ export const cssModalStyle = (
     width: 300px;
     padding: 20px 10px 10px;
     animation: fade-in 200ms;
+    z-index: 100;
     @keyframes fade-in {
       from {
         opacity: 0;
@@ -52,10 +53,12 @@ export const cssModalStyle = (
     ${modalDetailStyle}
   `;
 };
-export const cssModalContentStyle = css`
+export const cssModalContentStyle = (modalType?: ModalType) => css`
   overflow-y: auto;
   overflow-x: hidden;
-  height: calc(var(--vh, 1vh) * 100 - 85px);
+  height: ${modalType === "full"
+    ? "calc(var(--vh, 1vh) * 100 - 85px)"
+    : "auto"};
   margin-bottom: 5px;
   padding: 1px;
 `;
