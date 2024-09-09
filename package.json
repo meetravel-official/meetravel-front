@@ -73,7 +73,10 @@
     "include": [
       "/"
     ],
-    "puppeteerExecutablePath": "/usr/bin/google-chrome-stable"
+    "puppeteerExecutablePath": "/usr/bin/google-chrome-stable",
+    "puppeteer": {
+      "timeout": 0
+    }
   },
   "eslintConfig": {
     "extends": [
