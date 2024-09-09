@@ -21,7 +21,7 @@ export const cssNoImageStyle = ({ width, height }: ImageStyle) => css`
 
   img {
     width: 50%;
-    height: auto;
+    height: 50%;
   }
 `;
 
