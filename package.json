@@ -63,7 +63,7 @@
   },
   "scripts": {
     "start": "PORT=3030 craco start",
-    "build": "craco build",
+    "build": "GENERATE_SOURCEMAP=false --max-old-space-size=12000 craco build",
     "postbuild": "react-snap",
     "test": "craco test",
     "eject": "craco eject",
