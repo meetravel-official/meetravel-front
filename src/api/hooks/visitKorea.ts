@@ -30,9 +30,9 @@ export const useGetAreaCode = (params?: IGetAriaCodeParams) => {
   });
 };
 
-export const useGetAreaBasedList = (params: IGetAreaBasedListParams) => {
+export const useGetAreaBasedList = (params?: IGetAreaBasedListParams) => {
   return useQuery<IVisitKoreaListResponse<IAreaBasedList>, AxiosError>({
-    queryKey: ["useGetAreaBasedList"],
+    queryKey: ["useGetAreaBasedList", ...Object.values(params || {})],
     queryFn: () =>
       api.get(apiRoute.areaBasedList, {
         params: {
@@ -40,7 +40,9 @@ export const useGetAreaBasedList = (params: IGetAreaBasedListParams) => {
           MobileApp: "미트래블",
           _type: "json",
           serviceKey: process.env.REACT_APP_KOREA_VISIT_API_DECODING_KEY,
-          ...params,
+          areaCode: params?.areaCode,
+          contentTypeId: params?.contentTypeId,
+          numOfRows: 99999, //TODO: 무한 스크롤 적용 예정
         },
         withCredentials: false,
       }),
