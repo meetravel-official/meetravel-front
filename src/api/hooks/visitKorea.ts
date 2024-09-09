@@ -42,7 +42,7 @@ export const useGetAreaBasedList = (params?: IGetAreaBasedListParams) => {
           serviceKey: process.env.REACT_APP_KOREA_VISIT_API_DECODING_KEY,
           areaCode: params?.areaCode,
           contentTypeId: params?.contentTypeId,
-          numOfRows: 99999, //TODO: 무한 스크롤 적용 예정
+          numOfRows: 100, //TODO: 무한 스크롤 적용 예정
         },
         withCredentials: false,
       }),
