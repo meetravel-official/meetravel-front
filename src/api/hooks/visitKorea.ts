@@ -24,7 +24,7 @@ export const useGetAreaCode = (params?: IGetAriaCodeParams) => {
           _type: "json",
           serviceKey: process.env.REACT_APP_KOREA_VISIT_API_DECODING_KEY,
           areaCode: params?.areaCode,
-          numberOfRows: 999,
+          numOfRows: 999,
         },
         withCredentials: false,
       }),
