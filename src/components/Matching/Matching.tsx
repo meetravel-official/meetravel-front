@@ -1,7 +1,5 @@
-import { css } from "@emotion/react";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useState } from "react";
 
-import { apiRoute } from "@/api/routes/apiRoutes";
 import { ReactComponent as Group } from "@/assets/icons/group.svg";
 import { ReactComponent as Logo } from "@/assets/icons/logo.svg";
 import { COLORS } from "@/styles/color";
@@ -27,6 +25,8 @@ export interface MatchingForm {
   startDate?: string;
   endDate?: string;
   duration?: string;
+  areaCode?: string;
+  areaDetailCode?: string;
   groupSize?: string;
   genderRatio?: string;
 }
@@ -39,10 +39,20 @@ const MatchingButton = () => {
       duration: "",
       startDate: "",
       endDate: "",
+      areaCode: "",
+      areaDetailCode: "",
       groupSize: "",
       genderRatio: "",
     },
-    required: ["duration", "startDate", "endDate", "groupSize", "genderRatio"],
+    required: [
+      "duration",
+      "startDate",
+      "endDate",
+      "areaCode",
+      "areaDetailCode",
+      "groupSize",
+      "genderRatio",
+    ],
   });
   const stepList = [
     {
@@ -51,15 +61,16 @@ const MatchingButton = () => {
     },
     {
       title: "second",
-      content: <Second />,
+      content: <Second registerField={registerField} />,
     },
     {
       title: "third",
-      content: <Third />,
+      content: <Third registerField={registerField} />,
     },
   ];
 
-  useEffect(() => {
+  const handleOnSubmit = useCallback(() => {
+    //TODO:form value 확인용으로 임시 작성
     invalidFields(({ errors }) => {
       if (errors) {
         console.log("error in if", form);
@@ -67,7 +78,7 @@ const MatchingButton = () => {
         console.log("error in else", form);
       }
     });
-  }, [step.current]);
+  }, [form, invalidFields]);
 
   return (
     <Fragment>
@@ -76,7 +87,7 @@ const MatchingButton = () => {
         onClick={() => setIsModalOpen(true)}
         detailStyle={cssModalButtonStyle}
       >
-        <Logo fill={COLORS.WHITE} />
+        <Logo fill={COLORS.WHITE} width={60} height={60} />
       </Button>
       <Modal
         isOpen={isModalOpen}
@@ -115,6 +126,7 @@ const MatchingButton = () => {
               onClick={() => {
                 if (step.current === 2) {
                   console.log("제출");
+                  handleOnSubmit();
                 } else step.handleOnClickNext();
               }}
             >

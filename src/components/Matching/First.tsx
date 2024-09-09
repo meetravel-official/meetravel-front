@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { COLORS } from "@/styles/color";
 
@@ -9,6 +9,15 @@ import { Typography } from "../Typography/Typography";
 const First = ({ registerField }: { registerField: any }) => {
   const { onChange } = registerField("duration");
   const [radioValue, setRadioValue] = useState<1 | 2 | 3>(1);
+
+  useEffect(() => {
+    //TODO: 캘린더 startDate, endDate 값 가져오기
+    console.log(
+      "test",
+      document.getElementsByName("startDate")[0].getAttribute("value")
+    );
+  });
+
   return (
     <div>
       <div>
@@ -26,7 +35,6 @@ const First = ({ registerField }: { registerField: any }) => {
         <RadioButtonGroup
           {...registerField("duration")}
           gridType="column"
-          defaultValue={radioValue.toString()}
           onChange={(e) => {
             console.log("e", e);
             setRadioValue(Number(e) as 1 | 2 | 3); //radioValue onChange
@@ -92,7 +100,12 @@ const First = ({ registerField }: { registerField: any }) => {
         >
           여행을 떠날 주차를 선택해봐요.
         </Typography>
-        <Calendar tripDayNum={radioValue} />
+        <input {...registerField("startDate")} type="hidden" />
+        <input {...registerField("endDate")} type="hidden" />
+        <Calendar
+          tripDayNum={radioValue}
+          formItemName={["startDate", "endDate"]}
+        />
       </div>
     </div>
   );
