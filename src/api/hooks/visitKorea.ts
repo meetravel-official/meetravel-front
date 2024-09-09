@@ -13,26 +13,26 @@ import {
 import { api } from "../request";
 import { apiRoute } from "../routes/apiRoutes";
 
-export const useGetAreaCode = ({ areaCode }: IGetAriaCodeParams) => {
+export const useGetAreaCode = (params?: IGetAriaCodeParams) => {
   return useQuery<IVisitKoreaListResponse<IAriaCode>, AxiosError>({
-    queryKey: ["useGetAreaCode", areaCode],
+    queryKey: ["useGetAreaCode", params?.areaCode],
     queryFn: () =>
-      api.get(apiRoute.areaBasedList, {
+      api.get(apiRoute.areaCode, {
         params: {
           MobileOS: "ETC",
           MobileApp: "미트래블",
           _type: "json",
           serviceKey: process.env.REACT_APP_KOREA_VISIT_API_DECODING_KEY,
-          areaCode,
+          areaCode: params?.areaCode,
         },
         withCredentials: false,
       }),
   });
 };
 
-export const useGetAreaBasedList = (params: IGetAreaBasedListParams) => {
+export const useGetAreaBasedList = (params?: IGetAreaBasedListParams) => {
   return useQuery<IVisitKoreaListResponse<IAreaBasedList>, AxiosError>({
-    queryKey: ["useGetAreaBasedList"],
+    queryKey: ["useGetAreaBasedList", ...Object.values(params || {})],
     queryFn: () =>
       api.get(apiRoute.areaBasedList, {
         params: {
@@ -40,7 +40,9 @@ export const useGetAreaBasedList = (params: IGetAreaBasedListParams) => {
           MobileApp: "미트래블",
           _type: "json",
           serviceKey: process.env.REACT_APP_KOREA_VISIT_API_DECODING_KEY,
-          ...params,
+          areaCode: params?.areaCode,
+          contentTypeId: params?.contentTypeId,
+          numOfRows: 99999, //TODO: 무한 스크롤 적용 예정
         },
         withCredentials: false,
       }),

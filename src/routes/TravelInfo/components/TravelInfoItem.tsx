@@ -1,3 +1,4 @@
+import { IAreaBasedList } from "@/api/interfaces/visitKorea";
 import { ReactComponent as HearIcon } from "@/assets/icons/heart.svg";
 import { ReactComponent as PinIcon } from "@/assets/icons/pin.svg";
 import { ReactComponent as ShareIcon } from "@/assets/icons/share.svg";
@@ -14,18 +15,11 @@ import {
 } from "../styles/TravelInfoItem.styles";
 
 interface TravelInfoItemProps {
-  placeName: string;
-  address: string;
-  imageUrl: string;
+  travelInfo: IAreaBasedList;
   like?: number;
 }
 
-export const TravelInfoItem = ({
-  placeName,
-  address,
-  imageUrl,
-  like,
-}: TravelInfoItemProps) => {
+export const TravelInfoItem = ({ travelInfo, like }: TravelInfoItemProps) => {
   return (
     <div css={cssTravelInfoItemsStyle}>
       <div css={cssTravelInfoItemImageStyle}>
@@ -38,7 +32,7 @@ export const TravelInfoItem = ({
           </button>
         </div>
         <Image
-          src={imageUrl}
+          src={travelInfo.firstimage || ""}
           alt="travel-info"
           width="100%"
           height="100%"
@@ -55,10 +49,10 @@ export const TravelInfoItem = ({
       </div>
       <div css={cssTravelInfoItemDescStyle}>
         <Typography color={COLORS.GRAY5} size="16" weight="regular">
-          {placeName}
+          {travelInfo.title}
         </Typography>
         <Typography color={COLORS.GRAY4} size="12" weight="regular">
-          {address}
+          {travelInfo.addr1} {travelInfo.addr2}
         </Typography>
       </div>
     </div>

@@ -12,18 +12,20 @@ export interface IGetAreaBasedListParams {
 }
 
 export interface IVisitKoreaListResponse<T> extends AxiosResponse {
-  response: {
-    header: {
-      resultCode: string;
-      resultMsg: string;
-    };
-    body: {
-      items: {
-        item: T[];
+  data: {
+    response: {
+      header: {
+        resultCode: string;
+        resultMsg: string;
       };
-      numOfRows: number;
-      pageNo: number;
-      totalCount: number;
+      body: {
+        items: {
+          item: T[];
+        };
+        numOfRows: number;
+        pageNo: number;
+        totalCount: number;
+      };
     };
   };
 }

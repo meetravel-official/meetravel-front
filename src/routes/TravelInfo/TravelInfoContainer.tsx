@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useCallback, useMemo } from "react";
+import { useTravelInfo } from "states/useTravelInfo";
 
+import { useGetAreaBasedList, useGetAreaCode } from "@/api/hooks/visitKorea";
+import { IAriaCode } from "@/api/interfaces/visitKorea";
 import { Bar, Typography } from "@/components";
 import Select from "@/components/Select/Select";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
@@ -8,35 +11,71 @@ import { COLORS } from "@/styles/color";
 import { TravelInfoItem } from "./components/TravelInfoItem";
 
 export const TravelInfoContainer = () => {
-  const [searchValue, setSearchValue] = useState<{
-    location: string;
-    type: string;
-  }>({
-    location: "",
-    type: "",
-  });
+  const { searchValue, setSearchValue } = useTravelInfo();
 
-  const travelInfoItemList = [
-    {
-      placeName: "제주도",
-      address: "제주특별자치도",
-      imageUrl:
-        "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fo1KIw%2Fbtqu9mflPY6%2FrGk1mM3iugV1c6jj9Z3E80%2Fimg.jpg",
-      like: 12,
+  const { data: areaCodeData } = useGetAreaCode();
+  const { data: areaBasedListData } = useGetAreaBasedList(searchValue);
+
+  const areaCodeList = useMemo(() => {
+    if (areaCodeData?.data.response?.body?.items?.item) {
+      return areaCodeData.data.response.body.items.item.map(
+        (item: IAriaCode) => ({
+          key: item.code,
+          value: item.name,
+        })
+      );
+    }
+    return [];
+  }, [areaCodeData]);
+
+  const contentTypeIdList = useMemo(() => {
+    return [
+      { key: "12", value: "관광지" },
+      { key: "14", value: "문화시설" },
+      { key: "15", value: "축제공연행사" },
+      { key: "28", value: "레포츠" },
+      { key: "32", value: "숙박" },
+      { key: "38", value: "쇼핑" },
+      { key: "39", value: "음식점" },
+    ];
+  }, []);
+
+  const travelInfoItemList = useMemo(() => {
+    if (areaBasedListData?.data.response?.body?.items?.item) {
+      return areaBasedListData.data.response.body.items.item;
+    }
+    return [];
+  }, [areaBasedListData]);
+
+  const handleOnChangeAreaCode = useCallback(
+    (selectedValue: string) => {
+      const selectedItem = areaCodeList.find(
+        (item: { key: string; value: string }) => item.value === selectedValue
+      );
+      if (selectedItem)
+        setSearchValue({
+          ...searchValue,
+          areaCodeLabel: selectedItem.value,
+          areaCode: selectedItem.key,
+        });
     },
-    {
-      placeName: "제주도",
-      address: "제주특별자치도",
-      imageUrl: "https://images.unsplash.com/photo-1593642532936-3e6b1f6e3c9f",
-      like: 12,
+    [areaCodeList, searchValue, setSearchValue]
+  );
+
+  const handleOnChangeContentTypeId = useCallback(
+    (selectedValue: string) => {
+      const selectedItem = contentTypeIdList.find(
+        (item: { key: string; value: string }) => item.value === selectedValue
+      );
+      if (selectedItem)
+        setSearchValue({
+          ...searchValue,
+          contentTypeId: selectedItem.key,
+          contentTypeIdLabel: selectedItem.value,
+        });
     },
-    {
-      placeName: "제주도",
-      address: "제주특별자치도",
-      imageUrl: "https://images.unsplash.com/photo-1593642532936-3e6b1f6e3c9f",
-      like: 12,
-    },
-  ];
+    [contentTypeIdList, searchValue, setSearchValue]
+  );
 
   return (
     <div css={cssAlignVerticalStyle({ gap: 16 })}>
@@ -55,39 +94,25 @@ export const TravelInfoContainer = () => {
           <Select
             width="106px"
             placeholder="지역 선택"
-            value={searchValue.location}
-            selectOptions={[
-              { key: "A0502", value: "강원도" },
-              { key: "A0501", value: "경상도" },
-            ]}
-            borderWidth={1}
-            onChange={(e) => {
-              setSearchValue({ ...searchValue, location: e as string });
-            }}
+            value={searchValue.areaCodeLabel}
+            selectOptions={areaCodeList}
+            onChange={(selectedValue) =>
+              handleOnChangeAreaCode(selectedValue as string)
+            }
           />
           <Select
             width="138px"
             placeholder="여행 타입 선택"
-            selectOptions={[
-              { key: "A0502", value: "음식" },
-              { key: "A0501", value: "쇼핑" },
-            ]}
-            value={searchValue.type}
-            borderWidth={1}
-            onChange={(e) => {
-              setSearchValue({ ...searchValue, type: e as string });
+            selectOptions={contentTypeIdList}
+            value={searchValue.contentTypeIdLabel}
+            onChange={(selectedValue) => {
+              handleOnChangeContentTypeId(selectedValue as string);
             }}
           />
         </div>
         <div css={cssAlignVerticalStyle({ gap: 8 })}>
           {travelInfoItemList.map((item, index) => (
-            <TravelInfoItem
-              key={index}
-              placeName={item.placeName}
-              address={item.address}
-              imageUrl={item.imageUrl}
-              like={item.like}
-            />
+            <TravelInfoItem key={index} travelInfo={item} />
           ))}
         </div>
       </div>
