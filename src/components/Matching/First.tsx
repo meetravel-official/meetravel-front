@@ -6,8 +6,8 @@ import { COLORS } from "@/styles/color";
 import { Calendar } from "../Calendar/Calendar";
 import RadioButtonGroup from "../RadioButton/RadioButtonGroup";
 import { Typography } from "../Typography/Typography";
-
-const First = () => {
+const First = ({ registerField }: { registerField: any }) => {
+  const { onChange } = registerField("duration");
   const [radioValue, setRadioValue] = useState<1 | 2 | 3>(1);
   return (
     <div>
@@ -24,11 +24,13 @@ const First = () => {
           기간
         </Typography>
         <RadioButtonGroup
+          {...registerField("duration")}
           gridType="column"
           defaultValue={radioValue.toString()}
           onChange={(e) => {
-            setRadioValue(Number(e) as 1 | 2 | 3);
-            return console.log(e);
+            console.log("e", e);
+            setRadioValue(Number(e) as 1 | 2 | 3); //radioValue onChange
+            onChange(e); //formValue onChange
           }}
         >
           <RadioButtonGroup.RadioButton value="1">
