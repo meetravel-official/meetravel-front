@@ -12,6 +12,7 @@ export const GroupContainer = (
   grid-auto-flow: ${gridType === "row" ? "row" : "column"};
   width: fit-content;
   grid-gap: 8px;
+  height: fit-content;
   ${gridDetailStyle}
 `;
 

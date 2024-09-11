@@ -1,68 +1,105 @@
-import { css } from "@emotion/react";
-import { Fragment, useState } from "react";
+import { Fragment, useCallback, useState } from "react";
 
 import { ReactComponent as Group } from "@/assets/icons/group.svg";
+import { ReactComponent as Logo } from "@/assets/icons/logo.svg";
 import { COLORS } from "@/styles/color";
 
 import { BarStep } from "../BarStep/BarStep";
 import { Button } from "../Button/Button";
+import Form from "../Form/Form";
+import useForm from "../Form/useForm";
 import Modal from "../Modal/Modal";
 import { Step } from "../Step";
 import { Typography } from "../Typography/Typography";
 import First from "./First";
+import {
+  cssModalButtonStyle,
+  cssModalFooterStyle,
+  cssModalTitleStyle,
+  cssModalTitleTextStyle,
+} from "./Matching.styles";
 import Second from "./Second";
 import Third from "./Third";
 
-const MatchingButton = () => {
-  const [modalOpen3, setModalOpen3] = useState(false);
+export interface MatchingForm {
+  startDate?: string;
+  endDate?: string;
+  duration?: string;
+  areaCode?: string;
+  areaDetailCode?: string;
+  groupSize?: string;
+  genderRatio?: string;
+}
 
+const MatchingButton = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [step] = Step.useStep();
+  const { form, registerField, invalidFields } = useForm<MatchingForm>({
+    initialValues: {
+      duration: "",
+      startDate: "",
+      endDate: "",
+      areaCode: "",
+      areaDetailCode: "",
+      groupSize: "",
+      genderRatio: "",
+    },
+    required: [
+      "duration",
+      "startDate",
+      "endDate",
+      "areaCode",
+      "areaDetailCode",
+      "groupSize",
+      "genderRatio",
+    ],
+  });
   const stepList = [
     {
       title: "first",
-      content: <First />,
+      content: <First registerField={registerField} />,
     },
     {
       title: "second",
-      content: <Second />,
+      content: <Second registerField={registerField} />,
     },
     {
       title: "third",
-      content: <Third />,
+      content: <Third registerField={registerField} />,
     },
   ];
 
+  const handleOnSubmit = useCallback(() => {
+    //TODO:form value 확인용으로 임시 작성
+    invalidFields(({ errors }) => {
+      if (errors) {
+        console.log("error in if", form);
+      } else {
+        console.log("error in else", form);
+      }
+    });
+  }, [form, invalidFields]);
+
   return (
     <Fragment>
-      <Button bgColor={COLORS.PINK3} onClick={() => setModalOpen3(true)}>
-        <div>
-          <Typography color={COLORS.WHITE} weight="bold">
-            매칭 시작!
-          </Typography>{" "}
-          <Typography color={COLORS.PINK1} weight="bold">
-            (매칭 기회 2번)
-          </Typography>
-        </div>
+      <Button
+        bgColor={COLORS.PINK3}
+        onClick={() => setIsModalOpen(true)}
+        detailStyle={cssModalButtonStyle}
+      >
+        <Logo fill={COLORS.WHITE} width={60} height={60} />
       </Button>
       <Modal
-        isOpen={modalOpen3}
-        onClose={() => setModalOpen3(false)}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
         title={
-          <div
-            css={css`
-              display: flex;
-            `}
-          >
+          <div css={cssModalTitleStyle}>
             <Group stroke={COLORS.GRAY4} />
             <Typography
               color={COLORS.GRAY4}
               weight="bold"
               size="20"
-              detailStyle={css`
-                display: block;
-                margin-bottom: 32px;
-                margin-left: 8px;
-              `}
+              detailStyle={cssModalTitleTextStyle}
             >
               매칭 전{" "}
               <Typography color={COLORS.PINK2} weight="bold" size="20">
@@ -73,22 +110,8 @@ const MatchingButton = () => {
           </div>
         }
         modalType="full"
-        modalDetailStyle={css`
-          z-index: 100;
-        `}
         footer={
-          <div
-            css={css`
-              width: -webkit-fill-available;
-              display: flex;
-              gap: 8px;
-              bottom: 15px;
-              z-index: 100;
-              backdrop-filter: blur(10px);
-              height: 60px;
-              align-items: center;
-            `}
-          >
+          <div css={cssModalFooterStyle}>
             <Button
               color={COLORS.WHITE}
               bgColor={COLORS.PINK1}
@@ -103,6 +126,7 @@ const MatchingButton = () => {
               onClick={() => {
                 if (step.current === 2) {
                   console.log("제출");
+                  handleOnSubmit();
                 } else step.handleOnClickNext();
               }}
             >
@@ -111,7 +135,9 @@ const MatchingButton = () => {
           </div>
         }
       >
-        <BarStep step={step} stepList={stepList} />
+        <Form formValue={form}>
+          <BarStep step={step} stepList={stepList} />
+        </Form>
       </Modal>
     </Fragment>
   );

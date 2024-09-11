@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 
 import { Layout } from "@/components";
 
+import MatchingButton from "../Matching/Matching";
 import { NavBar } from "./NavBar";
 
 export const MainLayout = () => {
@@ -11,6 +12,7 @@ export const MainLayout = () => {
         <Outlet />
       </Layout.Content>
       <Layout.FixedFooter>
+        <MatchingButton />
         <NavBar />
       </Layout.FixedFooter>
     </Layout>

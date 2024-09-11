@@ -57,7 +57,7 @@ const Modal = ({
         <>
           {modalType !== "full" && <div css={cssOverlayStyle}></div>}
           <div css={cssModalStyle(modalType, modalDetailStyle)}>
-            <div css={cssModalContentStyle}>
+            <div css={cssModalContentStyle(modalType)}>
               <div
                 css={css`
                   display: grid;
