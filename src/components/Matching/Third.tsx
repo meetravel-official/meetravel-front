@@ -7,7 +7,8 @@ import { FormItem } from "../Form/FormItem";
 import RadioButtonGroup from "../RadioButton/RadioButtonGroup";
 import { Typography } from "../Typography/Typography";
 
-const Third = () => {
+const Third = ({ registerField }: { registerField: any }) => {
+  const { onChange } = registerField("genderRatio");
   return (
     <Fragment>
       <FormItem
@@ -20,9 +21,11 @@ const Third = () => {
         name="genderRatio"
       >
         <RadioButtonGroup
+          {...registerField("genderRatio")}
           // defaultValue={radioValue}
           onChange={(e) => {
             console.log(e);
+            onChange(e);
           }}
           buttonDetailStyle={css`
             font-size: 16px;
@@ -35,10 +38,10 @@ const Third = () => {
             width: 100%;
           `}
         >
-          <RadioButtonGroup.RadioButton value="a">
+          <RadioButtonGroup.RadioButton value="diff">
             이성끼리
           </RadioButtonGroup.RadioButton>
-          <RadioButtonGroup.RadioButton value="b">
+          <RadioButtonGroup.RadioButton value="same">
             동성끼리
           </RadioButtonGroup.RadioButton>
         </RadioButtonGroup>
@@ -61,11 +64,3 @@ const Third = () => {
   );
 };
 export default Third;
-
-/**
-font-size: 12px;
-font-weight: 400;
-line-height: 15.29px;
-text-align: center;
-
- */

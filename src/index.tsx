@@ -73,33 +73,18 @@ const queryClient = new QueryClient({
   },
 });
 
-if (container?.hasChildNodes()) {
-  ReactDOM.hydrateRoot(
-    container,
-    <HelmetProvider>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools />
-        <React.StrictMode>
-          <Meta />
-          <Global styles={cssGlobalStyle} />
-          <RouterProvider router={router} />
-        </React.StrictMode>
-      </QueryClientProvider>
-    </HelmetProvider>
-  );
-} else
-  root.render(
-    <HelmetProvider>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools />
-        <React.StrictMode>
-          <Meta />
-          <Global styles={cssGlobalStyle} />
-          <RouterProvider router={router} />
-        </React.StrictMode>
-      </QueryClientProvider>
-    </HelmetProvider>
-  );
+root.render(
+  <HelmetProvider>
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools />
+      <React.StrictMode>
+        <Meta />
+        <Global styles={cssGlobalStyle} />
+        <RouterProvider router={router} />
+      </React.StrictMode>
+    </QueryClientProvider>
+  </HelmetProvider>
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

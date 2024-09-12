@@ -56,8 +56,8 @@ function useForm<T extends Record<string, any>>({
     (name: keyof T) => {
       return {
         value: form[name].value,
-        onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-          handleChange(name, e.target.value as T[keyof T]),
+        onChange: (e: any) =>
+          handleChange(name, typeof e === "string" ? e : e.target.value),
         error: form[name].error,
       };
     },

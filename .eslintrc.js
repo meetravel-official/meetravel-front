@@ -82,6 +82,7 @@ module.exports = {
     "prefer-arrow-callback": "off",
     "@typescript-eslint/require-await": "warn",
     "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/restrict-template-expressions": "warn",
     "unused-imports/no-unused-imports": "warn",
     "unused-imports/no-unused-vars": [
       "warn",

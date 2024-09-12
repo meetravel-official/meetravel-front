@@ -59,22 +59,14 @@
     "eslint-plugin-react": "7.32.2",
     "eslint-plugin-simple-import-sort": "7.0.0",
     "eslint-plugin-unused-imports": "^3.2.0",
-    "prettier": "2.8.1",
-    "react-snap": "^1.23.0"
+    "prettier": "2.8.1"
   },
   "scripts": {
     "start": "PORT=3030 craco start",
-    "build": "craco build",
-    "postbuild": "react-snap",
+    "build": "GENERATE_SOURCEMAP=false craco --max-old-space-size=12000 build",
     "test": "craco test",
     "eject": "craco eject",
-    "deploy:prod": "pnpm build && pnpm postbuild && aws s3 sync ./build s3://meetravel.life --profile=FE && aws cloudfront create-invalidation --distribution-id E378PWWN376STM --paths '/*'"
-  },
-  "reactSnap": {
-    "include": [
-      "/"
-    ],
-    "puppeteerExecutablePath": "/usr/bin/google-chrome-stable"
+    "deploy:prod": "pnpm build && aws s3 sync ./build s3://meetravel.life --profile=FE && aws cloudfront create-invalidation --distribution-id E378PWWN376STM --paths '/*'"
   },
   "eslintConfig": {
     "extends": [
