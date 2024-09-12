@@ -25,6 +25,7 @@ interface CalendarProps {
   defaultDate?: string;
   tripDayNum: 1 | 2 | 3;
   formItemName?: [string, string];
+  registerField?: any;
 }
 
 /**
@@ -37,10 +38,13 @@ export const Calendar = ({
   defaultDate,
   tripDayNum,
   formItemName = ["beginDate", "endDate"],
+  registerField,
 }: CalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(
     defaultDate || dayjs().format("YYYY-MM")
   );
+  const { onChange: onChangeStart } = registerField("startDate");
+  const { onChange: onChangeEnd } = registerField("endDate");
 
   const [selectDate, setSelectDate] = useState<[Dayjs, Dayjs]>();
 
@@ -84,21 +88,38 @@ export const Calendar = ({
   const handleOnSelectDate = useCallback(
     (date: [Dayjs, Dayjs]) => {
       setSelectDate(date);
+      if (registerField) {
       document
         .getElementsByName(formItemName[0])[0]
         .setAttribute("value", date[0].format("YYYY-MM-DD"));
       document
         .getElementsByName(formItemName[1])[0]
         .setAttribute("value", date[1].format("YYYY-MM-DD"));
+
+        onChangeStart(date[0].format("YYYY-MM-DD"));
+        onChangeEnd(date[1].format("YYYY-MM-DD"));
+      }
     },
-    [formItemName]
+    [formItemName, onChangeEnd, onChangeStart, registerField]
   );
 
   return (
     <div css={cssCalendarContainerStyle}>
       <div css={cssCalendarInputStyle}>
-        <input type="date" name={formItemName[0]} />
-        <input type="date" name={formItemName[1]} />
+        {registerField && (
+          <Fragment>
+            <input
+              type="date"
+              name={formItemName[0]}
+              {...registerField(`${formItemName[0]}`)}
+            />
+            <input
+              type="date"
+              name={formItemName[1]}
+              {...registerField(`${formItemName[1]}`)}
+            />
+          </Fragment>
+        )}
       </div>
       <div css={cssCalendarControlStyle}>
         <button
