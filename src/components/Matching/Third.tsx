@@ -6,8 +6,9 @@ import { COLORS } from "@/styles/color";
 import { FormItem } from "../Form/FormItem";
 import RadioButtonGroup from "../RadioButton/RadioButtonGroup";
 import { Typography } from "../Typography/Typography";
+import { checkNotEmpty } from "./Matching";
 
-const Third = ({ registerField }: { registerField: any }) => {
+const Third = ({ form, registerField }: { form: any; registerField: any }) => {
   const { onChange } = registerField("genderRatio");
   return (
     <Fragment>
@@ -22,7 +23,11 @@ const Third = ({ registerField }: { registerField: any }) => {
       >
         <RadioButtonGroup
           {...registerField("genderRatio")}
-          // defaultValue={radioValue}
+          defaultValue={
+            checkNotEmpty([form.genderRatio])
+              ? form.genderRatio.value
+              : undefined
+          }
           onChange={(e) => {
             console.log(e);
             onChange(e);

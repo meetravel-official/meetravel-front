@@ -6,17 +6,10 @@ import { COLORS } from "@/styles/color";
 import { Calendar } from "../Calendar/Calendar";
 import RadioButtonGroup from "../RadioButton/RadioButtonGroup";
 import { Typography } from "../Typography/Typography";
-const First = ({ registerField }: { registerField: any }) => {
+import { checkNotEmpty } from "./Matching";
+const First = ({ form, registerField }: { form: any; registerField: any }) => {
   const { onChange } = registerField("duration");
   const [radioValue, setRadioValue] = useState<1 | 2 | 3>(1);
-
-  useEffect(() => {
-    //TODO: 캘린더 startDate, endDate 값 가져오기
-    console.log(
-      "test",
-      document.getElementsByName("startDate")[0].getAttribute("value")
-    );
-  });
 
   return (
     <div>
@@ -34,6 +27,9 @@ const First = ({ registerField }: { registerField: any }) => {
         </Typography>
         <RadioButtonGroup
           {...registerField("duration")}
+          defaultValue={
+            checkNotEmpty([form.duration]) ? form.duration.value : undefined
+          }
           gridType="column"
           onChange={(e) => {
             console.log("e", e);
@@ -103,8 +99,13 @@ const First = ({ registerField }: { registerField: any }) => {
         <input {...registerField("startDate")} type="hidden" />
         <input {...registerField("endDate")} type="hidden" />
         <Calendar
+          initialDate={[
+            checkNotEmpty([form.startDate]) ? form.startDate.value : undefined,
+            checkNotEmpty([form.endDate]) ? form.endDate.value : undefined,
+          ]}
           tripDayNum={radioValue}
           formItemName={["startDate", "endDate"]}
+          registerField={registerField}
         />
       </div>
     </div>

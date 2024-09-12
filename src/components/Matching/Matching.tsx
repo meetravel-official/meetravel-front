@@ -27,7 +27,6 @@ export interface MatchingForm {
   duration?: string;
   areaCode?: string;
   areaDetailCode?: string;
-  groupSize?: string;
   genderRatio?: string;
 }
 
@@ -45,7 +44,6 @@ const MatchingButton = () => {
       endDate: "",
       areaCode: "",
       areaDetailCode: "",
-      groupSize: "",
       genderRatio: "",
     },
     required: [
@@ -54,22 +52,21 @@ const MatchingButton = () => {
       "endDate",
       "areaCode",
       "areaDetailCode",
-      "groupSize",
       "genderRatio",
     ],
   });
   const stepList = [
     {
       title: "first",
-      content: <First registerField={registerField} />,
+      content: <First form={form} registerField={registerField} />,
     },
     {
       title: "second",
-      content: <Second registerField={registerField} />,
+      content: <Second form={form} registerField={registerField} />,
     },
     {
       title: "third",
-      content: <Third registerField={registerField} />,
+      content: <Third form={form} registerField={registerField} />,
     },
   ];
 
