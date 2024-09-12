@@ -1,4 +1,5 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
+import { useInView } from "react-intersection-observer";
 import { useTravelInfo } from "states/useTravelInfo";
 
 import { useGetAreaBasedList, useGetAreaCode } from "@/api/hooks/visitKorea";
@@ -14,7 +15,15 @@ export const TravelInfoContainer = () => {
   const { searchValue, setSearchValue } = useTravelInfo();
 
   const { data: areaCodeData } = useGetAreaCode();
-  const { data: areaBasedListData } = useGetAreaBasedList(searchValue);
+  const {
+    data: areaBasedListData,
+    fetchNextPage,
+    hasNextPage,
+  } = useGetAreaBasedList(searchValue);
+
+  const { ref, inView } = useInView({
+    threshold: 0,
+  });
 
   const areaCodeList = useMemo(() => {
     if (areaCodeData?.data.response?.body?.items?.item) {
@@ -41,8 +50,10 @@ export const TravelInfoContainer = () => {
   }, []);
 
   const travelInfoItemList = useMemo(() => {
-    if (areaBasedListData?.data.response?.body?.items?.item) {
-      return areaBasedListData.data.response.body.items.item;
+    if (areaBasedListData?.pages && areaBasedListData?.pages.length > 0) {
+      return areaBasedListData?.pages.flatMap(
+        (page) => page.data.response.body.items.item
+      );
     }
     return [];
   }, [areaBasedListData]);
@@ -76,6 +87,12 @@ export const TravelInfoContainer = () => {
     },
     [contentTypeIdList, searchValue, setSearchValue]
   );
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, hasNextPage, inView]);
 
   return (
     <div css={cssAlignVerticalStyle({ gap: 16 })}>
@@ -114,6 +131,7 @@ export const TravelInfoContainer = () => {
           {travelInfoItemList.map((item, index) => (
             <TravelInfoItem key={index} travelInfo={item} />
           ))}
+          <div ref={ref} />
         </div>
       </div>
     </div>
