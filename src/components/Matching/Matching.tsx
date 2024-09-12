@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useState } from "react";
+import { Fragment, useCallback, useMemo, useState } from "react";
 
 import { ReactComponent as Group } from "@/assets/icons/group.svg";
 import { ReactComponent as Logo } from "@/assets/icons/logo.svg";
@@ -30,6 +30,10 @@ export interface MatchingForm {
   groupSize?: string;
   genderRatio?: string;
 }
+
+export const checkNotEmpty = (values: any[]) => {
+  return values.every((item) => item.value !== "" && item.value !== undefined);
+};
 
 const MatchingButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -80,6 +84,24 @@ const MatchingButton = () => {
     });
   }, [form, invalidFields]);
 
+  const isEnableNextPage = useMemo(() => {
+    if (step.current === 0) {
+      return checkNotEmpty([form.startDate, form.endDate, form.duration]);
+    } else if (step.current === 1) {
+      return checkNotEmpty([form.areaCode]);
+    } else if (step.current === 2) {
+      return checkNotEmpty([form.genderRatio]);
+    }
+    return false;
+  }, [
+    form.areaCode,
+    form.duration,
+    form.endDate,
+    form.genderRatio,
+    form.startDate,
+    step,
+  ]);
+
   return (
     <Fragment>
       <Button
@@ -129,6 +151,7 @@ const MatchingButton = () => {
                   handleOnSubmit();
                 } else step.handleOnClickNext();
               }}
+              disabled={!isEnableNextPage}
             >
               {step.current === 2 ? "여행 시작!" : "다음"}
             </Button>
