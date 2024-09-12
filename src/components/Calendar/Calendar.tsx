@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from "dayjs";
-import { useCallback, useMemo, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import {
   getDayListOfMonth,
   getFirstDayOfMonth,
@@ -22,6 +22,7 @@ import { DatePicker } from "./DatePicker";
 import { RangePicker } from "./RangePicker";
 
 interface CalendarProps {
+  initialDate?: [string, string];
   defaultDate?: string;
   tripDayNum: 1 | 2 | 3;
   formItemName?: [string, string];
@@ -36,6 +37,7 @@ interface CalendarProps {
  */
 export const Calendar = ({
   defaultDate,
+  initialDate,
   tripDayNum,
   formItemName = ["beginDate", "endDate"],
   registerField,
@@ -46,7 +48,10 @@ export const Calendar = ({
   const { onChange: onChangeStart } = registerField("startDate");
   const { onChange: onChangeEnd } = registerField("endDate");
 
-  const [selectDate, setSelectDate] = useState<[Dayjs, Dayjs]>();
+  const [selectDate, setSelectDate] = useState<[Dayjs, Dayjs]>([
+    dayjs(initialDate?.[0]),
+    dayjs(initialDate?.[1]),
+  ]);
 
   const availableDayRange: [number, number] =
     tripDayNum === 1 || tripDayNum === 2 ? [5, 6] : [4, 6];
@@ -89,12 +94,12 @@ export const Calendar = ({
     (date: [Dayjs, Dayjs]) => {
       setSelectDate(date);
       if (registerField) {
-      document
-        .getElementsByName(formItemName[0])[0]
-        .setAttribute("value", date[0].format("YYYY-MM-DD"));
-      document
-        .getElementsByName(formItemName[1])[0]
-        .setAttribute("value", date[1].format("YYYY-MM-DD"));
+        document
+          .getElementsByName(formItemName[0])[0]
+          .setAttribute("value", date[0].format("YYYY-MM-DD"));
+        document
+          .getElementsByName(formItemName[1])[0]
+          .setAttribute("value", date[1].format("YYYY-MM-DD"));
 
         onChangeStart(date[0].format("YYYY-MM-DD"));
         onChangeEnd(date[1].format("YYYY-MM-DD"));
