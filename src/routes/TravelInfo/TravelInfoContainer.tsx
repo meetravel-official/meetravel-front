@@ -1,29 +1,19 @@
-import { useCallback, useEffect, useMemo } from "react";
-import { useInView } from "react-intersection-observer";
+import { useCallback, useMemo } from "react";
 import { useTravelInfo } from "states/useTravelInfo";
 
-import { useGetAreaBasedList, useGetAreaCode } from "@/api/hooks/visitKorea";
+import { useGetAreaCode } from "@/api/hooks/visitKorea";
 import { IAriaCode } from "@/api/interfaces/visitKorea";
 import { Bar, Typography } from "@/components";
 import Select from "@/components/Select/Select";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
-import { TravelInfoItem } from "./components/TravelInfoItem";
+import { TravelInfoList } from "./components/TravelInfoList";
 
 export const TravelInfoContainer = () => {
   const { searchValue, setSearchValue } = useTravelInfo();
 
   const { data: areaCodeData } = useGetAreaCode();
-  const {
-    data: areaBasedListData,
-    fetchNextPage,
-    hasNextPage,
-  } = useGetAreaBasedList(searchValue);
-
-  const { ref, inView } = useInView({
-    threshold: 0,
-  });
 
   const areaCodeList = useMemo(() => {
     if (areaCodeData?.data.response?.body?.items?.item) {
@@ -48,15 +38,6 @@ export const TravelInfoContainer = () => {
       { key: "39", value: "음식점" },
     ];
   }, []);
-
-  const travelInfoItemList = useMemo(() => {
-    if (areaBasedListData?.pages && areaBasedListData?.pages.length > 0) {
-      return areaBasedListData?.pages.flatMap(
-        (page) => page.data.response.body.items.item
-      );
-    }
-    return [];
-  }, [areaBasedListData]);
 
   const handleOnChangeAreaCode = useCallback(
     (selectedValue: string) => {
@@ -87,12 +68,6 @@ export const TravelInfoContainer = () => {
     },
     [contentTypeIdList, searchValue, setSearchValue]
   );
-
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [fetchNextPage, hasNextPage, inView]);
 
   return (
     <div css={cssAlignVerticalStyle({ gap: 16 })}>
@@ -127,12 +102,7 @@ export const TravelInfoContainer = () => {
             }}
           />
         </div>
-        <div css={cssAlignVerticalStyle({ gap: 8 })}>
-          {travelInfoItemList.map((item, index) => (
-            <TravelInfoItem key={index} travelInfo={item} />
-          ))}
-          <div ref={ref} />
-        </div>
+        <TravelInfoList />
       </div>
     </div>
   );
