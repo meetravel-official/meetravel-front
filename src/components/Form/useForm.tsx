@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 
-interface FormField<T> {
+export interface FormField<T> {
   value: T;
   error?: string;
 }
@@ -56,8 +56,13 @@ function useForm<T extends Record<string, any>>({
     (name: keyof T) => {
       return {
         value: form[name].value,
-        onChange: (e: any) =>
-          handleChange(name, typeof e === "string" ? e : e.target.value),
+        onChange: (e: any) => {
+          console.log("/////////");
+          console.log("value", form[name].value);
+          console.log("e", e);
+
+          return handleChange(name, typeof e === "string" ? e : e.target.value);
+        },
         error: form[name].error,
       };
     },
