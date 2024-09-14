@@ -6,8 +6,9 @@ import { COLORS } from "@/styles/color";
 
 import RadioButtonGroup from "../RadioButton/RadioButtonGroup";
 import { Typography } from "../Typography/Typography";
+import { checkNotEmpty } from "./Matching";
 
-const Second = ({ registerField }: { registerField: any }) => {
+const Second = ({ form, registerField }: { form: any; registerField: any }) => {
   const { onChange } = registerField("areaCode");
   const { onChange: onChangeDetail } = registerField("areaDetailCode");
   const [areaCode, setAreaCode] = useState<string>();
@@ -56,6 +57,9 @@ const Second = ({ registerField }: { registerField: any }) => {
         {/* 대분류 들어가야함 */}
         <RadioButtonGroup
           {...registerField("areaCode")}
+          defaultValue={
+            checkNotEmpty([form.areaCode]) ? form.areaCode.value : undefined
+          }
           gridType="row"
           buttonDetailStyle={css`
             width: 104px;
