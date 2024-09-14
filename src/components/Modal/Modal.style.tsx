@@ -53,11 +53,16 @@ export const cssModalStyle = (
     ${modalDetailStyle}
   `;
 };
-export const cssModalContentStyle = (modalType?: ModalType) => css`
+export const cssModalContentStyle = (
+  modalType?: ModalType,
+  isFooter?: boolean
+) => css`
   overflow-y: auto;
   overflow-x: hidden;
   height: ${modalType === "full"
-    ? "calc(var(--vh, 1vh) * 100 - 85px)"
+    ? isFooter
+      ? "calc(var(--vh, 1vh) * 100 - 85px)"
+      : "calc(var(--vh, 1vh) * 100)"
     : "auto"};
   margin-bottom: 5px;
   padding: 1px;
