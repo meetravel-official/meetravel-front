@@ -18,6 +18,12 @@ import { cssGlobalStyle } from "@/styles/globalStyle";
 import reportWebVitals from "./reportWebVitals";
 import { containerRoutes, pageRoutes } from "./routes";
 
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
+
 const container = document.getElementById("root");
 const root = ReactDOM.createRoot(container as HTMLElement);
 
