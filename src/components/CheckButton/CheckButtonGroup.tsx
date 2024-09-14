@@ -3,16 +3,18 @@ import React, { useState } from "react";
 
 import { GroupContainer } from "../RadioButton/RadioButton.style";
 import CheckButton from "./CheckButton";
+import CheckTag from "./CheckTag";
 
 export type GridType = "column" | "row";
 
-interface IRadioGroupProps {
+interface ICheckButtonGroupProps {
   children: React.ReactNode;
-  defaultValue: string;
-  onChange?: (value: string) => void;
+  defaultValue?: string[];
+  onChange?: (value: string[]) => void;
   gridType?: GridType;
   gridDetailStyle?: SerializedStyles;
   buttonDetailStyle?: SerializedStyles;
+  maxSelect?: number;
 }
 
 /**
@@ -24,21 +26,35 @@ interface IRadioGroupProps {
 const CheckButtonGroup = ({
   children,
   defaultValue,
+  maxSelect,
   onChange,
   gridType = "column",
   gridDetailStyle,
   buttonDetailStyle,
-}: IRadioGroupProps) => {
-  const [selectedValue, setSelectedValue] = useState<string[]>([defaultValue]);
+}: ICheckButtonGroupProps) => {
+  const [selectedValue, setSelectedValue] = useState<string[]>(
+    defaultValue ?? []
+  );
 
   const handleChange = (value: string) => {
+    if (
+      maxSelect &&
+      selectedValue.length >= maxSelect &&
+      !selectedValue.includes(value)
+    ) {
+      return;
+    }
     setSelectedValue((pre) =>
       pre.includes(value)
         ? [...pre].filter((item) => item !== value)
         : [...pre, value]
     );
     if (onChange) {
-      onChange(value);
+      onChange(
+        selectedValue.includes(value)
+          ? [...selectedValue].filter((item) => item !== value)
+          : [...selectedValue, value]
+      );
     }
   };
 
@@ -61,5 +77,6 @@ const CheckButtonGroup = ({
 };
 
 CheckButtonGroup.CheckboxButton = CheckButton;
+CheckButtonGroup.CheckTag = CheckTag;
 
 export default CheckButtonGroup;

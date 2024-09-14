@@ -57,11 +57,7 @@ function useForm<T extends Record<string, any>>({
       return {
         value: form[name].value,
         onChange: (e: any) => {
-          console.log("/////////");
-          console.log("value", form[name].value);
-          console.log("e", e);
-
-          return handleChange(name, typeof e === "string" ? e : e.target.value);
+          return handleChange(name, e?.target?.value ?? e);
         },
         error: form[name].error,
       };

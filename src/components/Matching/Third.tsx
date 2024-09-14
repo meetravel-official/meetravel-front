@@ -3,13 +3,17 @@ import { Fragment } from "react";
 
 import { COLORS } from "@/styles/color";
 
+import CheckButtonGroup from "../CheckButton/CheckButtonGroup";
 import { FormItem } from "../Form/FormItem";
 import RadioButtonGroup from "../RadioButton/RadioButtonGroup";
+import TagKeyword, { tagKeywordList } from "../TagKeyword/TagKeyword";
 import { Typography } from "../Typography/Typography";
 import { checkNotEmpty } from "./Matching";
 
 const Third = ({ form, registerField }: { form: any; registerField: any }) => {
-  const { onChange } = registerField("genderRatio");
+  const { onChange: onChangeGenderRatio } = registerField("genderRatio");
+  const { onChange: onChangeTagKeyword } = registerField("keyword");
+
   return (
     <Fragment>
       <FormItem
@@ -30,7 +34,7 @@ const Third = ({ form, registerField }: { form: any; registerField: any }) => {
           }
           onChange={(e) => {
             console.log(e);
-            onChange(e);
+            onChangeGenderRatio(e);
           }}
           buttonDetailStyle={css`
             font-size: 16px;
@@ -51,6 +55,41 @@ const Third = ({ form, registerField }: { form: any; registerField: any }) => {
           </RadioButtonGroup.RadioButton>
         </RadioButtonGroup>
       </FormItem>
+      <FormItem
+        label="원하는 여행 스타일을 골라주세요. (3개 선택)"
+        labelStyle={css`
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 20.39px;
+        `}
+        name="keyword"
+      >
+        <CheckButtonGroup
+          {...registerField("keyword")}
+          buttonDetailStyle={css``}
+          gridDetailStyle={css`
+            all: unset;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 4px;
+          `}
+          maxSelect={3}
+          onChange={(e) => {
+            onChangeTagKeyword(e);
+          }}
+        >
+          {tagKeywordList.map((tag) => (
+            <CheckButtonGroup.CheckTag
+              value={tag}
+              key={tag}
+              icon={<TagKeyword keyword={tag} returnType="icon" />}
+            >
+              {tag}
+            </CheckButtonGroup.CheckTag>
+          ))}
+        </CheckButtonGroup>
+      </FormItem>
+
       <div
         css={css`
           width: 100%;

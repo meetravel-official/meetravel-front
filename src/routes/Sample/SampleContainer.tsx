@@ -236,7 +236,7 @@ export const SampleContainer = () => {
       <br />
       <br />
       <CheckButtonGroup
-        defaultValue="a"
+        defaultValue={["a"]}
         onChange={(e) => {
           return console.log(e);
         }}
