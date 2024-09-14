@@ -70,6 +70,7 @@ export const cssOverlayStyle = css`
   background-color: rgba(0, 0, 0, 0.2);
   width: 100%;
   height: 100%;
+  z-index: 99;
   backdrop-filter: blur(3px);
 `;
 
