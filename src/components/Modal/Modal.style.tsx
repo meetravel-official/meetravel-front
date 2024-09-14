@@ -23,7 +23,9 @@ export const cssModalStyle = (
       width: 100%;
       max-width: ${WIDTH.SM};
       padding: 15px;
+      padding-top: 16px;
       margin: 0;
+      margin-top: -1px;
       height: calc(var(--vh, 1vh) * 100);
     `,
   };
