@@ -1,3 +1,4 @@
+import { css } from "@emotion/react";
 import { Fragment, useCallback, useMemo, useState } from "react";
 
 import { ReactComponent as Group } from "@/assets/icons/group.svg";
@@ -28,6 +29,7 @@ export interface MatchingForm {
   areaCode?: string;
   areaDetailCode?: string;
   genderRatio?: string;
+  keyword?: string;
 }
 
 export const checkNotEmpty = (values: any[]) => {
@@ -45,14 +47,15 @@ const MatchingButton = () => {
       areaCode: "",
       areaDetailCode: "",
       genderRatio: "",
+      keyword: "",
     },
     required: [
       "duration",
       "startDate",
       "endDate",
       "areaCode",
-      "areaDetailCode",
       "genderRatio",
+      "keyword",
     ],
   });
   const stepList = [
@@ -74,9 +77,9 @@ const MatchingButton = () => {
     //TODO:form value 확인용으로 임시 작성
     invalidFields(({ errors }) => {
       if (errors) {
-        console.log("error in if", form);
+        console.log("error in if", errors);
       } else {
-        console.log("error in else", form);
+        console.log("success", form);
       }
     });
   }, [form, invalidFields]);
@@ -156,7 +159,13 @@ const MatchingButton = () => {
         }
       >
         <Form formValue={form}>
-          <BarStep step={step} stepList={stepList} />
+          <BarStep
+            step={step}
+            stepList={stepList}
+            contentDetailStyle={css`
+              padding: 1px;
+            `}
+          />
         </Form>
       </Modal>
     </Fragment>
