@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useTravelInfo } from "states/useTravelInfo";
 
 import { IAreaBasedList } from "@/api/interfaces/visitKorea";
@@ -26,8 +25,6 @@ export const TravelInfoItem = ({ travelInfo }: TravelInfoItemProps) => {
   const { setSelectedContent, setIsOpenTravelInfoDetailModal } =
     useTravelInfo();
 
-  const navigate = useNavigate();
-
   const [isLike, setIsLike] = useState(
     travelInfo.contentid
       ? localStorage.getItem(travelInfo.contentid) === "like"
@@ -37,9 +34,6 @@ export const TravelInfoItem = ({ travelInfo }: TravelInfoItemProps) => {
   const handleOnClickTravelInfoItem = () => {
     setSelectedContent(travelInfo);
     setIsOpenTravelInfoDetailModal(true);
-    navigate("", {
-      state: { isModal: true },
-    });
   };
 
   const handleOnLike = () => {
