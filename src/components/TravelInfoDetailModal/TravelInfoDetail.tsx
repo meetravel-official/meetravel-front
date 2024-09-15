@@ -9,7 +9,6 @@ import { COLORS } from "@/styles/color";
 
 import {
   cssTravelImageStyle,
-  cssTravelInfoDetailStyle,
   cssTravelMapStyle,
 } from "./TravelInfoDetailModal.styles";
 
@@ -166,7 +165,7 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
   }, [kakao.maps, travelInfo]);
 
   return (
-    <div css={cssTravelInfoDetailStyle}>
+    <div css={cssAlignVerticalStyle({ gap: 8, alignItems: "flex-start" })}>
       <div css={cssTravelImageStyle}>
         <Image
           src={travelInfo?.firstimage || ""}
