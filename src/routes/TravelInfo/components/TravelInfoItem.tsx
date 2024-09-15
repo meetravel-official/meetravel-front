@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTravelInfo } from "states/useTravelInfo";
 
 import { IAreaBasedList } from "@/api/interfaces/visitKorea";
@@ -18,16 +19,33 @@ import {
 
 interface TravelInfoItemProps {
   travelInfo: IAreaBasedList;
-  like?: number;
 }
 
-export const TravelInfoItem = ({ travelInfo, like }: TravelInfoItemProps) => {
+export const TravelInfoItem = ({ travelInfo }: TravelInfoItemProps) => {
   const { setSelectedContent, setIsOpenTravelInfoDetailModal } =
     useTravelInfo();
+
+  const [isLike, setIsLike] = useState(
+    travelInfo.contentid
+      ? localStorage.getItem(travelInfo.contentid) === "like"
+      : false
+  );
 
   const handleOnClickTravelInfoItem = () => {
     setSelectedContent(travelInfo);
     setIsOpenTravelInfoDetailModal(true);
+  };
+
+  const handleOnLike = () => {
+    if (travelInfo.contentid) {
+      if (isLike) {
+        localStorage.removeItem(travelInfo.contentid);
+        setIsLike(false);
+      } else {
+        localStorage.setItem(travelInfo.contentid, "like");
+        setIsLike(true);
+      }
+    }
   };
 
   return (
@@ -55,11 +73,11 @@ export const TravelInfoItem = ({ travelInfo, like }: TravelInfoItemProps) => {
         </button>
 
         <div css={cssTravelInfoItemHeartStyle}>
-          <button css={cssTransparentButtonStyle()}>
-            <HearIcon />{" "}
-            <Typography size="12" color={COLORS.WHITE} weight="regular">
+          <button css={cssTransparentButtonStyle()} onClick={handleOnLike}>
+            <HearIcon fill={isLike ? "white" : "none"} />
+            {/* <Typography size="12" color={COLORS.WHITE} weight="regular">
               {like}
-            </Typography>
+            </Typography> */}
           </button>
         </div>
       </div>
