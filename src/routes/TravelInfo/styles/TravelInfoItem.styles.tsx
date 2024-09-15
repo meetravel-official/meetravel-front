@@ -82,3 +82,7 @@ export const cssTransparentButtonStyle = (padding?: string) => css`
 
   gap: 4px;
 `;
+
+export const cssShareModalContentStyle = css`
+  padding: 16px 0;
+`;
