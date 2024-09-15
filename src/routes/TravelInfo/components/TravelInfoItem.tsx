@@ -48,11 +48,22 @@ export const TravelInfoItem = ({ travelInfo }: TravelInfoItemProps) => {
     }
   };
 
+  const handleOnOpenKakaoMap = () => {
+    window.open(
+      `https://map.kakao.com/link/map/${travelInfo?.title},${travelInfo?.mapy},${travelInfo?.mapx}`,
+      "_blank",
+      "noopener noreferrer"
+    );
+  };
+
   return (
     <div css={cssTravelInfoItemsStyle}>
       <div css={cssTravelInfoItemImageStyle}>
         <div css={cssTravelInfoItemBtnBoxStyle}>
-          <button css={cssTransparentButtonStyle("1px")}>
+          <button
+            css={cssTransparentButtonStyle("1px")}
+            onClick={handleOnOpenKakaoMap}
+          >
             <PinIcon />
           </button>
           <button css={cssTransparentButtonStyle("1px")}>
