@@ -49,11 +49,12 @@ export const TravelInfoItem = ({ travelInfo }: TravelInfoItemProps) => {
   };
 
   const handleOnOpenKakaoMap = () => {
-    window.open(
-      `https://map.kakao.com/link/map/${travelInfo?.title},${travelInfo?.mapy},${travelInfo?.mapx}`,
-      "_blank",
-      "noopener noreferrer"
-    );
+    if (travelInfo.mapx && travelInfo.mapy && travelInfo.title)
+      window.open(
+        `https://map.kakao.com/link/map/${travelInfo?.title},${travelInfo?.mapy},${travelInfo?.mapx}`,
+        "_blank",
+        "noopener noreferrer"
+      );
   };
 
   return (
