@@ -56,6 +56,14 @@ export const cssTravelInfoItemDescStyle = css`
   display: flex;
   flex-direction: column;
   gap: 4px;
+
+  width: 100%;
+  .typography {
+    width: calc(100% - 24px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 `;
 
 export const cssTransparentButtonStyle = (padding?: string) => css`
