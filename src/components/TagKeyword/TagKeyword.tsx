@@ -1,4 +1,4 @@
-import { css } from "@emotion/react";
+import { css, SerializedStyles } from "@emotion/react";
 
 import { ReactComponent as CampingIcon } from "@/assets/icons/tag-camp.svg";
 import { ReactComponent as CityIcon } from "@/assets/icons/tag-city.svg";
@@ -35,22 +35,36 @@ export const tagKeywordList = [
 interface ITagKeyword {
   keyword: string;
   returnType?: "tag" | "icon";
+  detailStyle?: SerializedStyles;
+  typographyStyle?: SerializedStyles;
+  svgColor?: string;
 }
 
-const TagKeyword = ({ keyword, returnType = "tag" }: ITagKeyword) => {
+const TagKeyword = ({
+  keyword,
+  returnType = "tag",
+  detailStyle,
+  typographyStyle,
+  svgColor,
+}: ITagKeyword) => {
   const keywordMapping: { [key: string]: JSX.Element } = {
-    산: <MountainIcon />,
-    바다: <SeaIcon />,
-    도시: <CityIcon />,
-    근교: <SuburbIcon />,
-    캠핑: <CampingIcon />,
-    걷기여행: <WalkingIcon />,
-    야경: <NightIcon />,
-    전통문화: <TraditionalIcon />,
-    생활관광: <LifeIcon />,
-    레저체험: <LeisureIcon />,
-    휴양: <ResortIcon />,
-    힐링: <HealingIcon />,
+    산: <MountainIcon stroke={svgColor ?? COLORS.GRAY3} />,
+    바다: <SeaIcon stroke={svgColor ?? COLORS.GRAY3} />,
+    도시: <CityIcon stroke={svgColor ?? COLORS.GRAY3} />,
+    근교: <SuburbIcon stroke={svgColor ?? COLORS.GRAY3} />,
+    캠핑: <CampingIcon stroke={svgColor ?? COLORS.GRAY3} />,
+    걷기여행: (
+      <WalkingIcon
+        stroke={svgColor ?? COLORS.GRAY3}
+        fill={svgColor ?? COLORS.GRAY3}
+      />
+    ),
+    야경: <NightIcon stroke={svgColor ?? COLORS.GRAY3} />,
+    전통문화: <TraditionalIcon stroke={svgColor ?? COLORS.GRAY3} />,
+    생활관광: <LifeIcon stroke={svgColor ?? COLORS.GRAY3} />,
+    레저체험: <LeisureIcon stroke={svgColor ?? COLORS.GRAY3} />,
+    휴양: <ResortIcon stroke={svgColor ?? COLORS.GRAY3} />,
+    힐링: <HealingIcon stroke={svgColor ?? COLORS.GRAY3} />,
   };
   if (returnType === "icon") {
     return keywordMapping[keyword];
@@ -61,9 +75,16 @@ const TagKeyword = ({ keyword, returnType = "tag" }: ITagKeyword) => {
       detailStyle={css`
         background-color: ${COLORS.WHITE};
         outline: 1px solid ${COLORS.GRAY3};
+        ${detailStyle}
       `}
     >
-      <Typography color={COLORS.GRAY5}>{keyword}</Typography>
+      <Typography
+        color={COLORS.GRAY4}
+        weight={700}
+        detailStyle={typographyStyle}
+      >
+        {keyword}
+      </Typography>
     </Tag>
   );
 };
