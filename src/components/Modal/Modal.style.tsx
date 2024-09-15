@@ -23,7 +23,9 @@ export const cssModalStyle = (
       width: 100%;
       max-width: ${WIDTH.SM};
       padding: 15px;
+      padding-top: 16px;
       margin: 0;
+      margin-top: -1px;
       height: calc(var(--vh, 1vh) * 100);
     `,
   };
@@ -62,7 +64,7 @@ export const cssModalContentStyle = (
   height: ${modalType === "full"
     ? isFooter
       ? "calc(var(--vh, 1vh) * 100 - 85px)"
-      : "calc(var(--vh, 1vh) * 100)"
+      : "calc(var(--vh, 1vh) * 100 - 31px)"
     : "auto"};
   margin-bottom: 5px;
   padding: 1px;

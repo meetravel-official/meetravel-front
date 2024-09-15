@@ -1,3 +1,5 @@
+import { useTravelInfo } from "states/useTravelInfo";
+
 import { IAreaBasedList } from "@/api/interfaces/visitKorea";
 import { ReactComponent as HearIcon } from "@/assets/icons/heart.svg";
 import { ReactComponent as PinIcon } from "@/assets/icons/pin.svg";
@@ -20,6 +22,14 @@ interface TravelInfoItemProps {
 }
 
 export const TravelInfoItem = ({ travelInfo, like }: TravelInfoItemProps) => {
+  const { setSelectedContent, setIsOpenTravelInfoDetailModal } =
+    useTravelInfo();
+
+  const handleOnClickTravelInfoItem = () => {
+    setSelectedContent(travelInfo);
+    setIsOpenTravelInfoDetailModal(true);
+  };
+
   return (
     <div css={cssTravelInfoItemsStyle}>
       <div css={cssTravelInfoItemImageStyle}>
@@ -31,13 +41,19 @@ export const TravelInfoItem = ({ travelInfo, like }: TravelInfoItemProps) => {
             <ShareIcon />
           </button>
         </div>
-        <Image
-          src={travelInfo.firstimage || ""}
-          alt="travel-info"
-          width="100%"
-          height="100%"
-          objectFit="cover"
-        />
+        <button
+          css={cssTransparentButtonStyle()}
+          onClick={handleOnClickTravelInfoItem}
+        >
+          <Image
+            src={travelInfo.firstimage || ""}
+            alt="travel-info"
+            width="100%"
+            height="100%"
+            objectFit="cover"
+          />
+        </button>
+
         <div css={cssTravelInfoItemHeartStyle}>
           <button css={cssTransparentButtonStyle()}>
             <HearIcon />{" "}
@@ -47,14 +63,19 @@ export const TravelInfoItem = ({ travelInfo, like }: TravelInfoItemProps) => {
           </button>
         </div>
       </div>
-      <div css={cssTravelInfoItemDescStyle}>
-        <Typography color={COLORS.GRAY5} size="16" weight="regular">
-          {travelInfo.title}
-        </Typography>
-        <Typography color={COLORS.GRAY4} size="12" weight="regular">
-          {travelInfo.addr1} {travelInfo.addr2}
-        </Typography>
-      </div>
+      <button
+        css={cssTransparentButtonStyle()}
+        onClick={handleOnClickTravelInfoItem}
+      >
+        <div css={cssTravelInfoItemDescStyle}>
+          <Typography color={COLORS.GRAY5} size="16" weight="regular">
+            {travelInfo.title}
+          </Typography>
+          <Typography color={COLORS.GRAY4} size="12" weight="regular">
+            {travelInfo.addr1} {travelInfo.addr2}
+          </Typography>
+        </div>
+      </button>
     </div>
   );
 };
