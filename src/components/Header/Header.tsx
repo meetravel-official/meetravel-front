@@ -1,3 +1,4 @@
+import { SerializedStyles } from "@emotion/react";
 import { ReactNode } from "react";
 import { useHeaderState } from "states/useHeader";
 
@@ -10,6 +11,7 @@ interface HeaderProps {
   prefix?: ReactNode;
   titleContent?: ReactNode;
   suffix?: ReactNode;
+  detailStyle?: SerializedStyles;
 }
 
 /**
@@ -19,11 +21,16 @@ interface HeaderProps {
  * @param titleContent - zustand로 지정한 타이틀 대신 reactNode 지정 가능
  * @param suffix - 오른쪽 컨트롤 컴포넌트 지정
  */
-export const Header = ({ prefix, titleContent, suffix }: HeaderProps) => {
+export const Header = ({
+  prefix,
+  titleContent,
+  suffix,
+  detailStyle,
+}: HeaderProps) => {
   const { title } = useHeaderState();
 
   return (
-    <div css={cssHeaderStyle}>
+    <div css={cssHeaderStyle(detailStyle)}>
       {prefix && <div>{prefix}</div>}
       <div css={cssHeaderCenterStyle}>
         {titleContent ? (
