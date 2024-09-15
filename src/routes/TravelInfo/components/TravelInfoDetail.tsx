@@ -16,7 +16,7 @@ import {
 
 export const TravelInfoDetail = () => {
   const { kakao } = window;
-  const { selectedContent } = useTravelInfo();
+  const { selectedContent, setIsOpenTravelInfoDetailModal } = useTravelInfo();
 
   const { data: detailCommonData } = useGetDetailCommon(
     selectedContent?.contentid
@@ -158,6 +158,17 @@ export const TravelInfoDetail = () => {
       marker.setMap(map);
     }
   }, [kakao.maps, selectedContent]);
+
+  useEffect(() => {
+    window.addEventListener("popstate", () => {
+      setIsOpenTravelInfoDetailModal(false);
+    });
+    return () => {
+      window.removeEventListener("popstate", () => {
+        setIsOpenTravelInfoDetailModal(false);
+      });
+    };
+  }, [setIsOpenTravelInfoDetailModal]);
 
   const handleOnOpenKakaoMap = useCallback(() => {
     window.open(
