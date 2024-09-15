@@ -9,7 +9,7 @@ import {
   cssTravelInfoPreviewCardBodyStyle,
   cssTravelInfoPreviewCardImageStyle,
   cssTravelInfoPreviewCardStyle,
-} from "./TravelInfoPreviewCard.styles";
+} from "../styles/TravelInfoPreviewCard.styles";
 
 interface TravelInfoPreviewCardProps {
   travelInfo: IAreaBasedList;

@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { Fragment, useState } from "react";
-import { TravelInfoPreviewCard } from "routes/Chat/components/TravelInfoPreviewCard/TravelInfoPreviewCard";
+import { TravelInfoPreviewCard } from "routes/Chat/components/TravelInfoPreviewCard";
 
 import { ReactComponent as ChatIcon } from "@/assets/icons/cross.svg";
 import CheckButtonGroup from "@/components/CheckButton/CheckButtonGroup";
