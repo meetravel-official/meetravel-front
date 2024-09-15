@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import { Fragment, useState } from "react";
+import { TravelInfoPreviewCard } from "routes/Chat/components/TravelInfoPreviewCard/TravelInfoPreviewCard";
 
 import { ReactComponent as ChatIcon } from "@/assets/icons/cross.svg";
 import CheckButtonGroup from "@/components/CheckButton/CheckButtonGroup";
@@ -265,6 +266,34 @@ export const SampleContainer = () => {
           항목 C
         </CheckButtonGroup.CheckboxButton>
       </CheckButtonGroup>
+
+      <TravelInfoPreviewCard
+        travelInfo={{
+          addr1: "경상북도 안동시 하회남촌길 69-5",
+          addr2: "",
+          areacode: "35",
+          booktour: "",
+          cat1: "B02",
+          cat2: "B0201",
+          cat3: "B02011600",
+          contentid: "2465071",
+          contenttypeid: "32",
+          cpyrhtDivCd: "Type3",
+          createdtime: "20161220190700",
+          firstimage:
+            "http://tong.visitkorea.or.kr/cms/resource/00/2626200_image2_1.jpg",
+          firstimage2:
+            "http://tong.visitkorea.or.kr/cms/resource/00/2626200_image3_1.jpg",
+          mapx: "128.5175868107",
+          mapy: "36.5376537450",
+          mlevel: "6",
+          modifiedtime: "20230413082505",
+          sigungucode: "11",
+          tel: "054-855-8552",
+          title: "가경재 [한국관광 품질인증/Korea Quality]",
+          zipcode: "36760",
+        }}
+      />
     </div>
   );
 };

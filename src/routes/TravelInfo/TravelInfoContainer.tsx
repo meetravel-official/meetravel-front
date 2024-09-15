@@ -2,17 +2,19 @@ import { useEffect } from "react";
 import { useTravelInfo } from "states/useTravelInfo";
 
 import { Bar, Typography } from "@/components";
-import Modal from "@/components/Modal/Modal";
+import { TravelInfoDetailModal } from "@/components/TravelInfoDetailModal/TravelInfoDetailModal";
 import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
-import { TravelInfoDetail } from "./components/TravelInfoDetail";
 import { TravelInfoList } from "./components/TravelInfoList";
 import { TravelInfoSearch } from "./components/TravelInfoSearch";
 
 export const TravelInfoContainer = () => {
-  const { isOpenTravelInfoDetailModal, setIsOpenTravelInfoDetailModal } =
-    useTravelInfo();
+  const {
+    isOpenTravelInfoDetailModal,
+    setIsOpenTravelInfoDetailModal,
+    selectedContent,
+  } = useTravelInfo();
 
   useEffect(() => {
     return () => {
@@ -32,13 +34,11 @@ export const TravelInfoContainer = () => {
         <TravelInfoSearch />
         <TravelInfoList />
       </div>
-      <Modal
-        modalType="full"
+      <TravelInfoDetailModal
         isOpen={isOpenTravelInfoDetailModal}
         onClose={() => setIsOpenTravelInfoDetailModal(false)}
-      >
-        <TravelInfoDetail />
-      </Modal>
+        travelInfo={selectedContent}
+      />
     </div>
   );
 };

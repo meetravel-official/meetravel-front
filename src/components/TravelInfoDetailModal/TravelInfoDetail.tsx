@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useMemo } from "react";
-import { useTravelInfo } from "states/useTravelInfo";
 
 import { useGetDetailCommon, useGetDetailIntro } from "@/api/hooks/visitKorea";
-import { IDetailIntro } from "@/api/interfaces/visitKorea";
+import { IAreaBasedList, IDetailIntro } from "@/api/interfaces/visitKorea";
 import { ReactComponent as TelIcon } from "@/assets/icons/tel.svg";
 import { Image, Typography } from "@/components";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
@@ -12,22 +11,23 @@ import {
   cssTravelImageStyle,
   cssTravelInfoDetailStyle,
   cssTravelMapStyle,
-} from "../styles/TravelInfoDetail.styles";
+} from "./TravelInfoDetailModal.styles";
 
-export const TravelInfoDetail = () => {
+interface TravelInfoDetailProps {
+  travelInfo?: IAreaBasedList;
+}
+
+export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
   const { kakao } = window;
-  const { selectedContent } = useTravelInfo();
 
-  const { data: detailCommonData } = useGetDetailCommon(
-    selectedContent?.contentid
-  );
+  const { data: detailCommonData } = useGetDetailCommon(travelInfo?.contentid);
   const { data: detailIntroData } = useGetDetailIntro({
-    contentId: selectedContent?.contentid,
-    contentTypeId: selectedContent?.contenttypeid,
+    contentId: travelInfo?.contentid,
+    contentTypeId: travelInfo?.contenttypeid,
   });
 
   const contentIntro = useMemo(() => {
-    switch (selectedContent?.contenttypeid) {
+    switch (travelInfo?.contenttypeid) {
       case "12":
         return [
           { label: "개장일", key: "opendate" },
@@ -129,26 +129,32 @@ export const TravelInfoDetail = () => {
           { label: "인허가번호", key: "lcnsno" },
         ];
     }
-  }, [selectedContent?.contenttypeid]);
+  }, [travelInfo?.contenttypeid]);
+
+  const handleOnOpenKakaoMap = useCallback(() => {
+    if (travelInfo?.mapx && travelInfo?.mapy && travelInfo?.title)
+      window.open(
+        `https://map.kakao.com/link/map/${travelInfo?.title},${travelInfo?.mapy},${travelInfo?.mapx}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+  }, [travelInfo]);
 
   useEffect(() => {
-    if (selectedContent?.mapx && selectedContent.mapy) {
+    if (travelInfo?.mapx && travelInfo.mapy) {
       const container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
       const options = {
         //지도를 생성할 때 필요한 기본 옵션
-        center: new kakao.maps.LatLng(
-          selectedContent?.mapy,
-          selectedContent?.mapx
-        ), //지도의 중심좌표.
-        level: selectedContent.mlevel, //지도의 레벨(확대, 축소 정도)
+        center: new kakao.maps.LatLng(travelInfo?.mapy, travelInfo?.mapx), //지도의 중심좌표.
+        level: travelInfo.mlevel, //지도의 레벨(확대, 축소 정도)
         draggable: false,
       };
 
       const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 
       const markerPosition = new kakao.maps.LatLng(
-        selectedContent?.mapy,
-        selectedContent?.mapx
+        travelInfo?.mapy,
+        travelInfo?.mapx
       );
 
       const marker = new kakao.maps.Marker({
@@ -157,21 +163,13 @@ export const TravelInfoDetail = () => {
 
       marker.setMap(map);
     }
-  }, [kakao.maps, selectedContent]);
-
-  const handleOnOpenKakaoMap = useCallback(() => {
-    window.open(
-      `https://map.kakao.com/link/map/${selectedContent?.title},${selectedContent?.mapy},${selectedContent?.mapx}`,
-      "_blank",
-      "noopener noreferrer"
-    );
-  }, [selectedContent?.mapx, selectedContent?.mapy, selectedContent?.title]);
+  }, [kakao.maps, travelInfo]);
 
   return (
     <div css={cssTravelInfoDetailStyle}>
       <div css={cssTravelImageStyle}>
         <Image
-          src={selectedContent?.firstimage || ""}
+          src={travelInfo?.firstimage || ""}
           alt="travel-info"
           width="100%"
           height="100%"
@@ -184,16 +182,16 @@ export const TravelInfoDetail = () => {
             css={cssAlignVerticalStyle({ gap: 8, alignItems: "flex-start" })}
           >
             <Typography size="24" color={COLORS.GRAY5} weight={700}>
-              {selectedContent?.title}
+              {travelInfo?.title}
             </Typography>
             <Typography size="16" color={COLORS.GRAY5} weight={700}>
-              {selectedContent?.addr1} {selectedContent?.addr2}
+              {travelInfo?.addr1} {travelInfo?.addr2}
             </Typography>
           </div>
           <div css={cssAlignHorizontalStyle({ gap: 8 })}>
             <TelIcon />
             <Typography size="16" color={COLORS.GRAY4} weight={700}>
-              {selectedContent?.tel || "-"}
+              {travelInfo?.tel || "-"}
             </Typography>
           </div>
         </div>
@@ -239,7 +237,7 @@ export const TravelInfoDetail = () => {
               </div>
             ))}
         </div>
-        {selectedContent?.mapx && selectedContent?.mapy && (
+        {travelInfo?.mapx && travelInfo?.mapy && (
           <button
             id="map"
             css={cssTravelMapStyle}
