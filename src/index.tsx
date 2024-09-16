@@ -64,6 +64,7 @@ const router = createBrowserRouter([
     children: [
       { path: pageRoutes.SIGN_IN, Component: containerRoutes.SIGN_IN },
       { path: pageRoutes.SIGN_UP, Component: containerRoutes.SIGN_UP },
+      { path: pageRoutes.AUTH_CHECK, Component: containerRoutes.AUTH_CHECK },
       { path: pageRoutes.SAMPLE, Component: containerRoutes.SAMPLE },
     ],
   },
