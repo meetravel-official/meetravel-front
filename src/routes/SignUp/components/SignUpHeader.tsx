@@ -29,25 +29,43 @@ export const SignUpHeader = ({ step, headerContent }: ISignUpHeaderProps) => {
         ${cssSignUpHeaderStyle}
       `}
     >
-      <div css={cssAlignHorizontalStyle({ justifyContent: "space-between" })}>
+      <div
+        css={cssAlignHorizontalStyle({
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+        })}
+      >
         <div css={cssAlignVerticalStyle({ alignItems: "flex-start" })}>
           {headerContent}
         </div>
         {step.isFirst ? (
           <Button
-            icon={<Cross />}
+            icon={<Cross width={16} height={16} />}
             height="unset"
             width="unset"
             bgColor="unset"
             onClick={handleNavigation}
+            detailStyle={css`
+              padding: 0;
+            `}
           />
         ) : (
           <Button
-            icon={<ArrowLeft stroke={COLORS.GRAY3} />}
+            icon={
+              <ArrowLeft
+                stroke={COLORS.GRAY3}
+                width={20}
+                height={20}
+                strokeWidth={1}
+              />
+            }
             height="unset"
             width="unset"
             bgColor="unset"
             onClick={step.handleOnClickPrev}
+            detailStyle={css`
+              padding: 0;
+            `}
           />
         )}
       </div>

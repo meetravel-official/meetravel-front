@@ -17,4 +17,7 @@ export const cssSignInComponentLayoutStyle = css`
     justify-content: center;
     height: calc(100vh - 100px);
   }
+  a.kakao-sign-in-link {
+    width: 100%;
+  }
 `;
