@@ -51,7 +51,7 @@ export const SignInContainer = () => {
       >
         <Button
           height={56}
-          bgColor={COLORS.KAKAOYELLOW1}
+          bgColor={COLORS.KAKAOYELLOW4}
           color={COLORS.GRAY5}
           detailStyle={css`
             border-radius: 12px;
