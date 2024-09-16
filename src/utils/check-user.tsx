@@ -9,16 +9,16 @@ export const checkUser = <P extends object>(
   Component: ComponentType<P>
 ): FC<P> => {
   return function WithComponent({ ...props }) {
-    const { userToken } = useUserState();
+    const { userInfo } = useUserState();
     const navigate = useNavigate();
 
     useEffect(() => {
-      if (userToken) {
+      if (userInfo) {
         navigate(pageRoutes.ROOT);
       } else {
         navigate(pageRoutes.SIGN_IN);
       }
-    }, [navigate, userToken]);
+    }, [navigate, userInfo]);
 
     return <Component {...props} />;
   };

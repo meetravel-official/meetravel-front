@@ -1,11 +1,23 @@
 import { create } from "zustand";
 
+import { IGetKakaoLoginResponse } from "@/api/interfaces/kakaoSignUpInterface";
+
 interface IUseUserState {
-  userToken?: string;
-  setUserToken: (userToken?: string) => void;
+  userInfo?: IGetKakaoLoginResponse;
+  setUserInfo: (userInfo?: IGetKakaoLoginResponse) => void;
+}
+
+interface IKakaoAuthState {
+  requestToKakao: boolean;
+  setRequestToKakao: (value: boolean) => void;
 }
 
 export const useUserState = create<IUseUserState>((set) => ({
-  userToken: undefined,
-  setUserToken: (userToken?: string) => set({ userToken }),
+  userInfo: undefined,
+  setUserInfo: (userInfo?: IGetKakaoLoginResponse) => set({ userInfo }),
+}));
+
+export const useKakaoAuthState = create<IKakaoAuthState>((set) => ({
+  requestToKakao: true,
+  setRequestToKakao: (requestToKakao: boolean) => set({ requestToKakao }),
 }));

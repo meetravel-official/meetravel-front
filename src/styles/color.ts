@@ -1,5 +1,6 @@
 export const COLORS = {
   WHITE: "#FFFFFF",
+  BLACK: "#000000",
   GRAY1: "#FFF1F1",
   GRAY2: "#D0C3C3",
   GRAY3: "#B1A7A7",
@@ -15,4 +16,5 @@ export const COLORS = {
   KAKAOYELLOW1: "#FFF174",
   KAKAOYELLOW2: "#F8E860",
   KAKAOYELLOW3: "#ECDD56",
+  KAKAOYELLOW4: "#FEE500",
 };
