@@ -15,6 +15,7 @@ interface AlignStyleProps {
     | "flex-start"
     | "flex-end";
   width?: string;
+  wrap?: "wrap" | "nowrap";
 }
 
 export const cssAlignHorizontalStyle = (alignProps: AlignStyleProps) => css`
@@ -24,6 +25,7 @@ export const cssAlignHorizontalStyle = (alignProps: AlignStyleProps) => css`
   align-items: ${alignProps.alignItems || "center"};
   justify-content: ${alignProps.justifyContent || "flex-start"};
   width: ${alignProps.width || "auto"};
+  flex-wrap: ${alignProps.wrap || "nowrap"};
 `;
 
 export const cssAlignVerticalStyle = (alignProps: AlignStyleProps) => css`
@@ -33,4 +35,5 @@ export const cssAlignVerticalStyle = (alignProps: AlignStyleProps) => css`
   gap: ${typeof alignProps.gap === "number" ? alignProps.gap : 8}px;
   align-items: ${alignProps.alignItems || "center"};
   justify-content: ${alignProps.justifyContent || "flex-start"};
+  flex-wrap: ${alignProps.wrap || "nowrap"};
 `;
