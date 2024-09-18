@@ -15,6 +15,7 @@ import {
 } from "@/components";
 import { cssGlobalStyle } from "@/styles/globalStyle";
 
+import { ChatLayout } from "./components/ChatLayout/ChatLayout";
 import reportWebVitals from "./reportWebVitals";
 import { containerRoutes, pageRoutes } from "./routes";
 
@@ -37,6 +38,15 @@ const router = createBrowserRouter([
       { path: pageRoutes.SHOP, Component: containerRoutes.SHOP },
       { path: pageRoutes.PROFILE, Component: containerRoutes.PROFILE },
       { path: pageRoutes.TRAVEL_INFO, Component: containerRoutes.TRAVEL_INFO },
+    ],
+  },
+  {
+    element: <ChatLayout />,
+    children: [
+      {
+        path: `${pageRoutes.CHAT}/:chatId`,
+        Component: containerRoutes.CHAT_ROOM,
+      },
     ],
   },
   {
@@ -66,6 +76,12 @@ const router = createBrowserRouter([
       { path: pageRoutes.SIGN_UP, Component: containerRoutes.SIGN_UP },
       { path: pageRoutes.AUTH_CHECK, Component: containerRoutes.AUTH_CHECK },
       { path: pageRoutes.SAMPLE, Component: containerRoutes.SAMPLE },
+    ],
+  },
+  {
+    element: <MainLayout />,
+    children: [
+      { path: pageRoutes.NOTFOUND, Component: containerRoutes.NOTFOUND },
     ],
   },
 ]);
