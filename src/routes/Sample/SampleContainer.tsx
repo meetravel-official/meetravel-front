@@ -1,8 +1,10 @@
 import { css } from "@emotion/react";
 import { Fragment, useState } from "react";
-import { TravelInfoPreviewCard } from "routes/Chat/components/TravelInfoPreviewCard/TravelInfoPreviewCard";
+import { TravelInfoPreviewCard } from "routes/Chat/components/TravelInfoPreviewCard";
+import { TravelPlanModal } from "routes/Chat/components/TravelPlanModal/TravelPlanModal";
 
 import { ReactComponent as ChatIcon } from "@/assets/icons/cross.svg";
+import { Button } from "@/components";
 import CheckButtonGroup from "@/components/CheckButton/CheckButtonGroup";
 import Form from "@/components/Form/Form";
 import { FormItem } from "@/components/Form/FormItem";
@@ -56,11 +58,17 @@ export const SampleContainer = () => {
   const [modalOpen2, setModalOpen2] = useState(false);
   const [modalOpen3, setModalOpen3] = useState(false);
 
+  const [isOpenTravelPlanModal, setIsOpenTravelPlanModal] = useState(false);
+
   const handleModal = () => {
     setModalOpen((prev) => !prev);
   };
 
   const [radioValue, setRadioValue] = useState("a");
+
+  const handleOnOpenTravelPlanModal = () => {
+    setIsOpenTravelPlanModal(true);
+  };
 
   return (
     <div>
@@ -292,6 +300,19 @@ export const SampleContainer = () => {
           tel: "054-855-8552",
           title: "가경재 [한국관광 품질인증/Korea Quality]",
           zipcode: "36760",
+        }}
+      />
+      <Button onClick={handleOnOpenTravelPlanModal}>여행 계획서</Button>
+      <TravelPlanModal
+        isOpen={isOpenTravelPlanModal}
+        onClose={() => {
+          setIsOpenTravelPlanModal(false);
+        }}
+        matchingInfo={{
+          travelStartDate: "2024-08-11",
+          travelEndDate: "2024-08-13",
+          travelArea: "강원도 동해",
+          keyword: ["산", "도시", "야경"],
         }}
       />
     </div>

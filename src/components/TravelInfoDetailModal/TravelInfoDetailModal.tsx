@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { IAreaBasedList } from "@/api/interfaces/visitKorea";
+import BorderModal from "@/components/BorderModal/BorderModal";
 
-import Modal from "../Modal/Modal";
 import { TravelInfoDetail } from "./TravelInfoDetail";
 
 interface TravelInfoDetailModalProps {
@@ -37,8 +37,8 @@ export const TravelInfoDetailModal = ({
   }, [onClose]);
 
   return (
-    <Modal modalType="full" isOpen={isOpen} onClose={onClose}>
+    <BorderModal modalType="full" isOpen={isOpen} onClose={onClose}>
       <TravelInfoDetail travelInfo={travelInfo} />
-    </Modal>
+    </BorderModal>
   );
 };

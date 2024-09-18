@@ -1,12 +1,6 @@
 import { css } from "@emotion/react";
 
-import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
-
-export const cssTravelInfoDetailStyle = css`
-  margin-top: 16px;
-  ${cssAlignVerticalStyle({ gap: 8, alignItems: "flex-start" })}
-`;
 
 export const cssTravelImageStyle = css`
   width: 100%;

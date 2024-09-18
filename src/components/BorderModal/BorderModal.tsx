@@ -3,19 +3,18 @@ import React, { Fragment, useEffect } from "react";
 
 import { ReactComponent as CrossIcon } from "@/assets/icons/cross.svg";
 
-import { Button, TButtonProps } from "../Button/Button";
+import { ModalButton, ModalType } from "../Modal/Modal";
 import { Typography } from "../Typography/Typography";
 import {
   cssCrossIcon,
   cssFooterStyle,
   cssModalContentStyle,
+  cssModalHeaderStyle,
   cssModalStyle,
   cssOverlayStyle,
-} from "./Modal.style";
+} from "./BorderModal.styles";
 
-export type ModalType = "simple" | "normal" | "full";
-
-export interface ModalProps {
+export interface BorderModalProps {
   isOpen: boolean;
   onClose: () => void;
   modalDetailStyle?: SerializedStyles;
@@ -33,7 +32,7 @@ export interface ModalProps {
  * @param closableIcon true: close button, false: no close button
  * @param footer flex 기본
  */
-const Modal = ({
+const BorderModal = ({
   isOpen,
   onClose,
   modalDetailStyle,
@@ -42,7 +41,7 @@ const Modal = ({
   modalType = "normal",
   footer,
   children,
-}: ModalProps) => {
+}: BorderModalProps) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -57,38 +56,31 @@ const Modal = ({
         <>
           {modalType !== "full" && <div css={cssOverlayStyle}></div>}
           <div css={cssModalStyle(modalType, modalDetailStyle)}>
+            <div css={cssModalHeaderStyle}>
+              {typeof title === "undefined" ? (
+                <div />
+              ) : typeof title === "string" ? (
+                <Typography
+                  size="16"
+                  weight="bold"
+                  mode="block"
+                  detailStyle={css`
+                    text-align: center;
+                    transform: translate(15px, 3px);
+                  `}
+                >
+                  {title}
+                </Typography>
+              ) : (
+                title
+              )}
+              {closableIcon && (
+                <button css={cssCrossIcon} onClick={onClose}>
+                  <CrossIcon />
+                </button>
+              )}
+            </div>
             <div css={cssModalContentStyle(modalType, Boolean(footer))}>
-              <div
-                css={css`
-                  display: grid;
-                  grid-template-columns: 1fr auto;
-                  margin: 2px;
-                `}
-              >
-                <div>
-                  {typeof title === "string" ? (
-                    <Typography
-                      size="16"
-                      weight="bold"
-                      mode="block"
-                      detailStyle={css`
-                        text-align: center;
-                        transform: translate(15px, 3px);
-                      `}
-                    >
-                      {title}
-                    </Typography>
-                  ) : (
-                    title
-                  )}
-                </div>
-                {closableIcon && (
-                  <button css={cssCrossIcon} onClick={onClose}>
-                    <CrossIcon />
-                  </button>
-                )}
-              </div>
-
               {children}
             </div>
             {footer && <div css={cssFooterStyle}>{footer}</div>}
@@ -98,23 +90,7 @@ const Modal = ({
     </>
   );
 };
-/**
- * 모달내 버튼 스타일 유지를 위한 컴포넌트
- * @param props Button props 전달
- */
-export const ModalButton = ({ ...props }: TButtonProps) => {
-  return (
-    <Button
-      {...props}
-      height="regular"
-      detailStyle={css`
-        border-radius: 4px;
-        font-size: 16px;
-      `}
-    />
-  );
-};
 
-Modal.Button = ModalButton;
+BorderModal.Button = ModalButton;
 
-export default Modal;
+export default BorderModal;
