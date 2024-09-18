@@ -141,7 +141,7 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
   }, [travelInfo]);
 
   useEffect(() => {
-    if (travelInfo?.mapx && travelInfo.mapy) {
+    if (travelInfo?.mapx && travelInfo.mapy && kakao?.maps) {
       const container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
       const options = {
         //지도를 생성할 때 필요한 기본 옵션
@@ -163,7 +163,7 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
 
       marker.setMap(map);
     }
-  }, [kakao.maps, travelInfo]);
+  }, [kakao?.maps, travelInfo]);
 
   return (
     <div css={cssTravelInfoDetailStyle}>
