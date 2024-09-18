@@ -79,7 +79,7 @@ export const TravelPlanDateFormItem = ({
           집합 장소는 어디인가요?
         </Typography>
         <Input
-          placeholder="집합 장소를 적어주세요"
+          placeholder="처음 모일 땐 개방적인 곳을 추천해요."
           detailStyle={cssInputFullWidthStyle}
         />
       </div>
@@ -88,7 +88,7 @@ export const TravelPlanDateFormItem = ({
           집합 시간은 언제인가요?
         </Typography>
         <Input
-          placeholder="집합 시간을 적어주세요"
+          placeholder="사람들과 충분한 대화 후 결정해요."
           detailStyle={cssInputFullWidthStyle}
         />
       </div>
