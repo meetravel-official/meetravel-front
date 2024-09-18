@@ -2,7 +2,7 @@ import { css, SerializedStyles } from "@emotion/react";
 
 import { COLORS } from "@/styles/color";
 
-export const cssInputStyle = css`
+export const cssInputStyle = (inputDetailStyle?: SerializedStyles) => css`
   outline: none;
   border: none;
   width: 100%;
@@ -14,6 +14,7 @@ export const cssInputStyle = css`
   ::placeholder {
     color: ${COLORS.PINK1};
   }
+  ${inputDetailStyle}
 `;
 
 export const cssInputIconStyle = css`
