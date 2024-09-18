@@ -12,6 +12,35 @@ export const cssDateSelectBoxStyle = css`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+
+  position: relative;
+  transition-duration: 1s;
+
+  button {
+    z-index: 2;
+  }
+`;
+
+export const cssPreviousDateStyle = css`
+  position: absolute;
+  top: 50%;
+  left: 35.5px;
+  transform: translateY(-50%);
+`;
+
+export const cssSelectedDateStyle = css`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition-duration: 1s;
+`;
+
+export const cssNextDateStyle = css`
+  position: absolute;
+  top: 50%;
+  right: 35.5px;
+  transform: translateY(-50%);
 `;
 
 export const cssTravelPlanDateFormItemStyle = (isView: boolean) => css`

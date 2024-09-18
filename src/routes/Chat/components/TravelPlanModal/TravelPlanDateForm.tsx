@@ -1,6 +1,11 @@
 import dayjs from "dayjs";
 import { useCallback, useMemo, useState } from "react";
-import { cssDateSelectBoxStyle } from "routes/Chat/styles/TravelPlanModal.styles";
+import {
+  cssDateSelectBoxStyle,
+  cssNextDateStyle,
+  cssPreviousDateStyle,
+  cssSelectedDateStyle,
+} from "routes/Chat/styles/TravelPlanModal.styles";
 
 import { Typography } from "@/components";
 import { ArrowButton } from "@/components/ArrowButton/ArrowButton";
@@ -49,9 +54,34 @@ export const TravelPlanDateForm = ({
           onClick={handleOnSelectPrevDate}
           disabled={selectedDateIndex === 0}
         />
-        <Typography color={COLORS.GRAY4} weight={700} size={"24"}>
+        {selectedDateIndex > 0 && (
+          <Typography
+            color={COLORS.GRAY2}
+            weight={700}
+            size={"16"}
+            detailStyle={cssPreviousDateStyle}
+          >
+            {travelDateList[selectedDateIndex - 1].format("MM월 DD일")}
+          </Typography>
+        )}
+        <Typography
+          color={COLORS.GRAY4}
+          weight={700}
+          size={"24"}
+          detailStyle={cssSelectedDateStyle}
+        >
           {travelDateList[selectedDateIndex].format("MM월 DD일")}
         </Typography>
+        {selectedDateIndex < travelDateList.length - 1 && (
+          <Typography
+            color={COLORS.GRAY2}
+            weight={700}
+            size={"16"}
+            detailStyle={cssNextDateStyle}
+          >
+            {travelDateList[selectedDateIndex + 1].format("MM월 DD일")}
+          </Typography>
+        )}
         <ArrowButton
           direction="right"
           onClick={handleOnSelectNextDate}
