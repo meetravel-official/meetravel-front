@@ -14,7 +14,6 @@ export const cssDateSelectBoxStyle = css`
   align-items: center;
 
   position: relative;
-  transition-duration: 1s;
 
   button {
     z-index: 2;
