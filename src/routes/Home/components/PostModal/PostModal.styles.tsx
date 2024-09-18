@@ -1,5 +1,9 @@
 import { css } from "@emotion/react";
 
+export const cssPostModalBodyStyle = css`
+  margin-top: -16px;
+`;
+
 export const cssPostImageFullBoxStyle = css`
   width: calc(100% + 32px);
   transform: translateX(-16px);

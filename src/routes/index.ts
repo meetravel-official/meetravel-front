@@ -1,6 +1,5 @@
 import { ChatContainer } from "./Chat/ChatContainer";
 import { HomeContainer } from "./Home/HomeContainer";
-import { PostContainer } from "./Post/PostContainer";
 import { ProfileContainer } from "./Profile/ProfileContainer";
 import { SampleContainer } from "./Sample/SampleContainer";
 import { ShopContainer } from "./Shop/ShopContainer";
@@ -18,7 +17,6 @@ export const pageRoutes = {
   SIGN_IN: "/auth/sign-in",
   SIGN_UP: "/auth/sign-up",
   AUTH_CHECK: "/auth/sign-in/check",
-  POST: "/post",
   TRAVEL_INFO: "/travel-info",
   TOS: "/terms-of-service",
   SAMPLE: "/sample",
@@ -33,7 +31,6 @@ export const containerRoutes = {
   SIGN_IN: SignInContainer,
   SIGN_UP: SignUpContainer,
   AUTH_CHECK: KaKaoAuthCheckContainer,
-  POST: PostContainer,
   TOS: TermsOfServiceContainer,
   TRAVEL_INFO: TravelInfoContainer,
 };

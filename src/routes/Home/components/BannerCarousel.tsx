@@ -1,5 +1,4 @@
-import React, { ReactNode } from "react";
-import { Link } from "react-router-dom";
+import React, { Fragment, useState } from "react";
 
 import { useGetGallerySearchList } from "@/api/hooks/visitKorea";
 import { Typography } from "@/components";
@@ -12,7 +11,10 @@ import {
   cssBannerCarouselItemStyle,
   cssBannerCarouselItemTitleStyle,
 } from "./BannerCarousel.styles";
+import { PostModal } from "./PostModal/PostModal";
 export const BannerCarousel = () => {
+  const [isOpenPostModal, setIsOpenPostModal] = useState(false);
+
   const { data: kyeonjunamsanData } = useGetGallerySearchList("경주 남산");
   const { data: bulguksaData } = useGetGallerySearchList("불국사");
   const { data: junjuhanokData } = useGetGallerySearchList("전주 한옥마을");
@@ -45,18 +47,19 @@ export const BannerCarousel = () => {
     },
   ];
 
-  const BannerWrapper = ({
-    link,
-    children,
-  }: {
-    link?: string;
-    children: ReactNode;
-  }) => (link ? <Link to={link}>{children}</Link> : <div>{children}</div>);
+  const handleOnOpenPostModal = () => {
+    setIsOpenPostModal(true);
+  };
+
   return (
-    <Carousel>
-      {banners.map((banner, index) => (
-        <BannerWrapper link={banner.link} key={index}>
-          <div css={cssBannerCarouselItemStyle}>
+    <Fragment>
+      <Carousel>
+        {banners.map((banner, index) => (
+          <button
+            key={index}
+            css={cssBannerCarouselItemStyle}
+            onClick={handleOnOpenPostModal}
+          >
             <div css={cssBannerCarouselItemTitleStyle}>
               {banner.subTitle && (
                 <Typography size="16" color={COLORS.GRAY1} weight="bold">
@@ -78,9 +81,15 @@ export const BannerCarousel = () => {
                 {banner.date}
               </Typography>
             </div>
-          </div>
-        </BannerWrapper>
-      ))}
-    </Carousel>
+          </button>
+        ))}
+      </Carousel>
+      <PostModal
+        isOpen={isOpenPostModal}
+        onClose={() => {
+          setIsOpenPostModal(false);
+        }}
+      />
+    </Fragment>
   );
 };

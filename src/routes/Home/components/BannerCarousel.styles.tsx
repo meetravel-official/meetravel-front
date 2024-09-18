@@ -4,6 +4,9 @@ import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
 export const cssBannerCarouselItemStyle = css`
+  all: unset;
+  cursor: pointer;
+
   position: relative;
   width: 100%;
   height: 100%;

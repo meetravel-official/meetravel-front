@@ -3,22 +3,18 @@ import { Button, Image, Typography } from "@/components";
 import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
+import { PostModalContentProps } from "./PostModal";
 import {
   cssPostImageBoxStyle,
   cssPostImageFullBoxStyle,
-} from "./PostContiner.styles";
+} from "./PostModal.styles";
 
-export const PostContainer = () => {
+export const ContentSeptember = ({
+  handleOnLinkMap,
+}: PostModalContentProps) => {
   const { data: kyeongjunamsanData } = useGetGallerySearchList("경주 남산");
   const { data: bulguksaData } = useGetGallerySearchList("불국사");
   const { data: junjuhanokData } = useGetGallerySearchList("전주 한옥마을");
-
-  const handleOnLinkBtn = (searchKeyword: string) => {
-    return window.open(
-      `https://map.kakao.com/link/search/${searchKeyword}`,
-      "_blank"
-    );
-  };
 
   return (
     <div css={cssAlignVerticalStyle({ gap: 16 })}>
@@ -82,7 +78,7 @@ export const PostContainer = () => {
         <Button
           bgColor={COLORS.PINK2}
           color={COLORS.WHITE}
-          onClick={() => handleOnLinkBtn("경주")}
+          onClick={() => handleOnLinkMap("경주")}
         >
           장소 위치 지도에서 확인하기
         </Button>
@@ -113,7 +109,7 @@ export const PostContainer = () => {
         <Button
           bgColor={COLORS.PINK2}
           color={COLORS.WHITE}
-          onClick={() => handleOnLinkBtn("전주")}
+          onClick={() => handleOnLinkMap("전주")}
         >
           장소 위치 지도에서 확인하기
         </Button>
