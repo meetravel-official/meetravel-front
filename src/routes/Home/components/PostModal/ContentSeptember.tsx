@@ -19,7 +19,7 @@ export const ContentSeptember = ({
   return (
     <div css={cssAlignVerticalStyle({ gap: 16 })}>
       <div css={cssAlignVerticalStyle({ gap: 20, alignItems: "flex-start" })}>
-        <div css={cssPostImageFullBoxStyle}>
+        <div css={cssPostImageFullBoxStyle} id="경주 남산">
           <Image
             src={
               kyeongjunamsanData?.data?.response?.body?.items?.item?.[0]
@@ -52,7 +52,7 @@ export const ContentSeptember = ({
         </Typography>
       </div>
       <div css={cssAlignVerticalStyle({ gap: 20, alignItems: "flex-start" })}>
-        <div css={cssPostImageBoxStyle}>
+        <div css={cssPostImageBoxStyle} id="불국사">
           <Image
             src={
               bulguksaData?.data?.response?.body?.items?.item?.[0]
@@ -82,7 +82,7 @@ export const ContentSeptember = ({
         >
           장소 위치 지도에서 확인하기
         </Button>
-        <div css={cssPostImageBoxStyle}>
+        <div css={cssPostImageBoxStyle} id="전주 한옥마을">
           <Image
             src={
               junjuhanokData?.data?.response?.body?.items?.item?.[0]

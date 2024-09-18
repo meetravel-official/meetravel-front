@@ -14,6 +14,7 @@ import {
 import { PostModal } from "./PostModal/PostModal";
 export const BannerCarousel = () => {
   const [isOpenPostModal, setIsOpenPostModal] = useState(false);
+  const [scrollTo, setScrollTo] = useState("");
 
   const { data: kyeonjunamsanData } = useGetGallerySearchList("경주 남산");
   const { data: bulguksaData } = useGetGallerySearchList("불국사");
@@ -27,7 +28,6 @@ export const BannerCarousel = () => {
         kyeonjunamsanData?.data?.response?.body?.items?.item?.[0]
           .galWebImageUrl,
       date: "2024/09/02",
-      link: "/post/1",
     },
     {
       subTitle: "미트래블이 선정한",
@@ -35,7 +35,7 @@ export const BannerCarousel = () => {
       imgSrc:
         bulguksaData?.data?.response?.body?.items?.item?.[0].galWebImageUrl,
       date: "2024/09/02",
-      link: "/post/1#경주",
+      id: "불국사",
     },
     {
       subTitle: "미트래블이 선정한",
@@ -43,12 +43,13 @@ export const BannerCarousel = () => {
       imgSrc:
         junjuhanokData?.data?.response?.body?.items?.item?.[0].galWebImageUrl,
       date: "2024/09/02",
-      link: "/post/1#전주",
+      id: "전주 한옥마을",
     },
   ];
 
-  const handleOnOpenPostModal = () => {
+  const handleOnOpenPostModal = (scrollTo?: string) => {
     setIsOpenPostModal(true);
+    setScrollTo(scrollTo || "");
   };
 
   return (
@@ -58,7 +59,7 @@ export const BannerCarousel = () => {
           <button
             key={index}
             css={cssBannerCarouselItemStyle}
-            onClick={handleOnOpenPostModal}
+            onClick={() => handleOnOpenPostModal(banner.id)}
           >
             <div css={cssBannerCarouselItemTitleStyle}>
               {banner.subTitle && (
@@ -89,6 +90,7 @@ export const BannerCarousel = () => {
         onClose={() => {
           setIsOpenPostModal(false);
         }}
+        scrollTo={scrollTo}
       />
     </Fragment>
   );

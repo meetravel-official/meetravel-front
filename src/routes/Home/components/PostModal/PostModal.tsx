@@ -9,12 +9,13 @@ import { cssPostModalBodyStyle } from "./PostModal.styles";
 interface PostModalProps {
   isOpen: boolean;
   onClose: () => void;
+  scrollTo?: string;
 }
 
 export interface PostModalContentProps {
   handleOnLinkMap: (searchKeyword: string) => void;
 }
-export const PostModal = ({ isOpen, onClose }: PostModalProps) => {
+export const PostModal = ({ isOpen, onClose, scrollTo }: PostModalProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,6 +34,17 @@ export const PostModal = ({ isOpen, onClose }: PostModalProps) => {
       });
     };
   }, [onClose]);
+
+  useEffect(() => {
+    if (scrollTo) {
+      const element = document.getElementById(scrollTo);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+      }
+    }
+  }, [scrollTo]);
 
   const handleOnLinkMap = (searchKeyword: string) => {
     return window.open(
