@@ -1,11 +1,16 @@
 import { css } from "@emotion/react";
 
 import { cssAlignVerticalStyle } from "@/styles/align";
+import { COLORS } from "@/styles/color";
 
 export const cssBannerCarouselItemStyle = css`
   position: relative;
   width: 100%;
   height: 100%;
+
+  .typography {
+    text-shadow: 0px 0px 2px ${COLORS.GRAY5};
+  }
 `;
 
 export const cssBannerCarouselItemImageStyle = css`
