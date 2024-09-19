@@ -1,3 +1,4 @@
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 import dayjs from "dayjs";
 import { Fragment, useCallback, useEffect, useMemo } from "react";
 
@@ -165,7 +166,15 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
         data: detailIntro?.sponsor2tel,
       },
       {
-        icon: <TelIcon />,
+        icon: (
+          <InfoCircledIcon
+            color={COLORS.GRAY3}
+            width={19}
+            height={19}
+            stroke={COLORS.GRAY3}
+            strokeWidth={0.5}
+          />
+        ),
         label: "문의 및 안내",
         data:
           detailIntro?.infocenter ||
