@@ -6,13 +6,7 @@ import ReactDOM from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import {
-  BackLayout,
-  CloseLayout,
-  MainLayout,
-  Meta,
-  SimpleLayout,
-} from "@/components";
+import { CloseLayout, MainLayout, Meta, SimpleLayout } from "@/components";
 import { cssGlobalStyle } from "@/styles/globalStyle";
 
 import reportWebVitals from "./reportWebVitals";
@@ -37,16 +31,6 @@ const router = createBrowserRouter([
       { path: pageRoutes.SHOP, Component: containerRoutes.SHOP },
       { path: pageRoutes.PROFILE, Component: containerRoutes.PROFILE },
       { path: pageRoutes.TRAVEL_INFO, Component: containerRoutes.TRAVEL_INFO },
-    ],
-  },
-  {
-    element: <BackLayout />,
-    children: [
-      {
-        path: `${pageRoutes.POST}/:postId`,
-        caseSensitive: true,
-        Component: containerRoutes.POST,
-      },
     ],
   },
   {

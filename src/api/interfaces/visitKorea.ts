@@ -217,3 +217,16 @@ export interface IDetailIntro {
   accomcountlodging?: string;
   benikia?: string;
 }
+
+export interface IGalleryImage {
+  galContentId: string;
+  galContentTypeId: string;
+  galTitle: string;
+  galWebImageUrl: string;
+  galCreatedtime: string;
+  galModifiedtime: string;
+  galPhotographyMonth: string;
+  galPhotographyLocation: string;
+  galPhotographer: string;
+  galSearchKeyword: string;
+}

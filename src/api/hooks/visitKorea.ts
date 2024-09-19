@@ -8,6 +8,7 @@ import {
   IAriaCode,
   IDetailCommon,
   IDetailIntro,
+  IGalleryImage,
   IGetAreaBasedListParams,
   IGetAriaCodeParams,
   IVisitKoreaListResponse,
@@ -102,5 +103,23 @@ export const useGetDetailIntro = (params?: {
         withCredentials: false,
       }),
     enabled: !!params?.contentId && !!params?.contentTypeId,
+  });
+};
+
+export const useGetGallerySearchList = (keyword?: string) => {
+  return useQuery<IVisitKoreaListResponse<IGalleryImage>, AxiosError>({
+    queryKey: ["useGetGallerySearchList", keyword],
+    queryFn: () =>
+      api.get(apiRoute.gallerySearchList, {
+        params: {
+          MobileOS: "ETC",
+          MobileApp: "미트래블",
+          _type: "json",
+          serviceKey: process.env.REACT_APP_KOREA_VISIT_API_DECODING_KEY,
+          keyword,
+        },
+        withCredentials: false,
+      }),
+    enabled: !!keyword,
   });
 };
