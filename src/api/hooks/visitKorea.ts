@@ -79,7 +79,11 @@ export const useGetDetailCommon = (contentId?: string) => {
           MobileApp: "미트래블",
           _type: "json",
           serviceKey: process.env.REACT_APP_KOREA_VISIT_API_DECODING_KEY,
-          overviewYN: "Y", // 콘텐츠 개요 조회 여부
+          overviewYN: "N", // 콘텐츠 개요 조회 여부
+          firstImageYN: "Y", // 대표이미지 조회 여부
+          addrinfoYN: "Y", // 주소 조회 여부
+          mapinfoYN: "Y", // 좌표 조회 여부
+          defaultYN: "Y", // 기본정보 조회 여부
           contentId,
         },
         withCredentials: false,

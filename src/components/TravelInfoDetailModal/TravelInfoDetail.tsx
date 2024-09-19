@@ -2,7 +2,11 @@ import dayjs from "dayjs";
 import { Fragment, useCallback, useEffect, useMemo } from "react";
 
 import { useGetDetailCommon, useGetDetailIntro } from "@/api/hooks/visitKorea";
-import { IAreaBasedList, IDetailIntro } from "@/api/interfaces/visitKorea";
+import {
+  IAreaBasedList,
+  IDetailCommon,
+  IDetailIntro,
+} from "@/api/interfaces/visitKorea";
 import { ReactComponent as CalendarIcon } from "@/assets/icons/calendar.svg";
 import { ReactComponent as CarIcon } from "@/assets/icons/car.svg";
 import { ReactComponent as ClockIcon } from "@/assets/icons/clock.svg";
@@ -29,13 +33,32 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
   const { data: detailCommonData } = useGetDetailCommon(travelInfo?.contentid);
   const { data: detailIntroData } = useGetDetailIntro({
     contentId: travelInfo?.contentid,
-    contentTypeId: travelInfo?.contenttypeid,
+    contentTypeId:
+      detailCommonData?.data.response.body.items.item?.[0].contenttypeid,
   });
+
+  const detailCommon = useMemo(() => {
+    return detailCommonData?.data?.response?.body?.items
+      ?.item?.[0] as IDetailCommon;
+  }, [detailCommonData]);
 
   const detailIntro = useMemo(() => {
     return detailIntroData?.data?.response?.body?.items
       ?.item?.[0] as IDetailIntro;
   }, [detailIntroData]);
+
+  const travelCommonInfo = useMemo(() => {
+    return {
+      mapx: travelInfo?.mapx || detailCommon?.mapx,
+      mapy: travelInfo?.mapy || detailCommon?.mapy,
+      title: travelInfo?.title || detailCommon?.title,
+      mlevel: travelInfo?.mlevel || detailCommon?.mlevel,
+      firstimage: travelInfo?.firstimage || detailCommon?.firstimage,
+      addr1: travelInfo?.addr1 || detailCommon?.addr1,
+      addr2: travelInfo?.addr2 || detailCommon?.addr2,
+      tel: travelInfo?.tel || detailCommon?.tel,
+    };
+  }, [travelInfo, detailCommon]);
 
   const detailItem = useMemo(() => {
     return [
@@ -111,7 +134,9 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
       {
         icon: <LocationIcon />,
         label: "주소",
-        data: `${travelInfo?.addr1 || ""} ${travelInfo?.addr2 || ""}`,
+        data: `${travelCommonInfo?.addr1 || ""} ${
+          travelCommonInfo?.addr2 || ""
+        }`,
       },
       {
         icon: <CarIcon />,
@@ -148,35 +173,45 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
           detailIntro?.infocenterleports ||
           detailIntro?.infocenterlodging ||
           detailIntro?.infocentershopping ||
-          detailIntro?.infocenterfood,
+          detailIntro?.infocenterfood ||
+          travelCommonInfo?.tel,
       },
     ];
-  }, [detailIntro, travelInfo]);
+  }, [detailIntro, detailCommon, travelCommonInfo]);
 
   const handleOnOpenKakaoMap = useCallback(() => {
-    if (travelInfo?.mapx && travelInfo?.mapy && travelInfo?.title)
+    if (
+      travelCommonInfo?.mapx &&
+      travelCommonInfo?.mapy &&
+      travelCommonInfo?.title
+    )
       window.open(
-        `https://map.kakao.com/link/map/${travelInfo?.title},${travelInfo?.mapy},${travelInfo?.mapx}`,
+        `https://map.kakao.com/link/map/${travelCommonInfo?.title || ""},${
+          travelCommonInfo?.mapy || ""
+        },${travelCommonInfo?.mapx || ""}`,
         "_blank",
         "noopener noreferrer"
       );
-  }, [travelInfo]);
+  }, [travelCommonInfo]);
 
   useEffect(() => {
-    if (travelInfo?.mapx && travelInfo.mapy && kakao?.maps) {
+    if (travelCommonInfo?.mapx && travelCommonInfo.mapy && kakao?.maps) {
       const container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
       const options = {
         //지도를 생성할 때 필요한 기본 옵션
-        center: new kakao.maps.LatLng(travelInfo?.mapy, travelInfo?.mapx), //지도의 중심좌표.
-        level: travelInfo.mlevel, //지도의 레벨(확대, 축소 정도)
+        center: new kakao.maps.LatLng(
+          travelCommonInfo?.mapy,
+          travelCommonInfo?.mapx
+        ), //지도의 중심좌표.
+        level: travelCommonInfo?.mlevel || 3, //지도의 레벨(확대, 축소 정도)
         draggable: false,
       };
 
       const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 
       const markerPosition = new kakao.maps.LatLng(
-        travelInfo?.mapy,
-        travelInfo?.mapx
+        travelCommonInfo?.mapy,
+        travelCommonInfo?.mapx
       );
 
       const marker = new kakao.maps.Marker({
@@ -185,13 +220,13 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
 
       marker.setMap(map);
     }
-  }, [kakao?.maps, travelInfo]);
+  }, [kakao?.maps, travelCommonInfo]);
 
   return (
     <div css={cssAlignVerticalStyle({ gap: 16, alignItems: "flex-start" })}>
       <div css={cssTravelImageStyle}>
         <Image
-          src={travelInfo?.firstimage || ""}
+          src={travelCommonInfo.firstimage || ""}
           alt="travel-info"
           width="100%"
           height="100%"
@@ -202,7 +237,7 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
         <div css={cssAlignVerticalStyle({ gap: 8, alignItems: "flex-start" })}>
           <div css={cssAlignHorizontalStyle({ gap: 4 })}>
             <Typography size="24" color={COLORS.GRAY5} weight={700}>
-              {travelInfo?.title}{" "}
+              {travelCommonInfo?.title}{" "}
             </Typography>
           </div>
           {/* <div css={cssAlignHorizontalStyle({ gap: 8 })}> TODO: 추천수 연동
