@@ -33,7 +33,7 @@ export const Carousel = ({ children }: CarouselProps) => {
         }
         return prev + 1;
       });
-    }, 3000);
+    }, 5000);
     return () => {
       if (timer) clearInterval(timer);
     };

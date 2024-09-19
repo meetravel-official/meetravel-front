@@ -2,6 +2,7 @@ import { API_URL, VISIT_KOREA_API_URL } from "../hosts";
 
 const visitKoreaApiBaseRoute = {
   koreanVisitService: `${VISIT_KOREA_API_URL}/KorService1`, // 한국관광공사_국문 관광정보 서비스
+  photoGalleryService: `${VISIT_KOREA_API_URL}/PhotoGalleryService1`, // 한국관광공사_관광사진 정보 서비스
 };
 
 export const apiRoute = {
@@ -9,6 +10,7 @@ export const apiRoute = {
   areaBasedList: `${visitKoreaApiBaseRoute.koreanVisitService}/areaBasedList1`, // 지역기반 관광정보 조회
   detailCommon: `${visitKoreaApiBaseRoute.koreanVisitService}/detailCommon1`, // 공통정보 조회
   detailIntro: `${visitKoreaApiBaseRoute.koreanVisitService}/detailIntro1`, // 소개정보 조회
+  gallerySearchList: `${visitKoreaApiBaseRoute.photoGalleryService}/gallerySearchList1`, // 관광사진 갤러리 키워드 검색 목록 조회
 };
 
 export const authApiRoute = {

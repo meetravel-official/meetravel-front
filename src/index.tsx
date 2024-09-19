@@ -6,13 +6,7 @@ import ReactDOM from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import {
-  BackLayout,
-  CloseLayout,
-  MainLayout,
-  Meta,
-  SimpleLayout,
-} from "@/components";
+import { CloseLayout, MainLayout, Meta, SimpleLayout } from "@/components";
 import { cssGlobalStyle } from "@/styles/globalStyle";
 
 import { ChatLayout } from "./components/ChatLayout/ChatLayout";
