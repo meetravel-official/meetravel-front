@@ -44,16 +44,6 @@ const router = createBrowserRouter([
     ],
   },
   {
-    element: <BackLayout />,
-    children: [
-      {
-        path: `${pageRoutes.POST}/:postId`,
-        caseSensitive: true,
-        Component: containerRoutes.POST,
-      },
-    ],
-  },
-  {
     element: <CloseLayout />,
     children: [
       {

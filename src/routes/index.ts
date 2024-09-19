@@ -2,7 +2,6 @@ import { ChatContainer } from "./Chat/ChatContainer";
 import ChatRoomContainer from "./ChatRoom/ChatRoomContainer";
 import { HomeContainer } from "./Home/HomeContainer";
 import NotFoundPage from "./NotFoundPage";
-import { PostContainer } from "./Post/PostContainer";
 import { ProfileContainer } from "./Profile/ProfileContainer";
 import { SampleContainer } from "./Sample/SampleContainer";
 import { ShopContainer } from "./Shop/ShopContainer";
