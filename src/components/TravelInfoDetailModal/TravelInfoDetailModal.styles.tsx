@@ -4,15 +4,20 @@ import { COLORS } from "@/styles/color";
 
 export const cssTravelImageStyle = css`
   width: 100%;
-  aspect-ratio: 328 / 159;
+  aspect-ratio: 328 / 186;
   overflow: hidden;
+
   border: 1px solid ${COLORS.GRAY2};
   border-radius: 8px;
 `;
 
 export const cssTravelMapStyle = css`
-  width: 100%;
-  aspect-ratio: 2 / 1;
-  border: none;
+  all: unset;
   cursor: pointer;
+
+  width: 100%;
+  aspect-ratio: 328 / 186;
+
+  border: 1px solid ${COLORS.GRAY2};
+  border-radius: 8px;
 `;
