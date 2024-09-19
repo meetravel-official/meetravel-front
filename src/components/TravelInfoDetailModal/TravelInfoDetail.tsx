@@ -1,4 +1,4 @@
-import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { InfoCircledIcon, Link2Icon } from "@radix-ui/react-icons";
 import dayjs from "dayjs";
 import { Fragment, useCallback, useEffect, useMemo } from "react";
 
@@ -131,6 +131,19 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
         icon: <ClockIcon />,
         label: "관람 소요 시간",
         data: detailIntro?.spendtime || detailIntro?.spendtimefestival,
+      },
+      {
+        icon: (
+          <Link2Icon
+            width={19}
+            height={19}
+            color={COLORS.GRAY3}
+            stroke={COLORS.GRAY3}
+            strokeWidth={0.5}
+          />
+        ),
+        label: "홈페이지",
+        data: detailCommon?.homepage,
       },
       {
         icon: <LocationIcon />,
@@ -281,17 +294,35 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
                     alignItems: "flex-start",
                   })}
                 >
-                  <Typography
-                    size="16"
-                    color={item.dataColor || COLORS.GRAY4}
-                    weight={400}
-                  >
-                    {item.originDateFormat && item.targetDateFormat
-                      ? dayjs(item.data, "YYYYMMDD").format("YYYY년 MM월 DD일")
-                      : item.data
-                          .split(/\n|<br>|<br \/>|<br\/>/)
-                          .map((text, index) => <div key={index}>{text}</div>)}
-                  </Typography>
+                  {item.label === "홈페이지" ? (
+                    item.data.includes("<a") ? (
+                      <div dangerouslySetInnerHTML={{ __html: item.data }} />
+                    ) : (
+                      <a
+                        href={item.data}
+                        target="_blank"
+                        rel="noopenner noreferrer"
+                      >
+                        {item.data}
+                      </a>
+                    )
+                  ) : (
+                    <Typography
+                      size="16"
+                      color={item.dataColor || COLORS.GRAY4}
+                      weight={400}
+                    >
+                      {item.originDateFormat && item.targetDateFormat
+                        ? dayjs(item.data, "YYYYMMDD").format(
+                            "YYYY년 MM월 DD일"
+                          )
+                        : item.data
+                            .split(/\n|<br>|<br \/>|<br\/>/)
+                            .map((text, index) => (
+                              <div key={index}>{text}</div>
+                            ))}
+                    </Typography>
+                  )}
                   {item.label === "주소" && (
                     <button
                       id="map"
