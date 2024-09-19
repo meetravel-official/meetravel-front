@@ -245,7 +245,7 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
                     {item.originDateFormat && item.targetDateFormat
                       ? dayjs(item.data, "YYYYMMDD").format("YYYY년 MM월 DD일")
                       : item.data
-                          .split(/\n|<br>/)
+                          .split(/\n|<br>|<br \/>|<br\/>/)
                           .map((text, index) => <div key={index}>{text}</div>)}
                   </Typography>
                   {item.label === "주소" && (
