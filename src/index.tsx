@@ -9,6 +9,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { CloseLayout, MainLayout, Meta, SimpleLayout } from "@/components";
 import { cssGlobalStyle } from "@/styles/globalStyle";
 
+import { ChatLayout } from "./components/ChatLayout/ChatLayout";
 import reportWebVitals from "./reportWebVitals";
 import { containerRoutes, pageRoutes } from "./routes";
 
@@ -34,6 +35,25 @@ const router = createBrowserRouter([
     ],
   },
   {
+    element: <ChatLayout />,
+    children: [
+      {
+        path: `${pageRoutes.CHAT}/:chatId`,
+        Component: containerRoutes.CHAT_ROOM,
+      },
+    ],
+  },
+  {
+    element: <BackLayout />,
+    children: [
+      {
+        path: `${pageRoutes.POST}/:postId`,
+        caseSensitive: true,
+        Component: containerRoutes.POST,
+      },
+    ],
+  },
+  {
     element: <CloseLayout />,
     children: [
       {
@@ -50,6 +70,12 @@ const router = createBrowserRouter([
       { path: pageRoutes.SIGN_UP, Component: containerRoutes.SIGN_UP },
       { path: pageRoutes.AUTH_CHECK, Component: containerRoutes.AUTH_CHECK },
       { path: pageRoutes.SAMPLE, Component: containerRoutes.SAMPLE },
+    ],
+  },
+  {
+    element: <MainLayout />,
+    children: [
+      { path: pageRoutes.NOTFOUND, Component: containerRoutes.NOTFOUND },
     ],
   },
 ]);

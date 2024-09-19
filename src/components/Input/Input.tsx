@@ -11,6 +11,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: string;
   suffix?: React.ReactNode;
   detailStyle?: SerializedStyles;
+  inputDetailStyle?: SerializedStyles;
 }
 
 /**
@@ -22,6 +23,7 @@ const Input = ({
   error,
   placeholder,
   detailStyle,
+  inputDetailStyle,
   suffix,
   ...props
 }: InputProps) => {
@@ -30,7 +32,7 @@ const Input = ({
       <input
         {...props}
         type="input"
-        css={cssInputStyle}
+        css={cssInputStyle(inputDetailStyle)}
         placeholder={placeholder}
       />
       {suffix && <div css={cssInputIconStyle}>{suffix}</div>}

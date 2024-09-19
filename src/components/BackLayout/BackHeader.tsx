@@ -1,4 +1,5 @@
-import { css } from "@emotion/react";
+import { css, SerializedStyles } from "@emotion/react";
+import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { useHeaderState } from "states/useHeader";
 
@@ -6,7 +7,12 @@ import { ReactComponent as Back } from "@/assets/icons/back.svg";
 
 import { Header } from "../Header/Header";
 
-export const BackHeader = () => {
+interface BackHeaderProps {
+  titleContent?: ReactNode;
+  prefixStyle?: SerializedStyles;
+}
+
+export const BackHeader = ({ titleContent, prefixStyle }: BackHeaderProps) => {
   const { resetTitle } = useHeaderState();
   const navigate = useNavigate();
 
@@ -25,6 +31,10 @@ export const BackHeader = () => {
           `}
         />
       }
+      detailStyle={css`
+        ${prefixStyle}
+      `}
+      titleContent={titleContent}
     />
   );
 };

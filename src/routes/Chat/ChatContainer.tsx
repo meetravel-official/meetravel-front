@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
-import { Fragment } from "react";
+import { Fragment, ReactNode } from "react";
+import { Link } from "react-router-dom";
 
 import { Header, Typography } from "@/components";
 import ChatItem, { ChatStatus } from "@/components/Chat/ChatItem";
@@ -7,6 +8,20 @@ import { COLORS } from "@/styles/color";
 
 import { cssChatHrStyle } from "./ChatContainer.styles";
 import NotFoundChat from "./components/NotFoundChat";
+
+export interface IChatData {
+  isActive: boolean;
+  status: ChatStatus;
+  person: {
+    woman: number;
+    man: number;
+    total: number;
+  };
+  startDate: string;
+  endDate: string;
+  title: string;
+  tags: string[];
+}
 
 export const ChatContainer = () => {
   const chatData1 = {
@@ -17,6 +32,7 @@ export const ChatContainer = () => {
     endDate: "2024/12/27",
     title: "서귀포",
     tags: ["산", "야경", "힐링"],
+    link: "/chat/1",
   };
   const chatData2 = {
     isActive: false,
@@ -37,6 +53,14 @@ export const ChatContainer = () => {
     title: "서귀포",
     tags: ["산", "야경", "힐링"],
   };
+
+  const ChatWrapper = ({
+    link,
+    children,
+  }: {
+    link?: string;
+    children: ReactNode;
+  }) => (link ? <Link to={link}>{children}</Link> : <div>{children}</div>);
 
   return (
     <Fragment>
@@ -63,7 +87,9 @@ export const ChatContainer = () => {
           gap: 8px;
         `}
       >
-        <ChatItem chatData={chatData1} />
+        <ChatWrapper link={chatData1.link}>
+          <ChatItem chatData={chatData1} />
+        </ChatWrapper>
         <ChatItem chatData={chatData2} />
         <ChatItem chatData={chatData3} />
       </div>
