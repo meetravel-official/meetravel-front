@@ -1,7 +1,14 @@
-import { useCallback, useEffect, useMemo } from "react";
+import dayjs from "dayjs";
+import { Fragment, useCallback, useEffect, useMemo } from "react";
 
 import { useGetDetailCommon, useGetDetailIntro } from "@/api/hooks/visitKorea";
 import { IAreaBasedList, IDetailIntro } from "@/api/interfaces/visitKorea";
+import { ReactComponent as CalendarIcon } from "@/assets/icons/calendar.svg";
+import { ReactComponent as CarIcon } from "@/assets/icons/car.svg";
+import { ReactComponent as ClockIcon } from "@/assets/icons/clock.svg";
+import { ReactComponent as ExclamationBoxIcon } from "@/assets/icons/exclamation-box.svg";
+import { ReactComponent as HeartIcon } from "@/assets/icons/heart.svg";
+import { ReactComponent as LocationIcon } from "@/assets/icons/location.svg";
 import { ReactComponent as TelIcon } from "@/assets/icons/tel.svg";
 import { Image, Typography } from "@/components";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
@@ -25,110 +32,126 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
     contentTypeId: travelInfo?.contenttypeid,
   });
 
-  const contentIntro = useMemo(() => {
-    switch (travelInfo?.contenttypeid) {
-      case "12":
-        return [
-          { label: "개장일", key: "opendate" },
-          { label: "주차시설", key: "parking" },
-          { label: "쉬는날", key: "restdate" },
-          { label: "이용시기", key: "useseason" },
-          { label: "이용시간", key: "usetime" },
-        ];
-      case "14":
-        return [
-          { label: "주차시설", key: "parkingculture" },
-          { label: "쉬는날", key: "restdateculture" },
-          { label: "이용요금", key: "usefee" },
-          { label: "이용시간", key: "usetimeculture" },
-        ];
-      case "15":
-        return [
-          {
-            label: "예매처",
-            key: "bookingplace",
-          },
-          {
-            label: "행사장소",
-            key: "eventplace",
-          },
-          {
-            label: "행사시작일",
-            key: "eventstartdate",
-          },
-          {
-            label: "행사종료일",
-            key: "eventenddate",
-          },
-          {
-            label: "행사홈페이지",
-            key: "eventhomepage",
-          },
+  const detailIntro = useMemo(() => {
+    return detailIntroData?.data?.response?.body?.items
+      ?.item?.[0] as IDetailIntro;
+  }, [detailIntroData]);
 
-          {
-            label: "공연시간",
-            key: "playtime",
-          },
-          {
-            label: "행사프로그램",
-            key: "program",
-          },
-          {
-            label: "관람소요시간",
-            key: "spendtimefestival",
-          },
-          {
-            label: "주최자",
-            key: "sponsor1",
-          },
-          {
-            label: "주관사",
-            key: "sponsor2",
-          },
-          {
-            label: "이용요금",
-            key: "usetimefestival",
-          },
-        ];
-      case "28":
-        return [
-          { label: "개장기간", key: "openperiod" },
-          { label: "주차시설", key: "parkingleports" },
-          { label: "예약안내", key: "reservation" },
-          { label: "쉬는날", key: "restdateleports" },
-          { label: "입장료", key: "usefeeleports" },
-          { label: "이용시간", key: "usetimeleports" },
-        ];
-      case "32":
-        return [
-          { label: "입실시간", key: "checkintime" },
-          { label: "퇴실시간", key: "checkouttime" },
-          { label: "객실내취사여부", key: "chkcooking" },
-          { label: "식음료장", key: "foodplace" },
-          { label: "주차시설", key: "parkinglodging" },
-          { label: "픽업서비스", key: "pickup" },
-          { label: "예약안내홈페이지", key: "reservationurl" },
-          { label: "바비큐장여부", key: "barbecue" },
-        ];
-      case "38":
-        return [
-          { label: "영업시간", key: "opentime" },
-          { label: "쉬는날", key: "restdateshopping" },
-          { label: "주차시설", key: "parkingshopping" },
-          { label: "판매품목", key: "saleitem" },
-        ];
-      case "39":
-        return [
-          { label: "대표메뉴", key: "firstmenu" },
-          { label: "영업시간", key: "opentimefood" },
-          { label: "포장가능", key: "packing" },
-          { label: "주차시설", key: "parkingfood" },
-          { label: "예약안내", key: "reservationfood" },
-          { label: "쉬는날", key: "restdatefood" },
-          { label: "인허가번호", key: "lcnsno" },
-        ];
-    }
-  }, [travelInfo?.contenttypeid]);
+  const detailItem = useMemo(() => {
+    return [
+      {
+        icon: <CalendarIcon />,
+        label: "행사 시작일",
+        data: detailIntro?.eventstartdate,
+        originDateFormat: "YYYYMMDD",
+        targetDateFormat: "YYYY년 MM월 DD일",
+      },
+      {
+        icon: <ExclamationBoxIcon />,
+        label: "행사 종료일",
+        data: detailIntro?.eventenddate,
+        originDateFormat: "YYYYMMDD",
+        targetDateFormat: "YYYY년 MM월 DD일",
+        labelColor: COLORS.SITUATION1,
+        dataColor: COLORS.SITUATION1,
+      },
+      {
+        icon: <CalendarIcon />,
+        label: "개장일",
+        data: detailIntro?.opendate || detailIntro?.opendateshopping,
+      },
+      {
+        icon: <CalendarIcon />,
+        label: "개장기간",
+        data: detailIntro?.openperiod,
+      },
+      {
+        icon: <CalendarIcon />,
+        label: "휴무일",
+        data:
+          detailIntro?.restdatefood ||
+          detailIntro?.restdateshopping ||
+          detailIntro?.restdateleports ||
+          detailIntro?.restdateculture ||
+          detailIntro?.restdate,
+      },
+      {
+        icon: <ClockIcon />,
+        label: "이용 시간",
+        data:
+          detailIntro?.usetime ||
+          detailIntro?.usetimeculture ||
+          detailIntro?.usetimeleports,
+      },
+      {
+        icon: <ClockIcon />,
+        label: "영업 시간",
+        data: detailIntro?.opentime || detailIntro?.opentimefood,
+      },
+      {
+        icon: <ClockIcon />,
+        label: "입실 시간",
+        data: detailIntro?.checkintime,
+      },
+      {
+        icon: <ClockIcon />,
+        label: "퇴실 시간",
+        data: detailIntro?.checkouttime,
+      },
+      {
+        icon: <ClockIcon />,
+        label: "공연 시간",
+        data: detailIntro?.playtime,
+      },
+      {
+        icon: <ClockIcon />,
+        label: "관람 소요 시간",
+        data: detailIntro?.spendtime || detailIntro?.spendtimefestival,
+      },
+      {
+        icon: <LocationIcon />,
+        label: "주소",
+        data: `${travelInfo?.addr1 || ""} ${travelInfo?.addr2 || ""}`,
+      },
+      {
+        icon: <CarIcon />,
+        label: "주차시설",
+        data:
+          detailIntro?.parking ||
+          detailIntro?.parkingculture ||
+          detailIntro?.parkingleports ||
+          detailIntro?.parkinglodging ||
+          detailIntro?.parkingshopping ||
+          detailIntro?.parkingfood,
+      },
+      {
+        icon: <CarIcon />,
+        label: "주차 요금",
+        data: detailIntro?.parkingfee || detailIntro?.parkingfeeleports,
+      },
+      {
+        icon: <TelIcon />,
+        label: "주최자 연락처",
+        data: detailIntro?.sponsor1tel,
+      },
+      {
+        icon: <TelIcon />,
+        label: "주관사 연락처",
+        data: detailIntro?.sponsor2tel,
+      },
+      {
+        icon: <TelIcon />,
+        label: "문의 및 안내",
+        data:
+          detailIntro?.infocenter ||
+          detailIntro?.infocenterculture ||
+          detailIntro?.infocenterleports ||
+          detailIntro?.infocenterlodging ||
+          detailIntro?.infocentershopping ||
+          detailIntro?.infocenterfood,
+      },
+    ];
+  }, [detailIntro, travelInfo]);
 
   const handleOnOpenKakaoMap = useCallback(() => {
     if (travelInfo?.mapx && travelInfo?.mapy && travelInfo?.title)
@@ -175,74 +198,68 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
           objectFit="cover"
         />
       </div>
-      <div css={cssAlignVerticalStyle({ gap: 24, alignItems: "flex-start" })}>
-        <div css={cssAlignVerticalStyle({ gap: 14, alignItems: "flex-start" })}>
-          <div
-            css={cssAlignVerticalStyle({ gap: 8, alignItems: "flex-start" })}
-          >
+      <div css={cssAlignVerticalStyle({ gap: 24 })}>
+        <div css={cssAlignVerticalStyle({ gap: 8, alignItems: "flex-start" })}>
+          <div css={cssAlignHorizontalStyle({ gap: 4 })}>
             <Typography size="24" color={COLORS.GRAY5} weight={700}>
-              {travelInfo?.title}
-            </Typography>
-            <Typography size="16" color={COLORS.GRAY5} weight={700}>
-              {travelInfo?.addr1} {travelInfo?.addr2}
+              {travelInfo?.title}{" "}
             </Typography>
           </div>
-          <div css={cssAlignHorizontalStyle({ gap: 8 })}>
-            <TelIcon />
-            <Typography size="16" color={COLORS.GRAY4} weight={700}>
-              {travelInfo?.tel || "-"}
+          {/* <div css={cssAlignHorizontalStyle({ gap: 8 })}> TODO: 추천수 연동
+            <HeartIcon stroke={COLORS.PINK3} width={18} height={16} />
+            <Typography size="16" color={COLORS.PINK3} weight={700}>
+              추천수
             </Typography>
-          </div>
+          </div> */}
         </div>
-        <div css={cssAlignVerticalStyle({ gap: 8 })}>
-          {contentIntro?.map(
-            (intro, index) =>
-              detailIntroData?.data.response.body.items.item[0][
-                intro.key as keyof IDetailIntro
-              ] && (
+        {detailItem.map((item) => (
+          <Fragment key={item.label}>
+            {item.data && (
+              <div
+                css={cssAlignVerticalStyle({
+                  gap: 8,
+                  alignItems: "flex-start",
+                })}
+              >
+                <div css={cssAlignHorizontalStyle({ gap: 8 })}>
+                  {item.icon}
+                  <Typography
+                    size="16"
+                    color={item.labelColor || COLORS.GRAY3}
+                    weight={700}
+                  >
+                    {item.label}
+                  </Typography>
+                </div>
                 <div
-                  key={index}
                   css={cssAlignVerticalStyle({
-                    gap: 4,
+                    gap: 12,
                     alignItems: "flex-start",
                   })}
                 >
-                  <Typography size="16" color={COLORS.GRAY5} weight={700}>
-                    {intro.label}
+                  <Typography
+                    size="16"
+                    color={item.dataColor || COLORS.GRAY4}
+                    weight={400}
+                  >
+                    {item.originDateFormat && item.targetDateFormat
+                      ? dayjs(item.data, "YYYYMMDD").format("YYYY년 MM월 DD일")
+                      : item.data
+                          .split(/\n|<br>/)
+                          .map((text, index) => <div key={index}>{text}</div>)}
                   </Typography>
-                  {detailIntroData?.data.response.body.items.item[0][
-                    intro.key as keyof IDetailIntro
-                  ]
-                    ?.split(/(?:<br>\n|<br>|\n)+/)
-                    .map((text, index) => (
-                      <div key={index}>
-                        <Typography size="16" color={COLORS.GRAY5} weight={400}>
-                          {text || "-"}{" "}
-                        </Typography>
-                      </div>
-                    ))}
+                  {item.label === "주소" && (
+                    <button
+                      id="map"
+                      css={cssTravelMapStyle}
+                      onClick={handleOnOpenKakaoMap}
+                    />
+                  )}
                 </div>
-              )
-          )}
-        </div>
-        <div css={cssAlignVerticalStyle({ gap: 16, alignItems: "flex-start" })}>
-          {detailCommonData?.data.response.body.items.item[0].overview
-            ?.split(/\n|<br>/)
-            ?.map((overview, index) => (
-              <div key={index}>
-                <Typography size="16" color={COLORS.GRAY5} weight={400}>
-                  {overview}
-                </Typography>
               </div>
-            ))}
-        </div>
-        {travelInfo?.mapx && travelInfo?.mapy && (
-          <button
-            id="map"
-            css={cssTravelMapStyle}
-            onClick={handleOnOpenKakaoMap}
-          />
-        )}
+            )}
+          </Fragment>
+        ))}
       </div>
     </div>
   );

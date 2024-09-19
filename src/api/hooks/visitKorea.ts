@@ -54,13 +54,17 @@ export const useGetAreaBasedList = (params?: IGetAreaBasedListParams) => {
       }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
-      const currentPage = lastPage.data.response.body.pageNo;
-      const maxPage = Math.ceil(lastPage.data.response.body.totalCount / 10);
-      if (currentPage < maxPage) return currentPage + 1;
+      const currentPage = lastPage?.data?.response?.body?.pageNo;
+      const maxPage = Math.ceil(
+        lastPage?.data?.response?.body?.totalCount / 10
+      );
+      if (currentPage && maxPage && currentPage < maxPage)
+        return currentPage + 1;
     },
     getPreviousPageParam: (firstPage) => {
-      const currentPage = firstPage.data.response.body.pageNo;
-      if (currentPage > 1) return firstPage.data.response.body.pageNo - 1;
+      const currentPage = firstPage?.data?.response?.body?.pageNo;
+      if (currentPage && currentPage > 1)
+        return firstPage?.data?.response?.body?.pageNo - 1;
     },
   });
 };
