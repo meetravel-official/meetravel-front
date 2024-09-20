@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 import { Header, Typography } from "@/components";
 import ChatItem, { ChatStatus } from "@/components/Chat/ChatItem";
+import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
 
 import { cssChatHrStyle } from "./ChatContainer.styles";
@@ -57,10 +58,19 @@ export const ChatContainer = () => {
   const ChatWrapper = ({
     link,
     children,
+    ...props
   }: {
     link?: string;
     children: ReactNode;
-  }) => (link ? <Link to={link}>{children}</Link> : <div>{children}</div>);
+  } & React.ButtonHTMLAttributes<HTMLButtonElement>) =>
+    link ? (
+      <Link to={link}>{children}</Link>
+    ) : (
+      <button css={cssDefaultBtnStyle} {...props}>
+        {children}
+      </button>
+    );
+
 
   return (
     <Fragment>
