@@ -31,26 +31,26 @@ export const usePostKakaoLogin = () => {
       const response = data.data as IGetKakaoLoginResponse;
       setRequestToKakao(false);
       setUserInfo(data.data);
-      if (response.registeredUserYn) {
-        // TODO: 회원가입, 로그인 이후 쿠키를 저장하는 로직으로 분리 예정
-        const accessTokenExpiresAt = new Date(response.accessTokenExpiresAt);
-        const refreshTokenExpiresAt = new Date(response.refreshTokenExpiresAt);
+      // if (response.registeredUserYn) {
+      // TODO: 회원가입, 로그인 이후 쿠키를 저장하는 로직으로 분리 예정
+      const accessTokenExpiresAt = new Date(response.accessTokenExpiresAt);
+      const refreshTokenExpiresAt = new Date(response.refreshTokenExpiresAt);
 
-        Cookies.set("accessToken", response.accessToken, {
-          expires: new Date(
-            accessTokenExpiresAt.setDate(accessTokenExpiresAt.getDate() + 1)
-          ),
-        });
-        Cookies.set("refreshToken", response.refreshToken, {
-          expires: new Date(
-            refreshTokenExpiresAt.setDate(refreshTokenExpiresAt.getDate() + 1)
-          ),
-        });
-
-        navigate(pageRoutes.ROOT);
-      } else {
-        navigate(pageRoutes.SIGN_UP);
-      }
+      Cookies.set("accessToken", response.accessToken, {
+        expires: new Date(
+          accessTokenExpiresAt.setDate(accessTokenExpiresAt.getDate() + 1)
+        ),
+      });
+      Cookies.set("refreshToken", response.refreshToken, {
+        expires: new Date(
+          refreshTokenExpiresAt.setDate(refreshTokenExpiresAt.getDate() + 1)
+        ),
+      });
+      console.log("response", response.userId);
+      // navigate(pageRoutes.ROOT);
+      // } else {
+      navigate(pageRoutes.SIGN_UP);
+      // }
     },
     onError: (error) => {
       console.error("Kakao SignIn is Failed.", error);
