@@ -18,6 +18,7 @@ export const cssMarginNColor = css`
 `;
 
 export const cssChatItemStyle = (chatData: IChatData) => css`
+  width: calc(100% - 40px);
   border: ${chatData.status === ChatStatus.INPROGRESS
     ? `1px solid ${COLORS.PINK3}`
     : chatData.status === ChatStatus.REVIEW
