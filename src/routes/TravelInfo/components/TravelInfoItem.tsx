@@ -106,7 +106,12 @@ export const TravelInfoItem = ({ travelInfo }: TravelInfoItemProps) => {
 
         <div css={cssTravelInfoItemHeartStyle}>
           <button css={cssTransparentButtonStyle()} onClick={handleOnLike}>
-            <HearIcon fill={isLike ? "white" : "none"} />
+            <HearIcon
+              fill={isLike ? "white" : "none"}
+              stroke={COLORS.WHITE}
+              width={13}
+              height={12}
+            />
             {/* <Typography size="12" color={COLORS.WHITE} weight="regular">
               {like}
             </Typography> */}
