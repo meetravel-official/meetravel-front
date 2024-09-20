@@ -36,7 +36,12 @@ export interface IChatData {
   tags: string[];
 }
 
-const ChatItem = ({ chatData }: { chatData: IChatData }) => {
+interface ChatItemProps {
+  chatData: IChatData;
+  statusVisible?: boolean;
+}
+
+const ChatItem = ({ chatData, statusVisible }: ChatItemProps) => {
   return (
     <div css={cssChatItemStyle(chatData)}>
       <div
@@ -103,7 +108,7 @@ const ChatItem = ({ chatData }: { chatData: IChatData }) => {
         >
           {chatData.startDate} ~ {chatData.endDate}
         </Typography>
-        {chatData.status !== ChatStatus.DONE && (
+        {statusVisible && chatData.status !== ChatStatus.DONE && (
           <Tag detailStyle={cssChatStatusStyle(chatData)}>
             {chatData.isActive ? "진행 중" : "후기 필요"}
           </Tag>
