@@ -10,7 +10,7 @@ import { TravelPlaceSelectItem } from "@/components/TravelPlaceSelectItem/Travel
 import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
-import { cssModalFooterStyle } from "./TravelReviewModal.styles";
+import { cssModalFooterStyle } from "../../styles/TravelReviewModal.styles";
 
 interface TravelReviewModalProps {
   isOpen: boolean;
