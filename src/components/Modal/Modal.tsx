@@ -24,6 +24,7 @@ export interface ModalProps {
   modalType: ModalType;
   footer?: React.ReactNode;
   children?: React.ReactNode;
+  zIndex?: number;
 }
 /**
  * 모달 컴포넌트
@@ -32,6 +33,7 @@ export interface ModalProps {
  * @param title string 입력시 center align, ReactNode 입력시 해당 style 적용
  * @param closableIcon true: close button, false: no close button
  * @param footer flex 기본
+ * @param zIndex 모달, 오버레이 z-index(default: 99)
  */
 const Modal = ({
   isOpen,
@@ -42,6 +44,7 @@ const Modal = ({
   modalType = "normal",
   footer,
   children,
+  zIndex,
 }: ModalProps) => {
   useEffect(() => {
     if (isOpen) {
@@ -55,8 +58,10 @@ const Modal = ({
     <>
       {isOpen && (
         <>
-          {modalType !== "full" && <div css={cssOverlayStyle}></div>}
-          <div css={cssModalStyle(modalType, modalDetailStyle)}>
+          {modalType !== "full" && (
+            <div css={cssOverlayStyle({ zIndex })}></div>
+          )}
+          <div css={cssModalStyle({ modalType, modalDetailStyle, zIndex })}>
             <div css={cssModalContentStyle(modalType, Boolean(footer))}>
               <div
                 css={css`
