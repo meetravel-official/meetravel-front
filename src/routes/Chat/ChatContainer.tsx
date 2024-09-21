@@ -1,9 +1,9 @@
 import { css } from "@emotion/react";
-import { Fragment, ReactNode } from "react";
+import { Fragment, ReactNode, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { Header, Typography } from "@/components";
-import ChatItem, { ChatStatus } from "@/components/Chat/ChatItem";
+import ChatItem, { ChatStatus, IChatData } from "@/components/Chat/ChatItem";
 import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
 

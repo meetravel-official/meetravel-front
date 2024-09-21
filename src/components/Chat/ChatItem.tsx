@@ -34,6 +34,7 @@ export interface IChatData {
   endDate: string;
   title: string;
   tags: string[];
+  link?: string;
 }
 
 interface ChatItemProps {
