@@ -84,7 +84,7 @@ export const BannerCarousel = () => {
             <div css={cssBannerCarouselItemImageStyle}>
               <Image
                 alt={banner.title}
-                src={banner.imgSrc || ""}
+                src={banner.imgSrc}
                 width="100%"
                 height="100%"
                 objectFit="cover"

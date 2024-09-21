@@ -17,7 +17,7 @@ export const ContentOctober = ({
       <div css={cssAlignVerticalStyle({ gap: 20, alignItems: "flex-start" })}>
         <div css={cssPostImageFullBoxStyle} id="양평 들꽃수목원">
           <Image
-            src={imgDataList?.[0]?.galWebImageUrl || ""}
+            src={imgDataList?.[0]?.galWebImageUrl}
             alt={imgDataList?.[0]?.galTitle || ""}
             width="100%"
             height="100%"
@@ -44,7 +44,7 @@ export const ContentOctober = ({
       <div css={cssAlignVerticalStyle({ gap: 20, alignItems: "flex-start" })}>
         <div css={cssPostImageBoxStyle} id="청평호">
           <Image
-            src={imgDataList?.[1]?.galWebImageUrl || ""}
+            src={imgDataList?.[1]?.galWebImageUrl}
             alt={imgDataList?.[1]?.galTitle || ""}
             width="100%"
             height="100%"
@@ -71,7 +71,7 @@ export const ContentOctober = ({
         </Button>
         <div css={cssPostImageBoxStyle} id="양평 두물머리">
           <Image
-            src={imgDataList?.[2]?.galWebImageUrl || ""}
+            src={imgDataList?.[2]?.galWebImageUrl}
             alt={imgDataList?.[2]?.galTitle || ""}
             width="100%"
             height="100%"
