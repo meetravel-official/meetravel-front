@@ -1,4 +1,3 @@
-import { useGetGallerySearchList } from "@/api/hooks/visitKorea";
 import { Button, Image, Typography } from "@/components";
 import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
@@ -9,24 +8,17 @@ import {
   cssPostImageFullBoxStyle,
 } from "./PostModal.styles";
 
-export const ContentOctober = ({ handleOnLinkMap }: PostModalContentProps) => {
-  const { data: mainImageData } = useGetGallerySearchList("양평 들꽃수목원");
-  const { data: gapeongImageData } = useGetGallerySearchList("청평호");
-  const { data: yangpenogImageData } = useGetGallerySearchList("양평 두물머리");
-
+export const ContentOctober = ({
+  imgDataList,
+  handleOnLinkMap,
+}: PostModalContentProps) => {
   return (
     <div css={cssAlignVerticalStyle({ gap: 16 })}>
       <div css={cssAlignVerticalStyle({ gap: 20, alignItems: "flex-start" })}>
         <div css={cssPostImageFullBoxStyle} id="양평 들꽃수목원">
           <Image
-            src={
-              mainImageData?.data?.response?.body?.items?.item?.[0]
-                .galWebImageUrl || ""
-            }
-            alt={
-              mainImageData?.data?.response?.body?.items?.item?.[0].galTitle ||
-              ""
-            }
+            src={imgDataList?.[0]?.galWebImageUrl || ""}
+            alt={imgDataList?.[0]?.galTitle || ""}
             width="100%"
             height="100%"
             objectFit="cover"
@@ -52,14 +44,8 @@ export const ContentOctober = ({ handleOnLinkMap }: PostModalContentProps) => {
       <div css={cssAlignVerticalStyle({ gap: 20, alignItems: "flex-start" })}>
         <div css={cssPostImageBoxStyle} id="청평호">
           <Image
-            src={
-              gapeongImageData?.data?.response?.body?.items?.item?.[0]
-                .galWebImageUrl || ""
-            }
-            alt={
-              gapeongImageData?.data?.response?.body?.items.item?.[0]
-                .galTitle || ""
-            }
+            src={imgDataList?.[1]?.galWebImageUrl || ""}
+            alt={imgDataList?.[1]?.galTitle || ""}
             width="100%"
             height="100%"
             objectFit="cover"
@@ -85,14 +71,8 @@ export const ContentOctober = ({ handleOnLinkMap }: PostModalContentProps) => {
         </Button>
         <div css={cssPostImageBoxStyle} id="양평 두물머리">
           <Image
-            src={
-              yangpenogImageData?.data?.response?.body?.items?.item?.[0]
-                .galWebImageUrl || ""
-            }
-            alt={
-              yangpenogImageData?.data?.response?.body?.items?.item?.[0]
-                .galTitle || ""
-            }
+            src={imgDataList?.[2]?.galWebImageUrl || ""}
+            alt={imgDataList?.[2]?.galTitle || ""}
             width="100%"
             height="100%"
             objectFit="cover"

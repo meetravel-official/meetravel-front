@@ -1,4 +1,3 @@
-import { useGetGallerySearchList } from "@/api/hooks/visitKorea";
 import { Button, Image, Typography } from "@/components";
 import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
@@ -10,25 +9,16 @@ import {
 } from "./PostModal.styles";
 
 export const ContentSeptember = ({
+  imgDataList,
   handleOnLinkMap,
 }: PostModalContentProps) => {
-  const { data: kyeongjunamsanData } = useGetGallerySearchList("경주 남산");
-  const { data: bulguksaData } = useGetGallerySearchList("불국사");
-  const { data: junjuhanokData } = useGetGallerySearchList("전주 한옥마을");
-
   return (
     <div css={cssAlignVerticalStyle({ gap: 16 })}>
       <div css={cssAlignVerticalStyle({ gap: 20, alignItems: "flex-start" })}>
         <div css={cssPostImageFullBoxStyle} id="경주 남산">
           <Image
-            src={
-              kyeongjunamsanData?.data?.response?.body?.items?.item?.[0]
-                .galWebImageUrl || ""
-            }
-            alt={
-              kyeongjunamsanData?.data?.response?.body?.items?.item?.[0]
-                .galTitle || ""
-            }
+            src={imgDataList?.[0]?.galWebImageUrl || ""}
+            alt={imgDataList?.[0]?.galTitle || ""}
             width="100%"
             height="100%"
             objectFit="cover"
@@ -54,13 +44,8 @@ export const ContentSeptember = ({
       <div css={cssAlignVerticalStyle({ gap: 20, alignItems: "flex-start" })}>
         <div css={cssPostImageBoxStyle} id="불국사">
           <Image
-            src={
-              bulguksaData?.data?.response?.body?.items?.item?.[0]
-                .galWebImageUrl || ""
-            }
-            alt={
-              bulguksaData?.data?.response?.body?.items.item?.[0].galTitle || ""
-            }
+            src={imgDataList?.[1]?.galWebImageUrl || ""}
+            alt={imgDataList?.[1]?.galTitle || ""}
             width="100%"
             height="100%"
             objectFit="cover"
@@ -84,14 +69,8 @@ export const ContentSeptember = ({
         </Button>
         <div css={cssPostImageBoxStyle} id="전주 한옥마을">
           <Image
-            src={
-              junjuhanokData?.data?.response?.body?.items?.item?.[0]
-                .galWebImageUrl || ""
-            }
-            alt={
-              junjuhanokData?.data?.response?.body?.items?.item?.[0].galTitle ||
-              ""
-            }
+            src={imgDataList?.[2]?.galWebImageUrl || ""}
+            alt={imgDataList?.[2]?.galTitle || ""}
             width="100%"
             height="100%"
             objectFit="cover"
