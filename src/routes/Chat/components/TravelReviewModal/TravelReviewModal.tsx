@@ -52,51 +52,11 @@ TravelReviewModalProps) => {
       contentid: "4",
       contenttypeid: "32",
     },
-    {
-      ...dummyTravelInfo,
-      contentid: "1",
-      contenttypeid: "12",
-    },
-    {
-      ...dummyTravelInfo,
-      contentid: "2",
-      contenttypeid: "39",
-    },
-    {
-      ...dummyTravelInfo,
-      contentid: "3",
-      contenttypeid: "39",
-    },
-    {
-      ...dummyTravelInfo,
-      contentid: "4",
-      contenttypeid: "32",
-    },
-    {
-      ...dummyTravelInfo,
-      contentid: "1",
-      contenttypeid: "12",
-    },
-    {
-      ...dummyTravelInfo,
-      contentid: "2",
-      contenttypeid: "39",
-    },
-    {
-      ...dummyTravelInfo,
-      contentid: "3",
-      contenttypeid: "39",
-    },
-    {
-      ...dummyTravelInfo,
-      contentid: "4",
-      contenttypeid: "32",
-    },
   ];
 
   const [selectedContentIdList, setSelectedContentIdList] = useState<string[]>(
     []
-  );
+  ); //TODO: 여행 평가 API 연결
   const [isOpenCancelModal, setIsOpenCancelModal] = useState(false);
   const [isOpenFinishModal, setIsOpenFinishModal] = useState(false);
 
@@ -136,6 +96,7 @@ TravelReviewModalProps) => {
   );
 
   const handleOnCloseReviewModal = useCallback(() => {
+    setSelectedContentIdList([]);
     setIsOpenCancelModal(false);
     setIsOpenFinishModal(false);
     onClose();
@@ -173,14 +134,14 @@ TravelReviewModalProps) => {
 
   useEffect(() => {
     window.addEventListener("popstate", () => {
-      onClose();
+      handleOnCloseReviewModal();
     });
     return () => {
       window.removeEventListener("popstate", () => {
-        onClose();
+        handleOnCloseReviewModal();
       });
     };
-  }, [onClose]);
+  }, [handleOnCloseReviewModal]);
 
   return (
     <Fragment>
