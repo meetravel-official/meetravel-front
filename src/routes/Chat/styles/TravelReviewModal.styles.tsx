@@ -7,3 +7,8 @@ export const cssModalFooterStyle = css`
     width: 100%;
   }
 `;
+
+export const cssTravelReviewModalDetailStyle = css`
+  display: flex;
+  flex-direction: column;
+`;

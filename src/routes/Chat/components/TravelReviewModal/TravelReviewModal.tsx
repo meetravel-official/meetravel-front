@@ -1,4 +1,3 @@
-import { css } from "@emotion/react";
 import { dummyTravelInfo } from "dummies/travel";
 import { Fragment, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +13,10 @@ import { TravelPlaceSelectItem } from "@/components/TravelPlaceSelectItem/Travel
 import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
-import { cssModalFooterStyle } from "../../styles/TravelReviewModal.styles";
+import {
+  cssModalFooterStyle,
+  cssTravelReviewModalDetailStyle,
+} from "../../styles/TravelReviewModal.styles";
 
 interface TravelReviewModalProps {
   isOpen: boolean;
@@ -200,10 +202,7 @@ export const TravelReviewModal = ({
             </Button>
           </div>
         }
-        modalDetailStyle={css`
-          display: flex;
-          flex-direction: column;
-        `}
+        modalDetailStyle={cssTravelReviewModalDetailStyle}
       >
         <div
           css={cssAlignVerticalStyle({
