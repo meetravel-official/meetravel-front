@@ -47,6 +47,10 @@ export const cssHeartBtnStyle = (selected?: boolean) => css`
   all: unset;
   cursor: pointer;
 
+  :disabled {
+    cursor: not-allowed;
+  }
+
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
