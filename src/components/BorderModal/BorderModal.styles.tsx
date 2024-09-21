@@ -64,7 +64,6 @@ export const cssModalContentStyle = (
       ? "calc(var(--vh, 1vh) * 100 - 85px)"
       : "calc(var(--vh, 1vh) * 100 - 32px - 58px)" // - padding - header
     : "auto"};
-  margin-bottom: 5px;
   padding: 16px;
 `;
 
