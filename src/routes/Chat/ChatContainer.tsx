@@ -9,20 +9,7 @@ import { COLORS } from "@/styles/color";
 
 import { cssChatHrStyle } from "./ChatContainer.styles";
 import NotFoundChat from "./components/NotFoundChat";
-
-export interface IChatData {
-  isActive: boolean;
-  status: ChatStatus;
-  person: {
-    woman: number;
-    man: number;
-    total: number;
-  };
-  startDate: string;
-  endDate: string;
-  title: string;
-  tags: string[];
-}
+import { TravelReviewModal } from "./components/TravelReviewModal/TravelReviewModal";
 
 export const ChatContainer = () => {
   const chatData1 = {
@@ -43,6 +30,7 @@ export const ChatContainer = () => {
     endDate: "2024/12/27",
     title: "서귀포",
     tags: ["산", "야경", "힐링"],
+    link: "/chat/2",
   };
 
   const chatData3 = {
@@ -54,6 +42,9 @@ export const ChatContainer = () => {
     title: "서귀포",
     tags: ["산", "야경", "힐링"],
   };
+
+  const [isOpenTravelReviewModal, setIsOpenTravelReviewModal] = useState(false);
+  const [selectedChatData, setSelectedChatData] = useState<IChatData>();
 
   const ChatWrapper = ({
     link,
@@ -71,6 +62,12 @@ export const ChatContainer = () => {
       </button>
     );
 
+  const handleOnClickChat = (chatData: IChatData) => {
+    if (chatData.status === ChatStatus.REVIEW) {
+      setSelectedChatData(chatData);
+      setIsOpenTravelReviewModal(true);
+    }
+  };
 
   return (
     <Fragment>
@@ -98,11 +95,24 @@ export const ChatContainer = () => {
         `}
       >
         <ChatWrapper link={chatData1.link}>
-          <ChatItem chatData={chatData1} />
+          <ChatItem chatData={chatData1} statusVisible />
         </ChatWrapper>
-        <ChatItem chatData={chatData2} />
+        <ChatWrapper
+          onClick={() => {
+            handleOnClickChat(chatData2);
+          }}
+        >
+          <ChatItem chatData={chatData2} statusVisible />
+        </ChatWrapper>
         <ChatItem chatData={chatData3} />
       </div>
+      <TravelReviewModal
+        isOpen={isOpenTravelReviewModal}
+        onClose={() => {
+          setIsOpenTravelReviewModal(false);
+        }}
+        chatData={selectedChatData}
+      />
     </Fragment>
   );
 };
