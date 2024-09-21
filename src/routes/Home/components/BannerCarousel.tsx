@@ -1,7 +1,7 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useMemo, useState } from "react";
 
 import { useGetGallerySearchList } from "@/api/hooks/visitKorea";
-import { Typography } from "@/components";
+import { Image, Typography } from "@/components";
 import { Carousel } from "@/components/Carousel/Carousel";
 import { COLORS } from "@/styles/color";
 
@@ -20,32 +20,34 @@ export const BannerCarousel = () => {
   const { data: bulguksaData } = useGetGallerySearchList("불국사");
   const { data: junjuhanokData } = useGetGallerySearchList("전주 한옥마을");
 
-  const banners = [
-    {
-      subTitle: "미트래블이 선정한",
-      title: "9월 추천 여행지",
-      imgSrc:
-        kyeonjunamsanData?.data?.response?.body?.items?.item?.[0]
-          .galWebImageUrl,
-      date: "2024/09/02",
-    },
-    {
-      subTitle: "미트래블이 선정한",
-      title: "9월 추천 여행지",
-      imgSrc:
-        bulguksaData?.data?.response?.body?.items?.item?.[0].galWebImageUrl,
-      date: "2024/09/02",
-      id: "불국사",
-    },
-    {
-      subTitle: "미트래블이 선정한",
-      title: "9월 추천 여행지",
-      imgSrc:
-        junjuhanokData?.data?.response?.body?.items?.item?.[0].galWebImageUrl,
-      date: "2024/09/02",
-      id: "전주 한옥마을",
-    },
-  ];
+  const banners = useMemo(() => {
+    return [
+      {
+        subTitle: "미트래블이 선정한",
+        title: "9월 추천 여행지",
+        imgSrc:
+          kyeonjunamsanData?.data?.response?.body?.items?.item?.[0]
+            .galWebImageUrl,
+        date: "2024/09/02",
+      },
+      {
+        subTitle: "미트래블이 선정한",
+        title: "9월 추천 여행지",
+        imgSrc:
+          bulguksaData?.data?.response?.body?.items?.item?.[0].galWebImageUrl,
+        date: "2024/09/02",
+        id: "불국사",
+      },
+      {
+        subTitle: "미트래블이 선정한",
+        title: "9월 추천 여행지",
+        imgSrc:
+          junjuhanokData?.data?.response?.body?.items?.item?.[0].galWebImageUrl,
+        date: "2024/09/02",
+        id: "전주 한옥마을",
+      },
+    ];
+  }, [bulguksaData, junjuhanokData, kyeonjunamsanData]);
 
   const handleOnOpenPostModal = (scrollTo?: string) => {
     setIsOpenPostModal(true);
@@ -71,12 +73,15 @@ export const BannerCarousel = () => {
                 {banner.title}
               </Typography>
             </div>
-            <img
-              css={cssBannerCarouselItemImageStyle}
-              alt={banner.imgSrc}
-              src={banner.imgSrc}
-              draggable={false}
-            />
+            <div css={cssBannerCarouselItemImageStyle}>
+              <Image
+                alt={banner.title}
+                src={banner.imgSrc || ""}
+                width="100%"
+                height="100%"
+                objectFit="cover"
+              />
+            </div>
             <div css={cssBannerCarouselItemDateStyle}>
               <Typography size="12" color={COLORS.GRAY2} weight="regular">
                 {banner.date}
