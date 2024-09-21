@@ -22,6 +22,8 @@ export const TravelReviewModal = ({
   onClose,
   chatData,
 }: TravelReviewModalProps) => {
+  const navigate = useNavigate();
+
   const travelPlaceList: IAreaBasedList[] = [
     {
       ...dummyTravelInfo,
@@ -121,6 +123,22 @@ export const TravelReviewModal = ({
     },
     [selectedContentIdList]
   );
+  useEffect(() => {
+    navigate("", {
+      state: { isModal: true },
+    });
+  }, [navigate]);
+
+  useEffect(() => {
+    window.addEventListener("popstate", () => {
+      onClose();
+    });
+    return () => {
+      window.removeEventListener("popstate", () => {
+        onClose();
+      });
+    };
+  }, [onClose]);
 
   return (
     <BorderModal
