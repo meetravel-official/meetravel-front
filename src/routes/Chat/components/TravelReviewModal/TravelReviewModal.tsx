@@ -7,7 +7,7 @@ import { ReactComponent as CheckIcon } from "@/assets/icons/check-circle.svg";
 import { ReactComponent as ExclamationIcon } from "@/assets/icons/exclamation-circle.svg";
 import { Button, Typography } from "@/components";
 import BorderModal from "@/components/BorderModal/BorderModal";
-import ChatItem, { IChatData } from "@/components/Chat/ChatItem";
+import ChatItem, { ChatStatus, IChatData } from "@/components/Chat/ChatItem";
 import Modal from "@/components/Modal/Modal";
 import { TravelPlaceSelectItem } from "@/components/TravelPlaceSelectItem/TravelPlaceSelectItem";
 import { cssAlignVerticalStyle } from "@/styles/align";
@@ -99,6 +99,8 @@ export const TravelReviewModal = ({
   const [isOpenCancelModal, setIsOpenCancelModal] = useState(false);
   const [isOpenFinishModal, setIsOpenFinishModal] = useState(false);
 
+  const isEnableReview = chatData?.status === ChatStatus.REVIEW;
+
   const contentTypeList = [
     {
       label: "관광",
@@ -147,8 +149,9 @@ export const TravelReviewModal = ({
   }, []);
 
   const handleOnConfirmCloseReviewModal = useCallback(() => {
-    setIsOpenCancelModal(true);
-  }, []);
+    if (isEnableReview) setIsOpenCancelModal(true);
+    else handleOnCloseReviewModal();
+  }, [handleOnCloseReviewModal, isEnableReview]);
 
   const handleOnFinishReview = useCallback(() => {
     setIsOpenFinishModal(true);
@@ -190,17 +193,19 @@ export const TravelReviewModal = ({
         isOpen={isOpen}
         onClose={handleOnConfirmCloseReviewModal}
         footer={
-          <div css={cssModalFooterStyle}>
-            <Button
-              bgColor={COLORS.PINK3}
-              height="large"
-              onClick={handleOnFinishReview}
-            >
-              <Typography color={COLORS.WHITE} size="16" weight={700}>
-                완료
-              </Typography>
-            </Button>
-          </div>
+          isEnableReview && (
+            <div css={cssModalFooterStyle}>
+              <Button
+                bgColor={COLORS.PINK3}
+                height="large"
+                onClick={handleOnFinishReview}
+              >
+                <Typography color={COLORS.WHITE} size="16" weight={700}>
+                  완료
+                </Typography>
+              </Button>
+            </div>
+          )
         }
         modalDetailStyle={cssTravelReviewModalDetailStyle}
       >
@@ -212,7 +217,9 @@ export const TravelReviewModal = ({
           <div css={cssAlignVerticalStyle({ gap: 24 })}>
             {chatData && <ChatItem chatData={chatData} />}
             <Typography color={COLORS.GRAY4} weight={700} size="16">
-              해당 여행에서 즐겼던 장소들은 어떠셨나요?
+              {isEnableReview
+                ? "해당 여행에서 즐겼던 장소들은 어떠셨나요?"
+                : "해당 여행에서 평가했던 장소들이에요."}
             </Typography>
           </div>
           <div css={cssAlignVerticalStyle({ gap: 16 })}>
@@ -245,6 +252,7 @@ export const TravelReviewModal = ({
                             : false
                         }
                         onSelect={handleOnHeartTravelPlace}
+                        disabled={!isEnableReview}
                       />
                     ))}
                 </div>
