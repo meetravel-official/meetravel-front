@@ -27,7 +27,8 @@ export const TravelReviewModal = ({
   isOpen,
   onClose,
   chatData,
-}: TravelReviewModalProps) => {
+}: //TODO: 여행 장소들, 여행 평가 데이터 추가 필요
+TravelReviewModalProps) => {
   const navigate = useNavigate();
 
   const travelPlaceList: IAreaBasedList[] = [

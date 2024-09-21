@@ -89,7 +89,6 @@ export const ChatContainer = () => {
   };
 
   const handleOnClickChat = (chatData: IChatData) => {
-    // TODO: 여행 종료 채팅 클릭 시 후기 모달을 어떻게 적용할지 논의 및 처리
     setSelectedChatData(chatData);
 
     if (chatData.status === ChatStatus.REVIEW) {
