@@ -124,6 +124,7 @@ export const useGetGallerySearchList = (keyword?: string) => {
           MobileApp: "미트래블",
           _type: "json",
           serviceKey: process.env.REACT_APP_KOREA_VISIT_API_DECODING_KEY,
+          numOfRows: 1,
           keyword,
         },
         withCredentials: false,
