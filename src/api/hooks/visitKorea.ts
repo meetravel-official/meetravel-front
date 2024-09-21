@@ -1,6 +1,11 @@
 // 한국 관광 공사 관련 api hook
 
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useQueries,
+  useQuery,
+  UseQueryOptions,
+} from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
 import {
@@ -130,5 +135,38 @@ export const useGetGallerySearchList = (keyword?: string) => {
         withCredentials: false,
       }),
     enabled: !!keyword,
+  });
+};
+
+export const useGetGallerySearchListByKeywordList = (
+  keywordList?: string[]
+) => {
+  return useQueries<
+    UseQueryOptions<IVisitKoreaListResponse<IGalleryImage>>[],
+    (IGalleryImage[] | undefined)[]
+  >({
+    queries: keywordList
+      ? keywordList?.map((keyword) => ({
+          queryKey: ["useGetGallerySearchList", keyword],
+          queryFn: () =>
+            api.get(apiRoute.gallerySearchList, {
+              params: {
+                MobileOS: "ETC",
+                MobileApp: "미트래블",
+                _type: "json",
+                serviceKey: process.env.REACT_APP_KOREA_VISIT_API_DECODING_KEY,
+                numOfRows: 1,
+                keyword,
+              },
+              withCredentials: false,
+            }),
+          enabled: !!keyword,
+        }))
+      : [],
+    combine: (resultList) => {
+      return resultList.map(
+        (result) => result.data?.data.response.body.items.item
+      );
+    },
   });
 };
