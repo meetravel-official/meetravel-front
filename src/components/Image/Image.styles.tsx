@@ -20,8 +20,9 @@ export const cssNoImageStyle = ({ width, height }: ImageStyle) => css`
   justify-content: center;
 
   img {
-    width: 50%;
     height: 50%;
+    width: auto;
+    aspect-ratio: 1;
   }
 `;
 
