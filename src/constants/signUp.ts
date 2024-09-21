@@ -8,7 +8,7 @@ export enum SIGN_UP_SOCIAL_TYPE {
 }
 
 export enum SIGN_UP_TRAVEL_FREQUENCY_TYPE {
-  NEVER = "안가요",
+  NEVER = "안가요!",
   ONE_TO_THREE_TIMES = "1~3",
   FOUR_TO_SIX_TIMES = "4~6",
   MORE_SEVEN_TIMES = "7번 이상",

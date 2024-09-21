@@ -1,12 +1,13 @@
 import { css, SerializedStyles } from "@emotion/react";
 
-import { RadioInput, RadioButtonLabel } from "./RadioButton.style";
+import { RadioButtonLabel, RadioInput } from "./RadioButton.style";
 
 interface IRadioProps {
   children?: React.ReactNode;
   value?: string;
   checked?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
   detailStyle?: SerializedStyles;
 }
 

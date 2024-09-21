@@ -30,10 +30,10 @@ const Input = ({
   return (
     <div css={cssInputWrapperStyle(error, detailStyle)}>
       <input
-        {...props}
         type="input"
         css={cssInputStyle(inputDetailStyle)}
         placeholder={placeholder}
+        {...props}
       />
       {suffix && <div css={cssInputIconStyle}>{suffix}</div>}
     </div>

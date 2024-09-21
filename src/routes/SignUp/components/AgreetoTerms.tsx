@@ -6,9 +6,10 @@ import Checkbox from "@/components/Checkbox/Checkbox";
 import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
+import { ISignUpProps } from "../SignUpContainer";
 import { cssAgreetoTermsStyle } from "../styles/SignUpInnerContents.styles";
 
-export const AgreetoTerms = () => {
+export const AgreetoTerms = ({ step }: ISignUpProps) => {
   const [checked, setChecked] = useState({ private: false, term: false });
   const handleClick = (type: string) => {
     if (type === "private") {
@@ -48,6 +49,13 @@ export const AgreetoTerms = () => {
           <Checkbox checked={checked.term} />
           <Typography color={COLORS.GRAY4} weight="bold" size={16}>
             이용약관 동의
+          </Typography>
+        </Button>
+      </div>
+      <div className="button-to-next">
+        <Button bgColor={COLORS.PINK3} onClick={step.handleOnClickNext}>
+          <Typography color={COLORS.WHITE} weight="bold" size={16}>
+            약관 전체 허용
           </Typography>
         </Button>
       </div>

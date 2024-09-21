@@ -1,6 +1,5 @@
 import { css } from "@emotion/react";
-import { useCallback, useState } from "react";
-import { useUserState } from "states/useCheckUser";
+import { ISignUpFormValues, useSignUpFormState } from "states/useCheckUser";
 
 import { ISignUpEssentialForm } from "@/api/interfaces/kakaoSignUpInterface";
 import { Button, Typography } from "@/components";
@@ -14,15 +13,12 @@ import { SIGN_UP_GENDER_TYPE } from "@/constants/signUp";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
+import { ISignUpProps } from "../SignUpContainer";
 import { cssAgreetoTermsStyle } from "../styles/SignUpInnerContents.styles";
 
-export const ProfileForm = () => {
+export const ProfileForm = ({ step }: ISignUpProps) => {
   // zustand
-  const { userInfo } = useUserState();
-
-  // react state
-  const [checked, setChecked] = useState({ private: false, term: false });
-
+  const { signUpInfo, setSignUpInfo } = useSignUpFormState();
   const { form, registerField, invalidFields } = useForm<ISignUpEssentialForm>({
     initialValues: {
       name: "",
@@ -32,6 +28,7 @@ export const ProfileForm = () => {
       birthDayDate: "",
       gender: "",
       phoneNumber: "",
+      verificationNumber: "",
       profileImageUrl: "",
     },
     required: [
@@ -42,20 +39,36 @@ export const ProfileForm = () => {
       "birthDayDate",
       "gender",
       "phoneNumber",
-      "profileImageUrl",
+      // "verificationNumber",
+      // "profileImageUrl",
     ],
   });
+
   const { onChange: onChangeGender } = registerField("gender");
 
-  const handleOnSubmit = useCallback(() => {
+  const handleOnNextStep = () => {
     invalidFields(({ errors }) => {
       if (errors) {
-        console.log("error", errors);
+        console.log("error in if", errors);
       } else {
-        console.log("success", form);
+        const signUpFormInfo: ISignUpFormValues = {
+          name: form.name?.value || "",
+          nickname: form.nickname?.value || "",
+          birthDayYear: form.birthDayYear?.value || "",
+          birthDayMonth: form.birthDayMonth?.value || "",
+          birthDayDate: form.birthDayDate?.value || "",
+          gender: form.gender?.value || "",
+          phoneNumber: form.phoneNumber?.value || "",
+          verificationNumber: form.verificationNumber?.value || "",
+          profileImageUrl: form.profileImageUrl?.value || "",
+        };
+        setSignUpInfo({ ...signUpInfo, ...signUpFormInfo });
+        console.log("세번째 탭에서 저장되는 내용", signUpFormInfo);
+        step.handleOnClickNext();
       }
     });
-  }, [form, invalidFields]);
+  };
+
   return (
     <div
       css={css`
@@ -68,10 +81,22 @@ export const ProfileForm = () => {
     >
       <Form formValue={form}>
         <FormItem label="이름" name="name">
-          <Input {...registerField("name")} type="text" />
+          <Input
+            {...registerField("name")}
+            type="text"
+            detailStyle={css`
+              width: 100%;
+            `}
+          />
         </FormItem>
         <FormItem label="닉네임" name="nickname">
-          <Input {...registerField("nickname")} type="text" />
+          <Input
+            {...registerField("nickname")}
+            type="text"
+            detailStyle={css`
+              width: 100%;
+            `}
+          />
         </FormItem>
         <div
           css={cssAlignHorizontalStyle({
@@ -82,7 +107,7 @@ export const ProfileForm = () => {
           <FormItem label="생년월일" name="birthDayYear">
             <Input
               {...registerField("birthDayYear")}
-              type="date"
+              type="number"
               suffix={<Typography color={COLORS.PINK3}>년</Typography>}
               detailStyle={css`
                 width: 100%;
@@ -92,7 +117,7 @@ export const ProfileForm = () => {
           <FormItem label="" name="birthDayMonth">
             <Input
               {...registerField("birthDayMonth")}
-              type="date"
+              type="number"
               suffix={<Typography color={COLORS.PINK3}>월</Typography>}
               detailStyle={css`
                 width: 100%;
@@ -102,7 +127,7 @@ export const ProfileForm = () => {
           <FormItem label="" name="birthDayDate">
             <Input
               {...registerField("birthDayDate")}
-              type="date"
+              type="number"
               suffix={<Typography color={COLORS.PINK3}>일</Typography>}
               detailStyle={css`
                 width: 100%;
@@ -122,32 +147,123 @@ export const ProfileForm = () => {
           <RadioButtonGroup
             {...registerField("gender")}
             defaultValue={
-              checkNotEmpty([form.gender]) ? form.gender.value : undefined
+              checkNotEmpty([form.gender]) ? form.gender?.value : undefined
             }
             onChange={(e) => {
               onChangeGender(e);
             }}
-            buttonDetailStyle={css`
-              font-size: 16px;
-              font-weight: 400;
-              line-height: 20.39px;
-              width: 100%;
-              height: 48px;
-            `}
             gridDetailStyle={css`
               width: 100%;
             `}
           >
-            <RadioButtonGroup.RadioButton value={SIGN_UP_GENDER_TYPE.FEMALE}>
+            <RadioButtonGroup.RadioButton
+              value={SIGN_UP_GENDER_TYPE.FEMALE}
+              detailStyle={css`
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 20.39px;
+                width: 100%;
+                height: 48px;
+                background-color: ${form.gender?.value ===
+                SIGN_UP_GENDER_TYPE.MALE
+                  ? COLORS.GRAY2
+                  : ""};
+              `}
+            >
               여성
             </RadioButtonGroup.RadioButton>
-            <RadioButtonGroup.RadioButton value={SIGN_UP_GENDER_TYPE.MALE}>
+            <RadioButtonGroup.RadioButton
+              value={SIGN_UP_GENDER_TYPE.MALE}
+              detailStyle={css`
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 20.39px;
+                width: 100%;
+                height: 48px;
+                background-color: ${form.gender?.value ===
+                SIGN_UP_GENDER_TYPE.FEMALE
+                  ? COLORS.GRAY2
+                  : ""};
+              `}
+            >
               남성
             </RadioButtonGroup.RadioButton>
           </RadioButtonGroup>
         </FormItem>
+        <div
+          css={cssAlignHorizontalStyle({
+            alignItems: "flex-end",
+            width: "100%",
+          })}
+        >
+          <FormItem
+            label="전화번호"
+            name="phoneNumber"
+            formItemStyle={css`
+              width: 100%;
+            `}
+          >
+            <Input
+              {...registerField("phoneNumber")}
+              type="number"
+              detailStyle={css`
+                width: 100%;
+              `}
+            />
+          </FormItem>
+          <Button
+            detailStyle={css`
+              margin-bottom: 8px;
+              white-space: nowrap;
+            `}
+            width={"max-content"}
+            bgColor={COLORS.PINK2}
+            color={COLORS.WHITE}
+          >
+            인증번호 발송
+          </Button>
+        </div>
+        <div
+          css={cssAlignHorizontalStyle({
+            alignItems: "flex-end",
+            width: "100%",
+          })}
+        >
+          <FormItem
+            label="인증번호"
+            name="verificationNumber"
+            formItemStyle={css`
+              width: 100%;
+            `}
+          >
+            <Input
+              {...registerField("verificationNumber")}
+              type="text"
+              detailStyle={css`
+                width: 100%;
+              `}
+            />
+          </FormItem>
+          <Button
+            detailStyle={css`
+              margin-bottom: 8px;
+              white-space: nowrap;
+            `}
+            width={"max-content"}
+            bgColor={COLORS.PINK2}
+            color={COLORS.WHITE}
+          >
+            인증 완료
+          </Button>
+        </div>
       </Form>
-      <Button onClick={handleOnSubmit}>확인용 버튼</Button>
+      <div className="button-to-next">
+        <Button bgColor={COLORS.PINK3} onClick={handleOnNextStep}>
+          <Typography color={COLORS.WHITE} weight="bold" size={16}>
+            다음
+          </Typography>
+        </Button>
+      </div>
     </div>
   );
 };
