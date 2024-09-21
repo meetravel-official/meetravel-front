@@ -71,8 +71,6 @@ export const cssModalContentStyle = (
       ? "calc(var(--vh, 1vh) * 100 - 85px)"
       : "calc(var(--vh, 1vh) * 100 - 31px)"
     : "auto"};
-  margin-bottom: 5px;
-  padding: 1px;
 `;
 
 export const cssOverlayStyle = ({ zIndex }: { zIndex?: number }) => css`
@@ -112,7 +110,8 @@ export const cssCrossIcon = css`
   }
 `;
 
-export const cssFooterStyle = css`
+export const cssFooterStyle = ({ modalType }: { modalType: ModalType }) => css`
   display: flex;
   gap: 8px;
+  padding-top: ${modalType !== "full" ? "24px" : 0};
 `;

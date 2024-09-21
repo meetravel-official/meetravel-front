@@ -96,7 +96,7 @@ const Modal = ({
 
               {children}
             </div>
-            {footer && <div css={cssFooterStyle}>{footer}</div>}
+            {footer && <div css={cssFooterStyle({ modalType })}>{footer}</div>}
           </div>
         </>
       )}
