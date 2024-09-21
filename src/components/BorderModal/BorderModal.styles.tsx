@@ -5,10 +5,15 @@ import { COLORS } from "@/styles/color";
 
 import { ModalType } from "../Modal/Modal";
 
-export const cssModalStyle = (
-  modalType: ModalType,
-  modalDetailStyle?: SerializedStyles
-) => {
+export const cssModalStyle = ({
+  modalType,
+  modalDetailStyle,
+  zIndex,
+}: {
+  modalType: ModalType;
+  modalDetailStyle?: SerializedStyles;
+  zIndex?: number;
+}) => {
   const modalTypeStyles = {
     simple: css`
       text-align: center;
@@ -38,7 +43,7 @@ export const cssModalStyle = (
     background-color: white;
     width: 300px;
     animation: fade-in 200ms;
-    z-index: 100;
+    z-index: ${zIndex ? zIndex + 1 : 100};
     @keyframes fade-in {
       from {
         opacity: 0;
@@ -64,18 +69,17 @@ export const cssModalContentStyle = (
       ? "calc(var(--vh, 1vh) * 100 - 85px)"
       : "calc(var(--vh, 1vh) * 100 - 32px - 58px)" // - padding - header
     : "auto"};
-  margin-bottom: 5px;
   padding: 16px;
 `;
 
-export const cssOverlayStyle = css`
+export const cssOverlayStyle = ({ zIndex }: { zIndex?: number }) => css`
   position: fixed;
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.2);
   width: 100%;
   height: 100%;
-  z-index: 99;
+  z-index: ${zIndex || 99};
   backdrop-filter: blur(3px);
 `;
 

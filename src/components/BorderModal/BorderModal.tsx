@@ -18,6 +18,7 @@ export interface BorderModalProps {
   isOpen: boolean;
   onClose: () => void;
   modalDetailStyle?: SerializedStyles;
+  zIndex?: number;
   title?: string | React.ReactNode;
   closableIcon?: boolean;
   modalType: ModalType;
@@ -31,6 +32,7 @@ export interface BorderModalProps {
  * @param title string 입력시 center align, ReactNode 입력시 해당 style 적용
  * @param closableIcon true: close button, false: no close button
  * @param footer flex 기본
+ * @param zIndex modal z index(default: 99, overlay : z, modal : z + 1)
  */
 const BorderModal = ({
   isOpen,
@@ -41,6 +43,7 @@ const BorderModal = ({
   modalType = "normal",
   footer,
   children,
+  zIndex,
 }: BorderModalProps) => {
   useEffect(() => {
     if (isOpen) {
@@ -54,8 +57,10 @@ const BorderModal = ({
     <>
       {isOpen && (
         <>
-          {modalType !== "full" && <div css={cssOverlayStyle}></div>}
-          <div css={cssModalStyle(modalType, modalDetailStyle)}>
+          {modalType !== "full" && (
+            <div css={cssOverlayStyle({ zIndex })}></div>
+          )}
+          <div css={cssModalStyle({ modalType, modalDetailStyle, zIndex })}>
             <div css={cssModalHeaderStyle}>
               {typeof title === "undefined" ? (
                 <div />

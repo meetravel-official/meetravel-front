@@ -1,8 +1,7 @@
-import { IChatData } from "routes/Chat/ChatContainer";
-
 import { ReactComponent as LeaveIcon } from "@/assets/icons/leave.svg";
 import { ReactComponent as ReportIcon } from "@/assets/icons/report.svg";
 import { Typography } from "@/components";
+import { IChatData } from "@/components/Chat/ChatItem";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 

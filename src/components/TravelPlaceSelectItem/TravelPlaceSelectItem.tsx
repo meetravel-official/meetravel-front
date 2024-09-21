@@ -18,11 +18,13 @@ interface TravelPlaceSelectItemProps {
   travelInfo: IAreaBasedList;
   selected?: boolean;
   onSelect: (travelInfo: IAreaBasedList) => void;
+  disabled?: boolean;
 }
 
 export const TravelPlaceSelectItem = ({
   travelInfo,
   selected,
+  disabled,
   onSelect,
 }: TravelPlaceSelectItemProps) => {
   const [isOpenDetailModal, setIsOpenDetailModal] = useState(false);
@@ -67,7 +69,11 @@ export const TravelPlaceSelectItem = ({
             </Typography>
           </div>
         </button>
-        <button css={cssHeartBtnStyle(selected)} onClick={handleOnClickHeart}>
+        <button
+          css={cssHeartBtnStyle(selected)}
+          onClick={handleOnClickHeart}
+          disabled={disabled}
+        >
           <HearIcon />
         </button>
       </div>
