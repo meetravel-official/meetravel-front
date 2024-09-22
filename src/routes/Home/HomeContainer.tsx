@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 import { dummyChatData } from "dummies/chat";
 import { useCallback, useMemo, useState } from "react";
+import { checkUser } from "utils/check-user";
 
 import { ReactComponent as Bell } from "@/assets/icons/bell.svg";
 import { ReactComponent as Search } from "@/assets/icons/search.svg";
@@ -15,7 +16,7 @@ import { COLORS } from "@/styles/color";
 
 import { BannerCarousel } from "./components/BannerCarousel";
 import { cssHomeContainerStyle } from "./HomeContainer.styles";
-export const HomeContainer = () => {
+export const HomeContainer = checkUser(() => {
   const [value, setValue] = useState<string>("");
 
   const pageSize = 3;
@@ -147,4 +148,4 @@ export const HomeContainer = () => {
       />
     </div>
   );
-};
+});

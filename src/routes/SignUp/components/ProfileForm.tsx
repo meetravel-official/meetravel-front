@@ -19,6 +19,7 @@ import { cssAgreetoTermsStyle } from "../styles/SignUpInnerContents.styles";
 export const ProfileForm = ({ step }: ISignUpProps) => {
   // zustand
   const { signUpInfo, setSignUpInfo } = useSignUpFormState();
+
   const { form, registerField, invalidFields } = useForm<ISignUpEssentialForm>({
     initialValues: {
       name: "",
@@ -42,6 +43,37 @@ export const ProfileForm = ({ step }: ISignUpProps) => {
       // "verificationNumber",
       // "profileImageUrl",
     ],
+    validate: {
+      birthDayYear: (value) => {
+        const year = Number(value);
+        if (year <= 1900) {
+          return "1900년 이후의 년도를 입력해주세요.";
+        } else if (year > new Date().getFullYear()) {
+          return `${new Date().getFullYear()} 이후의 년도는 입력할 수 없습니다.`;
+        }
+        return undefined;
+      },
+      birthDayMonth: (value) => {
+        const month = Number(value);
+        if (month <= 0 || month > 12) {
+          return "1월부터 12월 사이의 숫자를 입력해주세요.";
+        }
+        return undefined;
+      },
+      birthDayDate: (value) => {
+        const date = Number(value);
+        if (date <= 0 || date > 31) {
+          return "1일부터 31일 사이의 숫자를 입력해주세요.";
+        }
+        return undefined;
+      },
+      phoneNumber: (value) => {
+        if (value && value.length < 9) {
+          return "휴대폰 번호를 입력해주세요.";
+        }
+        return undefined;
+      },
+    },
   });
 
   const { onChange: onChangeGender } = registerField("gender");
@@ -49,24 +81,41 @@ export const ProfileForm = ({ step }: ISignUpProps) => {
   const handleOnNextStep = () => {
     invalidFields(({ errors }) => {
       if (errors) {
-        console.log("error in if", errors);
+        console.log(errors);
       } else {
+        const padSingleDigit = (
+          value: string | undefined
+        ): string | undefined => {
+          if (value && value.length < 2 && Number(value) < 10) {
+            return `0${value}`;
+          }
+          return value;
+        };
+
+        const validateBirthDayMonth = padSingleDigit(
+          form?.birthDayMonth?.value
+        );
+        const validateBirthDayDate = padSingleDigit(form?.birthDayDate?.value);
+
         const signUpFormInfo: ISignUpFormValues = {
           name: form.name?.value || "",
           nickname: form.nickname?.value || "",
           birthDayYear: form.birthDayYear?.value || "",
-          birthDayMonth: form.birthDayMonth?.value || "",
-          birthDayDate: form.birthDayDate?.value || "",
+          birthDayMonth: validateBirthDayMonth || "",
+          birthDayDate: validateBirthDayDate || "",
           gender: form.gender?.value || "",
           phoneNumber: form.phoneNumber?.value || "",
           verificationNumber: form.verificationNumber?.value || "",
           profileImageUrl: form.profileImageUrl?.value || "",
         };
         setSignUpInfo({ ...signUpInfo, ...signUpFormInfo });
-        console.log("세번째 탭에서 저장되는 내용", signUpFormInfo);
         step.handleOnClickNext();
       }
     });
+  };
+
+  const handleBlurOnScroll = (e: React.WheelEvent<HTMLInputElement>) => {
+    return (e.target as HTMLElement).blur();
   };
 
   return (
@@ -89,15 +138,40 @@ export const ProfileForm = ({ step }: ISignUpProps) => {
             `}
           />
         </FormItem>
-        <FormItem label="닉네임" name="nickname">
-          <Input
-            {...registerField("nickname")}
-            type="text"
-            detailStyle={css`
+        <div
+          css={cssAlignHorizontalStyle({
+            alignItems: "flex-end",
+            width: "100%",
+          })}
+        >
+          <FormItem
+            label="닉네임"
+            name="nickname"
+            formItemStyle={css`
               width: 100%;
             `}
-          />
-        </FormItem>
+          >
+            <Input
+              {...registerField("nickname")}
+              type="text"
+              detailStyle={css`
+                width: 100%;
+              `}
+            />
+          </FormItem>
+          <Button
+            detailStyle={css`
+              margin-bottom: 8px;
+              white-space: nowrap;
+            `}
+            width={"max-content"}
+            bgColor={COLORS.PINK2}
+            color={COLORS.WHITE}
+            // TODO: onClick
+          >
+            중복확인
+          </Button>
+        </div>
         <FormItem
           label="성별"
           labelStyle={css`
@@ -167,6 +241,7 @@ export const ProfileForm = ({ step }: ISignUpProps) => {
               detailStyle={css`
                 width: unset;
               `}
+              onWheel={(event) => handleBlurOnScroll(event)}
             />
           </FormItem>
           <Input
@@ -177,6 +252,7 @@ export const ProfileForm = ({ step }: ISignUpProps) => {
               width: unset;
               margin-bottom: 8px;
             `}
+            onWheel={(event) => handleBlurOnScroll(event)}
           />
           <Input
             {...registerField("birthDayDate")}
@@ -186,6 +262,7 @@ export const ProfileForm = ({ step }: ISignUpProps) => {
               width: unset;
               margin-bottom: 8px;
             `}
+            onWheel={(event) => handleBlurOnScroll(event)}
           />
         </div>
         <div
@@ -217,6 +294,7 @@ export const ProfileForm = ({ step }: ISignUpProps) => {
             width={"max-content"}
             bgColor={COLORS.PINK2}
             color={COLORS.WHITE}
+            // TODO: onClick
           >
             인증번호 발송
           </Button>
@@ -250,6 +328,7 @@ export const ProfileForm = ({ step }: ISignUpProps) => {
             width={"max-content"}
             bgColor={COLORS.PINK2}
             color={COLORS.WHITE}
+            // TODO: onClick
           >
             인증 완료
           </Button>

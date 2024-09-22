@@ -1,6 +1,5 @@
 import { css } from "@emotion/react";
 import React from "react";
-import { useSignUpFormState } from "states/useCheckUser";
 
 import { Step, Typography } from "@/components";
 import { StepInstance } from "@/components/Step/StepInterface";
@@ -22,7 +21,6 @@ export interface ISignUpProps {
 export const SignUpContainer = () => {
   const [step] = Step.useStep();
 
-  const { signUpInfo } = useSignUpFormState();
   // TODO: api 회원가입 post
 
   const stepList = [

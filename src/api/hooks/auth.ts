@@ -85,3 +85,21 @@ export const usePostSignUp = () => {
     },
   });
 };
+
+export const usePostKaKaoSignOut = () => {
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: (): Promise<AxiosResponse<any, any>> => {
+      return api.post(authApiRoute.postLogOut, undefined);
+    },
+    onSuccess: () => {
+      console.log("로그아웃을 성공했습니다.");
+      Cookies.remove("accessToken");
+      Cookies.remove("refreshToken");
+      navigate(pageRoutes.SIGN_IN);
+    },
+    onError: (error) => {
+      console.error("로그아웃을 실패했습니다.", error);
+    },
+  });
+};

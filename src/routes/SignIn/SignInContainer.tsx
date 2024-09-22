@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 import { Link } from "react-router-dom";
 import { useKakaoAuthState } from "states/useCheckUser";
+import { checkUser } from "utils/check-user";
 
 import { KAKAO_CLIENT_ID, KAKAO_REDIRECT_URI } from "@/api/hosts";
 import { ReactComponent as KakaoLogo } from "@/assets/icons/kakao-logo.svg";
@@ -12,7 +13,7 @@ import { COLORS } from "@/styles/color";
 
 import { cssSignInComponentLayoutStyle } from "./styles/SigninContainer.styles";
 
-export const SignInContainer = () => {
+export const SignInContainer = checkUser(() => {
   const { setRequestToKakao } = useKakaoAuthState();
 
   return (
@@ -63,4 +64,4 @@ export const SignInContainer = () => {
       </Link>
     </div>
   );
-};
+});
