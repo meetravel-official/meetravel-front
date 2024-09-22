@@ -6,9 +6,11 @@ import { ReactComponent as Bell } from "@/assets/icons/bell.svg";
 import { ReactComponent as Search } from "@/assets/icons/search.svg";
 import { Button, Typography } from "@/components";
 import { ArrowButton } from "@/components/ArrowButton/ArrowButton";
-import ChatItem, { ChatStatus } from "@/components/Chat/ChatItem";
+import ChatItem, { ChatStatus, IChatData } from "@/components/Chat/ChatItem";
+import { EnterChatRoomModal } from "@/components/EnterChatRoomModal/EnterChatRoomModal";
 import Input from "@/components/Input/Input";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
+import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
 
 import { BannerCarousel } from "./components/BannerCarousel";
@@ -19,6 +21,9 @@ export const HomeContainer = () => {
   const pageSize = 3;
   const [page, setPage] = useState<number>(0);
 
+  const [selectedChatData, setSelectedChatData] = useState<IChatData>();
+  const [isOpenEnterChatModal, setIsOpenEnterChatModal] = useState(false);
+
   const chatDataList = useMemo(() => {
     const arr = [];
     for (let i = 0; i < 9; i++) {
@@ -26,7 +31,7 @@ export const HomeContainer = () => {
         ...dummyChatData,
         isActive: false, // TODO: 현재 컴포넌트의 색상 변경 로직 떄문에 일단 해당 상태로 넣어둠
         status: ChatStatus.REVIEW, // TODO: 현재 컴포넌트의 색상 변경 로직 떄문에 일단 해당 상태로 넣어둠
-        title: "채팅방" + i.toString(),
+        title: "채팅방 " + i.toString(),
         link: "/chat/" + i.toString(),
       });
     }
@@ -48,6 +53,15 @@ export const HomeContainer = () => {
   const handleOnNextPage = useCallback(() => {
     if (page < maxPage - 1) setPage(page + 1);
   }, [page, maxPage]);
+
+  const handleOnClickChat = (chatData: IChatData) => {
+    setSelectedChatData(chatData);
+    setIsOpenEnterChatModal(true);
+  };
+
+  const handleOnCloseEnterChatModal = () => {
+    setIsOpenEnterChatModal(false);
+  };
 
   return (
     <div css={cssHomeContainerStyle}>
@@ -86,9 +100,20 @@ export const HomeContainer = () => {
               실시간 여행 매칭
             </Typography>
             <div css={cssAlignVerticalStyle({ gap: 16 })}>
-              <div css={cssAlignVerticalStyle({ gap: 8 })}>
+              <div
+                css={cssAlignVerticalStyle({
+                  gap: 8,
+                  alignItems: "flex-start",
+                })}
+              >
                 {chatDataListByPage.map((chatData) => (
-                  <ChatItem key={chatData.link} chatData={chatData} />
+                  <button
+                    key={chatData.link}
+                    css={cssDefaultBtnStyle({ width: "100%" })}
+                    onClick={() => handleOnClickChat(chatData)}
+                  >
+                    <ChatItem chatData={chatData} />
+                  </button>
                 ))}
               </div>
               <div css={cssAlignHorizontalStyle({ gap: 38 })}>
@@ -115,6 +140,11 @@ export const HomeContainer = () => {
           </div>
         </div>
       </div>
+      <EnterChatRoomModal
+        isOpen={isOpenEnterChatModal}
+        onClose={handleOnCloseEnterChatModal}
+        chatData={selectedChatData}
+      />
     </div>
   );
 };
