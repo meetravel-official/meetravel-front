@@ -4,7 +4,6 @@ import { ReactComponent as ChatIcon } from "@/assets/icons/chat.svg";
 import { ReactComponent as HomeIcon } from "@/assets/icons/home.svg";
 import { ReactComponent as InfoIcon } from "@/assets/icons/info.svg";
 import { ReactComponent as ProfileIcon } from "@/assets/icons/profile.svg";
-import { ReactComponent as ShopIcon } from "@/assets/icons/shop.svg";
 import { Typography } from "@/components";
 import { pageRoutes } from "@/routes";
 import { cssAlignVerticalStyle } from "@/styles/align";
@@ -23,7 +22,6 @@ export const NavBar = () => {
       title: "여행 정보",
       path: pageRoutes.TRAVEL_INFO,
     },
-    SHOP: { title: "샵", path: pageRoutes.SHOP },
     PROFILE: { title: "프로필", path: pageRoutes.PROFILE },
   };
 
@@ -50,14 +48,6 @@ export const NavBar = () => {
           <ChatIcon />
           <Typography size="12" weight="bold" color={COLORS.GRAY2}>
             {navBarItem.CHAT.title}
-          </Typography>
-        </div>
-      </NavLink>
-      <NavLink css={cssNavBarItemStyle} to={navBarItem.SHOP.path}>
-        <div css={cssAlignVerticalStyle({ gap: 4 })}>
-          <ShopIcon />
-          <Typography size="12" weight="bold" color={COLORS.GRAY2}>
-            {navBarItem.SHOP.title}
           </Typography>
         </div>
       </NavLink>
