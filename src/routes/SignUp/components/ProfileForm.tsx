@@ -98,43 +98,6 @@ export const ProfileForm = ({ step }: ISignUpProps) => {
             `}
           />
         </FormItem>
-        <div
-          css={cssAlignHorizontalStyle({
-            justifyContent: "center",
-            alignItems: "flex-end",
-          })}
-        >
-          <FormItem label="생년월일" name="birthDayYear">
-            <Input
-              {...registerField("birthDayYear")}
-              type="number"
-              suffix={<Typography color={COLORS.PINK3}>년</Typography>}
-              detailStyle={css`
-                width: 100%;
-              `}
-            />
-          </FormItem>
-          <FormItem label="" name="birthDayMonth">
-            <Input
-              {...registerField("birthDayMonth")}
-              type="number"
-              suffix={<Typography color={COLORS.PINK3}>월</Typography>}
-              detailStyle={css`
-                width: 100%;
-              `}
-            />
-          </FormItem>
-          <FormItem label="" name="birthDayDate">
-            <Input
-              {...registerField("birthDayDate")}
-              type="number"
-              suffix={<Typography color={COLORS.PINK3}>일</Typography>}
-              detailStyle={css`
-                width: 100%;
-              `}
-            />
-          </FormItem>
-        </div>
         <FormItem
           label="성별"
           labelStyle={css`
@@ -190,6 +153,41 @@ export const ProfileForm = ({ step }: ISignUpProps) => {
             </RadioButtonGroup.RadioButton>
           </RadioButtonGroup>
         </FormItem>
+        <div
+          css={cssAlignHorizontalStyle({
+            justifyContent: "center",
+            alignItems: "flex-end",
+          })}
+        >
+          <FormItem label="생년월일" name="birthDayYear">
+            <Input
+              {...registerField("birthDayYear")}
+              type="number"
+              suffix={<Typography color={COLORS.PINK3}>년</Typography>}
+              detailStyle={css`
+                width: unset;
+              `}
+            />
+          </FormItem>
+          <Input
+            {...registerField("birthDayMonth")}
+            type="number"
+            suffix={<Typography color={COLORS.PINK3}>월</Typography>}
+            detailStyle={css`
+              width: unset;
+              margin-bottom: 8px;
+            `}
+          />
+          <Input
+            {...registerField("birthDayDate")}
+            type="number"
+            suffix={<Typography color={COLORS.PINK3}>일</Typography>}
+            detailStyle={css`
+              width: unset;
+              margin-bottom: 8px;
+            `}
+          />
+        </div>
         <div
           css={cssAlignHorizontalStyle({
             alignItems: "flex-end",
