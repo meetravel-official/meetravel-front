@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import { useState } from "react";
+import { checkUser } from "utils/check-user";
 
 import { ReactComponent as Bell } from "@/assets/icons/bell.svg";
 import { ReactComponent as Pen } from "@/assets/icons/pen.svg";
@@ -11,7 +12,7 @@ import { COLORS } from "@/styles/color";
 
 import { BannerCarousel } from "./components/BannerCarousel";
 import { cssHomeContainerStyle } from "./HomeContainer.styles";
-export const HomeContainer = () => {
+export const HomeContainer = checkUser(() => {
   const [value, setValue] = useState<string>("");
 
   return (
@@ -65,4 +66,4 @@ export const HomeContainer = () => {
       </div>
     </div>
   );
-};
+});

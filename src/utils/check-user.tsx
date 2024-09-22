@@ -1,7 +1,7 @@
+import Cookies from "js-cookie";
 import type { ComponentType, FC } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUserState } from "states/useCheckUser";
 
 import { pageRoutes } from "@/routes";
 
@@ -9,16 +9,16 @@ export const checkUser = <P extends object>(
   Component: ComponentType<P>
 ): FC<P> => {
   return function WithComponent({ ...props }) {
-    const { userInfo } = useUserState();
+    const userToken = Cookies.get("accessToken");
     const navigate = useNavigate();
 
     useEffect(() => {
-      if (userInfo) {
-        navigate(pageRoutes.ROOT);
+      if (userToken) {
+        return;
       } else {
         navigate(pageRoutes.SIGN_IN);
       }
-    }, [navigate, userInfo]);
+    }, [navigate, userToken]);
 
     return <Component {...props} />;
   };
