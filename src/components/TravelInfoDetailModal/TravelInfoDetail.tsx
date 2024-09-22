@@ -1,4 +1,4 @@
-import { InfoCircledIcon, Link2Icon } from "@radix-ui/react-icons";
+import { Link2Icon } from "@radix-ui/react-icons";
 import dayjs from "dayjs";
 import { Fragment, useCallback, useEffect, useMemo } from "react";
 
@@ -10,10 +10,13 @@ import {
 } from "@/api/interfaces/visitKorea";
 import { ReactComponent as CalendarIcon } from "@/assets/icons/calendar.svg";
 import { ReactComponent as CarIcon } from "@/assets/icons/car.svg";
+import { ReactComponent as CheckCalendarIcon } from "@/assets/icons/check-calendar.svg";
 import { ReactComponent as ClockIcon } from "@/assets/icons/clock.svg";
 import { ReactComponent as ExclamationBoxIcon } from "@/assets/icons/exclamation-box.svg";
 import { ReactComponent as HeartIcon } from "@/assets/icons/heart.svg";
+import { ReactComponent as ICircleIcon } from "@/assets/icons/i-circle.svg";
 import { ReactComponent as LocationIcon } from "@/assets/icons/location.svg";
+import { ReactComponent as MoneyIcon } from "@/assets/icons/money.svg";
 import { ReactComponent as TelIcon } from "@/assets/icons/tel.svg";
 import { Image, Typography } from "@/components";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
@@ -133,6 +136,32 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
         data: detailIntro?.spendtime || detailIntro?.spendtimefestival,
       },
       {
+        icon: <MoneyIcon />,
+        label: "이용 요금",
+        data: detailIntro?.usefee || detailIntro?.usetimefestival,
+      },
+      {
+        icon: <CheckCalendarIcon />,
+        label: "예약 안내",
+        data:
+          detailIntro?.reservation ||
+          detailIntro?.reservationlodging ||
+          detailIntro?.reservationfood,
+      },
+      {
+        icon: (
+          <Link2Icon
+            width={19}
+            height={19}
+            color={COLORS.GRAY3}
+            stroke={COLORS.GRAY3}
+            strokeWidth={0.5}
+          />
+        ),
+        label: "예약 페이지",
+        data: detailIntro?.reservationurl,
+      },
+      {
         icon: (
           <Link2Icon
             width={19}
@@ -144,6 +173,7 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
         ),
         label: "홈페이지",
         data: detailCommon?.homepage,
+        noView: "32",
       },
       {
         icon: <LocationIcon />,
@@ -179,15 +209,7 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
         data: detailIntro?.sponsor2tel,
       },
       {
-        icon: (
-          <InfoCircledIcon
-            color={COLORS.GRAY3}
-            width={19}
-            height={19}
-            stroke={COLORS.GRAY3}
-            strokeWidth={0.5}
-          />
-        ),
+        icon: <ICircleIcon />,
         label: "문의 및 안내",
         data:
           detailIntro?.infocenter ||
@@ -294,7 +316,7 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
                     alignItems: "flex-start",
                   })}
                 >
-                  {item.label === "홈페이지" ? (
+                  {item.label === "홈페이지" || item.label === "예약 페이지" ? (
                     item.data.includes("<a") ? (
                       <div dangerouslySetInnerHTML={{ __html: item.data }} />
                     ) : (
