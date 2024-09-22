@@ -21,7 +21,7 @@ export const cssBannerCarouselItemImageStyle = css`
   top: 0;
   left: 0;
   width: 100%;
-  height: auto;
+  aspect-ratio: 300 / 176;
 `;
 
 export const cssBannerCarouselItemTitleStyle = css`
