@@ -11,6 +11,7 @@ import { cssAgreetoTermsStyle } from "../styles/SignUpInnerContents.styles";
 
 export const AgreetoTerms = ({ step }: ISignUpProps) => {
   const [checked, setChecked] = useState({ private: false, term: false });
+
   const handleClick = (type: string) => {
     if (type === "private") {
       setChecked((prev) => ({ ...prev, private: !checked.private }));
@@ -18,6 +19,12 @@ export const AgreetoTerms = ({ step }: ISignUpProps) => {
       setChecked((prev) => ({ ...prev, term: !checked.term }));
     }
   };
+
+  const handleOnClickNext = () => {
+    setChecked({ private: true, term: true });
+    step.handleOnClickNext();
+  };
+
   return (
     <div
       css={css`
@@ -52,8 +59,21 @@ export const AgreetoTerms = ({ step }: ISignUpProps) => {
           </Typography>
         </Button>
       </div>
-      <div className="button-to-next">
-        <Button bgColor={COLORS.PINK3} onClick={step.handleOnClickNext}>
+      <div css={cssAlignVerticalStyle} className="button-to-next">
+        <div
+          css={css`
+            padding: 32px;
+            ${cssAlignVerticalStyle({})}
+          `}
+        >
+          <Typography color={COLORS.GRAY4} size="12">
+            *이용약관 미동의 시,
+          </Typography>
+          <Typography color={COLORS.GRAY4} size="12">
+            미트래블 이용이 불가해요.
+          </Typography>
+        </div>
+        <Button bgColor={COLORS.PINK3} onClick={handleOnClickNext}>
           <Typography color={COLORS.WHITE} weight="bold" size={16}>
             약관 전체 허용
           </Typography>
