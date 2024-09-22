@@ -40,7 +40,12 @@ const request: CustomAxiosInstance = axios.create({
 
 request.interceptors.request.use((req) => {
   const token = Cookies.get("accessToken") || "";
-  if (req && req.headers && req.url?.includes(HOST_API_URL)) {
+  if (
+    req &&
+    req.headers &&
+    req.url?.includes(HOST_API_URL) &&
+    !req.url?.includes("/auth/kakao/login")
+  ) {
     req.headers["Authorization"] = `Bearer ${token}`;
   }
   return req;

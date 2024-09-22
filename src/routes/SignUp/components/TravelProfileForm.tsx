@@ -51,12 +51,12 @@ export const TravelProfileForm = () => {
         console.log(errors);
       } else {
         const travelProfileFormInfo: ISignUpFormValues = {
-          travelFrequency: form.travelFrequency?.value || "",
-          scheduleType: form.scheduleType?.value || "",
-          planningType: form.planningType?.value || "",
-          hobby: form.hobby?.value || "",
-          mbti: form.mbti?.value || "",
-          intro: form.intro?.value || "",
+          travelFrequency: form.travelFrequency?.value || undefined,
+          scheduleType: form.scheduleType?.value || undefined,
+          planningType: form.planningType?.value || undefined,
+          hobby: form.hobby?.value || undefined,
+          mbti: form.mbti?.value || undefined,
+          intro: form.intro?.value || undefined,
         };
         setSignUpInfo({ ...signUpInfo, ...travelProfileFormInfo });
         const birthDate = `${signUpInfo?.birthDayYear}-${signUpInfo?.birthDayMonth}-${signUpInfo?.birthDayDate}`;
@@ -69,7 +69,6 @@ export const TravelProfileForm = () => {
           profileImageUrl: signUpInfo?.profileImageUrl,
           ...travelProfileFormInfo,
         } as IPostKaKaoSignUpRequest;
-        // TODO: api 회원가입 post 호출
         await mutationSignUp.mutateAsync({ ...mutationData });
       }
     });
