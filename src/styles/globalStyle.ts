@@ -34,4 +34,10 @@ export const cssGlobalStyle = css`
   button {
     -webkit-tap-highlight-color: transparent !important; // 모바일에서 링크 클릭 시 하이라이트 제거
   }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: inner-spin-button;
+    opacity: 0;
+  }
 `;

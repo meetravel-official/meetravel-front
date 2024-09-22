@@ -1,4 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import Cookies from "js-cookie";
+
+import { HOST_API_URL } from "./hosts/index";
 
 interface CustomAxiosInstance extends AxiosInstance {
   getUri(config?: AxiosRequestConfig): string;
@@ -36,9 +39,15 @@ const request: CustomAxiosInstance = axios.create({
 });
 
 request.interceptors.request.use((req) => {
-  // if (req && req.headers) {
-  // 로그인 토큰 처리
-  // }
+  const token = Cookies.get("accessToken") || "";
+  if (
+    req &&
+    req.headers &&
+    req.url?.includes(HOST_API_URL) &&
+    !req.url?.includes("/auth/kakao/login")
+  ) {
+    req.headers["Authorization"] = `Bearer ${token}`;
+  }
   return req;
 });
 
@@ -55,6 +64,7 @@ request.interceptors.response.use(
     if (status == 401) {
       // console.log('401 에러');
     }
+    return Promise.reject(error);
   }
 );
 

@@ -22,6 +22,7 @@ export const cssFormItemErrorStyle = (errorStyle?: ErrorStyle) => css`
   margin-top: 8px;
 `;
 
-export const cssFormItemStyle = () => css`
+export const cssFormItemStyle = (formItemStyle?: SerializedStyles) => css`
   margin-bottom: 8px;
+  ${formItemStyle}
 `;

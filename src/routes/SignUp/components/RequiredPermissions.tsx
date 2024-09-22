@@ -5,9 +5,10 @@ import { Button, Typography } from "@/components";
 import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
+import { ISignUpProps } from "../SignUpContainer";
 import { cssAgreetoTermsStyle } from "../styles/SignUpInnerContents.styles";
 
-export const RequiredPermissions = () => {
+export const RequiredPermissions = ({ step }: ISignUpProps) => {
   const [checked, setChecked] = useState({ private: false, term: false });
   const handleClick = (type: string) => {
     if (type === "private") {
@@ -49,6 +50,13 @@ export const RequiredPermissions = () => {
         >
           <Typography color={COLORS.GRAY4} weight="bold" size={16}>
             파일 및 미디어 권한
+          </Typography>
+        </Button>
+      </div>
+      <div className="button-to-next">
+        <Button bgColor={COLORS.PINK3} onClick={step.handleOnClickNext}>
+          <Typography color={COLORS.WHITE} weight="bold" size={16}>
+            권한 전체 허용
           </Typography>
         </Button>
       </div>

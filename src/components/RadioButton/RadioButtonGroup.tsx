@@ -1,4 +1,4 @@
-import { css, SerializedStyles } from "@emotion/react";
+import { SerializedStyles } from "@emotion/react";
 import React, { useState } from "react";
 
 import RadioButton from "./RadioButton";
@@ -10,6 +10,7 @@ interface IRadioGroupProps {
   children: React.ReactNode;
   defaultValue?: string;
   onChange?: (value: string) => void;
+  // disabled?: boolean;
   gridType?: GridType;
   gridDetailStyle?: SerializedStyles;
   buttonDetailStyle?: SerializedStyles;
@@ -24,6 +25,7 @@ const RadioButtonGroup = ({
   children,
   defaultValue,
   onChange,
+  // disabled,
   gridType = "column",
   gridDetailStyle,
   buttonDetailStyle,

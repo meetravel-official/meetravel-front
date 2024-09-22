@@ -7,4 +7,5 @@ export const cssSignUpHeaderStyle = css`
 export const cssAgreetoTermsStyle = css`
   min-height: inherit;
   height: 100%;
+  margin-bottom: 50px;
 `;

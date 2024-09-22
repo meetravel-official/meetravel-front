@@ -1,7 +1,9 @@
 import { css } from "@emotion/react";
 import React from "react";
+import { useSignUpFormState } from "states/useCheckUser";
 
-import { Button, Step, Typography } from "@/components";
+import { Step, Typography } from "@/components";
+import { StepInstance } from "@/components/Step/StepInterface";
 import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
@@ -10,10 +12,18 @@ import { ProfileForm } from "./components/ProfileForm";
 import { RequiredPermissions } from "./components/RequiredPermissions";
 import { SignUpContent } from "./components/SignUpContent";
 import { SignUpHeader } from "./components/SignUpHeader";
+import { TravelProfileForm } from "./components/TravelProfileForm";
 import { cssSignUpContainerStyle } from "./styles/SignUpContainer.styles";
+
+export interface ISignUpProps {
+  step: StepInstance;
+}
 
 export const SignUpContainer = () => {
   const [step] = Step.useStep();
+
+  const { signUpInfo } = useSignUpFormState();
+  // TODO: api 회원가입 post
 
   const stepList = [
     {
@@ -31,7 +41,7 @@ export const SignUpContainer = () => {
           </Typography>
         </React.Fragment>
       ),
-      content: <AgreetoTerms />,
+      content: <AgreetoTerms step={step} />,
       button: "약관 전체 허용",
     },
     {
@@ -49,7 +59,7 @@ export const SignUpContainer = () => {
           </Typography>
         </React.Fragment>
       ),
-      content: <RequiredPermissions />,
+      content: <RequiredPermissions step={step} />,
       button: "권한 전체 허용",
     },
     {
@@ -67,7 +77,7 @@ export const SignUpContainer = () => {
           </Typography>
         </React.Fragment>
       ),
-      content: <ProfileForm />,
+      content: <ProfileForm step={step} />,
       button: "다음",
     },
     {
@@ -86,7 +96,7 @@ export const SignUpContainer = () => {
           </Typography>
         </React.Fragment>
       ),
-      content: <div>선택 프로필 작성</div>,
+      content: <TravelProfileForm />,
       button: "시작하기",
     },
   ];
@@ -109,11 +119,6 @@ export const SignUpContainer = () => {
         />
         <SignUpContent step={step} stepList={stepList} />
       </div>
-      <Button bgColor={COLORS.PINK3} onClick={step.handleOnClickNext}>
-        <Typography color={COLORS.WHITE} weight="bold" size={16}>
-          {stepList[step.current].button}
-        </Typography>
-      </Button>
     </div>
   );
 };
