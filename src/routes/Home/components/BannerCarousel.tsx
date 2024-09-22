@@ -1,7 +1,8 @@
-import React, { Fragment, useState } from "react";
+import dayjs from "dayjs";
+import React, { Fragment, useMemo, useState } from "react";
 
-import { useGetGallerySearchList } from "@/api/hooks/visitKorea";
-import { Typography } from "@/components";
+import { useGetGallerySearchListByKeywordList } from "@/api/hooks/visitKorea";
+import { Image, Typography } from "@/components";
 import { Carousel } from "@/components/Carousel/Carousel";
 import { COLORS } from "@/styles/color";
 
@@ -11,41 +12,50 @@ import {
   cssBannerCarouselItemStyle,
   cssBannerCarouselItemTitleStyle,
 } from "./BannerCarousel.styles";
+import { ContentOctober } from "./PostModal/ContentOctober";
+import { ContentSeptember } from "./PostModal/ContentSeptember";
 import { PostModal } from "./PostModal/PostModal";
 export const BannerCarousel = () => {
   const [isOpenPostModal, setIsOpenPostModal] = useState(false);
   const [scrollTo, setScrollTo] = useState("");
 
-  const { data: kyeonjunamsanData } = useGetGallerySearchList("경주 남산");
-  const { data: bulguksaData } = useGetGallerySearchList("불국사");
-  const { data: junjuhanokData } = useGetGallerySearchList("전주 한옥마을");
+  const getContentByMonth = (currentMonth: number) => {
+    switch (currentMonth) {
+      case 9:
+        return {
+          subTitle: "미트래블이 선정한",
+          title: "9월 추천 여행지",
+          date: "2024/09/02",
+          imageSearchList: ["경주 남산", "불국사", "전주 한옥마을"],
+          postContent: ContentSeptember,
+        };
+      case 10:
+      default:
+        return {
+          subTitle: "미트래블이 선정한",
+          title: "10월 추천 여행지",
+          date: "2024/10/01",
+          imageSearchList: ["양평 들꽃수목원", "청평호", "양평 두물머리"],
+          postContent: ContentOctober,
+        };
+    }
+  };
 
-  const banners = [
-    {
-      subTitle: "미트래블이 선정한",
-      title: "9월 추천 여행지",
-      imgSrc:
-        kyeonjunamsanData?.data?.response?.body?.items?.item?.[0]
-          .galWebImageUrl,
-      date: "2024/09/02",
-    },
-    {
-      subTitle: "미트래블이 선정한",
-      title: "9월 추천 여행지",
-      imgSrc:
-        bulguksaData?.data?.response?.body?.items?.item?.[0].galWebImageUrl,
-      date: "2024/09/02",
-      id: "불국사",
-    },
-    {
-      subTitle: "미트래블이 선정한",
-      title: "9월 추천 여행지",
-      imgSrc:
-        junjuhanokData?.data?.response?.body?.items?.item?.[0].galWebImageUrl,
-      date: "2024/09/02",
-      id: "전주 한옥마을",
-    },
-  ];
+  const content = getContentByMonth(dayjs().month() + 1);
+
+  const imgDataList = useGetGallerySearchListByKeywordList(
+    content.imageSearchList
+  );
+
+  const banners = useMemo(() => {
+    return content.imageSearchList.map((keyword, index) => ({
+      subTitle: content.subTitle,
+      title: content.title,
+      imgSrc: imgDataList?.[index]?.[0]?.galWebImageUrl,
+      date: content.date,
+      id: keyword,
+    }));
+  }, [content, imgDataList]);
 
   const handleOnOpenPostModal = (scrollTo?: string) => {
     setIsOpenPostModal(true);
@@ -71,12 +81,15 @@ export const BannerCarousel = () => {
                 {banner.title}
               </Typography>
             </div>
-            <img
-              css={cssBannerCarouselItemImageStyle}
-              alt={banner.imgSrc}
-              src={banner.imgSrc}
-              draggable={false}
-            />
+            <div css={cssBannerCarouselItemImageStyle}>
+              <Image
+                alt={banner.title}
+                src={banner.imgSrc}
+                width="100%"
+                height="100%"
+                objectFit="cover"
+              />
+            </div>
             <div css={cssBannerCarouselItemDateStyle}>
               <Typography size="12" color={COLORS.GRAY2} weight="regular">
                 {banner.date}
@@ -91,6 +104,8 @@ export const BannerCarousel = () => {
           setIsOpenPostModal(false);
         }}
         scrollTo={scrollTo}
+        imgDataList={imgDataList.map((imgData) => imgData?.[0])}
+        postContent={content.postContent}
       />
     </Fragment>
   );
