@@ -46,4 +46,5 @@ export const cssLayoutFixedHeaderStyle = css`
   top: 0;
   width: 100%;
   max-width: ${WIDTH.SM};
+  z-index: 50;
 `;
