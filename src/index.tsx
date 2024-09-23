@@ -35,7 +35,10 @@ const router = createBrowserRouter([
   {
     path: pageRoutes.ROOT,
     element: <HomeLayout />,
-    children: [{ path: pageRoutes.ROOT, Component: containerRoutes.HOME }],
+    children: [
+      { path: pageRoutes.ROOT, Component: containerRoutes.HOME },
+      { path: pageRoutes.SEARCH, Component: containerRoutes.SEARCH },
+    ],
   },
   {
     element: <ChatLayout />,
