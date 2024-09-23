@@ -6,9 +6,11 @@ export const cssSelectBtnStyle = (width?: number) => css`
   all: unset;
 
   background: white;
+
+  box-sizing: border-box;
   width: ${width ? `${width}px` : "auto"};
   height: max-content;
-  padding: 16px 20px;
+  padding: 16px 14px;
   line-height: 100%;
 
   border: 1px solid ${COLORS.GRAY3};
