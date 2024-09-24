@@ -62,7 +62,7 @@ export const EnterChatRoomModal = ({
         <div css={cssAlignVerticalStyle({ gap: 12 })}>
           <LogoIcon width={50} height={50} fill={COLORS.PINK3} />
           <Typography size="16" color={COLORS.PINK3} weight={700}>
-            해당 여행에 참여하시겠어요?
+            {chatData?.title || "해당"} 여행에 참여하시겠어요?
           </Typography>
         </div>
         <div css={cssAlignVerticalStyle({ gap: 12 })}>
