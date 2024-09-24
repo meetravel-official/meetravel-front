@@ -1,15 +1,12 @@
-import { css } from "@emotion/react";
 import { dummyChatData } from "dummies/chat";
 import { useCallback, useMemo, useState } from "react";
 import { checkUser } from "utils/check-user";
 
 import { ReactComponent as Bell } from "@/assets/icons/bell.svg";
-import { ReactComponent as Search } from "@/assets/icons/search.svg";
 import { Button, Typography } from "@/components";
 import { ArrowButton } from "@/components/ArrowButton/ArrowButton";
 import ChatItem, { ChatStatus, IChatData } from "@/components/Chat/ChatItem";
 import { EnterChatRoomModal } from "@/components/EnterChatRoomModal/EnterChatRoomModal";
-import Input from "@/components/Input/Input";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
@@ -17,8 +14,6 @@ import { COLORS } from "@/styles/color";
 import { BannerCarousel } from "./components/BannerCarousel";
 import { cssHomeContainerStyle } from "./HomeContainer.styles";
 export const HomeContainer = checkUser(() => {
-  const [value, setValue] = useState<string>("");
-
   const pageSize = 3;
   const [page, setPage] = useState<number>(0);
 
@@ -30,8 +25,8 @@ export const HomeContainer = checkUser(() => {
     for (let i = 0; i < 9; i++) {
       arr.push({
         ...dummyChatData,
-        isActive: false, // TODO: 현재 컴포넌트의 색상 변경 로직 떄문에 일단 해당 상태로 넣어둠
-        status: ChatStatus.REVIEW, // TODO: 현재 컴포넌트의 색상 변경 로직 떄문에 일단 해당 상태로 넣어둠
+        isActive: false,
+        status: ChatStatus.INPROGRESS,
         title: "채팅방 " + i.toString(),
         link: "/chat/" + i.toString(),
       });
@@ -67,19 +62,6 @@ export const HomeContainer = checkUser(() => {
   return (
     <div css={cssHomeContainerStyle}>
       <div css={cssAlignVerticalStyle({ gap: 28 })}>
-        <Input
-          value={value}
-          onChange={(e) => {
-            setValue(e.target.value);
-          }}
-          placeholder="어디로 여행을 떠날까요?"
-          suffix={<Search />}
-          detailStyle={css`
-            background: #fff;
-            outline: 1px solid ${COLORS.PINK3};
-            width: 100%;
-          `}
-        />
         <div css={cssAlignVerticalStyle({ gap: 20 })}>
           <BannerCarousel />
           <Button

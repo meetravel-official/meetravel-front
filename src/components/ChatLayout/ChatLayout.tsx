@@ -2,8 +2,8 @@ import { Outlet } from "react-router-dom";
 
 import { Layout } from "@/components";
 
-import { NavBar } from "../MainLayout/NavBar";
 import MatchingButton from "../Matching/Matching";
+import { NavBar } from "../NavBar/NavBar";
 
 export const ChatLayout = () => {
   return (

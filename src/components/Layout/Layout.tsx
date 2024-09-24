@@ -6,6 +6,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { useLocation } from "react-router-dom";
 
 import {
   cssLayoutContentStyle,
@@ -72,6 +73,7 @@ const LayoutFixedFooter = ({
 };
 
 export const Layout = ({ children }: PropsWithChildren) => {
+  const location = useLocation();
   const [fixedHeaderHeight, setFixedHeaderHeight] = useState<number>();
   const [fixedFooterHeight, setFixedFooterHeight] = useState<number>();
 
@@ -97,7 +99,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
     setFixedHeaderHeight(
       window.document.querySelector("header")?.getBoundingClientRect().height
     );
-  }, []);
+  }, [location.pathname]);
 
   const layoutValue = useMemo(
     () => ({

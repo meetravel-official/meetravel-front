@@ -165,7 +165,7 @@ export const useGetGallerySearchListByKeywordList = (
       : [],
     combine: (resultList) => {
       return resultList.map(
-        (result) => result.data?.data.response.body.items.item
+        (result) => result.data?.data.response?.body?.items?.item
       );
     },
   });
