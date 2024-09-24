@@ -19,4 +19,6 @@ export const authApiRoute = {
   postSignUp: `${API_URL}/signup`, // 회원가입
   postLogOut: `${API_URL}/users/logout`, // 로그아웃
   getMyPage: (userId: string) => `${API_URL}/${userId}/my-page`, // 마이페이지 조회
+  getCheckNickname: (nickName: string) =>
+    `${API_URL}/signup/check-nickname?nickName=${nickName}`, // 닉네임 중복 확인
 };
