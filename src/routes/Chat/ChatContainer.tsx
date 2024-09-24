@@ -2,18 +2,13 @@ import { css } from "@emotion/react";
 import { Fragment, ReactNode, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { Button, Header, Typography } from "@/components";
+import { Header, Typography } from "@/components";
 import ChatItem, { ChatStatus, IChatData } from "@/components/Chat/ChatItem";
-import Modal from "@/components/Modal/Modal";
-import { cssAlignVerticalStyle } from "@/styles/align";
+import { EnterChatRoomModal } from "@/components/EnterChatRoomModal/EnterChatRoomModal";
 import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
 
-import {
-  cssChatHrStyle,
-  cssChatSummarizeBoxStyle,
-  cssLinkStyle,
-} from "./ChatContainer.styles";
+import { cssChatHrStyle } from "./ChatContainer.styles";
 import NotFoundChat from "./components/NotFoundChat";
 import { TravelReviewModal } from "./components/TravelReviewModal/TravelReviewModal";
 
@@ -111,10 +106,8 @@ export const ChatContainer = () => {
         `}
       />
       <hr css={cssChatHrStyle} />
-
       {/* 데이터 없을때 보여줄 notFound component */}
       <NotFoundChat />
-
       {/* 채팅방 리스트 */}
       <div
         css={css`
@@ -141,38 +134,11 @@ export const ChatContainer = () => {
           <ChatItem chatData={chatData3} />
         </ChatWrapper>
       </div>
-      <Modal
-        modalType="normal"
-        title="여행 돌아보기"
+      <EnterChatRoomModal
         isOpen={isOpenTravelDoneModal}
         onClose={handleOnCloseTravelDoneModal}
-      >
-        <div css={cssAlignVerticalStyle}>
-          <div css={cssChatSummarizeBoxStyle}>
-            <Typography color={COLORS.PINK3} size="16" weight={700}>
-              {selectedChatData?.title}
-            </Typography>
-            <Typography color={COLORS.GRAY3} size="14">
-              {selectedChatData?.startDate} ~ {selectedChatData?.endDate}
-            </Typography>
-          </div>
-          <Link to={selectedChatData?.link || ""} css={cssLinkStyle}>
-            <Button bgColor={COLORS.PINK3}>
-              <Typography color={COLORS.WHITE} weight={700}>
-                채팅방으로 이동하기
-              </Typography>
-            </Button>
-          </Link>
-          <Button
-            bgColor={COLORS.GRAY1}
-            onClick={handleOnOpenTravelReviewModal}
-          >
-            <Typography color={COLORS.GRAY3} weight={700}>
-              작성한 여행 평가 보기
-            </Typography>
-          </Button>
-        </div>
-      </Modal>
+        chatData={selectedChatData}
+      />
       <TravelReviewModal
         isOpen={isOpenTravelReviewModal}
         onClose={handleOnCloseTravelReviewModal}

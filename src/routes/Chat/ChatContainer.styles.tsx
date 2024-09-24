@@ -10,15 +10,3 @@ export const cssChatHrStyle = css`
   background-color: ${COLORS.GRAY1};
   height: 1px;
 `;
-
-export const cssChatSummarizeBoxStyle = css`
-  padding: 24px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  align-items: center;
-`;
-
-export const cssLinkStyle = css`
-  width: 100%;
-`;
