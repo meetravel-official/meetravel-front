@@ -103,3 +103,17 @@ export const usePostKaKaoSignOut = () => {
     },
   });
 };
+
+export const useGetCheckNickname = () => {
+  return useMutation({
+    mutationFn: (nickName: string): Promise<AxiosResponse<any, any>> => {
+      return api.get(authApiRoute.getCheckNickname(nickName));
+    },
+    onSuccess: (res: AxiosResponse) => {
+      console.log("닉네임 중복 확인을 성공했습니다.", res);
+    },
+    onError: (error) => {
+      console.error("닉네임 중복 확인을 실패했습니다.", error);
+    },
+  });
+};
