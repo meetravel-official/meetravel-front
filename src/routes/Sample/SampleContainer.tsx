@@ -3,6 +3,7 @@ import { Fragment, useState } from "react";
 import { TravelInfoPreviewCard } from "routes/Chat/components/TravelInfoPreviewCard";
 import { TravelPlanModal } from "routes/Chat/components/TravelPlanModal/TravelPlanModal";
 
+import { usePostKaKaoSignOut } from "@/api/hooks/auth";
 import { ReactComponent as ChatIcon } from "@/assets/icons/cross.svg";
 import { Button } from "@/components";
 import CheckButtonGroup from "@/components/CheckButton/CheckButtonGroup";
@@ -70,6 +71,11 @@ export const SampleContainer = () => {
     setIsOpenTravelPlanModal(true);
   };
 
+  const mutationLogOut = usePostKaKaoSignOut();
+
+  const handleLogOut = () => {
+    mutationLogOut.mutate();
+  };
   return (
     <div>
       <Form formValue={form} onSubmit={handleSubmit}>
@@ -135,7 +141,6 @@ export const SampleContainer = () => {
         suffix={<ChatIcon />}
       />
       <br />
-
       <button>매칭시작 </button>
       <br />
       <button onClick={handleModal}>simple 모달 열기</button>
@@ -274,7 +279,6 @@ export const SampleContainer = () => {
           항목 C
         </CheckButtonGroup.CheckboxButton>
       </CheckButtonGroup>
-
       <TravelInfoPreviewCard
         travelInfo={{
           addr1: "경상북도 안동시 하회남촌길 69-5",
@@ -314,7 +318,8 @@ export const SampleContainer = () => {
           travelArea: "강원도 동해",
           keyword: ["산", "도시", "야경"],
         }}
-      />
+      />{" "}
+      <Button onClick={handleLogOut}>로그아웃</Button>
     </div>
   );
 };
