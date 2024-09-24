@@ -25,8 +25,8 @@ export const HomeContainer = checkUser(() => {
     for (let i = 0; i < 9; i++) {
       arr.push({
         ...dummyChatData,
-        isActive: false, // TODO: 현재 컴포넌트의 색상 변경 로직 떄문에 일단 해당 상태로 넣어둠
-        status: ChatStatus.REVIEW, // TODO: 현재 컴포넌트의 색상 변경 로직 떄문에 일단 해당 상태로 넣어둠
+        isActive: false,
+        status: ChatStatus.INPROGRESS,
         title: "채팅방 " + i.toString(),
         link: "/chat/" + i.toString(),
       });

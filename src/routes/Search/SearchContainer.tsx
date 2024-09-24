@@ -17,7 +17,7 @@ export const SearchContainer = checkUser(() => {
       arr.push({
         ...dummyChatData,
         isActive: false,
-        status: ChatStatus.REVIEW,
+        status: ChatStatus.INPROGRESS,
         title: "채팅방" + i.toString(),
         link: "/chat/" + i.toString(),
       });
