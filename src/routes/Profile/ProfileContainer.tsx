@@ -1,10 +1,16 @@
 import { css } from "@emotion/react";
+import dayjs from "dayjs";
+import { checkUser } from "utils/check-user";
+import { getUserData } from "utils/token-utils";
 
+import { useGetMyPage } from "@/api/hooks/user";
 import { ReactComponent as IntroduceIcon } from "@/assets/icons/introduce-me.svg";
 import { Typography, UserAvatar } from "@/components";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
-export const ProfileContainer = () => {
+export const ProfileContainer = checkUser(() => {
+  const { data: profileData } = useGetMyPage(getUserData().userId);
+
   return (
     <div
       css={css`
@@ -16,14 +22,18 @@ export const ProfileContainer = () => {
         <UserAvatar profileUrl="" size={80} />
         <div css={cssAlignVerticalStyle({ gap: 4 })}>
           <Typography color={COLORS.GRAY5} size="16" weight={700}>
-            닉네임
+            {profileData?.data?.nickname || "-"}
           </Typography>
           <div css={cssAlignHorizontalStyle({ gap: 4 })}>
             <Typography color={COLORS.GRAY3} weight={700} size="16">
-              女
+              女 {/* TODO: api에서 gender 추가 필요 */}
             </Typography>
             <Typography color={COLORS.GRAY4} weight={400} size="16">
-              1997년생
+              {profileData?.data?.birthDate
+                ? dayjs(profileData?.data?.birthDate, "YYYY-MM-DD").format(
+                    "YYYY년생"
+                  )
+                : "-"}
             </Typography>
           </div>
         </div>
@@ -37,22 +47,32 @@ export const ProfileContainer = () => {
         </div>
         <Typography color={COLORS.GRAY4} size={16} weight={700}>
           저는 1년에 여행을{" "}
-          <Typography color={COLORS.PINK3} size={16} weight={700}>
-            1~3번
-          </Typography>
-          정도 가요!
+          {profileData?.data?.travelFrequency === "안가요!" ? (
+            "잘 가지 않아요."
+          ) : (
+            <span>
+              <Typography color={COLORS.PINK3} size={16} weight={700}>
+                {profileData?.data?.travelFrequency}
+                {profileData?.data?.travelFrequency !== "7번 이상"
+                  ? "번 정도"
+                  : ""}{" "}
+              </Typography>
+              가요!
+            </span>
+          )}
         </Typography>
         <Typography color={COLORS.GRAY4} size={16} weight={700}>
           여행 취향은{" "}
           <Typography color={COLORS.PINK3} size={16} weight={700}>
-            '빠듯하게 즉흥적으로'
+            '{profileData?.data?.scheduleType || "-"}{" "}
+            {profileData?.data?.planningType || "-"}'
           </Typography>
           ,
         </Typography>
         <Typography color={COLORS.GRAY4} size={16} weight={700}>
           MBTI는{" "}
           <Typography color={COLORS.PINK3} size={16} weight={700}>
-            ISTP
+            {profileData?.data?.mbti || "-"}
           </Typography>
           입니다.
         </Typography>
@@ -60,7 +80,7 @@ export const ProfileContainer = () => {
           한줄로 소개해보자면...
         </Typography>
         <Typography color={COLORS.PINK3} size={16} weight={700}>
-          "한줄 소개"
+          "{profileData?.data?.intro || "-"}"
         </Typography>
         <Typography color={COLORS.GRAY4} size={16} weight={700}>
           라고 말하고 싶습니다.
@@ -68,4 +88,4 @@ export const ProfileContainer = () => {
       </div>
     </div>
   );
-};
+});
