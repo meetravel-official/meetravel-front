@@ -31,7 +31,7 @@ export const usePostKakaoLogin = () => {
         );
       },
       onSuccess: (data) => {
-        const response = data.data;
+        const response = data as unknown as IGetKakaoLoginResponse;
         setRequestToKakao(false);
         setUserDataToCookie(response);
 
