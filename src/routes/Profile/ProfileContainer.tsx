@@ -3,6 +3,8 @@ import { checkUser } from "utils/check-user";
 import { getUserData } from "utils/token-utils";
 
 import { ProfileForm } from "@/components/ProfileForm/ProfileForm";
+
+import { ProfileEditModal } from "./components/ProfileEditModal";
 export const ProfileContainer = checkUser(() => {
   return (
     <div
@@ -11,6 +13,7 @@ export const ProfileContainer = checkUser(() => {
       `}
     >
       <ProfileForm userId={getUserData().userId} />
+      <ProfileEditModal />
     </div>
   );
 });
