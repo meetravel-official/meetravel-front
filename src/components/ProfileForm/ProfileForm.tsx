@@ -73,6 +73,13 @@ export const ProfileForm = ({ userId }: ProfileFormProps) => {
           ,
         </Typography>
         <Typography color={COLORS.GRAY4} size={16} weight={700}>
+          취미는{" "}
+          <Typography color={COLORS.PINK3} size={16} weight={700}>
+            {profileData?.data?.hobby || "-"}{" "}
+          </Typography>
+          예요.
+        </Typography>
+        <Typography color={COLORS.GRAY4} size={16} weight={700}>
           MBTI는{" "}
           <Typography color={COLORS.PINK3} size={16} weight={700}>
             {profileData?.data?.mbti || "-"}
