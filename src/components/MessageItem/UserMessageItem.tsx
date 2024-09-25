@@ -26,7 +26,7 @@ const UserMessageItem = ({ data }: MessageItemProps) => {
         `}
       >
         <Image
-          src={data.profileImg ?? ""}
+          src={""} //TODO: data.profileImg 이미지 추가 예정
           alt="profile-image"
           width="100%"
           height="100%"
@@ -35,7 +35,8 @@ const UserMessageItem = ({ data }: MessageItemProps) => {
       </div>
       <div css={cssAlignVerticalStyle({ gap: 8, alignItems: "flex-start" })}>
         <Typography weight={700} color={COLORS.GRAY4}>
-          {data.name ?? "익명"}
+          {/* TODO: userId=> 익명 혹은 닉네임으로 변경필요  */}
+          {data.userId?.slice(0, 6) ?? "익명"}
         </Typography>
         <div css={cssAlignHorizontalStyle({ gap: 8, alignItems: "flex-end" })}>
           <div
@@ -43,7 +44,7 @@ const UserMessageItem = ({ data }: MessageItemProps) => {
             css={cssMessageItemContentStyle(COLORS.GRAY2)}
           >
             <Typography size={14} color={COLORS.GRAY5}>
-              {data.content}
+              {data.message}
             </Typography>
           </div>
           <Typography
@@ -53,7 +54,7 @@ const UserMessageItem = ({ data }: MessageItemProps) => {
               flex-shrink: 0;
             `}
           >
-            {dayjs(data.regDate).format("HH:mm")}
+            {dayjs(data.sendAt).format("HH:mm")}
           </Typography>
         </div>
       </div>

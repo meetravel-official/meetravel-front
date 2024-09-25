@@ -1,4 +1,7 @@
 import { css } from "@emotion/react";
+import { useChatState } from "states/useChat";
+
+import { IChatMessageData } from "@/api/interfaces/chat";
 
 import AddMessage from "./AddMessage";
 import AdminMessageItem from "./AdminMessageItem";
@@ -13,10 +16,11 @@ export interface MessageItemDataProps {
 }
 export interface MessageItemProps {
   type?: "admin" | "system" | "user" | "me";
-  data: MessageItemDataProps;
+  data: IChatMessageData;
 }
 
 const MessageItem = ({ type, data }: MessageItemProps) => {
+  const { userId } = useChatState();
   if (type === "admin") {
     return (
       <div
@@ -29,7 +33,7 @@ const MessageItem = ({ type, data }: MessageItemProps) => {
     );
   } else if (type === "me") {
     return <MyMessage data={data} />;
-  } else if (data.name === "익명") {
+  } else if (data.userId === "익명") {
     // TODO: data.name이 바로 이전 메세지의 이름과 같을 경우 이름,프로필을 표시하지 않음
     // 이전 메세지 판별 여부 추가예정
     return <AddMessage data={data} />;
