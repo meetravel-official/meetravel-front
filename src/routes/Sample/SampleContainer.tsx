@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import { Fragment, useState } from "react";
 import { TravelInfoPreviewCard } from "routes/Chat/components/TravelInfoPreviewCard";
 import { TravelPlanModal } from "routes/Chat/components/TravelPlanModal/TravelPlanModal";
+import { ProfileFullModal } from "routes/ChatRoom/components/ProfileFullModal";
 
 import { usePostKaKaoSignOut } from "@/api/hooks/auth";
 import { ReactComponent as ChatIcon } from "@/assets/icons/cross.svg";
@@ -60,6 +61,7 @@ export const SampleContainer = () => {
   const [modalOpen3, setModalOpen3] = useState(false);
 
   const [isOpenTravelPlanModal, setIsOpenTravelPlanModal] = useState(false);
+  const [isOpenProfileFullModal, setIsOpenProfileFullModal] = useState(false);
 
   const handleModal = () => {
     setModalOpen((prev) => !prev);
@@ -69,6 +71,10 @@ export const SampleContainer = () => {
 
   const handleOnOpenTravelPlanModal = () => {
     setIsOpenTravelPlanModal(true);
+  };
+
+  const handleOnOpenProfileFullModal = () => {
+    setIsOpenProfileFullModal(true);
   };
 
   const mutationLogOut = usePostKaKaoSignOut();
@@ -307,6 +313,7 @@ export const SampleContainer = () => {
         }}
       />
       <Button onClick={handleOnOpenTravelPlanModal}>여행 계획서</Button>
+      <Button onClick={handleOnOpenProfileFullModal}>프로필 모달</Button>
       <TravelPlanModal
         isOpen={isOpenTravelPlanModal}
         onClose={() => {
@@ -320,6 +327,11 @@ export const SampleContainer = () => {
         }}
       />{" "}
       <Button onClick={handleLogOut}>로그아웃</Button>
+      <ProfileFullModal
+        isOpen={isOpenProfileFullModal}
+        onClose={() => setIsOpenProfileFullModal(false)}
+        userId="3708674128@kakao"
+      />
     </div>
   );
 };
