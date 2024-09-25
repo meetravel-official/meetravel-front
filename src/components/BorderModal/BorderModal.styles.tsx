@@ -84,28 +84,44 @@ export const cssOverlayStyle = ({ zIndex }: { zIndex?: number }) => css`
 `;
 
 export const cssCrossIcon = css`
-  position: relative;
+  all: unset;
   cursor: pointer;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  border: none;
-  background-color: rgba(0, 0, 0, 0);
+
+  position: relative;
+  width: 20px;
+  height: 20px;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: -5px;
+    top: -5px;
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    border-radius: 50%;
+    z-index: 1;
+    outline: none;
+    transition-duration: 0.3s;
+  }
   &:hover {
-    transition: background-color 500ms;
-    background-color: ${COLORS.GRAY1};
+    &::after {
+      background-color: ${COLORS.GRAY1};
+    }
   }
   &:focus {
-    outline: 2px solid ${COLORS.PINK1};
-    border: none;
+    &::after {
+      outline: 2px solid ${COLORS.PINK1};
+    }
   }
   svg {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 14px;
-    height: 14px;
+    width: 18px;
+    height: 18px;
+    z-index: 2;
   }
 `;
 
@@ -118,5 +134,6 @@ export const cssModalHeaderStyle = css`
   display: grid;
   grid-template-columns: 1fr auto;
   padding: 16px;
+  gap: 8px;
   border-bottom: 1px solid ${COLORS.GRAY1};
 `;

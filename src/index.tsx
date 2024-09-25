@@ -11,6 +11,7 @@ import { cssGlobalStyle } from "@/styles/globalStyle";
 
 import { ChatLayout } from "./components/ChatLayout/ChatLayout";
 import { HomeLayout } from "./components/HomeLayout/HomeLayout";
+import { ProfileLayout } from "./components/ProfileLayout/ProfileLayout";
 import reportWebVitals from "./reportWebVitals";
 import { containerRoutes, pageRoutes } from "./routes";
 
@@ -28,7 +29,6 @@ const router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       { path: pageRoutes.CHAT, Component: containerRoutes.CHAT },
-      { path: pageRoutes.PROFILE, Component: containerRoutes.PROFILE },
       { path: pageRoutes.TRAVEL_INFO, Component: containerRoutes.TRAVEL_INFO },
     ],
   },
@@ -38,6 +38,12 @@ const router = createBrowserRouter([
     children: [
       { path: pageRoutes.ROOT, Component: containerRoutes.HOME },
       { path: pageRoutes.SEARCH, Component: containerRoutes.SEARCH },
+    ],
+  },
+  {
+    element: <ProfileLayout />,
+    children: [
+      { path: pageRoutes.PROFILE, Component: containerRoutes.PROFILE },
     ],
   },
   {

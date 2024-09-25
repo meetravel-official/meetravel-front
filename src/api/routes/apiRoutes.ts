@@ -18,7 +18,7 @@ export const authApiRoute = {
     `${API_URL}/auth/kakao/login?authorizationCode=${authorizationCode}`, // 카카오 로그인 인가코드를 서버로 전송
   postSignUp: `${API_URL}/signup`, // 회원가입
   postLogOut: `${API_URL}/users/logout`, // 로그아웃
-  getMyPage: (userId: string) => `${API_URL}/${userId}/my-page`, // 마이페이지 조회
+  getMyPage: (userId: string) => `${API_URL}/users/${userId}/my-page`, // 마이페이지 조회
   getCheckNickname: (nickName: string) =>
     `${API_URL}/signup/check-nickname?nickName=${nickName}`, // 닉네임 중복 확인
 };

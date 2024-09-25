@@ -1,15 +1,13 @@
 import { css } from "@emotion/react";
 
-export const cssUserAvatarRootStyle = (size?: number) => css`
-  display: flex;
-  width: ${size || 48}px;
-  height: ${size || 48}px;
-  border-radius: 100%;
-`;
+import { COLORS } from "@/styles/color";
 
-export const cssUserAvatarImageStyle = css`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: inherit;
+export const cssUserAvatarBoxStyle = (size?: number) => css`
+  width: ${size || 40}px;
+  height: auto;
+  aspect-ratio: 1/1;
+  border-radius: 8px;
+  background-color: ${COLORS.WHITE};
+  border: 1px solid ${COLORS.GRAY2};
+  overflow: hidden;
 `;
