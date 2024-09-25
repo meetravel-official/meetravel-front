@@ -30,5 +30,7 @@ export const setUserDataToCookie = (loginResponse: IGetKakaoLoginResponse) => {
 };
 
 export const getUserData: () => IGetKakaoLoginResponse = () => {
-  return JSON.parse(Cookies.get(userInfoKey) || "");
+  const cookieUserInfo = Cookies.get(userInfoKey);
+  if (cookieUserInfo) return JSON.parse(cookieUserInfo);
+  return {};
 };
