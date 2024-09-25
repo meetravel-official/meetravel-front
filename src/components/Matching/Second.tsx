@@ -58,7 +58,7 @@ const Second = ({ form, registerField }: { form: any; registerField: any }) => {
         <RadioButtonGroup
           {...registerField("areaCode")}
           defaultValue={
-            checkNotEmpty([form.areaCode]) ? form.areaCode.value : undefined
+            checkNotEmpty([form.areaCode]) ? form.areaCode.value : "all"
           }
           gridType="row"
           buttonDetailStyle={css`
