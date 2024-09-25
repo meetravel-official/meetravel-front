@@ -2,12 +2,13 @@ import { dummyTravelInfo } from "dummies/travel";
 import { Fragment, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { ChatStatus, IChatData } from "@/api/interfaces/chat";
 import { IAreaBasedList } from "@/api/interfaces/visitKorea";
 import { ReactComponent as CheckIcon } from "@/assets/icons/check-circle.svg";
 import { ReactComponent as ExclamationIcon } from "@/assets/icons/exclamation-circle.svg";
 import { Button, Typography } from "@/components";
 import BorderModal from "@/components/BorderModal/BorderModal";
-import ChatItem, { ChatStatus, IChatData } from "@/components/Chat/ChatItem";
+import ChatItem from "@/components/Chat/ChatItem";
 import Modal from "@/components/Modal/Modal";
 import { TravelPlaceSelectItem } from "@/components/TravelPlaceSelectItem/TravelPlaceSelectItem";
 import { cssAlignVerticalStyle } from "@/styles/align";

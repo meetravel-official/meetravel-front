@@ -4,12 +4,12 @@ import { Fragment, ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TravelReviewModal } from "routes/Chat/components/TravelReviewModal/TravelReviewModal";
 
+import { ChatStatus, IChatData } from "@/api/interfaces/chat";
 import { ReactComponent as LogoIcon } from "@/assets/icons/logo.svg";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
 import { Button } from "../Button/Button";
-import { ChatStatus, IChatData } from "../Chat/ChatItem";
 import Modal from "../Modal/Modal";
 import TagKeyword from "../TagKeyword/TagKeyword";
 import { Typography } from "../Typography/Typography";
@@ -108,7 +108,7 @@ export const EnterChatRoomModal = ({
                   女
                 </Typography>
                 <Typography color={COLORS.GRAY4} weight={700} size="16">
-                  {chatData?.person.woman || 0} 명
+                  {chatData?.person.femaleCount || 0} 명
                 </Typography>
               </div>
               <div css={cssAlignHorizontalStyle({ gap: 4 })}>
@@ -116,14 +116,14 @@ export const EnterChatRoomModal = ({
                   男
                 </Typography>
                 <Typography color={COLORS.GRAY4} weight={700} size="16">
-                  {chatData?.person.man || 0} 명
+                  {chatData?.person.maleCount || 0} 명
                 </Typography>
               </div>
               <Typography color={COLORS.GRAY3} size="16" weight={700}>
                 /
               </Typography>
               <Typography color={COLORS.GRAY3} size="16" weight={700}>
-                {chatData?.person.total || 0} 명
+                {chatData?.person.totalCount || 0} 명
               </Typography>
             </div>
           </div>

@@ -2,10 +2,11 @@ import { dummyChatData } from "dummies/chat";
 import { useCallback, useMemo, useState } from "react";
 import { checkUser } from "utils/check-user";
 
+import { ChatStatus, IChatData } from "@/api/interfaces/chat";
 import { ReactComponent as Bell } from "@/assets/icons/bell.svg";
 import { Button, Typography } from "@/components";
 import { ArrowButton } from "@/components/ArrowButton/ArrowButton";
-import ChatItem, { ChatStatus, IChatData } from "@/components/Chat/ChatItem";
+import ChatItem from "@/components/Chat/ChatItem";
 import { EnterChatRoomModal } from "@/components/EnterChatRoomModal/EnterChatRoomModal";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { cssDefaultBtnStyle } from "@/styles/button";
