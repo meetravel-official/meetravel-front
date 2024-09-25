@@ -148,7 +148,7 @@ TravelReviewModalProps) => {
       <BorderModal
         title={
           <Typography size="24" color={COLORS.GRAY3} weight={700}>
-            여행 평가
+            여행 후기
           </Typography>
         }
         modalType="full"
@@ -181,7 +181,7 @@ TravelReviewModalProps) => {
             <Typography color={COLORS.GRAY4} weight={700} size="16">
               {isEnableReview
                 ? "해당 여행에서 즐겼던 장소들은 어떠셨나요?"
-                : "해당 여행에서 평가했던 장소들이에요."}
+                : "해당 여행에서 즐겼던 장소들이에요."}
             </Typography>
           </div>
           <div css={cssAlignVerticalStyle({ gap: 16 })}>
@@ -255,7 +255,7 @@ TravelReviewModalProps) => {
         <div css={cssAlignVerticalStyle({ gap: 12 })}>
           <ExclamationIcon width={50} height={50} />
           <Typography color={COLORS.GRAY4} weight={700} size="16">
-            여행 평가를 종료하시겠어요?
+            여행 후기 작성을 종료하시겠어요?
           </Typography>
           <Typography color={COLORS.GRAY3} weight={400} size="12">
             *현재까지 작성된 내용은 저장되지 않으며,
@@ -297,7 +297,7 @@ TravelReviewModalProps) => {
             size="16"
             align="center"
           >
-            여행 평가가 완료됐어요!
+            여행 후기 작성이 완료됐어요!
             <br />
             해당 여행의 채팅방으로 이동할까요?
           </Typography>
