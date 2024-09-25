@@ -82,6 +82,15 @@ export const ChatContainer = () => {
       {(!data || data?.chatRooms.length === 0) && !isLoading && (
         <NotFoundChat />
       )}
+      <ChatWrapper
+        link={`/chat/1`}
+        onClick={() => {
+          handleOnClickChat(chatData1); //TODO: api에 status 생기면 수정
+        }}
+      >
+        {/* TODO: api에 status 생기면 수정 */}
+        <ChatItem chatData={chatData1} />
+      </ChatWrapper>
 
       {/* 채팅방 리스트 */}
       {data && !isLoading && (

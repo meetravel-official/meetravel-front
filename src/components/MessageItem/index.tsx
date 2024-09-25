@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import Cookies from "js-cookie";
 import { useChatState } from "states/useChat";
 
 import { IChatMessageData } from "@/api/interfaces/chat";
@@ -20,7 +21,11 @@ export interface MessageItemProps {
 }
 
 const MessageItem = ({ type, data }: MessageItemProps) => {
-  const { userId } = useChatState();
+  const { userId, setUserId } = useChatState();
+  const myUserId =
+    JSON.parse(Cookies.get("userInfo") as string)?.userId ?? "invalidCookies";
+  const isSamePrevUser = userId ? userId === data.userId : false;
+
   if (type === "admin") {
     return (
       <div
@@ -31,13 +36,14 @@ const MessageItem = ({ type, data }: MessageItemProps) => {
         <AdminMessageItem data={data} />
       </div>
     );
-  } else if (type === "me") {
+  } else if (myUserId === data.userId) {
+    setUserId(data.userId);
     return <MyMessage data={data} />;
-  } else if (data.userId === "익명") {
-    // TODO: data.name이 바로 이전 메세지의 이름과 같을 경우 이름,프로필을 표시하지 않음
-    // 이전 메세지 판별 여부 추가예정
+  } else if (isSamePrevUser) {
+    // data.userId 바로 이전 메세지의 이름과 같을 경우 이름,프로필을 표시하지 않음
     return <AddMessage data={data} />;
   }
+  setUserId(data.userId);
   return (
     <div
       css={css`

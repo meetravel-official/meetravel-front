@@ -41,7 +41,7 @@ export interface IMatchingData {
 }
 
 export interface IChatMessageData {
-  userId?: string;
+  userId: string;
   chatRoomId?: number;
   message?: string;
   type?: string;

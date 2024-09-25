@@ -12,6 +12,7 @@ import {
 } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
+import { useChatState } from "states/useChat";
 
 import { ChatStatus, IChatMessageData } from "@/api/interfaces/chat";
 import { ReactComponent as PlanIcon } from "@/assets/icons/plan.svg";
@@ -98,6 +99,7 @@ const ChatRoomContainer = () => {
   };
 
   useEffect(() => {
+    // resetUserId();
     // connectHandler();
     // return () => {
     //   console.log("////////");
@@ -121,18 +123,18 @@ const ChatRoomContainer = () => {
         content: inputText ?? "테스트용",
         regDate: "2024-09-08 12:34",
       };
-      client?.current?.send(
-        "/pub/chat.send",
-        { Authorization: `Bearer ${token}` },
-        JSON.stringify({
-          chatRoomId: chatRoomId,
-          message: inputText,
-        })
-      );
+      // client?.current?.send(
+      //   "/pub/chat.send",
+      //   { Authorization: `Bearer ${token}` },
+      //   JSON.stringify({
+      //     chatRoomId: chatRoomId,
+      //     message: inputText,
+      //   })
+      // );
       setInputText("");
       scrollToBottom();
     }
-  }, [chatRoomId, inputText, token]);
+  }, [inputText]);
 
   useEffect(() => {
     console.log("chatMessageGroups", chatMessageGroups);
@@ -181,6 +183,7 @@ const ChatRoomContainer = () => {
         />
         <MessageItem
           data={{
+            userId: "닉네임",
             message: "우와~ 좋아요",
             sendAt: "2024-09-08 12:34",
           }}
