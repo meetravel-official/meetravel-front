@@ -13,6 +13,12 @@ export const apiRoute = {
   gallerySearchList: `${visitKoreaApiBaseRoute.photoGalleryService}/gallerySearchList1`, // 관광사진 갤러리 키워드 검색 목록 조회
 };
 
+export const chatApiRoute = {
+  chatRooms: `${API_URL}/chat-rooms`, //내 채팅방 목록
+  chatRooms__join: `${API_URL}/chat-rooms/join`, //채팅방 입장
+  chatRooms__leave: `${API_URL}/chat-rooms/leave`, //채팅방 퇴장
+};
+
 export const authApiRoute = {
   postAuthKakaoLogin: (authorizationCode: string) =>
     `${API_URL}/auth/kakao/login?authorizationCode=${authorizationCode}`, // 카카오 로그인 인가코드를 서버로 전송
