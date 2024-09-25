@@ -79,7 +79,9 @@ export const ChatContainer = () => {
       />
       <hr css={cssChatHrStyle} />
       {/* 데이터 없을때 보여줄 notFound component */}
-      {!data && !isLoading && <NotFoundChat />}
+      {(!data || data?.chatRooms.length === 0) && !isLoading && (
+        <NotFoundChat />
+      )}
 
       {/* 채팅방 리스트 */}
       {data && !isLoading && (
