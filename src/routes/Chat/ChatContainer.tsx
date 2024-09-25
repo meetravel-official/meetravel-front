@@ -1,9 +1,12 @@
 import { css } from "@emotion/react";
+import { chatData1 } from "dummies/chat";
 import { Fragment, ReactNode, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { useGetChatRooms } from "@/api/hooks/chat";
+import { ChatStatus, IChatData } from "@/api/interfaces/chat";
 import { Header, Typography } from "@/components";
-import ChatItem, { ChatStatus, IChatData } from "@/components/Chat/ChatItem";
+import ChatItem from "@/components/Chat/ChatItem";
 import { EnterChatRoomModal } from "@/components/EnterChatRoomModal/EnterChatRoomModal";
 import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
@@ -13,42 +16,11 @@ import NotFoundChat from "./components/NotFoundChat";
 import { TravelReviewModal } from "./components/TravelReviewModal/TravelReviewModal";
 
 export const ChatContainer = () => {
-  const chatData1 = {
-    isActive: true,
-    status: ChatStatus.INPROGRESS,
-    person: { woman: 1, man: 2, total: 3 },
-    startDate: "2024/12/26",
-    endDate: "2024/12/27",
-    title: "서귀포",
-    tags: ["산", "야경", "힐링"],
-    link: "/chat/1",
-  };
-  const chatData2 = {
-    isActive: false,
-    status: ChatStatus.REVIEW,
-    person: { woman: 2, man: 1, total: 3 },
-    startDate: "2024/12/26",
-    endDate: "2024/12/27",
-    title: "서귀포",
-    tags: ["산", "야경", "힐링"],
-    link: "/chat/2",
-  };
-
-  const chatData3 = {
-    isActive: false,
-    status: ChatStatus.DONE,
-    person: { woman: 2, man: 1, total: 3 },
-    startDate: "2024/12/26",
-    endDate: "2024/12/27",
-    title: "서귀포",
-    tags: ["산", "야경", "힐링"],
-    link: "/chat/3",
-  };
-
   const [isOpenTravelReviewModal, setIsOpenTravelReviewModal] = useState(false);
   const [isOpenTravelDoneModal, setIsOpenTravelDoneModal] = useState(false);
 
   const [selectedChatData, setSelectedChatData] = useState<IChatData>();
+  const { data, isLoading } = useGetChatRooms();
 
   const ChatWrapper = ({
     link,
@@ -107,33 +79,35 @@ export const ChatContainer = () => {
       />
       <hr css={cssChatHrStyle} />
       {/* 데이터 없을때 보여줄 notFound component */}
-      <NotFoundChat />
+      {!data && !isLoading && <NotFoundChat />}
+
       {/* 채팅방 리스트 */}
-      <div
-        css={css`
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-        `}
-      >
-        <ChatWrapper link={chatData1.link}>
-          <ChatItem chatData={chatData1} statusVisible />
-        </ChatWrapper>
-        <ChatWrapper
-          onClick={() => {
-            handleOnClickChat(chatData2);
-          }}
+      {data && !isLoading && (
+        <div
+          css={css`
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+          `}
         >
-          <ChatItem chatData={chatData2} statusVisible />
-        </ChatWrapper>
-        <ChatWrapper
-          onClick={() => {
-            handleOnClickChat(chatData3);
-          }}
-        >
-          <ChatItem chatData={chatData3} />
-        </ChatWrapper>
-      </div>
+          {data?.chatRooms.map((chatData, index) => {
+            console.log(chatData.chatRoomId);
+            return (
+              <ChatWrapper
+                key={index}
+                link={`/chat/${chatData.chatRoomId}`}
+                onClick={() => {
+                  handleOnClickChat(chatData1); //TODO: api에 status 생기면 수정
+                }}
+              >
+                {/* TODO: api에 status 생기면 수정 */}
+                <ChatItem chatData={chatData1} />
+              </ChatWrapper>
+            );
+          })}
+        </div>
+      )}
+
       <EnterChatRoomModal
         isOpen={isOpenTravelDoneModal}
         onClose={handleOnCloseTravelDoneModal}
