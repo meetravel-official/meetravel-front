@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { useKakaoAuthState } from "states/useCheckUser";
 
 import { usePostKakaoLogin } from "@/api/hooks/auth";
+import { KAKAO_REDIRECT_URI } from "@/api/hosts";
 
 export const KaKaoAuthCheckContainer = () => {
   const [searchParams] = useSearchParams();
@@ -14,7 +15,10 @@ export const KaKaoAuthCheckContainer = () => {
 
   useEffect(() => {
     if (kakaoAuthCode && requestToKakao) {
-      mutationKakaoLogin.mutate(kakaoAuthCode);
+      mutationKakaoLogin.mutate({
+        authorizationCode: kakaoAuthCode,
+        redirectUri: KAKAO_REDIRECT_URI,
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [requestToKakao]);
