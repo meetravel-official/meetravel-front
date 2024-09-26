@@ -1,10 +1,12 @@
 import { css } from "@emotion/react";
+import * as Popover from "@radix-ui/react-popover";
 import dayjs from "dayjs";
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProfile } from "states/useProfile";
 
 import { useGetMyPage } from "@/api/hooks/user";
+import { ReactComponent as CameraIcon } from "@/assets/icons/camera.svg";
 import { ReactComponent as ExclamationCircleIcon } from "@/assets/icons/exclamation-circle.svg";
 import { Button, Typography, UserAvatar } from "@/components";
 import BorderModal from "@/components/BorderModal/BorderModal";
@@ -21,10 +23,14 @@ import {
   SIGN_UP_TRAVEL_FREQUENCY_TYPE,
 } from "@/constants/signUp";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
+import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
 
 import {
+  cssEditProfileImgBoxStyle,
+  cssEditProfileImgButtonStyle,
   cssFormItemStyle,
+  cssPopOverContentStyle,
   cssRadioButtonStyle,
 } from "./ProfileEditModal.styles";
 
@@ -34,6 +40,7 @@ interface ProfileEditModalProps {
 export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
   const navigate = useNavigate();
 
+  const [isOpenPopover, setIsOpenPopover] = useState(false);
   const [isOpenCancelModal, setIsOpenCancelModal] = useState(false);
   const { isOpenEditModal, handleOnCloseEditModal } = useProfile();
   const { data: profileData } = useGetMyPage(userId);
@@ -47,12 +54,21 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
       scheduleType: profileData?.data.scheduleType,
       hobby: profileData?.data.hobby,
       intro: profileData?.data.intro,
+      profileImageUrl: profileData?.data.profileImageUrl,
     },
   });
   const { onChange: onChangeTravelFrequency } =
     registerField("travelFrequency");
   const { onChange: onChangeScheduleType } = registerField("scheduleType");
   const { onChange: onChangePlanningType } = registerField("planningType");
+
+  const handleOnOpenPopOver = () => {
+    setIsOpenPopover(true);
+  };
+
+  const handleOnClosePopOver = () => {
+    setIsOpenPopover(false);
+  };
 
   const handleOnClickClose = () => {
     setIsOpenCancelModal(true);
@@ -70,6 +86,12 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
     setIsOpenCancelModal(false);
   };
 
+  const handleOnCloseEditModalAll = () => {
+    handleOnCloseCancelModal();
+    handleOnClosePopOver();
+    handleOnCloseEditModal();
+  };
+
   useEffect(() => {
     navigate("", {
       state: { isModal: true },
@@ -78,14 +100,16 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
 
   useEffect(() => {
     window.addEventListener("popstate", () => {
-      handleOnCloseEditModal();
+      handleOnCloseEditModalAll();
     });
     return () => {
       window.removeEventListener("popstate", () => {
-        handleOnCloseEditModal();
+        handleOnCloseEditModalAll();
       });
     };
-  }, [handleOnCloseEditModal]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   return (
     <Fragment>
@@ -105,7 +129,36 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
               gap: 16,
             })}
           >
-            <UserAvatar profileUrl={""} size={80} />
+            <div css={cssEditProfileImgBoxStyle}>
+              <UserAvatar profileUrl={form.profileImageUrl.value} size={80} />
+              <Popover.Root open={isOpenPopover}>
+                <Popover.Trigger asChild>
+                  <button
+                    css={cssEditProfileImgButtonStyle}
+                    onClick={handleOnOpenPopOver}
+                  >
+                    <CameraIcon />
+                  </button>
+                </Popover.Trigger>
+                <Popover.Portal>
+                  <Popover.Content
+                    css={cssPopOverContentStyle}
+                    onInteractOutside={handleOnClosePopOver}
+                  >
+                    <button css={cssDefaultBtnStyle}>
+                      <Typography color={COLORS.GRAY4} weight={700} size="16">
+                        프로필 삭제
+                      </Typography>
+                    </button>
+                    <button css={cssDefaultBtnStyle}>
+                      <Typography color={COLORS.GRAY4} weight={700} size="16">
+                        갤러리 이동
+                      </Typography>
+                    </button>
+                  </Popover.Content>
+                </Popover.Portal>
+              </Popover.Root>
+            </div>
             <FormItem name="nickname" label="" formItemStyle={cssFormItemStyle}>
               <div css={cssAlignHorizontalStyle({ gap: 8, width: "100%" })}>
                 <Input
@@ -356,13 +409,7 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
         closableIcon={false}
         footer={
           <Fragment>
-            <Button
-              bgColor={COLORS.PINK3}
-              onClick={() => {
-                handleOnCloseCancelModal();
-                handleOnCloseEditModal();
-              }}
-            >
+            <Button bgColor={COLORS.PINK3} onClick={handleOnCloseEditModalAll}>
               <Typography color={COLORS.WHITE} size="16" weight={700}>
                 나갈래요!
               </Typography>

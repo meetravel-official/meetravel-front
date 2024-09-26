@@ -14,3 +14,47 @@ export const cssRadioButtonStyle = (isActive: boolean) => css`
   outline: ${isActive ? `1px solid ${COLORS.PINK3}` : "none"} !important;
   color: ${isActive ? COLORS.PINK3 : COLORS.GRAY5};
 `;
+
+export const cssEditProfileImgBoxStyle = css`
+  position: relative;
+
+  width: 84px;
+  height: 84px;
+`;
+
+export const cssEditProfileImgButtonStyle = css`
+  all: unset;
+  cursor: pointer;
+
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+
+  background: ${COLORS.PINK2};
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const cssPopOverContentStyle = css`
+  border: 1px solid ${COLORS.GRAY2};
+  background: ${COLORS.WHITE};
+  overflow: hidden;
+  border-radius: 8px;
+  width: 113px;
+  z-index: 999;
+
+  button {
+    padding: 16px 20px;
+    :hover {
+      background: ${COLORS.GRAY1};
+    }
+  }
+  button:first-of-type {
+    border-bottom: 1px solid ${COLORS.GRAY2};
+  }
+`;
