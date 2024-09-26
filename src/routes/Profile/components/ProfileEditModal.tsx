@@ -55,36 +55,37 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
   const { data: profileData } = useGetMyPage(userId);
   const { mutate } = useGetCheckNickname();
 
-  const { form, registerField, resetFields, invalidFields } = useForm({
-    initialValues: {
-      nickname: profileData?.data.nickname,
-      travelFrequency: profileData?.data.travelFrequency,
-      mbti: profileData?.data.mbti,
-      planningType: profileData?.data.planningType,
-      scheduleType: profileData?.data.scheduleType,
-      hobby: profileData?.data.hobby,
-      intro: profileData?.data.intro,
-      profileImageUrl: profileData?.data.profileImageUrl,
-    },
-    validate: {
-      nickname: (value) => {
-        if (
-          value &&
-          (value.length < 2 || value.length > 6 || !nicknameRegex.test(value))
-        ) {
-          return "닉네임은 한글, 영어로 구성된 2자 이상 6자 이하로 입력해주세요.(띄어쓰기 포함 불가)";
-        }
+  const { form, registerField, resetFields, invalidFields, setFields } =
+    useForm({
+      initialValues: {
+        nickname: profileData?.data.nickname,
+        travelFrequency: profileData?.data.travelFrequency,
+        mbti: profileData?.data.mbti,
+        planningType: profileData?.data.planningType,
+        scheduleType: profileData?.data.scheduleType,
+        hobby: profileData?.data.hobby,
+        intro: profileData?.data.intro,
+        profileImageUrl: profileData?.data.profileImageUrl,
+      },
+      validate: {
+        nickname: (value) => {
+          if (
+            value &&
+            (value.length < 2 || value.length > 6 || !nicknameRegex.test(value))
+          ) {
+            return "닉네임은 한글, 영어로 구성된 2자 이상 6자 이하로 입력해주세요.(띄어쓰기 포함 불가)";
+          }
 
-        return undefined;
+          return undefined;
+        },
+        mbti: (value) => {
+          if (value && !GetMyPageResponseMbtiEnumArray.includes(value)) {
+            return "MBTI는 4글자 대문자로 입력해주세요.";
+          }
+          return undefined;
+        },
       },
-      mbti: (value) => {
-        if (value && !GetMyPageResponseMbtiEnumArray.includes(value)) {
-          return "MBTI는 4글자 대문자로 입력해주세요.";
-        }
-        return undefined;
-      },
-    },
-  });
+    });
 
   const { onChange: onChangeTravelFrequency } =
     registerField("travelFrequency");
@@ -176,7 +177,18 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //TODO: api 연결
+  useEffect(() => {
+    setFields({
+      nickname: profileData?.data.nickname,
+      travelFrequency: profileData?.data.travelFrequency,
+      mbti: profileData?.data.mbti,
+      planningType: profileData?.data.planningType,
+      scheduleType: profileData?.data.scheduleType,
+      hobby: profileData?.data.hobby,
+      intro: profileData?.data.intro,
+      profileImageUrl: profileData?.data.profileImageUrl,
+    });
+  }, [profileData, setFields]);
 
   return (
     <Fragment>
