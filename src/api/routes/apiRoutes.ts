@@ -28,5 +28,5 @@ export const authApiRoute = {
   getCheckNickname: (nickName: string) =>
     `${API_URL}/signup/check-nickname?nickName=${nickName}`, // 닉네임 중복 확인
   userInfo: (userId: string) => `${API_URL}/users/${userId}/info`,
-  userNickname: (userId: string) => `${API_URL}/users/${userId}/info`,
+  userNickname: (userId: string) => `${API_URL}/users/${userId}/nickname`,
 };
