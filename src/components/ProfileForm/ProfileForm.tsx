@@ -29,7 +29,7 @@ export const ProfileForm = ({ userId }: ProfileFormProps) => {
           </Typography>
           <div css={cssAlignHorizontalStyle({ gap: 4 })}>
             <Typography color={COLORS.GRAY3} weight={700} size="16">
-              女 {/* TODO: api에서 gender 추가 필요 */}
+              {profileData?.data?.gender === "남성" ? "男" : "女"}
             </Typography>
             <Typography color={COLORS.GRAY4} weight={400} size="16">
               {profileData?.data?.birthDate
