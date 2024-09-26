@@ -14,8 +14,14 @@ export const apiRoute = {
 };
 
 export const authApiRoute = {
-  postAuthKakaoLogin: (authorizationCode: string) =>
-    `${API_URL}/auth/kakao/login?authorizationCode=${authorizationCode}`, // 카카오 로그인 인가코드를 서버로 전송
+  postAuthKakaoLogin: ({
+    authorizationCode,
+    redirectUri,
+  }: {
+    authorizationCode: string;
+    redirectUri: string;
+  }) =>
+    `${API_URL}/auth/kakao/login?authorizationCode=${authorizationCode}&redirectUri=${redirectUri}`, // 카카오 로그인 인가코드를 서버로 전송
   postSignUp: `${API_URL}/signup`, // 회원가입
   postLogOut: `${API_URL}/users/logout`, // 로그아웃
   getMyPage: (userId: string) => `${API_URL}/users/${userId}/my-page`, // 마이페이지 조회
