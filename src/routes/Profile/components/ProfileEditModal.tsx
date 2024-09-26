@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import dayjs from "dayjs";
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProfile } from "states/useProfile";
@@ -130,6 +131,24 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
                 </Button>
               </div>
             </FormItem>
+            <div
+              css={css`
+                opacity: 0.2;
+              `}
+            >
+              <div css={cssAlignHorizontalStyle({ gap: 4 })}>
+                <Typography color={COLORS.GRAY3} weight={700} size="16">
+                  {profileData?.data?.gender === "남성" ? "男" : "女"}
+                </Typography>
+                <Typography color={COLORS.GRAY4} weight={400} size="16">
+                  {profileData?.data?.birthDate
+                    ? dayjs(profileData?.data?.birthDate, "YYYY-MM-DD").format(
+                        "YYYY년생"
+                      )
+                    : "-"}
+                </Typography>
+              </div>
+            </div>
             <div
               css={cssAlignVerticalStyle({
                 gap: 16,
