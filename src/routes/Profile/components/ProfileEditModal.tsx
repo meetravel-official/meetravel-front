@@ -1,4 +1,6 @@
 import { css } from "@emotion/react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useProfile } from "states/useProfile";
 
 import { useGetMyPage } from "@/api/hooks/user";
@@ -27,6 +29,8 @@ interface ProfileEditModalProps {
   userId?: string;
 }
 export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
+  const navigate = useNavigate();
+
   const { isOpenEditModal, handleOnCloseEditModal } = useProfile();
   const { data: profileData } = useGetMyPage(userId);
 
@@ -57,6 +61,23 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
     });
     resetFields();
   };
+
+  useEffect(() => {
+    navigate("", {
+      state: { isModal: true },
+    });
+  }, [navigate]);
+
+  useEffect(() => {
+    window.addEventListener("popstate", () => {
+      handleOnCloseEditModal();
+    });
+    return () => {
+      window.removeEventListener("popstate", () => {
+        handleOnCloseEditModal();
+      });
+    };
+  }, [handleOnCloseEditModal]);
 
   return (
     <BorderModal
