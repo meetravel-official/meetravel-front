@@ -183,6 +183,7 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
               display: flex;
               flex-direction: column;
               align-items: center;
+              margin-bottom: 36px;
             `}
           >
             <FormItem
@@ -412,16 +413,16 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
                 `}
               />
             </FormItem>
-            <Button
-              bgColor={COLORS.PINK3}
-              height="large"
-              onClick={handleOnClickSubmit}
-            >
-              <Typography color={COLORS.WHITE} weight={700} size="16">
-                저장
-              </Typography>
-            </Button>
           </Form>
+          <Button
+            bgColor={COLORS.PINK3}
+            height="large"
+            onClick={handleOnClickSubmit}
+          >
+            <Typography color={COLORS.WHITE} weight={700} size="16">
+              저장
+            </Typography>
+          </Button>
         </div>
       </BorderModal>
       <Modal
