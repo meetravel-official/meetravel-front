@@ -13,7 +13,7 @@ export const ProfileContainer = checkUser(() => {
       `}
     >
       <ProfileForm userId={getUserData().userId} />
-      <ProfileEditModal />
+      <ProfileEditModal userId={getUserData().userId} />
     </div>
   );
 });
