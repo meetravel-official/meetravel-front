@@ -17,14 +17,13 @@ export interface MessageItemDataProps {
 }
 export interface MessageItemProps {
   type?: "admin" | "system" | "user" | "me";
+  isSameUser?: boolean;
   data: IChatMessageData;
 }
 
-const MessageItem = ({ type, data }: MessageItemProps) => {
-  const { userId, setUserId } = useChatState();
+const MessageItem = ({ type, isSameUser, data }: MessageItemProps) => {
   const myUserId =
     JSON.parse(Cookies.get("userInfo") as string)?.userId ?? "invalidCookies";
-  const isSamePrevUser = userId ? userId === data.userId : false;
 
   if (type === "admin") {
     return (
@@ -37,13 +36,11 @@ const MessageItem = ({ type, data }: MessageItemProps) => {
       </div>
     );
   } else if (myUserId === data.userId) {
-    setUserId(data.userId);
     return <MyMessage data={data} />;
-  } else if (isSamePrevUser) {
+  } else if (isSameUser) {
     // data.userId 바로 이전 메세지의 이름과 같을 경우 이름,프로필을 표시하지 않음
     return <AddMessage data={data} />;
   }
-  setUserId(data.userId);
   return (
     <div
       css={css`

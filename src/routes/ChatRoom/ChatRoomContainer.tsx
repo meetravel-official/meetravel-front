@@ -41,10 +41,12 @@ const ChatRoomContainer = () => {
   const [chatMessageGroups, setChatMessageGroups] = useState<
     IChatMessageData[]
   >([]);
+  let prevUserId: string;
 
   const token = Cookies.get("accessToken");
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const enterPressed = useRef(false);
 
   // 스크롤을 제일 아래로 내리는 함수
   // 일단은 내가 메세지 전송할때만 아래로 내리도록 함
@@ -88,6 +90,7 @@ const ChatRoomContainer = () => {
                 ...prevGroups,
                 JSON.parse(message.body),
               ]);
+              scrollToBottom();
             },
             {
               Authorization: `Bearer ${token}`,
@@ -99,42 +102,31 @@ const ChatRoomContainer = () => {
   };
 
   useEffect(() => {
-    // resetUserId();
-    // connectHandler();
-    // return () => {
-    //   console.log("////////");
-    //   console.log("unsubscribe");
-    //   client.current?.unsubscribe(
-    //     `/exchange/chat.exchange/chat.rooms.${chatRoomId}`
-    //   );
-    // };
+    connectHandler();
+    return () => {
+      console.log("////////");
+      console.log("unsubscribe");
+      client.current?.unsubscribe(
+        `/exchange/chat.exchange/chat.rooms.${chatRoomId}`
+      );
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addMessage = useCallback(() => {
-    // chatMessageGroups.push({
-    //   name: chatMessage?.userId,
-    //   content: chatMessage?.message ?? "테스트용",
-    //   regDate: "2024-09-08 12:34",
-    // });
     if (inputText !== "") {
-      const chatMessage = {
-        name: "testId",
-        content: inputText ?? "테스트용",
-        regDate: "2024-09-08 12:34",
-      };
-      // client?.current?.send(
-      //   "/pub/chat.send",
-      //   { Authorization: `Bearer ${token}` },
-      //   JSON.stringify({
-      //     chatRoomId: chatRoomId,
-      //     message: inputText,
-      //   })
-      // );
-      setInputText("");
       scrollToBottom();
+      setInputText("");
+      client?.current?.send(
+        "/pub/chat.send",
+        { Authorization: `Bearer ${token}` },
+        JSON.stringify({
+          chatRoomId: chatRoomId,
+          message: inputText,
+        })
+      );
     }
-  }, [inputText]);
+  }, [chatRoomId, inputText, token]);
 
   useEffect(() => {
     console.log("chatMessageGroups", chatMessageGroups);
@@ -174,54 +166,18 @@ const ChatRoomContainer = () => {
             sendAt: "2024-09-08 12:34",
           }}
         />
-        <MessageItem
-          data={{
-            userId: "닉네임",
-            message: "우와! 좋아요~ 반가워요 다들!",
-            sendAt: "2024-09-08 12:34",
-          }}
-        />
-        <MessageItem
-          data={{
-            userId: "닉네임",
-            message: "우와~ 좋아요",
-            sendAt: "2024-09-08 12:34",
-          }}
-        />
-        <MessageItem
-          data={{
-            userId: "익명",
-            message: "반가워요 다들~",
-            sendAt: "2024-09-08 12:34",
-          }}
-        />
-        <MessageItem
-          data={{
-            userId: "익명",
-            message: "반가워요 다들~",
-            sendAt: "2024-09-08 12:34",
-          }}
-        />
-        <MessageItem
-          data={{
-            userId: "익명",
-            message: "반가워요 다들~",
-            sendAt: "2024-09-08 12:34",
-          }}
-        />
-        <MessageItem
-          type="me"
-          data={{
-            userId: "익명",
-            message: "반가워요 다들~",
-            sendAt: "2024-09-08 12:34",
-          }}
-        />
+
         {chatMessageGroups.map((item, index) => {
-          console.log("item", item);
+          const isSameUser = prevUserId === item.userId;
+          prevUserId = item.userId;
           return (
             item.type === "CHAT" && (
-              <MessageItem key={index} type="me" data={item} />
+              <MessageItem
+                key={index}
+                type="me"
+                data={item}
+                isSameUser={isSameUser}
+              />
             )
           );
         })}
@@ -256,7 +212,15 @@ const ChatRoomContainer = () => {
             setInputText(e.target.value);
           }}
           onKeyDown={(e) => {
-            if (e.key === "Enter") addMessage();
+            if (e.key === "Enter" && !enterPressed.current) {
+              enterPressed.current = true;
+              addMessage();
+
+              setTimeout(function () {
+                enterPressed.current = false;
+                setInputText("");
+              }, 0);
+            }
           }}
         />
         <Button
