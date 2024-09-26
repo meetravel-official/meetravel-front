@@ -22,31 +22,36 @@ export const usePostKakaoLogin = () => {
   const { setRequestToKakao } = useKakaoAuthState();
   const navigate = useNavigate();
 
-  return useMutation<AxiosResponse<IGetKakaoLoginResponse>, AxiosError, string>(
+  return useMutation<
+    AxiosResponse<IGetKakaoLoginResponse>,
+    AxiosError,
     {
-      mutationFn: (authorizationCode: string) => {
-        return api.post(
-          authApiRoute.postAuthKakaoLogin(authorizationCode),
-          undefined
-        );
-      },
-      onSuccess: (data) => {
-        const response = data.data;
-        setRequestToKakao(false);
-        setUserDataToCookie(response);
-
-        if (response.registeredUserYn) {
-          navigate(pageRoutes.ROOT);
-        } else {
-          navigate(pageRoutes.SIGN_UP);
-        }
-      },
-      onError: (error) => {
-        console.error("Kakao SignIn is Failed.", error);
-        setRequestToKakao(false);
-      },
+      authorizationCode: string;
+      redirectUri: string;
     }
-  );
+  >({
+    mutationFn: ({ authorizationCode, redirectUri }) => {
+      return api.post(
+        authApiRoute.postAuthKakaoLogin({ authorizationCode, redirectUri }),
+        undefined
+      );
+    },
+    onSuccess: (data) => {
+      const response = data.data;
+      setRequestToKakao(false);
+      setUserDataToCookie(response);
+
+      if (response.registeredUserYn) {
+        navigate(pageRoutes.ROOT);
+      } else {
+        navigate(pageRoutes.SIGN_UP);
+      }
+    },
+    onError: (error) => {
+      console.error("Kakao SignIn is Failed.", error);
+      setRequestToKakao(false);
+    },
+  });
 };
 
 export const usePostSignUp = () => {
