@@ -35,6 +35,12 @@ export interface GetMyPageResponse {
    * @type {string}
    * @memberof GetMyPageResponse
    */
+  gender?: GetMyPageResponseGenderEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof GetMyPageResponse
+   */
   birthDate?: string;
   /**
    *
@@ -73,6 +79,8 @@ export interface GetMyPageResponse {
    */
   intro?: string;
 }
+
+export type GetMyPageResponseGenderEnum = "남성" | "여성";
 
 export type GetMyPageResponseTravelFrequencyEnum =
   | "안가요!"
