@@ -4,8 +4,10 @@ import dayjs from "dayjs";
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProfile } from "states/useProfile";
+import { nicknameRegex } from "utils/regex-utils";
 
 import { useGetMyPage } from "@/api/hooks/user";
+import { GetMyPageResponseMbtiEnumArray } from "@/api/interfaces/user";
 import { ReactComponent as CameraIcon } from "@/assets/icons/camera.svg";
 import { ReactComponent as ExclamationCircleIcon } from "@/assets/icons/exclamation-circle.svg";
 import { Button, Typography, UserAvatar } from "@/components";
@@ -27,6 +29,7 @@ import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
 
 import {
+  cssDisableEditAreaStyle,
   cssEditProfileImgBoxStyle,
   cssEditProfileImgButtonStyle,
   cssFormItemStyle,
@@ -55,6 +58,24 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
       hobby: profileData?.data.hobby,
       intro: profileData?.data.intro,
       profileImageUrl: profileData?.data.profileImageUrl,
+    },
+    validate: {
+      nickname: (value) => {
+        if (
+          value &&
+          (value.length < 2 || value.length > 6 || !nicknameRegex.test(value))
+        ) {
+          return "닉네임은 한글, 영어로 구성된 2자 이상 6자 이하로 입력해주세요.(띄어쓰기 포함 불가)";
+        }
+
+        return undefined;
+      },
+      mbti: (value) => {
+        if (value && !GetMyPageResponseMbtiEnumArray.includes(value)) {
+          return "MBTI는 4글자 대문자로 입력해주세요.";
+        }
+        return undefined;
+      },
     },
   });
   const { onChange: onChangeTravelFrequency } =
@@ -110,6 +131,7 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //TODO: api 연결
 
   return (
     <Fragment>
@@ -123,43 +145,52 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
           </Typography>
         }
       >
-        <Form formValue={form}>
-          <div
-            css={cssAlignVerticalStyle({
-              gap: 16,
-            })}
-          >
-            <div css={cssEditProfileImgBoxStyle}>
-              <UserAvatar profileUrl={form.profileImageUrl.value} size={80} />
-              <Popover.Root open={isOpenPopover}>
-                <Popover.Trigger asChild>
-                  <button
-                    css={cssEditProfileImgButtonStyle}
-                    onClick={handleOnOpenPopOver}
-                  >
-                    <CameraIcon />
+        <div css={cssAlignVerticalStyle({ gap: 16, alignItems: "center" })}>
+          <div css={cssEditProfileImgBoxStyle}>
+            <UserAvatar profileUrl={form.profileImageUrl.value} size={80} />
+            <Popover.Root open={isOpenPopover}>
+              <Popover.Trigger asChild>
+                <button
+                  css={cssEditProfileImgButtonStyle}
+                  onClick={handleOnOpenPopOver}
+                >
+                  <CameraIcon />
+                </button>
+              </Popover.Trigger>
+              <Popover.Portal>
+                <Popover.Content
+                  css={cssPopOverContentStyle}
+                  onInteractOutside={handleOnClosePopOver}
+                >
+                  <button css={cssDefaultBtnStyle}>
+                    <Typography color={COLORS.GRAY4} weight={700} size="16">
+                      프로필 삭제
+                    </Typography>
                   </button>
-                </Popover.Trigger>
-                <Popover.Portal>
-                  <Popover.Content
-                    css={cssPopOverContentStyle}
-                    onInteractOutside={handleOnClosePopOver}
-                  >
-                    <button css={cssDefaultBtnStyle}>
-                      <Typography color={COLORS.GRAY4} weight={700} size="16">
-                        프로필 삭제
-                      </Typography>
-                    </button>
-                    <button css={cssDefaultBtnStyle}>
-                      <Typography color={COLORS.GRAY4} weight={700} size="16">
-                        갤러리 이동
-                      </Typography>
-                    </button>
-                  </Popover.Content>
-                </Popover.Portal>
-              </Popover.Root>
-            </div>
-            <FormItem name="nickname" label="" formItemStyle={cssFormItemStyle}>
+                  <button css={cssDefaultBtnStyle}>
+                    <Typography color={COLORS.GRAY4} weight={700} size="16">
+                      갤러리 이동
+                    </Typography>
+                  </button>
+                </Popover.Content>
+              </Popover.Portal>
+            </Popover.Root>
+          </div>
+          <Form
+            formValue={form}
+            formStyle={css`
+              width: 100%;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+            `}
+          >
+            <FormItem
+              name="nickname"
+              label=""
+              formItemStyle={cssFormItemStyle}
+              errorStyle={{ display: "block" }}
+            >
               <div css={cssAlignHorizontalStyle({ gap: 8, width: "100%" })}>
                 <Input
                   {...registerField("nickname")}
@@ -168,6 +199,7 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
                     width: 100%;
                   `}
                   placeholder="닉네임을 적어주세요."
+                  maxLength={6}
                 />
                 <Button
                   bgColor={COLORS.PINK2}
@@ -184,11 +216,7 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
                 </Button>
               </div>
             </FormItem>
-            <div
-              css={css`
-                opacity: 0.2;
-              `}
-            >
+            <div css={cssDisableEditAreaStyle}>
               <div css={cssAlignHorizontalStyle({ gap: 4 })}>
                 <Typography color={COLORS.GRAY3} weight={700} size="16">
                   {profileData?.data?.gender === "남성" ? "男" : "女"}
@@ -202,193 +230,188 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
                 </Typography>
               </div>
             </div>
-            <div
-              css={cssAlignVerticalStyle({
-                gap: 16,
-                alignItems: "flex-start",
-              })}
+
+            <FormItem
+              label="1년에 여행은 몇 번정도 가시나요?"
+              formItemStyle={cssFormItemStyle}
+              name="travelFrequency"
             >
-              <FormItem
-                label="1년에 여행은 몇 번정도 가시나요?"
-                formItemStyle={cssFormItemStyle}
-                name="travelFrequency"
-              >
-                <RadioButtonGroup
-                  {...registerField("travelFrequency")}
-                  defaultValue={
-                    checkNotEmpty([form.travelFrequency])
-                      ? form.travelFrequency?.value
-                      : undefined
-                  }
-                  onChange={(e) => {
-                    onChangeTravelFrequency(e);
-                  }}
-                  gridDetailStyle={css`
-                    width: 100%;
-                  `}
-                >
-                  <RadioButtonGroup.RadioButton
-                    value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.NEVER}
-                    detailStyle={cssRadioButtonStyle(
-                      form.travelFrequency?.value ===
-                        SIGN_UP_TRAVEL_FREQUENCY_TYPE.NEVER
-                    )}
-                  >
-                    안 가요!
-                  </RadioButtonGroup.RadioButton>
-                  <RadioButtonGroup.RadioButton
-                    value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.ONE_TO_THREE_TIMES}
-                    detailStyle={cssRadioButtonStyle(
-                      form.travelFrequency?.value ===
-                        SIGN_UP_TRAVEL_FREQUENCY_TYPE.ONE_TO_THREE_TIMES
-                    )}
-                  >
-                    1-3
-                  </RadioButtonGroup.RadioButton>
-                  <RadioButtonGroup.RadioButton
-                    value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.FOUR_TO_SIX_TIMES}
-                    detailStyle={cssRadioButtonStyle(
-                      form.travelFrequency?.value ===
-                        SIGN_UP_TRAVEL_FREQUENCY_TYPE.FOUR_TO_SIX_TIMES
-                    )}
-                  >
-                    4-6
-                  </RadioButtonGroup.RadioButton>
-                  <RadioButtonGroup.RadioButton
-                    value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.MORE_SEVEN_TIMES}
-                    detailStyle={cssRadioButtonStyle(
-                      form.travelFrequency?.value ===
-                        SIGN_UP_TRAVEL_FREQUENCY_TYPE.MORE_SEVEN_TIMES
-                    )}
-                  >
-                    7번 이상
-                  </RadioButtonGroup.RadioButton>
-                </RadioButtonGroup>
-              </FormItem>
-              <FormItem
-                label="여행 취향은 어떻게 되세요?"
-                formItemStyle={css`
-                  ${cssFormItemStyle}
-                  margin: 0;
-                `}
-                name="travelFrequency"
-              >
-                <RadioButtonGroup
-                  {...registerField("travelFrequency")}
-                  defaultValue={
-                    checkNotEmpty([form.travelFrequency])
-                      ? form.travelFrequency?.value
-                      : undefined
-                  }
-                  onChange={(e) => {
-                    onChangeScheduleType(e);
-                  }}
-                  gridDetailStyle={css`
-                    width: 100%;
-                  `}
-                >
-                  <RadioButtonGroup.RadioButton
-                    value={SIGN_UP_SCHEDULE_TYPE.TIGHT}
-                    detailStyle={cssRadioButtonStyle(
-                      form.scheduleType?.value === SIGN_UP_SCHEDULE_TYPE.TIGHT
-                    )}
-                  >
-                    빠듯하게
-                  </RadioButtonGroup.RadioButton>
-                  <RadioButtonGroup.RadioButton
-                    value={SIGN_UP_SCHEDULE_TYPE.RELAX}
-                    detailStyle={cssRadioButtonStyle(
-                      form.scheduleType?.value === SIGN_UP_SCHEDULE_TYPE.RELAX
-                    )}
-                  >
-                    여유롭게
-                  </RadioButtonGroup.RadioButton>
-                </RadioButtonGroup>
-              </FormItem>
-              <FormItem
-                label=""
-                name="planningType"
-                formItemStyle={cssFormItemStyle}
-                labelStyle={css`
-                  display: none;
+              <RadioButtonGroup
+                {...registerField("travelFrequency")}
+                defaultValue={
+                  checkNotEmpty([form.travelFrequency])
+                    ? form.travelFrequency?.value
+                    : undefined
+                }
+                onChange={(e) => {
+                  onChangeTravelFrequency(e);
+                }}
+                gridDetailStyle={css`
+                  width: 100%;
                 `}
               >
-                <RadioButtonGroup
-                  {...registerField("planningType")}
-                  defaultValue={
-                    checkNotEmpty([form.planningType])
-                      ? form.planningType?.value
-                      : undefined
-                  }
-                  onChange={(e) => {
-                    onChangePlanningType(e);
-                  }}
-                  gridDetailStyle={css`
-                    width: 100%;
-                  `}
+                <RadioButtonGroup.RadioButton
+                  value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.NEVER}
+                  detailStyle={cssRadioButtonStyle(
+                    form.travelFrequency?.value ===
+                      SIGN_UP_TRAVEL_FREQUENCY_TYPE.NEVER
+                  )}
                 >
-                  <RadioButtonGroup.RadioButton
-                    value={SIGN_UP_PLANNING_TYPE.PLANNED}
-                    detailStyle={cssRadioButtonStyle(
-                      form.planningType?.value === SIGN_UP_PLANNING_TYPE.PLANNED
-                    )}
-                  >
-                    계획적으로
-                  </RadioButtonGroup.RadioButton>
-                  <RadioButtonGroup.RadioButton
-                    value={SIGN_UP_PLANNING_TYPE.IMPROMPTU}
-                    detailStyle={cssRadioButtonStyle(
-                      form.planningType?.value ===
-                        SIGN_UP_PLANNING_TYPE.IMPROMPTU
-                    )}
-                  >
-                    즉흥적으로
-                  </RadioButtonGroup.RadioButton>
-                </RadioButtonGroup>
-              </FormItem>
-              <FormItem
-                label="취미"
-                name="hobby"
-                formItemStyle={cssFormItemStyle}
+                  안 가요!
+                </RadioButtonGroup.RadioButton>
+                <RadioButtonGroup.RadioButton
+                  value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.ONE_TO_THREE_TIMES}
+                  detailStyle={cssRadioButtonStyle(
+                    form.travelFrequency?.value ===
+                      SIGN_UP_TRAVEL_FREQUENCY_TYPE.ONE_TO_THREE_TIMES
+                  )}
+                >
+                  1-3
+                </RadioButtonGroup.RadioButton>
+                <RadioButtonGroup.RadioButton
+                  value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.FOUR_TO_SIX_TIMES}
+                  detailStyle={cssRadioButtonStyle(
+                    form.travelFrequency?.value ===
+                      SIGN_UP_TRAVEL_FREQUENCY_TYPE.FOUR_TO_SIX_TIMES
+                  )}
+                >
+                  4-6
+                </RadioButtonGroup.RadioButton>
+                <RadioButtonGroup.RadioButton
+                  value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.MORE_SEVEN_TIMES}
+                  detailStyle={cssRadioButtonStyle(
+                    form.travelFrequency?.value ===
+                      SIGN_UP_TRAVEL_FREQUENCY_TYPE.MORE_SEVEN_TIMES
+                  )}
+                >
+                  7번 이상
+                </RadioButtonGroup.RadioButton>
+              </RadioButtonGroup>
+            </FormItem>
+            <FormItem
+              label="여행 취향은 어떻게 되세요?"
+              formItemStyle={css`
+                ${cssFormItemStyle};
+                margin: 16px;
+              `}
+              name="travelFrequency"
+            >
+              <RadioButtonGroup
+                {...registerField("travelFrequency")}
+                defaultValue={
+                  checkNotEmpty([form.travelFrequency])
+                    ? form.travelFrequency?.value
+                    : undefined
+                }
+                onChange={(e) => {
+                  onChangeScheduleType(e);
+                }}
+                gridDetailStyle={css`
+                  width: 100%;
+                `}
               >
-                <Input
-                  {...registerField("hobby")}
-                  type="text"
-                  placeholder="취미를 적어주세요."
-                  detailStyle={css`
-                    width: 100%;
-                  `}
-                />
-              </FormItem>
-              <FormItem
-                label="MBTI"
-                name="mbti"
-                formItemStyle={cssFormItemStyle}
+                <RadioButtonGroup.RadioButton
+                  value={SIGN_UP_SCHEDULE_TYPE.TIGHT}
+                  detailStyle={cssRadioButtonStyle(
+                    form.scheduleType?.value === SIGN_UP_SCHEDULE_TYPE.TIGHT
+                  )}
+                >
+                  빠듯하게
+                </RadioButtonGroup.RadioButton>
+                <RadioButtonGroup.RadioButton
+                  value={SIGN_UP_SCHEDULE_TYPE.RELAX}
+                  detailStyle={cssRadioButtonStyle(
+                    form.scheduleType?.value === SIGN_UP_SCHEDULE_TYPE.RELAX
+                  )}
+                >
+                  여유롭게
+                </RadioButtonGroup.RadioButton>
+              </RadioButtonGroup>
+            </FormItem>
+            <FormItem
+              label=""
+              name="planningType"
+              formItemStyle={cssFormItemStyle}
+              labelStyle={css`
+                display: none;
+              `}
+            >
+              <RadioButtonGroup
+                {...registerField("planningType")}
+                defaultValue={
+                  checkNotEmpty([form.planningType])
+                    ? form.planningType?.value
+                    : undefined
+                }
+                onChange={(e) => {
+                  onChangePlanningType(e);
+                }}
+                gridDetailStyle={css`
+                  width: 100%;
+                `}
               >
-                <Input
-                  {...registerField("mbti")}
-                  type="text"
-                  placeholder="MBTI는 어떻게 되시나요?"
-                  detailStyle={css`
-                    width: 100%;
-                  `}
-                />
-              </FormItem>
-              <FormItem
-                label="한 줄 자기 소개"
-                name="intro"
-                formItemStyle={cssFormItemStyle}
-              >
-                <Input
-                  {...registerField("intro")}
-                  type="text"
-                  placeholder="본인을 한 줄로 표현한다면?"
-                  detailStyle={css`
-                    width: 100%;
-                  `}
-                />
-              </FormItem>
-            </div>
+                <RadioButtonGroup.RadioButton
+                  value={SIGN_UP_PLANNING_TYPE.PLANNED}
+                  detailStyle={cssRadioButtonStyle(
+                    form.planningType?.value === SIGN_UP_PLANNING_TYPE.PLANNED
+                  )}
+                >
+                  계획적으로
+                </RadioButtonGroup.RadioButton>
+                <RadioButtonGroup.RadioButton
+                  value={SIGN_UP_PLANNING_TYPE.IMPROMPTU}
+                  detailStyle={cssRadioButtonStyle(
+                    form.planningType?.value === SIGN_UP_PLANNING_TYPE.IMPROMPTU
+                  )}
+                >
+                  즉흥적으로
+                </RadioButtonGroup.RadioButton>
+              </RadioButtonGroup>
+            </FormItem>
+            <FormItem
+              label="취미"
+              name="hobby"
+              formItemStyle={cssFormItemStyle}
+            >
+              <Input
+                {...registerField("hobby")}
+                type="text"
+                placeholder="취미를 적어주세요."
+                detailStyle={css`
+                  width: 100%;
+                `}
+              />
+            </FormItem>
+            <FormItem
+              label="MBTI"
+              name="mbti"
+              formItemStyle={cssFormItemStyle}
+              errorStyle={{ display: "block" }}
+            >
+              <Input
+                {...registerField("mbti")}
+                type="text"
+                placeholder="MBTI는 어떻게 되시나요?"
+                detailStyle={css`
+                  width: 100%;
+                `}
+                maxLength={4}
+              />
+            </FormItem>
+            <FormItem
+              label="한 줄 자기 소개"
+              name="intro"
+              formItemStyle={cssFormItemStyle}
+            >
+              <Input
+                {...registerField("intro")}
+                type="text"
+                placeholder="본인을 한 줄로 표현한다면?"
+                detailStyle={css`
+                  width: 100%;
+                `}
+              />
+            </FormItem>
             <Button
               bgColor={COLORS.PINK3}
               height="large"
@@ -398,8 +421,8 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
                 저장
               </Typography>
             </Button>
-          </div>
-        </Form>
+          </Form>
+        </div>
       </BorderModal>
       <Modal
         zIndex={102}

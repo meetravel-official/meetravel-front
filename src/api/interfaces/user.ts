@@ -166,6 +166,25 @@ export type UpdateMyPageInfoRequestPlanningTypeEnum =
 
 export type UpdateMyPageInfoRequestScheduleTypeEnum = "빠듯하게" | "여유롭게";
 
+export const GetMyPageResponseMbtiEnumArray = [
+  "ISTJ",
+  "ISFJ",
+  "INFJ",
+  "INTJ",
+  "ISTP",
+  "ISFP",
+  "INFP",
+  "INTP",
+  "ESTP",
+  "ESFP",
+  "ENFP",
+  "ENTP",
+  "ESTJ",
+  "ESFJ",
+  "ENFJ",
+  "ENTJ",
+];
+
 export type UpdateMyPageInfoRequestMbtiEnum =
   | "ISTJ"
   | "ISFJ"

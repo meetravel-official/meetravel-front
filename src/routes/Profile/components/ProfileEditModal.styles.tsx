@@ -4,6 +4,7 @@ import { COLORS } from "@/styles/color";
 
 export const cssFormItemStyle = css`
   width: calc(100% - 2px);
+  margin-bottom: 20px;
   transform: translateX(1px);
 `;
 
@@ -12,7 +13,7 @@ export const cssRadioButtonStyle = (isActive: boolean) => css`
   height: 48px;
   background-color: ${isActive ? COLORS.GRAY1 : COLORS.GRAY2};
   outline: ${isActive ? `1px solid ${COLORS.PINK3}` : "none"} !important;
-  color: ${isActive ? COLORS.PINK3 : COLORS.GRAY5};
+  color: ${isActive ? COLORS.PINK3 : COLORS.GRAY3};
 `;
 
 export const cssEditProfileImgBoxStyle = css`
@@ -57,4 +58,12 @@ export const cssPopOverContentStyle = css`
   button:first-of-type {
     border-bottom: 1px solid ${COLORS.GRAY2};
   }
+`;
+
+export const cssDisableEditAreaStyle = css`
+  opacity: 0.2;
+  margin: 32px 0;
+  display: flex;
+  flex-direction: column
+  gap: 24px;
 `;
