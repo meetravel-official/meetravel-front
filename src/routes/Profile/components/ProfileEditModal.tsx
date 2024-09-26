@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import * as Popover from "@radix-ui/react-popover";
+import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -7,8 +8,14 @@ import { useProfile } from "states/useProfile";
 import { nicknameRegex } from "utils/regex-utils";
 
 import { useGetCheckNickname } from "@/api/hooks/auth";
-import { useGetMyPage } from "@/api/hooks/user";
-import { GetMyPageResponseMbtiEnumArray } from "@/api/interfaces/user";
+import { useGetMyPage, usePutInfo, usePutNickname } from "@/api/hooks/user";
+import {
+  GetMyPageResponseMbtiEnum,
+  GetMyPageResponseMbtiEnumArray,
+  GetMyPageResponsePlanningTypeEnum,
+  GetMyPageResponseScheduleTypeEnum,
+  GetMyPageResponseTravelFrequencyEnum,
+} from "@/api/interfaces/user";
 import { ReactComponent as CameraIcon } from "@/assets/icons/camera.svg";
 import { ReactComponent as ExclamationCircleIcon } from "@/assets/icons/exclamation-circle.svg";
 import { Button, Typography, UserAvatar } from "@/components";
@@ -52,8 +59,12 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
   const [isOpenCancelModal, setIsOpenCancelModal] = useState(false);
 
   const { isOpenEditModal, handleOnCloseEditModal } = useProfile();
+
+  const queryClient = useQueryClient();
   const { data: profileData } = useGetMyPage(userId);
   const { mutate } = useGetCheckNickname();
+  const { mutateAsync: mutateInfo } = usePutInfo(userId);
+  const { mutateAsync: mutateNickname } = usePutNickname(userId);
 
   const { form, registerField, resetFields, invalidFields, setFields } =
     useForm({
@@ -67,6 +78,7 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
         intro: profileData?.data.intro,
         profileImageUrl: profileData?.data.profileImageUrl,
       },
+      required: ["nickname"],
       validate: {
         nickname: (value) => {
           if (
@@ -127,7 +139,22 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
         );
       }
     }
-  }, [checkNickname.isClick, checkNickname.isDuplicated, form.nickname.error]);
+    if (form.nickname.value !== profileData?.data.nickname) {
+      if (!checkNickname.isClick) {
+        return (
+          <Typography color={COLORS.SITUATION1} size="14">
+            중복 여부를 확인해주세요.
+          </Typography>
+        );
+      }
+    }
+  }, [
+    checkNickname.isClick,
+    checkNickname.isDuplicated,
+    form.nickname.error,
+    form.nickname.value,
+    profileData?.data.nickname,
+  ]);
 
   const handleOnOpenPopOver = () => {
     setIsOpenPopover(true);
@@ -143,10 +170,29 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
   };
 
   const handleOnClickSubmit = () => {
-    invalidFields(({ value }) => {
-      console.log(value);
+    if (form.nickname.value !== profileData?.data.nickname) {
+      if (checkNickname.isDuplicated || !checkNickname.isClick) {
+        return;
+      }
+    }
+    invalidFields(async ({ value }) => {
+      await mutateNickname({ nickname: value.nickname.value || "" });
+      await mutateInfo({
+        travelFrequency:
+          (value.travelFrequency
+            .value as GetMyPageResponseTravelFrequencyEnum) || "",
+        mbti: (value.mbti.value as GetMyPageResponseMbtiEnum) || "",
+        planningType:
+          (value.planningType.value as GetMyPageResponsePlanningTypeEnum) || "",
+        scheduleType:
+          (value.scheduleType.value as GetMyPageResponseScheduleTypeEnum) || "",
+        hobby: value.hobby.value || "",
+        intro: value.intro.value || "",
+      });
+      await queryClient.invalidateQueries({ queryKey: ["useGetMyPage"] });
+      resetFields();
+      handleOnCloseEditModal();
     });
-    resetFields();
   };
 
   const handleOnCloseCancelModal = () => {
