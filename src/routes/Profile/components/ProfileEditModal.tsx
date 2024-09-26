@@ -1,11 +1,12 @@
 import { css } from "@emotion/react";
 import * as Popover from "@radix-ui/react-popover";
 import dayjs from "dayjs";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProfile } from "states/useProfile";
 import { nicknameRegex } from "utils/regex-utils";
 
+import { useGetCheckNickname } from "@/api/hooks/auth";
 import { useGetMyPage } from "@/api/hooks/user";
 import { GetMyPageResponseMbtiEnumArray } from "@/api/interfaces/user";
 import { ReactComponent as CameraIcon } from "@/assets/icons/camera.svg";
@@ -43,10 +44,16 @@ interface ProfileEditModalProps {
 export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
   const navigate = useNavigate();
 
+  const [checkNickname, setCheckNickname] = useState<{
+    isClick: boolean;
+    isDuplicated: boolean;
+  }>({ isClick: false, isDuplicated: false });
   const [isOpenPopover, setIsOpenPopover] = useState(false);
   const [isOpenCancelModal, setIsOpenCancelModal] = useState(false);
+
   const { isOpenEditModal, handleOnCloseEditModal } = useProfile();
   const { data: profileData } = useGetMyPage(userId);
+  const { mutate } = useGetCheckNickname();
 
   const { form, registerField, resetFields, invalidFields } = useForm({
     initialValues: {
@@ -78,10 +85,48 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
       },
     },
   });
+
   const { onChange: onChangeTravelFrequency } =
     registerField("travelFrequency");
   const { onChange: onChangeScheduleType } = registerField("scheduleType");
   const { onChange: onChangePlanningType } = registerField("planningType");
+
+  const handleCheckNickname = async () => {
+    if (!!form.nickname.value && !form.nickname.error) {
+      mutate(form.nickname.value, {
+        onSuccess: (res) => {
+          setCheckNickname({ isClick: true, isDuplicated: res.data });
+        },
+        onError: () => {
+          setCheckNickname({ isClick: false, isDuplicated: false });
+        },
+      });
+    }
+  };
+
+  const checkNicknameText = useMemo(() => {
+    if (form.nickname.error) {
+      return (
+        <Typography color={COLORS.SITUATION1} size="14">
+          {form.nickname.error}
+        </Typography>
+      );
+    } else if (checkNickname.isClick) {
+      if (checkNickname.isDuplicated) {
+        return (
+          <Typography color={COLORS.SITUATION1} size="14">
+            중복된 닉네임입니다.
+          </Typography>
+        );
+      } else {
+        return (
+          <Typography color={COLORS.GRAY2} size="14">
+            사용 가능한 닉네임입니다.
+          </Typography>
+        );
+      }
+    }
+  }, [checkNickname.isClick, checkNickname.isDuplicated, form.nickname.error]);
 
   const handleOnOpenPopOver = () => {
     setIsOpenPopover(true);
@@ -186,35 +231,47 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
               margin-bottom: 36px;
             `}
           >
-            <FormItem
-              name="nickname"
-              label=""
-              formItemStyle={cssFormItemStyle}
-              errorStyle={{ display: "block" }}
-            >
-              <div css={cssAlignHorizontalStyle({ gap: 8, width: "100%" })}>
-                <Input
-                  {...registerField("nickname")}
-                  type="text"
-                  detailStyle={css`
-                    width: 100%;
-                  `}
-                  placeholder="닉네임을 적어주세요."
-                  maxLength={6}
-                />
-                <Button
-                  bgColor={COLORS.PINK2}
-                  detailStyle={css`
-                    width: 91px;
-                    box-sizing: border-box;
-                    padding: 14px 16px;
-                    white-space: nowrap;
-                  `}
-                >
-                  <Typography color={COLORS.WHITE} size={16} weight={700}>
-                    중복 확인
-                  </Typography>
-                </Button>
+            <FormItem name="nickname" label="" formItemStyle={cssFormItemStyle}>
+              <div
+                css={cssAlignVerticalStyle({
+                  gap: 8,
+                  alignItems: "flex-start",
+                })}
+              >
+                <div css={cssAlignHorizontalStyle({ gap: 8, width: "100%" })}>
+                  <Input
+                    {...registerField("nickname")}
+                    type="text"
+                    detailStyle={css`
+                      width: 100%;
+                    `}
+                    placeholder="최소 2자 이상/6자 이하 입력"
+                    maxLength={6}
+                    onChange={(e) => {
+                      registerField("nickname").onChange(e);
+                      setCheckNickname({ isClick: false, isDuplicated: false });
+                    }}
+                  />
+                  <Button
+                    bgColor={COLORS.PINK2}
+                    detailStyle={css`
+                      width: 91px;
+                      box-sizing: border-box;
+                      padding: 14px 16px;
+                      white-space: nowrap;
+                    `}
+                    onClick={handleCheckNickname}
+                    disabled={
+                      form.nickname.value === profileData?.data.nickname ||
+                      !!form.nickname.error
+                    }
+                  >
+                    <Typography color={COLORS.WHITE} size={16} weight={700}>
+                      중복 확인
+                    </Typography>
+                  </Button>
+                </div>
+                {checkNicknameText}
               </div>
             </FormItem>
             <div css={cssDisableEditAreaStyle}>
