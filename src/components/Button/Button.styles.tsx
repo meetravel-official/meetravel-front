@@ -29,6 +29,9 @@ export const cssButtonStyle = ({
   gap: 8px;
   transition: all 0.3s;
   cursor: pointer;
+  :disabled {
+    cursor: not-allowed;
+  }
   @media (hover: hover) and (pointer: fine) {
     &:hover {
       filter: brightness(0.95);

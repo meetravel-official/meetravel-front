@@ -1,6 +1,9 @@
 import { Outlet } from "react-router-dom";
+import { useProfile } from "states/useProfile";
 
+import { ReactComponent as EditIcon } from "@/assets/icons/edit.svg";
 import { ReactComponent as SettingIcon } from "@/assets/icons/setting.svg";
+import { cssAlignHorizontalStyle } from "@/styles/align";
 import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
 
@@ -10,6 +13,8 @@ import { NavBar } from "../NavBar/NavBar";
 import { Typography } from "../Typography/Typography";
 
 export const ProfileLayout = () => {
+  const { handleOnOpenEditModal } = useProfile();
+
   return (
     <Layout>
       <Layout.Header>
@@ -20,9 +25,14 @@ export const ProfileLayout = () => {
             </Typography>
           }
           suffix={
-            <button css={cssDefaultBtnStyle}>
-              <SettingIcon />
-            </button>
+            <div css={cssAlignHorizontalStyle({ gap: 16 })}>
+              <button css={cssDefaultBtnStyle} onClick={handleOnOpenEditModal}>
+                <EditIcon />
+              </button>
+              <button css={cssDefaultBtnStyle}>
+                <SettingIcon />
+              </button>
+            </div>
           }
         />
       </Layout.Header>

@@ -35,6 +35,12 @@ export interface GetMyPageResponse {
    * @type {string}
    * @memberof GetMyPageResponse
    */
+  gender?: GetMyPageResponseGenderEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof GetMyPageResponse
+   */
   birthDate?: string;
   /**
    *
@@ -73,6 +79,8 @@ export interface GetMyPageResponse {
    */
   intro?: string;
 }
+
+export type GetMyPageResponseGenderEnum = "남성" | "여성";
 
 export type GetMyPageResponseTravelFrequencyEnum =
   | "안가요!"
@@ -157,6 +165,25 @@ export type UpdateMyPageInfoRequestPlanningTypeEnum =
   | "즉흥적으로";
 
 export type UpdateMyPageInfoRequestScheduleTypeEnum = "빠듯하게" | "여유롭게";
+
+export const GetMyPageResponseMbtiEnumArray = [
+  "ISTJ",
+  "ISFJ",
+  "INFJ",
+  "INTJ",
+  "ISTP",
+  "ISFP",
+  "INFP",
+  "INTP",
+  "ESTP",
+  "ESFP",
+  "ENFP",
+  "ENTP",
+  "ESTJ",
+  "ESFJ",
+  "ENFJ",
+  "ENTJ",
+];
 
 export type UpdateMyPageInfoRequestMbtiEnum =
   | "ISTJ"
