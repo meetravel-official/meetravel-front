@@ -22,14 +22,14 @@ export const ProfileForm = ({ userId }: ProfileFormProps) => {
       })}
     >
       <div css={cssAlignVerticalStyle({ gap: 12 })}>
-        <UserAvatar profileUrl="" size={80} />
+        <UserAvatar profileUrl={profileData?.profileImageUrl} size={80} />
         <div css={cssAlignVerticalStyle({ gap: 4 })}>
           <Typography color={COLORS.GRAY5} size="16" weight={700}>
             {profileData?.nickname || "-"}
           </Typography>
           <div css={cssAlignHorizontalStyle({ gap: 4 })}>
             <Typography color={COLORS.GRAY3} weight={700} size="16">
-              女 {/* TODO: api에서 gender 추가 필요 */}
+              {profileData?.gender === "남성" ? "男" : "女"}
             </Typography>
             <Typography color={COLORS.GRAY4} weight={400} size="16">
               {profileData?.birthDate

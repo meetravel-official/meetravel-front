@@ -79,6 +79,7 @@ export const Button = ({
         detailStyle,
       })}
       onClick={onClick}
+      disabled={disabled}
     >
       {icon}
       {children}

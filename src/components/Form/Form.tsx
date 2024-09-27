@@ -1,8 +1,10 @@
+import { SerializedStyles } from "@emotion/react";
 import React from "react";
 
 import { FormValues } from "./useForm";
 
 interface FormProps {
+  formStyle?: SerializedStyles;
   children: React.ReactNode;
   formValue?: FormValues<any>;
   onSubmit?: () => void;
@@ -13,7 +15,7 @@ interface FormProps {
  * @param formValue useForm에서 공유하는 form value
  * @param onSubmit form 전송 시 실행할 함수
  */
-const Form = ({ children, formValue, onSubmit }: FormProps) => {
+const Form = ({ children, formValue, formStyle, onSubmit }: FormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -41,7 +43,11 @@ const Form = ({ children, formValue, onSubmit }: FormProps) => {
     return children;
   };
 
-  return <form onSubmit={handleSubmit}>{renderChildren()}</form>;
+  return (
+    <form css={formStyle} onSubmit={handleSubmit}>
+      {renderChildren()}
+    </form>
+  );
 };
 
 export default Form;

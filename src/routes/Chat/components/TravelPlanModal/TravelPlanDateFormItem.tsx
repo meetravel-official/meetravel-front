@@ -9,11 +9,11 @@ import {
 
 import { IAreaBasedList } from "@/api/interfaces/visitKorea";
 import { Typography } from "@/components";
-import { ArrowButton } from "@/components/ArrowButton/ArrowButton";
 import Input from "@/components/Input/Input";
+import { Pagination } from "@/components/Pagination/Pagination";
 import RadioButtonGroup from "@/components/RadioButton/RadioButtonGroup";
 import { TravelPlaceSelectItem } from "@/components/TravelPlaceSelectItem/TravelPlaceSelectItem";
-import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
+import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
 interface TravelPlanDateFormItemProps {
@@ -25,14 +25,14 @@ export const TravelPlanDateFormItem = ({
 }: TravelPlanDateFormItemProps) => {
   const [selectedContentType, setSelectedContentType] =
     useState<string>("travel");
-  const [pageNum, setPageNum] = useState<number>(1);
+  const [pageNum, setPageNum] = useState<number>(0);
   const [selectedContentIdList, setSelectedContentIdList] = useState<string[]>(
     []
   );
 
   const handleOnChangeContentType = useCallback((value: string) => {
     setSelectedContentType(value);
-    setPageNum(1);
+    setPageNum(0);
   }, []);
 
   const maxPage = useMemo(() => {
@@ -47,14 +47,6 @@ export const TravelPlanDateFormItem = ({
         return 3;
     }
   }, [selectedContentType]);
-
-  const handleOnClickPrevPage = useCallback(() => {
-    if (pageNum > 1) setPageNum(pageNum - 1);
-  }, [pageNum]);
-
-  const handleOnClickNextPage = useCallback(() => {
-    if (pageNum < maxPage) setPageNum(pageNum + 1);
-  }, [maxPage, pageNum]);
 
   const handleOnSelectPlace = useCallback(
     (info: IAreaBasedList) => {
@@ -131,26 +123,7 @@ export const TravelPlanDateFormItem = ({
                 onSelect={handleOnSelectPlace}
               />
             </div>
-            <div css={cssAlignHorizontalStyle({ gap: 39 })}>
-              <ArrowButton
-                direction="left"
-                onClick={handleOnClickPrevPage}
-                disabled={pageNum === 1}
-              />
-              <div>
-                <Typography color={COLORS.GRAY4} weight={700} size="20">
-                  {pageNum}{" "}
-                </Typography>
-                <Typography color={COLORS.GRAY3} weight={700} size="20">
-                  / {maxPage}
-                </Typography>
-              </div>
-              <ArrowButton
-                direction="right"
-                onClick={handleOnClickNextPage}
-                disabled={pageNum === maxPage}
-              />
-            </div>
+            <Pagination page={pageNum} maxPage={maxPage} setPage={setPageNum} />
           </div>
         </div>
       </div>

@@ -119,12 +119,23 @@ function useForm<T extends Record<string, any>>({
     });
   }, [initialValues]);
 
+  const setFields = useCallback((values: T) => {
+    setForm((prevValues) => {
+      const newForm = { ...prevValues };
+      for (const key in newForm) {
+        newForm[key] = { value: values[key] };
+      }
+      return newForm;
+    });
+  }, []);
+
   return {
     form: form,
     handleChange,
     registerField,
     invalidFields,
     resetFields,
+    setFields,
   };
 }
 

@@ -12,6 +12,7 @@ import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
 
 import { Layout } from "../Layout/Layout";
+import MatchingButton from "../Matching/Matching";
 import { NavBar } from "../NavBar/NavBar";
 import { SearchInput } from "../SearchInput/SearchInput";
 import { SelectByModal } from "../SelectByModal/SelectByModal";
@@ -135,6 +136,7 @@ export const HomeLayout = () => {
         <Outlet />
       </Layout.Content>
       <Layout.FixedFooter>
+        <MatchingButton />
         <NavBar />
       </Layout.FixedFooter>
     </Layout>
