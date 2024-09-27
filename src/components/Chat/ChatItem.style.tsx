@@ -1,8 +1,7 @@
 import { css } from "@emotion/react";
 
+import { ChatStatus, IChatData } from "@/api/interfaces/chat";
 import { COLORS } from "@/styles/color";
-
-import { ChatStatus, IChatData } from "./ChatItem";
 
 export const cssMarginRight4px = css`
   margin-right: 4px;

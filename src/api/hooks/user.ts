@@ -10,7 +10,7 @@ import { api } from "../request";
 import { authApiRoute } from "../routes/apiRoutes";
 
 export const useGetMyPage = (userId?: string) => {
-  return useQuery<AxiosResponse<GetMyPageResponse>, AxiosError>({
+  return useQuery<GetMyPageResponse, AxiosError>({
     queryKey: ["useGetMyPage", userId],
     queryFn: () => api.get(authApiRoute.getMyPage(userId || "")),
     enabled: !!userId,

@@ -1,57 +1,144 @@
 import { css } from "@emotion/react";
 import { CompatClient, Stomp } from "@stomp/stompjs";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { chatData1 } from "dummies/chat";
+import Cookies from "js-cookie";
+import {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { useLocation, useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
+import { useChatState } from "states/useChat";
 
+import { ChatStatus, IChatMessageData } from "@/api/interfaces/chat";
 import { ReactComponent as PlanIcon } from "@/assets/icons/plan.svg";
 import { Button, Typography } from "@/components";
 import { BackHeader } from "@/components/BackLayout/BackHeader";
-import { ChatStatus } from "@/components/Chat/ChatItem";
 import Input from "@/components/Input/Input";
-import MessageItem from "@/components/MessageItem";
+import MessageItem, { MessageItemDataProps } from "@/components/MessageItem";
 import { COLORS } from "@/styles/color";
 
+import {
+  cssBackHeaderPrefixStyle,
+  cssChatRoomInputStyle,
+  cssChatRoomInputWrapperStyle,
+  cssMessageListStyle,
+} from "./ChatRoomContainer.styles";
 import TitleHeader from "./components/TitleHeader";
 
 const ChatRoomContainer = () => {
   const client = useRef<CompatClient>();
-  const [chatMessage, setChatMessage] = useState();
-  const chatRoomId = 1;
+  const [inputText, setInputText] = useState<string>();
+  const [chatMessage, setChatMessage] = useState<IChatMessageData>();
+  const location = useLocation();
+  const match = location.pathname.match(/\/chat\/(.*)/);
+  const chatRoomId = match ? match[1] : null;
+  // const chatMessageGroups = useMemo<MessageItemDataProps[]>(() => [], []);
+  const [chatMessageGroups, setChatMessageGroups] = useState<
+    IChatMessageData[]
+  >([]);
+  let prevUserId: string;
 
-  const connectHaner = () => {
-    client.current = Stomp.over(() => {
-      const sock = new SockJS("http://175.211.58.83:10200/ws/chat");
-      return sock;
-    });
-    client.current.connect(
-      {
-        Authorization: "Bearer text", //TODO: 토큰값
-      },
-      () => {
-        client.current?.subscribe(
-          `/exchange/chat.exchange/chat.rooms.${chatRoomId}`,
-          (message) => {
-            setChatMessage(JSON.parse(message.body));
-          },
-          {
-            Authorization: "Bearer text", //TODO: 토큰값
-          }
-        );
-      }
-    );
+  const token = Cookies.get("accessToken");
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const enterPressed = useRef(false);
+
+  // 스크롤을 제일 아래로 내리는 함수
+  // 일단은 내가 메세지 전송할때만 아래로 내리도록 함
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+    }
   };
 
+  // 컴포넌트가 렌더링되거나 메시지가 추가될 때 스크롤을 아래로 내림
   // useEffect(() => {
-  //   connectHaner();
-  // }, []);
+  //   scrollToBottom();
+  // }, [chatMessageGroups]);
 
+  const connectHandler = () => {
+    setTimeout(() => {
+      client.current = Stomp.over(() => {
+        const sock = new SockJS(
+          `${process.env.REACT_APP_HOST_API_URL}/ws/chat`
+        );
+        return sock;
+      });
+
+      client.current.debug = function (message) {
+        if (!message.includes("PONG") && !message.includes("PING")) {
+          console.log(message);
+        }
+      };
+
+      client.current.connect(
+        {
+          Authorization: `Bearer ${token}`,
+        },
+        () => {
+          client.current?.subscribe(
+            `/exchange/chat.exchange/chat.rooms.${chatRoomId}`,
+            (message) => {
+              // 메세지 수신시 리스트 추가
+              // 내가 보낸 메세지도 서버에서 받아와야함 ( 전송여부 확인 목적 )
+              setChatMessageGroups((prevGroups) => [
+                ...prevGroups,
+                JSON.parse(message.body),
+              ]);
+              scrollToBottom();
+            },
+            {
+              Authorization: `Bearer ${token}`,
+            }
+          );
+        }
+      );
+    });
+  };
+
+  useEffect(() => {
+    connectHandler();
+    return () => {
+      console.log("////////");
+      console.log("unsubscribe");
+      client.current?.unsubscribe(
+        `/exchange/chat.exchange/chat.rooms.${chatRoomId}`
+      );
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const addMessage = useCallback(() => {
+    if (inputText !== "") {
+      scrollToBottom();
+      setInputText("");
+      client?.current?.send(
+        "/pub/chat.send",
+        { Authorization: `Bearer ${token}` },
+        JSON.stringify({
+          chatRoomId: chatRoomId,
+          message: inputText,
+        })
+      );
+    }
+  }, [chatRoomId, inputText, token]);
+
+  useEffect(() => {
+    console.log("chatMessageGroups", chatMessageGroups);
+  }, [chatMessageGroups]);
+
+  //TODO: 매칭로직에 join api 붙여야함
   const joinRoom = useCallback(() => {
     console.log("pushMessage");
     client.current?.send(
       `/pub/chat.join`,
       {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBQ0NFU1MiLCJpYXQiOjE3MjY1NTYwNTUsImV4cCI6MTcyNjU1Nzg1NSwiaXNUZW1wb3JhcnkiOmZhbHNlLCJ1c2VySWQiOiIzNzA1MjY0NjUwQGtha2FvIn0.55hfqDAny2l9f35uUKEQ8K6-5gu3tRg-i3-UC6sueP9_zL9Ch5b3T4LP7bvb18xFAJYb-KKBpHSVvHaMEMMtqw",
+        Authorization: `Bearer ${token}`,
       },
       JSON.stringify({
         type: "JOIN",
@@ -61,110 +148,43 @@ const ChatRoomContainer = () => {
     );
   }, []);
 
-  const chatData1 = {
-    isActive: true,
-    status: ChatStatus.INPROGRESS,
-    person: { woman: 1, man: 2, total: 3 },
-    startDate: "2024/12/26",
-    endDate: "2024/12/27",
-    title: "서귀포",
-    tags: ["산", "야경", "힐링"],
-    link: "/chat/1",
-  };
-
   return (
     <div className="chat-room">
-      <BackHeader //TODO: position fixed로 변경 필요
+      <BackHeader
         titleContent={<TitleHeader data={chatData1} />}
-        prefixStyle={css`
-          all: unset;
-          padding: 16px 0;
-          align-items: center;
-          display: flex;
-          gap: 8px;
-        `}
+        prefixStyle={cssBackHeaderPrefixStyle}
       />
-      <div
-        css={css`
-          height: calc(var(--vh, 1vh) * 100 - 187px - 62px);
-          overflow: scroll;
-          background-color: ${COLORS.GRAY1};
-          margin: 0 -16px -16px -16px;
-          padding: 16px;
-          gap: 8px;
-          display: flex;
-          flex-direction: column;
-        `}
-      >
+      <div ref={messagesEndRef} css={cssMessageListStyle}>
         {/**여기에 채팅내용이 올라갑니다 */}
+        {/* TODO: 매칭이 완료되고 여행이 시작할때 어드민 메세지를 추가해주어야합니다 */}
         <MessageItem
           type={"admin"}
           data={{
-            name: "닉네임",
-            content:
+            userId: "닉네임",
+            message:
               "안녕하세요! 여러분들의 여행을 책임질 ‘진행봇’입니다. 저를 함께 여행계획을 세워봐요!",
-            regDate: "2024-09-08 12:34",
+            sendAt: "2024-09-08 12:34",
           }}
         />
-        <MessageItem
-          data={{
-            name: "닉네임",
-            content: "우와! 좋아요~ 반가워요 다들!",
-            regDate: "2024-09-08 12:34",
-          }}
-        />
-        <MessageItem
-          data={{
-            content: "우와~ 좋아요",
-            regDate: "2024-09-08 12:34",
-          }}
-        />
-        <MessageItem
-          data={{
-            name: "익명",
-            content: "반가워요 다들~",
-            regDate: "2024-09-08 12:34",
-          }}
-        />
-        <MessageItem
-          data={{
-            name: "익명",
-            content: "반가워요 다들~",
-            regDate: "2024-09-08 12:34",
-          }}
-        />
-        <MessageItem
-          data={{
-            name: "익명",
-            content: "반가워요 다들~",
-            regDate: "2024-09-08 12:34",
-          }}
-        />
-        <MessageItem
-          type="me"
-          data={{
-            name: "익명",
-            content: "반가워요 다들~",
-            regDate: "2024-09-08 12:34",
-          }}
-        />
+
+        {chatMessageGroups.map((item, index) => {
+          const isSameUser = prevUserId === item.userId;
+          prevUserId = item.userId;
+          return (
+            item.type === "CHAT" && (
+              <MessageItem
+                key={index}
+                type="me"
+                data={item}
+                isSameUser={isSameUser}
+              />
+            )
+          );
+        })}
         {/**여기까지 채팅입니다 */}
       </div>
 
-      <div
-        className="chat-room-input"
-        css={css`
-          height: 62px;
-          display: flex;
-          position: fixed;
-          gap: 8px;
-          width: 100%;
-          max-width: 540px;
-          margin: 0 -16px;
-          background-color: ${COLORS.WHITE};
-          border-top: 1px solid ${COLORS.GRAY2};
-        `}
-      >
+      <div className="chat-room-input" css={cssChatRoomInputWrapperStyle}>
         <div
           css={css`
             margin: 22px 9px 22px 17px;
@@ -181,18 +201,27 @@ const ChatRoomContainer = () => {
         </div>
         <Input
           placeholder="메세지를 입력해주세요."
-          detailStyle={css`
-            background-color: ${COLORS.WHITE};
-            border: 1px solid ${COLORS.GRAY2};
-            height: 46px;
-            margin: 8px 0;
-            width: 100%;
-          `}
+          detailStyle={cssChatRoomInputStyle}
           inputDetailStyle={css`
             ::placeholder {
               color: ${COLORS.GRAY2};
             }
           `}
+          value={inputText}
+          onChange={(e) => {
+            setInputText(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !enterPressed.current) {
+              enterPressed.current = true;
+              addMessage();
+
+              setTimeout(function () {
+                enterPressed.current = false;
+                setInputText("");
+              }, 0);
+            }
+          }}
         />
         <Button
           detailStyle={css`
@@ -201,6 +230,7 @@ const ChatRoomContainer = () => {
             height: 46px;
             margin: 8px 8px 8px 0;
           `}
+          onClick={() => addMessage()}
         >
           <Typography
             color={COLORS.WHITE}

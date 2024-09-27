@@ -69,14 +69,14 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
   const { form, registerField, resetFields, invalidFields, setFields } =
     useForm({
       initialValues: {
-        nickname: profileData?.data.nickname,
-        travelFrequency: profileData?.data.travelFrequency,
-        mbti: profileData?.data.mbti,
-        planningType: profileData?.data.planningType,
-        scheduleType: profileData?.data.scheduleType,
-        hobby: profileData?.data.hobby,
-        intro: profileData?.data.intro,
-        profileImageUrl: profileData?.data.profileImageUrl,
+        nickname: profileData?.nickname,
+        travelFrequency: profileData?.travelFrequency,
+        mbti: profileData?.mbti,
+        planningType: profileData?.planningType,
+        scheduleType: profileData?.scheduleType,
+        hobby: profileData?.hobby,
+        intro: profileData?.intro,
+        profileImageUrl: profileData?.profileImageUrl,
       },
       required: ["nickname"],
       validate: {
@@ -139,7 +139,7 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
         );
       }
     }
-    if (form.nickname.value !== profileData?.data.nickname) {
+    if (form.nickname.value !== profileData?.nickname) {
       if (!checkNickname.isClick) {
         return (
           <Typography color={COLORS.SITUATION1} size="14">
@@ -153,7 +153,7 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
     checkNickname.isDuplicated,
     form.nickname.error,
     form.nickname.value,
-    profileData?.data.nickname,
+    profileData?.nickname,
   ]);
 
   const handleOnOpenPopOver = () => {
@@ -170,7 +170,7 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
   };
 
   const handleOnClickSubmit = () => {
-    if (form.nickname.value !== profileData?.data.nickname) {
+    if (form.nickname.value !== profileData?.nickname) {
       if (checkNickname.isDuplicated || !checkNickname.isClick) {
         return;
       }
@@ -225,14 +225,14 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
 
   useEffect(() => {
     setFields({
-      nickname: profileData?.data.nickname,
-      travelFrequency: profileData?.data.travelFrequency,
-      mbti: profileData?.data.mbti,
-      planningType: profileData?.data.planningType,
-      scheduleType: profileData?.data.scheduleType,
-      hobby: profileData?.data.hobby,
-      intro: profileData?.data.intro,
-      profileImageUrl: profileData?.data.profileImageUrl,
+      nickname: profileData?.nickname,
+      travelFrequency: profileData?.travelFrequency,
+      mbti: profileData?.mbti,
+      planningType: profileData?.planningType,
+      scheduleType: profileData?.scheduleType,
+      hobby: profileData?.hobby,
+      intro: profileData?.intro,
+      profileImageUrl: profileData?.profileImageUrl,
     });
   }, [profileData, setFields]);
 
@@ -320,7 +320,7 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
                     `}
                     onClick={handleCheckNickname}
                     disabled={
-                      form.nickname.value === profileData?.data.nickname ||
+                      form.nickname.value === profileData?.nickname ||
                       !!form.nickname.error
                     }
                   >
@@ -335,11 +335,11 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
             <div css={cssDisableEditAreaStyle}>
               <div css={cssAlignHorizontalStyle({ gap: 4 })}>
                 <Typography color={COLORS.GRAY3} weight={700} size="16">
-                  {profileData?.data?.gender === "남성" ? "男" : "女"}
+                  {profileData?.gender === "남성" ? "男" : "女"}
                 </Typography>
                 <Typography color={COLORS.GRAY4} weight={400} size="16">
-                  {profileData?.data?.birthDate
-                    ? dayjs(profileData?.data?.birthDate, "YYYY-MM-DD").format(
+                  {profileData?.birthDate
+                    ? dayjs(profileData?.birthDate, "YYYY-MM-DD").format(
                         "YYYY년생"
                       )
                     : "-"}

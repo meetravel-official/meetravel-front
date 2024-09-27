@@ -2,7 +2,8 @@ import { dummyChatData } from "dummies/chat";
 import { useMemo, useState } from "react";
 import { checkUser } from "utils/check-user";
 
-import ChatItem, { ChatStatus, IChatData } from "@/components/Chat/ChatItem";
+import { ChatStatus, IChatData } from "@/api/interfaces/chat";
+import ChatItem from "@/components/Chat/ChatItem";
 import { EnterChatRoomModal } from "@/components/EnterChatRoomModal/EnterChatRoomModal";
 import { cssAlignVerticalStyle } from "@/styles/align";
 import { cssDefaultBtnStyle } from "@/styles/button";

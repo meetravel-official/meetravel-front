@@ -1,7 +1,7 @@
+import { IChatData } from "@/api/interfaces/chat";
 import { ReactComponent as LeaveIcon } from "@/assets/icons/leave.svg";
 import { ReactComponent as ReportIcon } from "@/assets/icons/report.svg";
 import { Typography } from "@/components";
-import { IChatData } from "@/components/Chat/ChatItem";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
@@ -31,7 +31,7 @@ const TitleHeader = ({ data }: { data: IChatData }) => {
               女
             </Typography>
             <Typography weight={700} color={COLORS.GRAY4}>
-              {data.person.woman}명
+              {data.person.femaleCount}명
             </Typography>
           </div>
           <div css={cssAlignHorizontalStyle({ gap: 4 })}>
@@ -39,7 +39,7 @@ const TitleHeader = ({ data }: { data: IChatData }) => {
               男
             </Typography>
             <Typography weight={700} color={COLORS.GRAY4}>
-              {data.person.man}명
+              {data.person.maleCount}명
             </Typography>
           </div>
           <div>
@@ -49,7 +49,7 @@ const TitleHeader = ({ data }: { data: IChatData }) => {
           </div>
           <div>
             <Typography weight={700} color={COLORS.GRAY3}>
-              {data.person.total}명
+              {data.person.totalCount}명
             </Typography>
           </div>
         </div>

@@ -25,7 +25,7 @@ const AddMessage = ({ data }: MessageItemProps) => {
           `}
         >
           <Typography size={14} color={COLORS.GRAY5}>
-            {data.content}
+            {data.message}
           </Typography>
         </div>
         <Typography
@@ -35,7 +35,7 @@ const AddMessage = ({ data }: MessageItemProps) => {
             flex-shrink: 0;
           `}
         >
-          {dayjs(data.regDate).format("HH:mm")}
+          {dayjs(data.sendAt).format("HH:mm")}
         </Typography>
       </div>
     </div>

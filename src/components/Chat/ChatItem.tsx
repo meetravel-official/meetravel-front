@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 
+import { ChatStatus, IChatData } from "@/api/interfaces/chat";
 import { COLORS } from "@/styles/color";
 
 import { Tag } from "../Tag/Tag";
@@ -13,29 +14,6 @@ import {
   cssMarginRight4px,
   cssMarginRight8px,
 } from "./ChatItem.style";
-
-interface IPerson {
-  woman: number;
-  man: number;
-  total: number;
-}
-
-export enum ChatStatus {
-  INPROGRESS = "진행중",
-  REVIEW = "후기필요",
-  DONE = "종료",
-}
-
-export interface IChatData {
-  isActive: boolean;
-  status?: ChatStatus;
-  person: IPerson;
-  startDate: string;
-  endDate: string;
-  title: string;
-  tags: string[];
-  link?: string;
-}
 
 interface ChatItemProps {
   chatData: IChatData;
@@ -62,11 +40,11 @@ const ChatItem = ({ chatData, statusVisible }: ChatItemProps) => {
         <div className="chat-gender">
           <Typography size={16} weight={700} color={COLORS.GRAY3}>
             <span css={cssMarginRight4px}>女</span>
-            <span css={cssMarginNColor}>{chatData.person.woman}명</span>
+            <span css={cssMarginNColor}>{chatData.person.femaleCount}명</span>
             <span css={cssMarginRight4px}>男</span>
-            <span css={cssMarginNColor}>{chatData.person.man}명</span>
+            <span css={cssMarginNColor}>{chatData.person.maleCount}명</span>
             <span css={cssMarginRight8px}>/</span>
-            {chatData.person.total}명
+            {chatData.person.totalCount}명
           </Typography>
         </div>
       </div>

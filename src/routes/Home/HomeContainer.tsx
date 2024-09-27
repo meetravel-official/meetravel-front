@@ -2,9 +2,10 @@ import { dummyChatData } from "dummies/chat";
 import { useMemo, useState } from "react";
 import { checkUser } from "utils/check-user";
 
+import { ChatStatus, IChatData } from "@/api/interfaces/chat";
 import { ReactComponent as Bell } from "@/assets/icons/bell.svg";
 import { Button, Typography } from "@/components";
-import ChatItem, { ChatStatus, IChatData } from "@/components/Chat/ChatItem";
+import ChatItem from "@/components/Chat/ChatItem";
 import { EnterChatRoomModal } from "@/components/EnterChatRoomModal/EnterChatRoomModal";
 import { Pagination } from "@/components/Pagination/Pagination";
 import { cssAlignVerticalStyle } from "@/styles/align";

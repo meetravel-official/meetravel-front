@@ -53,6 +53,9 @@ request.interceptors.request.use((req) => {
 
 request.interceptors.response.use(
   (res) => {
+    if (res.request.responseURL.includes(process.env.REACT_APP_HOST_API_URL)) {
+      return res.data;
+    }
     return res;
   },
   async (error) => {

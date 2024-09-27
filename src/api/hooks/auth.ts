@@ -23,7 +23,7 @@ export const usePostKakaoLogin = () => {
   const navigate = useNavigate();
 
   return useMutation<
-    AxiosResponse<IGetKakaoLoginResponse>,
+    IGetKakaoLoginResponse,
     AxiosError,
     {
       authorizationCode: string;
@@ -37,7 +37,7 @@ export const usePostKakaoLogin = () => {
       );
     },
     onSuccess: (data) => {
-      const response = data.data;
+      const response = data;
       setRequestToKakao(false);
       setUserDataToCookie(response);
 
