@@ -4,7 +4,7 @@ import { WIDTH } from "@/styles/breakpoint";
 import { COLORS } from "@/styles/color";
 
 export const cssCarouselStyle = css`
-  width: 100%;
+  width: calc(100% + 32px);
   overflow: hidden;
   position: relative;
 `;
@@ -22,8 +22,8 @@ export const cssCarouselInnerStyle = (index: number, count: number) => css`
 `;
 
 export const cssCarouselItemStyle = css`
-  width: calc(100vw - 32px - 60px); //layout padding - 캐러셀 양 옆 살짝 보이게
-  max-width: calc(${WIDTH.SM} - 32px - 60px); // width가 한없이 커지는 거 방지
+  width: calc(100vw - 60px); //layout padding - 캐러셀 양 옆 살짝 보이게
+  max-width: calc(${WIDTH.SM} - 60px); // width가 한없이 커지는 거 방지
   height: auto;
   aspect-ratio: 300 / 176;
   border-radius: 8px;

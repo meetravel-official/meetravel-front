@@ -12,6 +12,7 @@ import { cssGlobalStyle } from "@/styles/globalStyle";
 import { ChatLayout } from "./components/ChatLayout/ChatLayout";
 import { HomeLayout } from "./components/HomeLayout/HomeLayout";
 import { ProfileLayout } from "./components/ProfileLayout/ProfileLayout";
+import { TravelInfoLayout } from "./components/TravelInfoLayout/TravelInfoLayout";
 import reportWebVitals from "./reportWebVitals";
 import { containerRoutes, pageRoutes } from "./routes";
 
@@ -27,10 +28,7 @@ const root = ReactDOM.createRoot(container as HTMLElement);
 const router = createBrowserRouter([
   {
     element: <MainLayout />,
-    children: [
-      { path: pageRoutes.CHAT, Component: containerRoutes.CHAT },
-      { path: pageRoutes.TRAVEL_INFO, Component: containerRoutes.TRAVEL_INFO },
-    ],
+    children: [{ path: pageRoutes.CHAT, Component: containerRoutes.CHAT }],
   },
   {
     path: pageRoutes.ROOT,
@@ -38,6 +36,12 @@ const router = createBrowserRouter([
     children: [
       { path: pageRoutes.ROOT, Component: containerRoutes.HOME },
       { path: pageRoutes.SEARCH, Component: containerRoutes.SEARCH },
+    ],
+  },
+  {
+    element: <TravelInfoLayout />,
+    children: [
+      { path: pageRoutes.TRAVEL_INFO, Component: containerRoutes.TRAVEL_INFO },
     ],
   },
   {

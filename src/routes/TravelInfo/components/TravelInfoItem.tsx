@@ -123,7 +123,7 @@ export const TravelInfoItem = ({ travelInfo }: TravelInfoItemProps) => {
         onClick={handleOnClickTravelInfoItem}
       >
         <div css={cssTravelInfoItemDescStyle}>
-          <Typography color={COLORS.GRAY5} size="16" weight="regular">
+          <Typography color={COLORS.GRAY5} size="16" weight={700}>
             {travelInfo.title}
           </Typography>
           <Typography color={COLORS.GRAY4} size="12" weight="regular">

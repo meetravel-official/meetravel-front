@@ -5,6 +5,7 @@ import { COLORS } from "@/styles/color";
 
 import { ArrowButton } from "../ArrowButton/ArrowButton";
 import { Typography } from "../Typography/Typography";
+import { cssPageNumStyle } from "./Pagination.styles";
 
 interface PaginationProps {
   page: number;
@@ -13,11 +14,11 @@ interface PaginationProps {
 }
 export const Pagination = ({ page, maxPage, setPage }: PaginationProps) => {
   const handleOnClickPrevPage = useCallback(() => {
-    if (page > 1) setPage(page - 1);
+    if (page > 0) setPage(page - 1);
   }, [page, setPage]);
 
   const handleOnClickNextPage = useCallback(() => {
-    if (page < maxPage) setPage(page + 1);
+    if (page < maxPage - 1) setPage(page + 1);
   }, [maxPage, page, setPage]);
 
   return (
@@ -25,20 +26,27 @@ export const Pagination = ({ page, maxPage, setPage }: PaginationProps) => {
       <ArrowButton
         direction="left"
         onClick={handleOnClickPrevPage}
-        disabled={page === 1}
+        disabled={page === 0}
       />
-      <div>
-        <Typography color={COLORS.GRAY4} weight={700} size="20">
-          {page}{" "}
-        </Typography>
+      <div css={cssAlignHorizontalStyle({ gap: 1 })}>
+        <div css={cssPageNumStyle}>
+          <Typography color={COLORS.GRAY4} weight={700} size="20">
+            {page + 1}
+          </Typography>
+        </div>
         <Typography color={COLORS.GRAY3} weight={700} size="20">
-          / {maxPage}
+          /
         </Typography>
+        <div css={cssPageNumStyle}>
+          <Typography color={COLORS.GRAY3} weight={700} size="20">
+            {maxPage}
+          </Typography>
+        </div>
       </div>
       <ArrowButton
         direction="right"
         onClick={handleOnClickNextPage}
-        disabled={page === maxPage}
+        disabled={page === maxPage - 1}
       />
     </div>
   );

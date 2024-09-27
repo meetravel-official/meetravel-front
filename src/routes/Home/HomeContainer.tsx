@@ -1,13 +1,13 @@
 import { dummyChatData } from "dummies/chat";
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { checkUser } from "utils/check-user";
 
 import { ReactComponent as Bell } from "@/assets/icons/bell.svg";
 import { Button, Typography } from "@/components";
-import { ArrowButton } from "@/components/ArrowButton/ArrowButton";
 import ChatItem, { ChatStatus, IChatData } from "@/components/Chat/ChatItem";
 import { EnterChatRoomModal } from "@/components/EnterChatRoomModal/EnterChatRoomModal";
-import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
+import { Pagination } from "@/components/Pagination/Pagination";
+import { cssAlignVerticalStyle } from "@/styles/align";
 import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
 
@@ -41,14 +41,6 @@ export const HomeContainer = checkUser(() => {
   const maxPage = useMemo(() => {
     return Math.ceil(chatDataList.length / pageSize);
   }, [chatDataList]);
-
-  const handleOnPrevPage = useCallback(() => {
-    if (page > 0) setPage(page - 1);
-  }, [page]);
-
-  const handleOnNextPage = useCallback(() => {
-    if (page < maxPage - 1) setPage(page + 1);
-  }, [page, maxPage]);
 
   const handleOnClickChat = (chatData: IChatData) => {
     setSelectedChatData(chatData);
@@ -99,26 +91,7 @@ export const HomeContainer = checkUser(() => {
                   </button>
                 ))}
               </div>
-              <div css={cssAlignHorizontalStyle({ gap: 38 })}>
-                <ArrowButton
-                  direction="left"
-                  disabled={page === 0}
-                  onClick={handleOnPrevPage}
-                />
-                <div>
-                  <Typography color={COLORS.GRAY4} size={20} weight={700}>
-                    {page + 1}
-                  </Typography>{" "}
-                  <Typography color={COLORS.GRAY3} size={20} weight={700}>
-                    / {maxPage}
-                  </Typography>
-                </div>
-                <ArrowButton
-                  direction="right"
-                  disabled={page === maxPage - 1}
-                  onClick={handleOnNextPage}
-                />
-              </div>
+              <Pagination page={page} maxPage={maxPage} setPage={setPage} />
             </div>
           </div>
         </div>
