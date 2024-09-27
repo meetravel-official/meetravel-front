@@ -2,8 +2,8 @@ import { css } from "@emotion/react";
 
 export const cssModalButtonStyle = css`
   position: absolute;
-  right: 5px;
-  bottom: 90px;
+  right: 16px;
+  bottom: 80px;
   width: 60px;
   height: 60px;
   border-radius: 100%;
