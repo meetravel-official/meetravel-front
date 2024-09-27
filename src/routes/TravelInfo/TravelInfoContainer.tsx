@@ -25,7 +25,7 @@ export const TravelInfoContainer = () => {
   return (
     <div css={cssAlignVerticalStyle({ gap: 16 })}>
       <div css={cssAlignVerticalStyle({ gap: 16, alignItems: "flex-start" })}>
-        <Typography size="20" weight="regular" color={COLORS.GRAY3}>
+        <Typography size="20" weight={700} color={COLORS.GRAY3}>
           여행 정보
         </Typography>
         <Bar />
