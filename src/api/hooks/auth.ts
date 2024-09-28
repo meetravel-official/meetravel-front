@@ -56,7 +56,6 @@ export const usePostKakaoLogin = () => {
 
 export const usePostSignUp = () => {
   const userInfo = getUserData();
-  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: (
@@ -68,12 +67,6 @@ export const usePostSignUp = () => {
         ...signUpInfo,
       } as IPostKaKaoSignUpRequest;
       return api.post(authApiRoute.postSignUp, requestData);
-    },
-    onSuccess: () => {
-      navigate(pageRoutes.ROOT);
-    },
-    onError: (error) => {
-      console.error("회원가입을 실패했습니다.", error);
     },
   });
 };
