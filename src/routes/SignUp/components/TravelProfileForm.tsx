@@ -178,7 +178,12 @@ export const TravelProfileForm = ({
           `}
         />
       </FormItem>
-      <FormItem label="MBTI" name="mbti" formItemStyle={cssFormItemStyle}>
+      <FormItem
+        label="MBTI"
+        name="mbti"
+        formItemStyle={cssFormItemStyle}
+        errorStyle={{ display: "block" }}
+      >
         <Input
           {...registerField("mbti")}
           type="text"

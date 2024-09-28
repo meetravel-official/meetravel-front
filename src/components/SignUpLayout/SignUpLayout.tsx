@@ -11,6 +11,7 @@ import {
   IProfile,
   ISignUpTravelProfileForm,
 } from "@/api/interfaces/kakaoSignUpInterface";
+import { GetMyPageResponseMbtiEnumArray } from "@/api/interfaces/user";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
@@ -104,6 +105,14 @@ export const SignUpLayout = () => {
       mbti: "",
       hobby: "",
       intro: "",
+    },
+    validate: {
+      mbti: (value) => {
+        if (value && !GetMyPageResponseMbtiEnumArray.includes(value)) {
+          return "MBTI는 4글자 대문자로 입력해주세요.";
+        }
+        return undefined;
+      },
     },
   });
 
