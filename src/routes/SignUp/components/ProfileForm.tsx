@@ -119,7 +119,6 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
             `}
           />
         </FormItem>
-
         <FormItem name="nickname" label="닉네임">
           <div
             css={cssAlignVerticalStyle({
@@ -167,15 +166,7 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
             {checkNicknameText}
           </div>
         </FormItem>
-        <FormItem
-          label="성별"
-          labelStyle={css`
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 20.39px;
-          `}
-          name="gender"
-        >
+        <FormItem label="성별" name="gender">
           <RadioButtonGroup
             {...registerField("gender")}
             defaultValue={

@@ -50,11 +50,6 @@ export const TravelProfileForm = ({
       <Form formValue={form}>
         <FormItem
           label="1년에 여행은 몇 번정도 가시나요?"
-          labelStyle={css`
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 20.39px;
-          `}
           name="travelFrequency"
         >
           <RadioButtonGroup
@@ -109,15 +104,7 @@ export const TravelProfileForm = ({
             </RadioButtonGroup.RadioButton>
           </RadioButtonGroup>
         </FormItem>
-        <FormItem
-          label="여행 취향은 어떻게 되세요?"
-          labelStyle={css`
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 20.39px;
-          `}
-          name="travelFrequency"
-        >
+        <FormItem label="여행 취향은 어떻게 되세요?" name="travelFrequency">
           <RadioButtonGroup
             {...registerField("travelFrequency")}
             defaultValue={
