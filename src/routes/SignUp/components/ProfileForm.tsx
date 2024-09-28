@@ -145,8 +145,14 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
   };
 
   useEffect(() => {
-    setDisabled(false);
-  }, [setDisabled]);
+    if (
+      checkNickname.isClick &&
+      !checkNickname.isDuplicated &&
+      checkNickname.value === form.nickname?.value
+    )
+      setDisabled(false);
+    else setDisabled(true);
+  }, [checkNickname, form.nickname?.value, setDisabled]);
 
   return (
     <Form formValue={form}>
@@ -315,7 +321,6 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
       >
         <Input
           {...registerField("phoneNumber")}
-          type="number"
           detailStyle={css`
             width: 100%;
           `}
