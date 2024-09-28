@@ -35,7 +35,7 @@ const UserItem = ({ data }: { data: IUserDetailData }) => {
           `}
         >
           <Image
-            src={""} //TODO: data.profileImg 이미지 추가 예정
+            src={data.profileImageUrl}
             alt="profile-image"
             width="100%"
             height="100%"

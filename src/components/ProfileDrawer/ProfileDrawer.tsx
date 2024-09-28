@@ -40,7 +40,7 @@ const ProfileDrawer = ({ isOpen, onClose }: ProfileDrawerProps) => {
             `}
           >
             <Image
-              src={data?.profileImageUrl} //TODO: data.profileImg 이미지 추가 예정
+              src={data?.profileImageUrl}
               alt="profile-image"
               width="100%"
               height="100%"
