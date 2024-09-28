@@ -1,10 +1,8 @@
 import { css } from "@emotion/react";
+import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
-import {
-  cssFormItemStyle,
-  cssRadioButtonStyle,
-} from "routes/Profile/components/ProfileEditModal.styles";
 import { useSignUpState } from "states/useSignUp";
+import { numberRegex } from "utils/regex-utils";
 
 import { useGetCheckNickname } from "@/api/hooks/auth";
 import { IProfile } from "@/api/interfaces/kakaoSignUpInterface";
@@ -13,11 +11,18 @@ import Form from "@/components/Form/Form";
 import { FormItem } from "@/components/Form/FormItem";
 import { FormValues } from "@/components/Form/useForm";
 import Input from "@/components/Input/Input";
-import { checkNotEmpty } from "@/components/Matching/Matching";
 import RadioButtonGroup from "@/components/RadioButton/RadioButtonGroup";
 import { SIGN_UP_GENDER_TYPE } from "@/constants/signUp";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
+
+import {
+  cssDateInputBoxStyle,
+  cssDateInputInnerStyle,
+  cssDateInputStyle,
+  cssFormItemStyle,
+  cssRadioButtonStyle,
+} from "../styles/SignUpInnerContents.styles";
 
 interface ProfileFormProps {
   form: FormValues<IProfile>;
@@ -40,7 +45,10 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
 
   const { mutate } = useGetCheckNickname();
 
-  const { onChange: onChangeGender } = registerField("gender");
+  const { onChange: onChangeYear } = registerField("birthDayYear");
+  const { onChange: onChangeMonth } = registerField("birthDayMonth");
+  const { onChange: onChangeDate } = registerField("birthDayDate");
+  const { onChange: onChangePhoneNumber } = registerField("phoneNumber");
 
   const handleCheckNickname = () => {
     if (!!form.nickname?.value && !form.nickname?.error) {
@@ -57,10 +65,6 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
         },
       });
     }
-  };
-
-  const handleBlurOnScroll = (e: React.WheelEvent<HTMLInputElement>) => {
-    return (e.target as HTMLElement).blur();
   };
 
   const checkNicknameText = useMemo(() => {
@@ -96,14 +100,65 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
     }
   }, [checkNickname, form.nickname]);
 
+  const handleOnChangeYear = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number.parseInt(e.target.value || "0");
+
+    if (
+      numberRegex.test(e.target.value) &&
+      e.target.value.length <= 4 &&
+      value >= 0 &&
+      value <= dayjs().year()
+    ) {
+      onChangeYear(e.target.value);
+    }
+  };
+
+  const handleOnChangeMonth = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number.parseInt(e.target.value || "0");
+
+    if (
+      numberRegex.test(e.target.value) &&
+      e.target.value.length <= 2 &&
+      value >= 0 &&
+      value < 13
+    ) {
+      onChangeMonth(e.target.value);
+    }
+  };
+  const handleOnChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number.parseInt(e.target.value || "0");
+
+    if (
+      numberRegex.test(e.target.value) &&
+      e.target.value.length <= 2 &&
+      value >= 0 &&
+      value < 32
+    ) {
+      onChangeDate(e.target.value);
+    }
+  };
+
+  const handleOnChangPhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (numberRegex.test(e.target.value) && e.target.value.length <= 11) {
+      onChangePhoneNumber(e.target.value);
+    }
+  };
+
   useEffect(() => {
     setDisabled(false);
   }, [setDisabled]);
 
   return (
     <Form formValue={form}>
-      <FormItem label="이름" name="name" formItemStyle={cssFormItemStyle}>
+      <FormItem
+        label="이름"
+        name="name"
+        formItemStyle={cssFormItemStyle}
+        errorStyle={{ display: "block" }}
+      >
         <Input
+          placeholder="최소 2자 이상/6자 이하 입력"
+          maxLength={6}
           {...registerField("name")}
           type="text"
           detailStyle={css`
@@ -124,6 +179,9 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
               type="text"
               detailStyle={css`
                 width: 100%;
+                outline: ${form.nickname?.error
+                  ? `1.5px solid ${COLORS.SITUATION1}`
+                  : `1.5px solid ${COLORS.PINK1}`};
               `}
               placeholder="최소 2자 이상/6자 이하 입력"
               maxLength={6}
@@ -161,12 +219,6 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
       <FormItem label="성별" name="gender" formItemStyle={cssFormItemStyle}>
         <RadioButtonGroup
           {...registerField("gender")}
-          defaultValue={
-            checkNotEmpty([form.gender]) ? form.gender?.value : undefined
-          }
-          onChange={(e) => {
-            onChangeGender(e);
-          }}
           gridDetailStyle={css`
             width: 100%;
           `}
@@ -201,31 +253,65 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
             생년월일
           </Typography>
           <div css={cssAlignHorizontalStyle({ gap: 8, width: "100%" })}>
-            <Input
-              {...registerField("birthDayYear")}
-              type="number"
-              suffix={<Typography color={COLORS.PINK3}>년</Typography>}
-              onWheel={(event) => handleBlurOnScroll(event)}
-            />
-            <Input
-              {...registerField("birthDayMonth")}
-              type="number"
-              suffix={<Typography color={COLORS.PINK3}>월</Typography>}
-              onWheel={(event) => handleBlurOnScroll(event)}
-            />
-            <Input
-              {...registerField("birthDayDate")}
-              type="number"
-              suffix={<Typography color={COLORS.PINK3}>일</Typography>}
-              onWheel={(event) => handleBlurOnScroll(event)}
-            />
+            <div css={cssDateInputBoxStyle(form.birthDayYear?.error)}>
+              <div css={cssDateInputInnerStyle}>
+                <input
+                  css={cssDateInputStyle(40)}
+                  {...registerField("birthDayYear")}
+                  onChange={handleOnChangeYear}
+                  onBlur={() => {
+                    if (form.birthDayYear?.value)
+                      onChangeYear(form.birthDayYear.value.padStart(4, "0"));
+                  }}
+                />
+                <Typography color={COLORS.PINK3}>년</Typography>
+              </div>
+            </div>
+            <div css={cssDateInputBoxStyle(form.birthDayMonth?.error)}>
+              <div css={cssDateInputInnerStyle}>
+                <input
+                  css={cssDateInputStyle(20)}
+                  {...registerField("birthDayMonth")}
+                  onChange={handleOnChangeMonth}
+                  onBlur={() => {
+                    if (form.birthDayMonth?.value)
+                      onChangeMonth(form.birthDayMonth.value.padStart(2, "0"));
+                  }}
+                />
+                <Typography color={COLORS.PINK3}>월</Typography>
+              </div>
+            </div>
+            <div css={cssDateInputBoxStyle(form.birthDayDate?.error)}>
+              <div css={cssDateInputInnerStyle}>
+                <input
+                  css={cssDateInputStyle(20)}
+                  {...registerField("birthDayDate")}
+                  onChange={handleOnChangeDate}
+                  onBlur={() => {
+                    if (form.birthDayDate?.value)
+                      onChangeDate(form.birthDayDate.value.padStart(2, "0"));
+                  }}
+                />
+                <Typography color={COLORS.PINK3}>일</Typography>
+              </div>
+            </div>
           </div>
+          {(form.birthDayYear?.error ||
+            form.birthDayMonth?.error ||
+            form.birthDayDate?.error) && (
+            <Typography size="14" color={COLORS.SITUATION1} weight={400}>
+              {form.birthDayYear?.error ||
+                form.birthDayMonth?.error ||
+                form.birthDayDate?.error}
+            </Typography>
+          )}
         </div>
       </div>
       <FormItem
         label="전화번호"
         name="phoneNumber"
         formItemStyle={cssFormItemStyle}
+        errorStyle={{ display: "block" }}
       >
         <Input
           {...registerField("phoneNumber")}
@@ -233,6 +319,7 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
           detailStyle={css`
             width: 100%;
           `}
+          onChange={handleOnChangPhoneNumber}
         />
       </FormItem>
     </Form>

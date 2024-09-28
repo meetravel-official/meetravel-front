@@ -1,8 +1,9 @@
+import { useEffect } from "react";
 import { AgreetoTerms } from "routes/SignUp/components/AgreetoTerms";
 import { ProfileForm } from "routes/SignUp/components/ProfileForm";
 import { TravelProfileForm } from "routes/SignUp/components/TravelProfileForm";
 import { useSignUpState } from "states/useSignUp";
-import { nicknameRegex } from "utils/regex-utils";
+import { nicknameRegex, phoneNumberRegex } from "utils/regex-utils";
 
 import { usePostSignUp } from "@/api/hooks/auth";
 import {
@@ -44,12 +45,21 @@ export const SignUpLayout = () => {
       // "profileImageUrl",
     ],
     validate: {
+      name: (value) => {
+        if (
+          value &&
+          (value.length < 2 || value.length > 6 || !nicknameRegex.test(value))
+        ) {
+          return "이름을 한글, 영어로 구성된 2자 이상 6자 이하로 입력해주세요.(띄어쓰기 불가)";
+        }
+        return undefined;
+      },
       nickname: (value) => {
         if (
           value &&
           (value.length < 2 || value.length > 6 || !nicknameRegex.test(value))
         ) {
-          return "닉네임은 한글, 영어로 구성된 2자 이상 6자 이하로 입력해주세요.(띄어쓰기 포함 불가)";
+          return "닉네임을 한글, 영어로 구성된 2자 이상 6자 이하로 입력해주세요.(띄어쓰기 불가)";
         }
         return undefined;
       },
@@ -78,8 +88,8 @@ export const SignUpLayout = () => {
         return undefined;
       },
       phoneNumber: (value) => {
-        if (value && value.length < 9) {
-          return "휴대폰 번호를 입력해주세요.";
+        if (value && !phoneNumberRegex.test(value)) {
+          return "휴대폰 번호를 올바르게 입력해주세요.(- 제외)";
         }
         return undefined;
       },
@@ -200,6 +210,10 @@ export const SignUpLayout = () => {
   const handleOnPrevStep = () => {
     step.handleOnClickPrev();
   };
+
+  useEffect(() => {
+    console.log(profileFormProps.form);
+  }, [profileFormProps]);
 
   return (
     <Layout>
