@@ -1,15 +1,18 @@
 import { css } from "@emotion/react";
-import { Fragment } from "react";
+import Cookies from "js-cookie";
 import { useReportModal } from "states/useChat";
 
-import { ReactComponent as ExclamationCircleIcon } from "@/assets/icons/exclamation-circle.svg";
-import { Button, Typography } from "@/components";
+import { IUserData } from "@/api/interfaces/chat";
+import { Typography } from "@/components";
 import Modal from "@/components/Modal/Modal";
+import UserItem from "@/components/UserItem/UserItem";
 import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
-const ReportModal = () => {
+const ReportModal = ({ data }: { data?: IUserData[] }) => {
   const { isOpenReportModal, handleOnCloseReportModal } = useReportModal();
+  const myUserId =
+    JSON.parse(Cookies.get("userInfo") as string)?.userId ?? "invalidCookies";
 
   return (
     <Modal
@@ -17,41 +20,60 @@ const ReportModal = () => {
       modalType="simple"
       isOpen={isOpenReportModal}
       onClose={handleOnCloseReportModal}
-      closableIcon={false}
-      footer={
-        <Fragment>
-          <Button bgColor={COLORS.PINK3} onClick={handleOnCloseReportModal}>
-            <Typography color={COLORS.WHITE} size="16" weight={700}>
-              신고하고 나가기
-            </Typography>
-          </Button>
-          <Button onClick={handleOnCloseReportModal}>
-            <Typography color={COLORS.GRAY3} size="16" weight={700}>
-              닫기
-            </Typography>
-          </Button>
-        </Fragment>
-      }
-    >
-      <div css={cssAlignVerticalStyle({ gap: 12, alignItems: "center" })}>
-        <ExclamationCircleIcon width={50} height={50} />
-        <Typography color={COLORS.GRAY4} size="16" weight={700} align="center">
-          해당 방의 모든 유저를{" "}
-          <span
-            css={css`
-              color: ${COLORS.SITUATION1};
+      closableIcon={true}
+      title={
+        <div
+          css={css`
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          `}
+        >
+          <Typography
+            color={COLORS.GRAY4}
+            size="16"
+            weight={700}
+            align={"center"}
+            detailStyle={css`
+              justify-content: center;
             `}
           >
-            신고
-          </span>
-          하고
-          <br /> 방을 나가시겠어요?
-        </Typography>
-        <Typography color={COLORS.GRAY3} size="12" weight={400} align="center">
-          *매칭 기회가 한 횟수 차감되며,
+            <span
+              css={css`
+                color: ${COLORS.SITUATION1};
+              `}
+            >
+              신고대상
+            </span>
+            을 골라주세요.
+          </Typography>
+        </div>
+      }
+      modalDetailStyle={css`
+        width: 250px;
+        padding: 20px;
+      `}
+    >
+      <div css={cssAlignVerticalStyle({ gap: 12, alignItems: "flex-start" })}>
+        <Typography color={COLORS.GRAY3} size="12" weight={400}>
+          *과반수에 의해 강제 퇴장 시,
           <br />
-          이는 방 이동 시에도 동일하게 적용돼요.
+          자동으로 다시 매칭을 시작합니다.
         </Typography>
+      </div>
+      <div
+        css={css`
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          margin-top: 18px;
+        `}
+      >
+        {data?.map((item, index) => {
+          if (item.userId === myUserId) return null;
+          return <UserItem key={index} data={item} />;
+        })}
       </div>
     </Modal>
   );

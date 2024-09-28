@@ -35,3 +35,15 @@ export const useProfileModal = create<IProfileModalState>((set) => ({
   handleOnOpenProfileModal: () => set({ isOpenProfileModal: true }),
   handleOnCloseProfileModal: () => set({ isOpenProfileModal: false }),
 }));
+
+interface IReportReasonModalState {
+  isOpenReportReasonModal: boolean;
+  handleOnOpenReportReasonModal: () => void;
+  handleOnCloseReportReasonModal: () => void;
+}
+
+export const useReportReasonModal = create<IReportReasonModalState>((set) => ({
+  isOpenReportReasonModal: false,
+  handleOnOpenReportReasonModal: () => set({ isOpenReportReasonModal: true }),
+  handleOnCloseReportReasonModal: () => set({ isOpenReportReasonModal: false }),
+}));

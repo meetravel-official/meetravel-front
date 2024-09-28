@@ -16,6 +16,7 @@ import { BackHeader } from "@/components/BackLayout/BackHeader";
 import Input from "@/components/Input/Input";
 import MessageItem from "@/components/MessageItem";
 import ProfileDrawer from "@/components/ProfileDrawer/ProfileDrawer";
+import ReportReasonModal from "@/components/ReportReasonModal/ReportReasonModal";
 import TagKeyword from "@/components/TagKeyword/TagKeyword";
 import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
@@ -215,6 +216,21 @@ const ChatRoomContainer = () => {
               sendAt: "2024-09-08 12:34",
             }}
           />
+          <MessageItem
+            data={{
+              userId: "익명",
+              message: "안녕하세요!",
+              sendAt: "2024-09-08 12:34",
+            }}
+          />
+          <MessageItem
+            data={{
+              userId: "익명",
+              message: "반갑습니다",
+              sendAt: "2024-09-08 12:34",
+            }}
+            isSameUser={true}
+          />
 
           {chatMessageGroups.map((item, index) => {
             const isSameUser = prevUserId === item.userId;
@@ -316,12 +332,13 @@ const ChatRoomContainer = () => {
         }}
       />
 
-      <ReportModal />
+      <ReportModal data={chatUsersData?.users} />
       <LeaveModal />
       <ProfileDrawer
         isOpen={isOpenProfileModal}
         onClose={handleOnCloseProfileModal}
       />
+      <ReportReasonModal />
     </Fragment>
   );
 };
