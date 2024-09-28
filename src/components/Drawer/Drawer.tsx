@@ -39,7 +39,7 @@ const Drawer = ({ isOpen, onClose, children }: DrawerProps) => {
         padding: 20px 8px 0 8px;
 
         background-color: white;
-        animation: fadeInUp 0.2s ease-in-out forwards;
+        animation: fadeInUp 0.2s linear forwards;
         @keyframes fadeInUp {
           from {
             transform: translate(-50%, -50%) translateY(100%);
