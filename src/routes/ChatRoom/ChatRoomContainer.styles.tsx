@@ -20,13 +20,12 @@ export const cssBackHeaderPrefixStyle = css`
 `;
 
 export const cssMessageListStyle = css`
-  height: calc(var(--vh, 1vh) * 100 - 165px - 62px);
-  overflow: scroll;
+  box-sizing: border-box;
+  height: calc(var(--vh, 1vh) * 100 - 165px - 40px);
+  overflow-y: auto;
   background-color: ${COLORS.GRAY1};
-  margin: 0 -16px -16px -16px;
-  padding: 16px;
-  padding-top: 65px;
-  padding-bottom: 32px;
+  margin: 60px -16px 0 -16px;
+  padding: 16px 16px 0 16px;
   gap: 8px;
   display: flex;
   flex-direction: column;
@@ -50,4 +49,10 @@ export const cssChatRoomInputStyle = css`
   height: 46px;
   margin: 8px 0;
   width: 100%;
+`;
+
+export const cssChatRoomKeywordStyle = css`
+  outline: 1px solid ${COLORS.GRAY2};
+  background-color: ${COLORS.WHITE};
+  box-shadow: 0 0 12px 0px #00000040;
 `;

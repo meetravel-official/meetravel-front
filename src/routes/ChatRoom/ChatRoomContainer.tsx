@@ -2,41 +2,48 @@ import { css } from "@emotion/react";
 import { CompatClient, Stomp } from "@stomp/stompjs";
 import { chatData1 } from "dummies/chat";
 import Cookies from "js-cookie";
-import {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { TravelPlanModal } from "routes/Chat/components/TravelPlanModal/TravelPlanModal";
 import SockJS from "sockjs-client";
-import { useChatState } from "states/useChat";
+import { useProfileModal } from "states/useChat";
 
+import { useGetChatUsers } from "@/api/hooks/chat";
 import { ChatStatus, IChatMessageData } from "@/api/interfaces/chat";
 import { ReactComponent as PlanIcon } from "@/assets/icons/plan.svg";
 import { Button, Typography } from "@/components";
 import { BackHeader } from "@/components/BackLayout/BackHeader";
 import Input from "@/components/Input/Input";
-import MessageItem, { MessageItemDataProps } from "@/components/MessageItem";
+import MessageItem from "@/components/MessageItem";
+import ProfileDrawer from "@/components/ProfileDrawer/ProfileDrawer";
+import TagKeyword from "@/components/TagKeyword/TagKeyword";
+import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
 
 import {
   cssBackHeaderPrefixStyle,
   cssChatRoomInputStyle,
   cssChatRoomInputWrapperStyle,
+  cssChatRoomKeywordStyle,
   cssMessageListStyle,
 } from "./ChatRoomContainer.styles";
+import LeaveModal from "./components/LeaveModal";
+import ReportModal from "./components/ReportModal";
 import TitleHeader from "./components/TitleHeader";
 
 const ChatRoomContainer = () => {
   const client = useRef<CompatClient>();
   const [inputText, setInputText] = useState<string>();
   const [chatMessage, setChatMessage] = useState<IChatMessageData>();
+  const { isOpenProfileModal, handleOnCloseProfileModal } = useProfileModal();
+
+  const [isOpenTravelPlanModal, setIsOpenTravelPlanModal] = useState(false);
+
   const location = useLocation();
   const match = location.pathname.match(/\/chat\/(.*)/);
   const chatRoomId = match ? match[1] : null;
+
+  const { data: chatUsersData } = useGetChatUsers(chatRoomId ?? "1");
   // const chatMessageGroups = useMemo<MessageItemDataProps[]>(() => [], []);
   const [chatMessageGroups, setChatMessageGroups] = useState<
     IChatMessageData[]
@@ -52,7 +59,11 @@ const ChatRoomContainer = () => {
   // 일단은 내가 메세지 전송할때만 아래로 내리도록 함
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+      // messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
     }
   };
 
@@ -148,102 +159,170 @@ const ChatRoomContainer = () => {
     );
   }, []);
 
+  const handleOnOpenTravelPlanModal = () => {
+    setIsOpenTravelPlanModal(true);
+  };
+
   return (
-    <div className="chat-room">
-      <BackHeader
-        titleContent={<TitleHeader data={chatData1} />}
-        prefixStyle={cssBackHeaderPrefixStyle}
-      />
-      <div ref={messagesEndRef} css={cssMessageListStyle}>
-        {/**여기에 채팅내용이 올라갑니다 */}
-        {/* TODO: 매칭이 완료되고 여행이 시작할때 어드민 메세지를 추가해주어야합니다 */}
-        <MessageItem
-          type={"admin"}
-          data={{
-            userId: "닉네임",
-            message:
-              "안녕하세요! 여러분들의 여행을 책임질 ‘진행봇’입니다. 저를 함께 여행계획을 세워봐요!",
-            sendAt: "2024-09-08 12:34",
-          }}
+    <Fragment>
+      <div className="chat-room">
+        <BackHeader
+          titleContent={<TitleHeader data={chatUsersData} />}
+          prefixStyle={cssBackHeaderPrefixStyle}
         />
-
-        {chatMessageGroups.map((item, index) => {
-          const isSameUser = prevUserId === item.userId;
-          prevUserId = item.userId;
-          return (
-            item.type === "CHAT" && (
-              <MessageItem
-                key={index}
-                type="me"
-                data={item}
-                isSameUser={isSameUser}
-              />
-            )
-          );
-        })}
-        {/**여기까지 채팅입니다 */}
-      </div>
-
-      <div className="chat-room-input" css={cssChatRoomInputWrapperStyle}>
-        <div
-          css={css`
-            margin: 22px 9px 22px 17px;
-          `}
-        >
-          <PlanIcon
+        <div css={cssMessageListStyle}>
+          <div
             css={css`
-              svg {
-                width: 24px;
-                height: 24px;
-              }
-            `}
-          />
-        </div>
-        <Input
-          placeholder="메세지를 입력해주세요."
-          detailStyle={cssChatRoomInputStyle}
-          inputDetailStyle={css`
-            ::placeholder {
-              color: ${COLORS.GRAY2};
-            }
-          `}
-          value={inputText}
-          onChange={(e) => {
-            setInputText(e.target.value);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !enterPressed.current) {
-              enterPressed.current = true;
-              addMessage();
-
-              setTimeout(function () {
-                enterPressed.current = false;
-                setInputText("");
-              }, 0);
-            }
-          }}
-        />
-        <Button
-          detailStyle={css`
-            background-color: ${COLORS.PINK3};
-            width: 72px;
-            height: 46px;
-            margin: 8px 8px 8px 0;
-          `}
-          onClick={() => addMessage()}
-        >
-          <Typography
-            color={COLORS.WHITE}
-            weight={700}
-            detailStyle={css`
-              flex-shrink: 0;
+              position: fixed;
+              display: flex;
+              gap: 8px;
+              z-index: 1;
             `}
           >
-            전송
-          </Typography>
-        </Button>
+            {chatData1.tags.map((item, index) => {
+              return (
+                <TagKeyword
+                  key={index}
+                  keyword={item}
+                  detailStyle={cssChatRoomKeywordStyle}
+                  typographyStyle={css`
+                    color: ${chatData1.status === ChatStatus.DONE
+                      ? COLORS.GRAY2
+                      : COLORS.GRAY4};
+                  `}
+                  svgColor={
+                    chatData1.status === ChatStatus.DONE
+                      ? COLORS.GRAY2
+                      : COLORS.GRAY3
+                  }
+                />
+              );
+            })}
+          </div>
+          {/**여기에 채팅내용이 올라갑니다 */}
+          {/* TODO: 매칭이 완료되고 여행이 시작할때 어드민 메세지를 추가해주어야합니다 */}
+          <div
+            css={css`
+              height: 39px;
+            `}
+          />
+          <MessageItem
+            type={"admin"}
+            data={{
+              userId: "닉네임",
+              message:
+                "안녕하세요! 여러분들의 여행을 책임질 ‘진행봇’입니다. 저를 함께 여행계획을 세워봐요!",
+              sendAt: "2024-09-08 12:34",
+            }}
+          />
+
+          {chatMessageGroups.map((item, index) => {
+            const isSameUser = prevUserId === item.userId;
+            prevUserId = item.userId;
+            return (
+              item.type === "CHAT" && (
+                <MessageItem
+                  key={index}
+                  type="me"
+                  data={item}
+                  isSameUser={isSameUser}
+                />
+              )
+            );
+          })}
+          {/**여기까지 채팅입니다 */}
+          <div ref={messagesEndRef}></div>
+        </div>
+
+        <div className="chat-room-input" css={cssChatRoomInputWrapperStyle}>
+          <button
+            css={cssDefaultBtnStyle}
+            onClick={() => {
+              console.log("계획 버튼 누름");
+              handleOnOpenTravelPlanModal();
+            }}
+          >
+            <div
+              css={css`
+                margin: 22px 9px 22px 17px;
+              `}
+            >
+              <PlanIcon
+                css={css`
+                  svg {
+                    width: 24px;
+                    height: 24px;
+                  }
+                `}
+              />
+            </div>
+          </button>
+          <Input
+            placeholder="메세지를 입력해주세요."
+            detailStyle={cssChatRoomInputStyle}
+            inputDetailStyle={css`
+              ::placeholder {
+                color: ${COLORS.GRAY2};
+              }
+            `}
+            value={inputText}
+            onChange={(e) => {
+              setInputText(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !enterPressed.current) {
+                enterPressed.current = true;
+                addMessage();
+
+                setTimeout(function () {
+                  enterPressed.current = false;
+                  setInputText("");
+                }, 0);
+              }
+            }}
+          />
+          <Button
+            detailStyle={css`
+              background-color: ${COLORS.PINK3};
+              width: 72px;
+              height: 46px;
+              margin: 8px 8px 8px 0;
+            `}
+            onClick={() => addMessage()}
+          >
+            <Typography
+              color={COLORS.WHITE}
+              weight={700}
+              detailStyle={css`
+                flex-shrink: 0;
+              `}
+            >
+              전송
+            </Typography>
+          </Button>
+        </div>
       </div>
-    </div>
+
+      <TravelPlanModal
+        isOpen={isOpenTravelPlanModal}
+        onClose={() => {
+          setIsOpenTravelPlanModal(false);
+        }}
+        matchingInfo={{
+          travelStartDate: "2024-08-11",
+          travelEndDate: "2024-08-13",
+          travelArea: "강원도 동해",
+          keyword: ["산", "도시", "야경"],
+        }}
+      />
+
+      <ReportModal />
+      <LeaveModal />
+      <ProfileDrawer
+        isOpen={isOpenProfileModal}
+        onClose={handleOnCloseProfileModal}
+      />
+    </Fragment>
   );
 };
 export default ChatRoomContainer;
