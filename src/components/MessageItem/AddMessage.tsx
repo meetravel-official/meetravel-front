@@ -11,7 +11,7 @@ const AddMessage = ({ data }: MessageItemProps) => {
   return (
     <div
       css={css`
-        margin-left: 48px;
+        margin-left: 52px;
       `}
     >
       <div css={cssAlignHorizontalStyle({ gap: 8, alignItems: "flex-end" })}>
