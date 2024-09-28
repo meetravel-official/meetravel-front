@@ -5,8 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import { useKakaoAuthState } from "states/useCheckUser";
-import { getUserData, setUserDataToCookie } from "utils/token-utils";
+import { getUserData } from "utils/token-utils";
 
 import { SIGN_UP_SOCIAL_TYPE } from "@/constants/signUp";
 import { pageRoutes } from "@/routes";
@@ -19,9 +18,6 @@ import { api } from "../request";
 import { authApiRoute } from "../routes/apiRoutes";
 
 export const usePostKakaoLogin = () => {
-  const { setRequestToKakao } = useKakaoAuthState();
-  const navigate = useNavigate();
-
   return useMutation<
     IGetKakaoLoginResponse,
     AxiosError,
@@ -35,21 +31,6 @@ export const usePostKakaoLogin = () => {
         authApiRoute.postAuthKakaoLogin({ authorizationCode, redirectUri }),
         undefined
       );
-    },
-    onSuccess: (data) => {
-      const response = data;
-      setRequestToKakao(false);
-      setUserDataToCookie(response);
-
-      if (response.registeredUserYn) {
-        navigate(pageRoutes.ROOT);
-      } else {
-        navigate(pageRoutes.SIGN_UP);
-      }
-    },
-    onError: (error) => {
-      console.error("Kakao SignIn is Failed.", error);
-      setRequestToKakao(false);
     },
   });
 };
