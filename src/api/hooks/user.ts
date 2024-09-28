@@ -9,25 +9,23 @@ import {
 import { api } from "../request";
 import { authApiRoute } from "../routes/apiRoutes";
 
-export const useGetMyPage = (userId?: string) => {
+export const useGetMyPage = () => {
   return useQuery<GetMyPageResponse, AxiosError>({
-    queryKey: ["useGetMyPage", userId],
-    queryFn: () => api.get(authApiRoute.getMyPage(userId || "")),
-    enabled: !!userId,
+    queryKey: ["useGetMyPage"],
+    queryFn: () => api.get(authApiRoute.getMyPage),
   });
 };
 
-export const usePutInfo = (userId?: string) => {
+export const usePutInfo = () => {
   return useMutation<AxiosResponse, AxiosError, UpdateMyPageInfoRequest>({
-    mutationFn: (data) => api.put(authApiRoute.userInfo(userId || ""), data),
+    mutationFn: (data) => api.put(authApiRoute.userInfo, data),
     retry: false,
   });
 };
 
-export const usePutNickname = (userId?: string) => {
+export const usePutNickname = () => {
   return useMutation<AxiosResponse, AxiosError, UpdateNicknameRequest>({
-    mutationFn: (data) =>
-      api.put(authApiRoute.userNickname(userId || ""), data),
+    mutationFn: (data) => api.put(authApiRoute.userNickname, data),
     retry: false,
   });
 };

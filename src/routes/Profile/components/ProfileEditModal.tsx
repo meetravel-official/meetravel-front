@@ -45,10 +45,7 @@ import {
   cssRadioButtonStyle,
 } from "./ProfileEditModal.styles";
 
-interface ProfileEditModalProps {
-  userId?: string;
-}
-export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
+export const ProfileEditModal = () => {
   const navigate = useNavigate();
 
   const [checkNickname, setCheckNickname] = useState<{
@@ -61,10 +58,10 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
   const { isOpenEditModal, handleOnCloseEditModal } = useProfile();
 
   const queryClient = useQueryClient();
-  const { data: profileData } = useGetMyPage(userId);
+  const { data: profileData } = useGetMyPage();
   const { mutate } = useGetCheckNickname();
-  const { mutateAsync: mutateInfo } = usePutInfo(userId);
-  const { mutateAsync: mutateNickname } = usePutNickname(userId);
+  const { mutateAsync: mutateInfo } = usePutInfo();
+  const { mutateAsync: mutateNickname } = usePutNickname();
 
   const { form, registerField, resetFields, invalidFields, setFields } =
     useForm({
