@@ -2,11 +2,19 @@ import { AgreetoTerms } from "routes/SignUp/components/AgreetoTerms";
 import { ProfileForm } from "routes/SignUp/components/ProfileForm";
 import { TravelProfileForm } from "routes/SignUp/components/TravelProfileForm";
 import { useSignUpState } from "states/useSignUp";
+import { nicknameRegex } from "utils/regex-utils";
 
+import { usePostSignUp } from "@/api/hooks/auth";
+import {
+  IPostKaKaoSignUpRequest,
+  IProfile,
+  ISignUpTravelProfileForm,
+} from "@/api/interfaces/kakaoSignUpInterface";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
 import { Button } from "../Button/Button";
+import useForm from "../Form/useForm";
 import { Layout } from "../Layout/Layout";
 import { Step } from "../Step";
 import { useStep } from "../Step/useStep";
@@ -18,7 +26,76 @@ import {
 
 export const SignUpLayout = () => {
   const [step] = useStep();
-  const { nextButtonProps, setNextButtonProps } = useSignUpState();
+
+  const { profileInfo, setProfileInfo, isDisabled } = useSignUpState();
+
+  const mutationSignUp = usePostSignUp();
+
+  const profileFormProps = useForm<IProfile>({
+    initialValues: profileInfo,
+    required: [
+      "name",
+      "nickname",
+      "birthDayYear",
+      "birthDayMonth",
+      "birthDayDate",
+      "gender",
+      "phoneNumber",
+      // "profileImageUrl",
+    ],
+    validate: {
+      nickname: (value) => {
+        if (
+          value &&
+          (value.length < 2 || value.length > 6 || !nicknameRegex.test(value))
+        ) {
+          return "닉네임은 한글, 영어로 구성된 2자 이상 6자 이하로 입력해주세요.(띄어쓰기 포함 불가)";
+        }
+        return undefined;
+      },
+
+      birthDayYear: (value) => {
+        const year = Number(value);
+        if (year <= 1900) {
+          return "1900년 이후의 년도를 입력해주세요.";
+        } else if (year > new Date().getFullYear()) {
+          return `${new Date().getFullYear()} 이후의 년도는 입력할 수 없습니다.`;
+        }
+        return undefined;
+      },
+      birthDayMonth: (value) => {
+        const month = Number(value);
+        if (month <= 0 || month > 12) {
+          return "1월부터 12월 사이의 숫자를 입력해주세요.";
+        }
+        return undefined;
+      },
+      birthDayDate: (value) => {
+        const date = Number(value);
+        if (date <= 0 || date > 31) {
+          return "1일부터 31일 사이의 숫자를 입력해주세요.";
+        }
+        return undefined;
+      },
+      phoneNumber: (value) => {
+        if (value && value.length < 9) {
+          return "휴대폰 번호를 입력해주세요.";
+        }
+        return undefined;
+      },
+    },
+  });
+
+  const travelProfileFormProps = useForm<ISignUpTravelProfileForm>({
+    initialValues: {
+      travelFrequency: "",
+      scheduleType: "",
+      planningType: "",
+      mbti: "",
+      hobby: "",
+      intro: "",
+    },
+  });
 
   const stepList = [
     {
@@ -46,6 +123,9 @@ export const SignUpLayout = () => {
         </div>
       ),
       content: <AgreetoTerms />,
+      handleOnClickSubmit: () => {
+        step.handleOnClickNext();
+      },
     },
     {
       header: (
@@ -61,7 +141,24 @@ export const SignUpLayout = () => {
           </Typography>
         </div>
       ),
-      content: <ProfileForm />,
+      content: <ProfileForm {...profileFormProps} />,
+      handleOnClickSubmit: () => {
+        profileFormProps.invalidFields(({ errors, value }) => {
+          if (!errors) {
+            setProfileInfo({
+              ...profileInfo,
+              name: value.name?.value,
+              nickname: value.nickname?.value,
+              gender: value.gender?.value,
+              phoneNumber: value.phoneNumber?.value,
+              birthDayYear: value.birthDayYear?.value,
+              birthDayMonth: value.birthDayMonth?.value?.padStart(2, "0"),
+              birthDayDate: value.birthDayDate?.value?.padStart(2, "0"),
+            });
+            step.handleOnClickNext();
+          }
+        });
+      },
     },
     {
       header: (
@@ -77,22 +174,31 @@ export const SignUpLayout = () => {
           </Typography>
         </div>
       ),
-      content: <TravelProfileForm />,
+      content: <TravelProfileForm {...travelProfileFormProps} />,
+      handleOnClickSubmit: () => {
+        travelProfileFormProps.invalidFields(async ({ errors, value }) => {
+          if (!errors) {
+            const mutationData = {
+              ...profileInfo,
+              birthDate: `${profileInfo?.birthDayYear || ""}-${
+                profileInfo?.birthDayMonth || ""
+              }-${profileInfo?.birthDayDate || ""}`,
+              travelFrequency: value.travelFrequency?.value || undefined,
+              scheduleType: value.scheduleType?.value || undefined,
+              planningType: value.planningType?.value || undefined,
+              hobby: value.hobby?.value || undefined,
+              mbti: value.mbti?.value || undefined,
+              intro: value.intro?.value || undefined,
+            } as IPostKaKaoSignUpRequest;
+            await mutationSignUp.mutateAsync({ ...mutationData });
+          }
+        });
+      },
     },
   ];
 
   const handleOnPrevStep = () => {
     step.handleOnClickPrev();
-  };
-
-  const handleOnNextStep = () => {
-    if (nextButtonProps.onClick) {
-      nextButtonProps.onClick();
-    }
-    if (!step.isLast) {
-      step.handleOnClickNext();
-      setNextButtonProps({ disabled: true });
-    }
   };
 
   return (
@@ -117,8 +223,8 @@ export const SignUpLayout = () => {
             )}
             <Button
               bgColor={COLORS.PINK3}
-              onClick={handleOnNextStep}
-              disabled={nextButtonProps.disabled}
+              onClick={stepList[step.current].handleOnClickSubmit}
+              disabled={isDisabled}
             >
               <Typography color={COLORS.WHITE} weight="bold" size={16}>
                 {step.isLast ? "시작하기!" : "다음"}

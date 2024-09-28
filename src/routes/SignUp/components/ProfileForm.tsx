@@ -1,13 +1,13 @@
 import { css } from "@emotion/react";
-import { useMemo, useState } from "react";
-import { ISignUpFormValues, useSignUpFormState } from "states/useCheckUser";
+import { useEffect, useMemo, useState } from "react";
+import { useSignUpState } from "states/useSignUp";
 
 import { useGetCheckNickname } from "@/api/hooks/auth";
-import { ISignUpEssentialForm } from "@/api/interfaces/kakaoSignUpInterface";
+import { IProfile } from "@/api/interfaces/kakaoSignUpInterface";
 import { Button, Typography } from "@/components";
 import Form from "@/components/Form/Form";
 import { FormItem } from "@/components/Form/FormItem";
-import useForm from "@/components/Form/useForm";
+import { FormValues } from "@/components/Form/useForm";
 import Input from "@/components/Input/Input";
 import { checkNotEmpty } from "@/components/Matching/Matching";
 import RadioButtonGroup from "@/components/RadioButton/RadioButtonGroup";
@@ -17,130 +17,43 @@ import { COLORS } from "@/styles/color";
 
 import { cssAgreetoTermsStyle } from "../styles/SignUpInnerContents.styles";
 
-export const ProfileForm = () => {
-  const [formErrors, setFormErrors] = useState<
-    { error: keyof ISignUpEssentialForm; errorText: string }[] | undefined
-  >(undefined);
+interface ProfileFormProps {
+  form: FormValues<IProfile>;
+  registerField: (key: keyof IProfile) => {
+    value?: string;
+    onChange: (e: any) => void;
+    error: string | undefined;
+  };
+}
 
+export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
   const [checkNickname, setCheckNickname] = useState<{
     isClick: boolean;
-    isValid: boolean;
-  }>({ isClick: false, isValid: false });
+    isDuplicated: boolean;
+    value: string;
+  }>({ isClick: false, isDuplicated: false, value: "" });
 
   // zustand
-  const { signUpInfo, setSignUpInfo } = useSignUpFormState();
+  const { setDisabled } = useSignUpState();
 
-  const mutationCheckNickName = useGetCheckNickname();
-
-  const { form, registerField, invalidFields } = useForm<ISignUpEssentialForm>({
-    initialValues: {
-      name: "",
-      nickname: "",
-      birthDayYear: "",
-      birthDayMonth: "",
-      birthDayDate: "",
-      gender: "",
-      phoneNumber: "",
-      profileImageUrl: "",
-    },
-    required: [
-      "name",
-      "nickname",
-      "birthDayYear",
-      "birthDayMonth",
-      "birthDayDate",
-      "gender",
-      "phoneNumber",
-      // "profileImageUrl",
-    ],
-    validate: {
-      nickname: (value) => {
-        if (value && value.length > 7) {
-          return "닉네임은 6자 이하로 입력해주세요.";
-        }
-        return undefined;
-      },
-      birthDayYear: (value) => {
-        const year = Number(value);
-        if (year <= 1900) {
-          return "1900년 이후의 년도를 입력해주세요.";
-        } else if (year > new Date().getFullYear()) {
-          return `${new Date().getFullYear()} 이후의 년도는 입력할 수 없습니다.`;
-        }
-        return undefined;
-      },
-      birthDayMonth: (value) => {
-        const month = Number(value);
-        if (month <= 0 || month > 12) {
-          return "1월부터 12월 사이의 숫자를 입력해주세요.";
-        }
-        return undefined;
-      },
-      birthDayDate: (value) => {
-        const date = Number(value);
-        if (date <= 0 || date > 31) {
-          return "1일부터 31일 사이의 숫자를 입력해주세요.";
-        }
-        return undefined;
-      },
-      phoneNumber: (value) => {
-        if (value && value.length < 9) {
-          return "휴대폰 번호를 입력해주세요.";
-        }
-        return undefined;
-      },
-    },
-  });
+  const { mutate } = useGetCheckNickname();
 
   const { onChange: onChangeGender } = registerField("gender");
 
-  const handleFormErrors = () => {
-    invalidFields(({ errors }) => {
-      if (errors) {
-        setFormErrors(errors);
-      }
-    });
-  };
-
-  const handleOnNextStep = () => {
-    invalidFields(({ errors }) => {
-      if (errors) {
-        setFormErrors(errors);
-      } else {
-        const padSingleDigit = (
-          value: string | undefined
-        ): string | undefined => {
-          if (value && value.length < 2 && Number(value) < 10) {
-            return `0${value}`;
-          }
-          return value;
-        };
-
-        const validateBirthDayMonth = padSingleDigit(
-          form?.birthDayMonth?.value
-        );
-        const validateBirthDayDate = padSingleDigit(form?.birthDayDate?.value);
-
-        const signUpFormInfo: ISignUpFormValues = {
-          name: form.name?.value || "",
-          nickname: form.nickname?.value || "",
-          birthDayYear: form.birthDayYear?.value || "",
-          birthDayMonth: validateBirthDayMonth || "",
-          birthDayDate: validateBirthDayDate || "",
-          gender: form.gender?.value || "",
-          phoneNumber: form.phoneNumber?.value || "",
-          profileImageUrl: form.profileImageUrl?.value || "",
-        };
-        setSignUpInfo({ ...signUpInfo, ...signUpFormInfo });
-      }
-    });
-  };
-
-  const handleCheckNickname = async (nickname: string | undefined) => {
-    handleFormErrors();
-    if (nickname) {
-      const res = await mutationCheckNickName.mutateAsync(nickname);
-      setCheckNickname({ isClick: true, isValid: res.data });
+  const handleCheckNickname = () => {
+    if (!!form.nickname?.value && !form.nickname?.error) {
+      mutate(form.nickname.value, {
+        onSuccess: (res) => {
+          setCheckNickname({
+            isClick: true,
+            isDuplicated: res.data,
+            value: form.nickname?.value || "",
+          });
+        },
+        onError: () => {
+          setCheckNickname({ isClick: false, isDuplicated: false, value: "" });
+        },
+      });
     }
   };
 
@@ -148,31 +61,42 @@ export const ProfileForm = () => {
     return (e.target as HTMLElement).blur();
   };
 
-  const nicknameFormErrorMessage = useMemo(() => {
-    return formErrors?.find((error) => error.error === "nickname");
-  }, [formErrors]);
-  const handleCheckNicknameMessage = useMemo(() => {
-    if (checkNickname.isValid) {
+  const checkNicknameText = useMemo(() => {
+    if (form.nickname?.error) {
       return (
-        <Typography color={COLORS.SITUATION1} size={12}>
-          중복된 닉네임입니다.
+        <Typography color={COLORS.SITUATION1} size="14">
+          {form.nickname.error}
         </Typography>
       );
+    } else if (checkNickname.isClick) {
+      if (checkNickname.isDuplicated) {
+        return (
+          <Typography color={COLORS.SITUATION1} size="14">
+            중복된 닉네임입니다.
+          </Typography>
+        );
+      } else {
+        return (
+          <Typography color={COLORS.GRAY2} size="14">
+            사용 가능한 닉네임입니다.
+          </Typography>
+        );
+      }
     }
-    if (nicknameFormErrorMessage) {
-      return (
-        <Typography color={COLORS.SITUATION1} size={12}>
-          {nicknameFormErrorMessage.errorText}
-        </Typography>
-      );
-    } else {
-      return (
-        <Typography color={COLORS.GRAY2} size={12}>
-          사용 가능한 닉네임입니다.
-        </Typography>
-      );
+    if (form.nickname?.value !== checkNickname.value) {
+      if (!checkNickname.isClick) {
+        return (
+          <Typography color={COLORS.SITUATION1} size="14">
+            중복 여부를 확인해주세요.
+          </Typography>
+        );
+      }
     }
-  }, [checkNickname, nicknameFormErrorMessage]);
+  }, [checkNickname, form.nickname]);
+
+  useEffect(() => {
+    setDisabled(false);
+  }, [setDisabled]);
 
   return (
     <div
@@ -194,43 +118,54 @@ export const ProfileForm = () => {
             `}
           />
         </FormItem>
-        <div
-          css={cssAlignHorizontalStyle({
-            alignItems: "flex-start",
-            width: "100%",
-          })}
-        >
-          <FormItem
-            label="닉네임"
-            name="nickname"
-            formItemStyle={css`
-              width: 100%;
-            `}
+
+        <FormItem name="nickname" label="닉네임">
+          <div
+            css={cssAlignVerticalStyle({
+              gap: 8,
+              alignItems: "flex-start",
+            })}
           >
-            <div>
+            <div css={cssAlignHorizontalStyle({ gap: 8, width: "100%" })}>
               <Input
                 {...registerField("nickname")}
                 type="text"
                 detailStyle={css`
                   width: 100%;
                 `}
+                placeholder="최소 2자 이상/6자 이하 입력"
+                maxLength={6}
+                onChange={(e) => {
+                  registerField("nickname").onChange(e);
+                  setCheckNickname({
+                    isClick: false,
+                    isDuplicated: false,
+                    value: "",
+                  });
+                }}
               />
-              {handleCheckNicknameMessage}
+              <Button
+                bgColor={COLORS.PINK2}
+                detailStyle={css`
+                  width: 91px;
+                  box-sizing: border-box;
+                  padding: 14px 16px;
+                  white-space: nowrap;
+                `}
+                onClick={handleCheckNickname}
+                disabled={
+                  form.nickname?.value === checkNickname.value ||
+                  !!form.nickname?.error
+                }
+              >
+                <Typography color={COLORS.WHITE} size={16} weight={700}>
+                  중복 확인
+                </Typography>
+              </Button>
             </div>
-          </FormItem>
-          <Button
-            detailStyle={css`
-              margin-top: 30px;
-              white-space: nowrap;
-            `}
-            width={"max-content"}
-            bgColor={COLORS.PINK2}
-            color={COLORS.WHITE}
-            onClick={() => handleCheckNickname(form?.nickname?.value)}
-          >
-            중복확인
-          </Button>
-        </div>
+            {checkNicknameText}
+          </div>
+        </FormItem>
         <FormItem
           label="성별"
           labelStyle={css`

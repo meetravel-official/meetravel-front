@@ -20,7 +20,7 @@ export const AgreetoTerms = () => {
     agreeTermsOfUse,
     setAgreePrivacy,
     setAgreeTermsOfUse,
-    setNextButtonProps,
+    setDisabled,
   } = useSignUpState();
 
   const handleOnClickTerms = (type: "private" | "termsOfUse") => {
@@ -33,11 +33,11 @@ export const AgreetoTerms = () => {
 
   useEffect(() => {
     if (agreePrivacy && agreeTermsOfUse) {
-      setNextButtonProps({ disabled: false });
+      setDisabled(false);
     } else {
-      setNextButtonProps({ disabled: true });
+      setDisabled(true);
     }
-  }, [agreePrivacy, agreeTermsOfUse, setNextButtonProps]);
+  }, [agreePrivacy, agreeTermsOfUse, setDisabled]);
 
   return (
     <div css={cssAgreetoTermsStyle}>

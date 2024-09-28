@@ -1,39 +1,37 @@
 import { create } from "zustand";
 
-import { StepInstance } from "@/components/Step/StepInterface";
+import { IProfile } from "@/api/interfaces/kakaoSignUpInterface";
 
 interface ISignUpState {
-  step?: StepInstance;
   agreePrivacy: boolean;
   agreeTermsOfUse: boolean;
-  nextButtonProps: {
-    disabled?: boolean;
-    onClick?: () => void;
-  };
+  profileInfo: IProfile;
+  isDisabled: boolean;
   setAgreePrivacy: (agreePrivacy: boolean) => void;
   setAgreeTermsOfUse: (agreeTermsOfUse: boolean) => void;
-  setNextButtonProps: ({
-    disabled,
-    onClick,
-  }: {
-    disabled?: boolean;
-    onClick?: () => void;
-  }) => void;
+  setProfileInfo: (profileInfo: IProfile) => void;
+  setDisabled: (isDisabled: boolean) => void;
 }
-export const useSignUpState = create<ISignUpState>((set, get) => {
+
+export const useSignUpState = create<ISignUpState>((set) => {
   return {
-    step: undefined,
     agreePrivacy: false,
     agreeTermsOfUse: false,
     disabledNextButton: true,
-    nextButtonProps: {
-      disabled: true,
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      onClick: () => {},
+    isDisabled: false,
+    profileInfo: {
+      name: "",
+      nickname: "",
+      birthDayYear: "",
+      birthDayMonth: "",
+      birthDayDate: "",
+      gender: "",
+      phoneNumber: "",
+      profileImageUrl: "",
     },
     setAgreePrivacy: (agreePrivacy) => set({ agreePrivacy }),
     setAgreeTermsOfUse: (agreeTermsOfUse) => set({ agreeTermsOfUse }),
-    setNextButtonProps: ({ disabled, onClick }) =>
-      set({ nextButtonProps: { ...get().nextButtonProps, disabled, onClick } }),
+    setProfileInfo: (profileInfo) => set({ profileInfo }),
+    setDisabled: (isDisabled) => set({ isDisabled }),
   };
 });

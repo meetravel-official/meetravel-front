@@ -1,14 +1,9 @@
 import { css } from "@emotion/react";
-import { ISignUpFormValues, useSignUpFormState } from "states/useCheckUser";
 
-import { usePostSignUp } from "@/api/hooks/auth";
-import {
-  IPostKaKaoSignUpRequest,
-  ISignUpTravelProfileForm,
-} from "@/api/interfaces/kakaoSignUpInterface";
+import { ISignUpTravelProfileForm } from "@/api/interfaces/kakaoSignUpInterface";
 import Form from "@/components/Form/Form";
 import { FormItem } from "@/components/Form/FormItem";
-import useForm from "@/components/Form/useForm";
+import { FormValues } from "@/components/Form/useForm";
 import Input from "@/components/Input/Input";
 import { checkNotEmpty } from "@/components/Matching/Matching";
 import RadioButtonGroup from "@/components/RadioButton/RadioButtonGroup";
@@ -22,56 +17,24 @@ import { COLORS } from "@/styles/color";
 
 import { cssAgreetoTermsStyle } from "../styles/SignUpInnerContents.styles";
 
-export const TravelProfileForm = () => {
-  const { signUpInfo, setSignUpInfo } = useSignUpFormState();
+interface TravelProfileFormProps {
+  form: FormValues<ISignUpTravelProfileForm>;
+  registerField: (key: keyof ISignUpTravelProfileForm) => {
+    value?: string;
+    onChange: (e: any) => void;
+    error: string | undefined;
+  };
+}
 
-  const mutationSignUp = usePostSignUp();
-
-  const { form, registerField, invalidFields } =
-    useForm<ISignUpTravelProfileForm>({
-      initialValues: {
-        travelFrequency: "",
-        scheduleType: "",
-        planningType: "",
-        hobby: "",
-        mbti: "",
-        intro: "",
-      },
-      // required: [],
-    });
+export const TravelProfileForm = ({
+  form,
+  registerField,
+}: TravelProfileFormProps) => {
   const { onChange: onChangeTravelFrequency } =
     registerField("travelFrequency");
   const { onChange: onChangeScheduleType } = registerField("scheduleType");
   const { onChange: onChangePlanningType } = registerField("planningType");
 
-  const handleOnNextStep = () => {
-    invalidFields(async ({ errors }) => {
-      if (errors) {
-        console.log(errors);
-      } else {
-        const travelProfileFormInfo: ISignUpFormValues = {
-          travelFrequency: form.travelFrequency?.value || undefined,
-          scheduleType: form.scheduleType?.value || undefined,
-          planningType: form.planningType?.value || undefined,
-          hobby: form.hobby?.value || undefined,
-          mbti: form.mbti?.value || undefined,
-          intro: form.intro?.value || undefined,
-        };
-        setSignUpInfo({ ...signUpInfo, ...travelProfileFormInfo });
-        const birthDate = `${signUpInfo?.birthDayYear}-${signUpInfo?.birthDayMonth}-${signUpInfo?.birthDayDate}`;
-        const mutationData = {
-          name: signUpInfo?.name,
-          nickname: signUpInfo?.nickname,
-          birthDate: birthDate,
-          gender: signUpInfo?.gender,
-          phoneNumber: signUpInfo?.phoneNumber,
-          profileImageUrl: signUpInfo?.profileImageUrl,
-          ...travelProfileFormInfo,
-        } as IPostKaKaoSignUpRequest;
-        await mutationSignUp.mutateAsync({ ...mutationData });
-      }
-    });
-  };
   return (
     <div
       css={css`

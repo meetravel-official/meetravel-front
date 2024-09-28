@@ -26,7 +26,7 @@ export interface IPostKaKaoSignUpRequest {
   socialType?: string;
 }
 
-export interface ISignUpEssentialForm {
+export interface IProfile {
   name?: string;
   nickname?: string;
   birthDayYear?: string;
