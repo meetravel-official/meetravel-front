@@ -8,7 +8,6 @@ import { COLORS } from "@/styles/color";
 
 import { AgreetoTerms } from "./components/AgreetoTerms";
 import { ProfileForm } from "./components/ProfileForm";
-import { RequiredPermissions } from "./components/RequiredPermissions";
 import { SignUpContent } from "./components/SignUpContent";
 import { SignUpHeader } from "./components/SignUpHeader";
 import { TravelProfileForm } from "./components/TravelProfileForm";
@@ -41,24 +40,6 @@ export const SignUpContainer = () => {
       ),
       content: <AgreetoTerms step={step} />,
       button: "약관 전체 허용",
-    },
-    {
-      title: "필수 권한 동의",
-      header: (
-        <React.Fragment>
-          <Typography color={COLORS.GRAY4} size={20} weight="bold">
-            미트래블을 이용하기 위해선
-          </Typography>
-          <Typography color={COLORS.GRAY4} size={20} weight="bold">
-            <Typography color={COLORS.PINK2} size={20} weight="bold">
-              필수 권한 동의
-            </Typography>
-            가 필요해요.
-          </Typography>
-        </React.Fragment>
-      ),
-      content: <RequiredPermissions step={step} />,
-      button: "권한 전체 허용",
     },
     {
       title: "필수 프로필 작성",
