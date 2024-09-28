@@ -41,7 +41,6 @@ export const ProfileForm = () => {
       birthDayDate: "",
       gender: "",
       phoneNumber: "",
-      verificationNumber: "",
       profileImageUrl: "",
     },
     required: [
@@ -52,7 +51,6 @@ export const ProfileForm = () => {
       "birthDayDate",
       "gender",
       "phoneNumber",
-      // "verificationNumber",
       // "profileImageUrl",
     ],
     validate: {
@@ -131,7 +129,6 @@ export const ProfileForm = () => {
           birthDayDate: validateBirthDayDate || "",
           gender: form.gender?.value || "",
           phoneNumber: form.phoneNumber?.value || "",
-          verificationNumber: form.verificationNumber?.value || "",
           profileImageUrl: form.profileImageUrl?.value || "",
         };
         setSignUpInfo({ ...signUpInfo, ...signUpFormInfo });
@@ -327,73 +324,21 @@ export const ProfileForm = () => {
             onWheel={(event) => handleBlurOnScroll(event)}
           />
         </div>
-        <div
-          css={cssAlignHorizontalStyle({
-            alignItems: "flex-end",
-            width: "100%",
-          })}
+        <FormItem
+          label="전화번호"
+          name="phoneNumber"
+          formItemStyle={css`
+            width: 100%;
+          `}
         >
-          <FormItem
-            label="전화번호"
-            name="phoneNumber"
-            formItemStyle={css`
+          <Input
+            {...registerField("phoneNumber")}
+            type="number"
+            detailStyle={css`
               width: 100%;
             `}
-          >
-            <Input
-              {...registerField("phoneNumber")}
-              type="number"
-              detailStyle={css`
-                width: 100%;
-              `}
-            />
-          </FormItem>
-          <Button
-            detailStyle={css`
-              margin-bottom: 8px;
-              white-space: nowrap;
-            `}
-            width={"max-content"}
-            bgColor={COLORS.PINK2}
-            color={COLORS.WHITE}
-            // TODO: onClick
-          >
-            인증번호 발송
-          </Button>
-        </div>
-        <div
-          css={cssAlignHorizontalStyle({
-            alignItems: "flex-end",
-            width: "100%",
-          })}
-        >
-          <FormItem
-            label="인증번호"
-            name="verificationNumber"
-            formItemStyle={css`
-              width: 100%;
-            `}
-          >
-            <Input
-              {...registerField("verificationNumber")}
-              type="text"
-              detailStyle={css`
-                width: 100%;
-              `}
-            />
-          </FormItem>
-          <Button
-            detailStyle={css`
-              margin-bottom: 8px;
-              white-space: nowrap;
-            `}
-            width={"max-content"}
-            bgColor={COLORS.PINK2}
-            color={COLORS.WHITE}
-          >
-            인증 완료
-          </Button>
-        </div>
+          />
+        </FormItem>
       </Form>
     </div>
   );

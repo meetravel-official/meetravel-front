@@ -34,7 +34,6 @@ export interface ISignUpEssentialForm {
   birthDayDate?: string;
   gender?: string;
   phoneNumber?: string;
-  verificationNumber?: string;
   profileImageUrl?: string;
 }
 
