@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useProfile } from "states/useProfile";
 import { nicknameRegex } from "utils/regex-utils";
 
@@ -173,22 +174,29 @@ export const ProfileEditModal = () => {
       }
     }
     invalidFields(async ({ value }) => {
-      await mutateNickname({ nickname: value.nickname.value || "" });
-      await mutateInfo({
-        travelFrequency:
-          (value.travelFrequency
-            .value as GetMyPageResponseTravelFrequencyEnum) || "",
-        mbti: (value.mbti.value as GetMyPageResponseMbtiEnum) || "",
-        planningType:
-          (value.planningType.value as GetMyPageResponsePlanningTypeEnum) || "",
-        scheduleType:
-          (value.scheduleType.value as GetMyPageResponseScheduleTypeEnum) || "",
-        hobby: value.hobby.value || "",
-        intro: value.intro.value || "",
-      });
-      await queryClient.invalidateQueries({ queryKey: ["useGetMyPage"] });
-      resetFields();
-      handleOnCloseEditModal();
+      try {
+        await mutateNickname({ nickname: value.nickname.value || "" });
+        await mutateInfo({
+          travelFrequency:
+            (value.travelFrequency
+              .value as GetMyPageResponseTravelFrequencyEnum) || "",
+          mbti: (value.mbti.value as GetMyPageResponseMbtiEnum) || "",
+          planningType:
+            (value.planningType.value as GetMyPageResponsePlanningTypeEnum) ||
+            "",
+          scheduleType:
+            (value.scheduleType.value as GetMyPageResponseScheduleTypeEnum) ||
+            "",
+          hobby: value.hobby.value || "",
+          intro: value.intro.value || "",
+        });
+        await queryClient.invalidateQueries({ queryKey: ["useGetMyPage"] });
+        toast.success("프로필이 수정되었습니다.");
+        resetFields();
+        handleOnCloseEditModal();
+      } catch (error) {
+        toast.error("잠시 후 다시 시도해주세요.");
+      }
     });
   };
 

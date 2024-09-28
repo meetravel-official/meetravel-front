@@ -43,6 +43,7 @@
     "react-kakao-login": "^2.1.1",
     "react-router-dom": "^6.23.1",
     "react-scripts": "5.0.1",
+    "react-toastify": "^10.0.5",
     "sockjs-client": "^1.6.1",
     "tsconfig-paths-webpack-plugin": "^4.1.0",
     "typescript": "^4.9.5",

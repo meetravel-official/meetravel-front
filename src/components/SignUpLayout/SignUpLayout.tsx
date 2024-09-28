@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
-import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { AgreetoTerms } from "routes/SignUp/components/AgreetoTerms";
 import { ProfileForm } from "routes/SignUp/components/ProfileForm";
 import { TravelProfileForm } from "routes/SignUp/components/TravelProfileForm";
@@ -13,6 +14,7 @@ import {
   ISignUpTravelProfileForm,
 } from "@/api/interfaces/kakaoSignUpInterface";
 import { GetMyPageResponseMbtiEnumArray } from "@/api/interfaces/user";
+import { pageRoutes } from "@/routes";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
@@ -29,6 +31,8 @@ import {
 
 export const SignUpLayout = () => {
   const [step] = useStep();
+
+  const navigate = useNavigate();
 
   const { profileInfo, setProfileInfo, isDisabled } = useSignUpState();
 
@@ -226,7 +230,18 @@ export const SignUpLayout = () => {
               mbti: value.mbti?.value || undefined,
               intro: value.intro?.value || undefined,
             } as IPostKaKaoSignUpRequest;
-            await mutationSignUp.mutateAsync({ ...mutationData });
+            await mutationSignUp.mutateAsync(
+              { ...mutationData },
+              {
+                onSuccess: () => {
+                  toast.success("회원가입이 완료되었습니다.");
+                  navigate(pageRoutes.ROOT);
+                },
+                onError: () => {
+                  toast.error("회원가입에 실패했습니다.");
+                },
+              }
+            );
           }
         });
       },
