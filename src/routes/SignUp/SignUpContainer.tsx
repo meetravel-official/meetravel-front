@@ -25,7 +25,7 @@ export const SignUpContainer = () => {
 
   const stepList = [
     {
-      title: "이용 약관 동의",
+      title: "이용약관 동의",
       header: (
         <React.Fragment>
           <Typography color={COLORS.GRAY4} size={20} weight="bold">
@@ -33,7 +33,7 @@ export const SignUpContainer = () => {
           </Typography>
           <Typography color={COLORS.GRAY4} size={20} weight="bold">
             <Typography color={COLORS.PINK2} size={20} weight="bold">
-              이용 약관 동의
+              이용약관 동의
             </Typography>
             가 필요해요.
           </Typography>

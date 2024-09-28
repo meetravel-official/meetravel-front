@@ -3,61 +3,73 @@ import { useState } from "react";
 
 import { Button, Typography } from "@/components";
 import Checkbox from "@/components/Checkbox/Checkbox";
+import { privacyPolicyLink, termsOfUseLink } from "@/constants/link";
 import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
 import { ISignUpProps } from "../SignUpContainer";
-import { cssAgreetoTermsStyle } from "../styles/SignUpInnerContents.styles";
+import {
+  cssAgreetoTermsStyle,
+  cssTermBtnBoxStyle,
+  cssTermBtnStyle,
+  cssTermCheckboxStyle,
+} from "../styles/SignUpInnerContents.styles";
 
 export const AgreetoTerms = ({ step }: ISignUpProps) => {
-  const [checked, setChecked] = useState({ private: false, term: false });
+  const [privacyChecked, setPrivacyChecked] = useState(false);
+  const [termsOfUseChecked, setTermsOfUseChecked] = useState(false);
 
-  const handleClick = (type: string) => {
+  const handleOnClickTerms = (type: "private" | "termsOfUse") => {
     if (type === "private") {
-      setChecked((prev) => ({ ...prev, private: !checked.private }));
+      window.open(privacyPolicyLink, "_blank");
     } else {
-      setChecked((prev) => ({ ...prev, term: !checked.term }));
+      window.open(termsOfUseLink, "_blank");
     }
   };
 
   const handleOnClickNext = () => {
-    setChecked({ private: true, term: true });
     step.handleOnClickNext();
   };
 
   return (
-    <div
-      css={css`
-        ${cssAlignVerticalStyle({
-          justifyContent: "space-between",
-          alignItems: "space-between",
-        })}
-        ${cssAgreetoTermsStyle}
-      `}
-    >
+    <div css={cssAgreetoTermsStyle}>
       <div css={cssAlignVerticalStyle({ gap: 8 })}>
-        <Button
-          bgColor={COLORS.GRAY1}
-          onClick={() => handleClick("private")}
-          align="start"
-          link
-        >
-          <Checkbox checked={checked.private} />
-          <Typography color={COLORS.GRAY4} weight="bold" size={16}>
-            개인정보 수집 및 이용
-          </Typography>
-        </Button>
-        <Button
-          bgColor={COLORS.GRAY1}
-          onClick={() => handleClick("term")}
-          align="start"
-          link
-        >
-          <Checkbox checked={checked.term} />
-          <Typography color={COLORS.GRAY4} weight="bold" size={16}>
-            이용약관 동의
-          </Typography>
-        </Button>
+        <div css={cssTermBtnBoxStyle}>
+          <Checkbox
+            checked={privacyChecked}
+            onChange={setPrivacyChecked}
+            detailStyle={cssTermCheckboxStyle}
+          />
+          <Button
+            bgColor={COLORS.GRAY1}
+            onClick={() => handleOnClickTerms("private")}
+            align="start"
+            link
+            detailStyle={cssTermBtnStyle}
+          >
+            <Typography color={COLORS.GRAY4} weight="bold" size={16}>
+              개인정보 수집 및 이용
+            </Typography>
+          </Button>
+        </div>
+        <div css={cssTermBtnBoxStyle}>
+          <Checkbox
+            checked={termsOfUseChecked}
+            onChange={setTermsOfUseChecked}
+            detailStyle={cssTermCheckboxStyle}
+          />
+          <Button
+            bgColor={COLORS.GRAY1}
+            onClick={() => handleOnClickTerms("termsOfUse")}
+            align="start"
+            detailStyle={cssTermBtnStyle}
+            link
+          >
+            <Typography color={COLORS.GRAY4} weight="bold" size={16}>
+              이용약관 동의
+            </Typography>
+          </Button>
+        </div>
       </div>
       <div css={cssAlignVerticalStyle} className="button-to-next">
         <div
@@ -73,9 +85,13 @@ export const AgreetoTerms = ({ step }: ISignUpProps) => {
             미트래블 이용이 불가해요.
           </Typography>
         </div>
-        <Button bgColor={COLORS.PINK3} onClick={handleOnClickNext}>
+        <Button
+          bgColor={COLORS.PINK3}
+          onClick={handleOnClickNext}
+          disabled={!privacyChecked || !termsOfUseChecked}
+        >
           <Typography color={COLORS.WHITE} weight="bold" size={16}>
-            약관 전체 허용
+            다음
           </Typography>
         </Button>
       </div>
