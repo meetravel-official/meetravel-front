@@ -241,7 +241,7 @@ export const ProfileEditModal = () => {
         onClose={handleOnClickClose}
         title={
           <Typography color={COLORS.GRAY3} size={20} weight={700}>
-            마이 페이지 편집
+            프로필 편집
           </Typography>
         }
       >
@@ -264,12 +264,12 @@ export const ProfileEditModal = () => {
                 >
                   <button css={cssDefaultBtnStyle}>
                     <Typography color={COLORS.GRAY4} weight={700} size="16">
-                      프로필 삭제
+                      이미지 삭제
                     </Typography>
                   </button>
                   <button css={cssDefaultBtnStyle}>
                     <Typography color={COLORS.GRAY4} weight={700} size="16">
-                      갤러리 이동
+                      업로드
                     </Typography>
                   </button>
                 </Popover.Content>

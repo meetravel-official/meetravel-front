@@ -50,6 +50,7 @@ export const cssPopOverContentStyle = css`
   z-index: 999;
 
   button {
+    width: 100%;
     padding: 16px 20px;
     :hover {
       background: ${COLORS.GRAY1};

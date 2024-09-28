@@ -21,7 +21,7 @@ export const ProfileLayout = () => {
         <Header
           titleContent={
             <Typography color={COLORS.GRAY3} weight={700} size="20">
-              마이 페이지
+              프로필
             </Typography>
           }
           suffix={
