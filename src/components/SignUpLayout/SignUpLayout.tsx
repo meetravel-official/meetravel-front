@@ -237,10 +237,6 @@ export const SignUpLayout = () => {
     step.handleOnClickPrev();
   };
 
-  useEffect(() => {
-    console.log(profileFormProps.form);
-  }, [profileFormProps]);
-
   return (
     <Layout>
       <Step step={step} stepList={stepList}>

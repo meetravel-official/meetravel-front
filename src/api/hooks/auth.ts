@@ -69,8 +69,7 @@ export const usePostSignUp = () => {
       } as IPostKaKaoSignUpRequest;
       return api.post(authApiRoute.postSignUp, requestData);
     },
-    onSuccess: (res: AxiosResponse) => {
-      console.log("회원가입을 성공했습니다.", res);
+    onSuccess: () => {
       navigate(pageRoutes.ROOT);
     },
     onError: (error) => {
