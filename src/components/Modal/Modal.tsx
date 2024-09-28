@@ -25,6 +25,7 @@ export interface ModalProps {
   footer?: React.ReactNode;
   children?: React.ReactNode;
   zIndex?: number;
+  isAutoClose?: boolean;
 }
 /**
  * 모달 컴포넌트
@@ -45,6 +46,7 @@ const Modal = ({
   footer,
   children,
   zIndex,
+  isAutoClose = false,
 }: ModalProps) => {
   useEffect(() => {
     if (isOpen) {
@@ -59,7 +61,13 @@ const Modal = ({
       {isOpen && (
         <>
           {modalType !== "full" && (
-            <div css={cssOverlayStyle({ zIndex })}></div>
+            // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
+            <div
+              css={cssOverlayStyle({ zIndex })}
+              onClick={() => {
+                if (isAutoClose) onClose();
+              }}
+            />
           )}
           <div css={cssModalStyle({ modalType, modalDetailStyle, zIndex })}>
             <div css={cssModalContentStyle(modalType, Boolean(footer))}>
