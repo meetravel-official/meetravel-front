@@ -5,6 +5,7 @@ import NotFoundPage from "./NotFoundPage";
 import { ProfileContainer } from "./Profile/ProfileContainer";
 import { SampleContainer } from "./Sample/SampleContainer";
 import { SearchContainer } from "./Search/SearchContainer";
+import { SettingContainer } from "./Setting/SettingContainer";
 import { KaKaoAuthCheckContainer } from "./SignIn/KaKaoAuthCheckContainer";
 import { SignInContainer } from "./SignIn/SignInContainer";
 import { SignUpContainer } from "./SignUp/SignUpContainer";
@@ -19,6 +20,7 @@ export const pageRoutes = {
   SIGN_IN: "/auth/sign-in",
   SIGN_UP: "/auth/sign-up",
   AUTH_CHECK: "/auth/sign-in/check",
+  SETTING: "/setting",
   TRAVEL_INFO: "/travel-info",
   TOS: "/terms-of-service",
   SAMPLE: "/sample",
@@ -33,6 +35,7 @@ export const containerRoutes = {
   CHAT_ROOM: ChatRoomContainer,
   PROFILE: ProfileContainer,
   SIGN_IN: SignInContainer,
+  SETTING: SettingContainer,
   SIGN_UP: SignUpContainer,
   AUTH_CHECK: KaKaoAuthCheckContainer,
   TOS: TermsOfServiceContainer,
