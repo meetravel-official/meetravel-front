@@ -57,6 +57,14 @@ export const usePostSignOut = () => {
   });
 };
 
+export const useDeleteUser = () => {
+  return useMutation<AxiosResponse, AxiosError>({
+    mutationFn: () => {
+      return api.delete(authApiRoute.usersDelete);
+    },
+  });
+};
+
 export const useGetCheckNickname = () => {
   return useMutation({
     mutationFn: (nickName: string): Promise<AxiosResponse<any, any>> => {

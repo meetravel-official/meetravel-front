@@ -1,13 +1,15 @@
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useHeaderState } from "states/useHeader";
 import { removeUserCookie } from "utils/token-utils";
 
-import { usePostSignOut } from "@/api/hooks/auth";
+import { useDeleteUser, usePostSignOut } from "@/api/hooks/auth";
 import { ReactComponent as BellInfoIcon } from "@/assets/icons/bell-info.svg";
+import { ReactComponent as ExclamationCircleIcon } from "@/assets/icons/exclamation-circle.svg";
 import { ReactComponent as QnaIcon } from "@/assets/icons/qna.svg";
-import { Typography } from "@/components";
+import { Button, Typography } from "@/components";
+import Modal from "@/components/Modal/Modal";
 import { ToggleSwitch } from "@/components/ToggleSwitch/ToggleSwitch";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { cssDefaultBtnStyle } from "@/styles/button";
@@ -24,8 +26,10 @@ export const SettingContainer = () => {
   const { setTitle } = useHeaderState();
 
   const { mutate } = usePostSignOut();
+  const { mutate: mutateDelete } = useDeleteUser();
 
   const [isOn, setIsOn] = useState(localStorage.getItem("isOn") === "true");
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 
   useEffect(() => {
     setTitle("설정");
@@ -52,6 +56,27 @@ export const SettingContainer = () => {
         toast.success("로그아웃을 성공했습니다.");
         removeUserCookie();
         navigate(pageRoutes.SIGN_IN);
+      },
+    });
+  };
+
+  const handleOnOpenDeleteModal = () => {
+    setIsOpenDeleteModal(true);
+  };
+
+  const handleOnCloseDeleteModal = () => {
+    setIsOpenDeleteModal(false);
+  };
+
+  const handleOnClickDeleteUser = () => {
+    mutateDelete(undefined, {
+      onSuccess: () => {
+        toast.success("회원 탈퇴를 성공했습니다.");
+        removeUserCookie();
+        navigate(pageRoutes.SIGN_IN);
+      },
+      onError: () => {
+        toast.error("회원 탈퇴에 실패했습니다");
       },
     });
   };
@@ -92,12 +117,39 @@ export const SettingContainer = () => {
         <Typography color={COLORS.GRAY2} size="12" weight={400}>
           |
         </Typography>
-        <button css={cssDefaultBtnStyle}>
+        <button css={cssDefaultBtnStyle} onClick={handleOnOpenDeleteModal}>
           <Typography color={COLORS.GRAY2} size="12" weight={400}>
             회원탈퇴
           </Typography>
         </button>
       </div>
+      <Modal
+        modalType="simple"
+        closableIcon={false}
+        isOpen={isOpenDeleteModal}
+        onClose={handleOnCloseDeleteModal}
+        footer={
+          <Fragment>
+            <Button bgColor={COLORS.PINK3} onClick={handleOnCloseDeleteModal}>
+              <Typography color={COLORS.WHITE} size="16" weight={700}>
+                아니요
+              </Typography>
+            </Button>
+            <Button onClick={handleOnClickDeleteUser}>
+              <Typography color={COLORS.GRAY3} size="16" weight={700}>
+                탈퇴
+              </Typography>
+            </Button>
+          </Fragment>
+        }
+      >
+        <div css={cssAlignVerticalStyle({ gap: 12, alignItems: "center" })}>
+          <ExclamationCircleIcon width={50} height={50} />
+          <Typography color={COLORS.GRAY4} size="16" weight={700}>
+            정말 탈퇴하시겠어요?
+          </Typography>
+        </div>
+      </Modal>
     </div>
   );
 };
