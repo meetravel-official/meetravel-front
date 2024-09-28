@@ -6,7 +6,7 @@ export const SignUpContent = ({ step, stepList }: StepProps) => {
   return (
     <div css={cssAlignVerticalStyle({ gap: 40 })}>
       <div css={cssAlignVerticalStyle({ gap: 16 })}>
-        <BarStep step={step} stepList={stepList} />
+        <BarStep step={step} stepList={stepList} disabled="next" />
       </div>
     </div>
   );

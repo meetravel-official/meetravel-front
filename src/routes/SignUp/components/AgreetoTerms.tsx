@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { useState } from "react";
+import { useSignUpState } from "states/useSignUp";
 
 import { Button, Typography } from "@/components";
 import Checkbox from "@/components/Checkbox/Checkbox";
@@ -16,8 +16,8 @@ import {
 } from "../styles/SignUpInnerContents.styles";
 
 export const AgreetoTerms = ({ step }: ISignUpProps) => {
-  const [privacyChecked, setPrivacyChecked] = useState(false);
-  const [termsOfUseChecked, setTermsOfUseChecked] = useState(false);
+  const { agreePrivacy, agreeTermsOfUse, setAgreePrivacy, setAgreeTermsOfUse } =
+    useSignUpState();
 
   const handleOnClickTerms = (type: "private" | "termsOfUse") => {
     if (type === "private") {
@@ -36,8 +36,8 @@ export const AgreetoTerms = ({ step }: ISignUpProps) => {
       <div css={cssAlignVerticalStyle({ gap: 8 })}>
         <div css={cssTermBtnBoxStyle}>
           <Checkbox
-            checked={privacyChecked}
-            onChange={setPrivacyChecked}
+            checked={agreePrivacy}
+            onChange={setAgreePrivacy}
             detailStyle={cssTermCheckboxStyle}
           />
           <Button
@@ -54,8 +54,8 @@ export const AgreetoTerms = ({ step }: ISignUpProps) => {
         </div>
         <div css={cssTermBtnBoxStyle}>
           <Checkbox
-            checked={termsOfUseChecked}
-            onChange={setTermsOfUseChecked}
+            checked={agreeTermsOfUse}
+            onChange={setAgreeTermsOfUse}
             detailStyle={cssTermCheckboxStyle}
           />
           <Button
@@ -88,7 +88,7 @@ export const AgreetoTerms = ({ step }: ISignUpProps) => {
         <Button
           bgColor={COLORS.PINK3}
           onClick={handleOnClickNext}
-          disabled={!privacyChecked || !termsOfUseChecked}
+          disabled={!agreePrivacy || !agreeTermsOfUse}
         >
           <Typography color={COLORS.WHITE} weight="bold" size={16}>
             다음
