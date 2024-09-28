@@ -1,31 +1,26 @@
 import { css } from "@emotion/react";
 import { toast } from "react-toastify";
-import { useReportModal, useReportReasonModal } from "states/useChat";
+import { useChatProfile, useSingleReportModal } from "states/useChat";
 
+import { Button, Typography } from "@/components";
+import Modal from "@/components/Modal/Modal";
 import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
-import { Button } from "../Button/Button";
 import CheckButtonGroup from "../CheckButton/CheckButtonGroup";
-import Modal from "../Modal/Modal";
-import { Typography } from "../Typography/Typography";
 
-const ReportReasonModal = () => {
-  const { handleOnCloseReportModal } = useReportModal();
-  const { isOpenReportReasonModal, handleOnCloseReportReasonModal } =
-    useReportReasonModal();
+const SingleReportModal = () => {
+  const { isOpenSingleReportModal, handleOnCloseSingleReportModal } =
+    useSingleReportModal();
+  const { profileData: data } = useChatProfile();
 
   return (
     <Modal
-      zIndex={103}
+      zIndex={102}
       modalType="simple"
-      isOpen={isOpenReportReasonModal}
-      onClose={handleOnCloseReportReasonModal}
+      isOpen={isOpenSingleReportModal}
+      onClose={handleOnCloseSingleReportModal}
       closableIcon={true}
-      modalDetailStyle={css`
-        width: 250px;
-        padding: 20px;
-      `}
       title={
         <div
           css={css`
@@ -44,39 +39,41 @@ const ReportReasonModal = () => {
               justify-content: center;
             `}
           >
+            {data.nickname}님을{" "}
             <span
               css={css`
                 color: ${COLORS.SITUATION1};
               `}
             >
-              신고/강제 퇴장{" "}
+              신고
             </span>
-            사유
+            하시겠어요?
           </Typography>
         </div>
       }
+      modalDetailStyle={css`
+        width: 250px;
+        padding: 20px;
+      `}
     >
-      <div css={cssAlignVerticalStyle({ gap: 12, alignItems: "flex-start" })}>
-        <Typography color={COLORS.GRAY3} size="12" weight={400}>
-          *과반수에 의해 강제 퇴장 시,
-          <br />
-          자동으로 다시 매칭을 시작합니다.
-        </Typography>
-      </div>
       <div
         css={css`
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-          margin-top: 18px;
           padding: 1px;
         `}
       >
+        <div css={cssAlignVerticalStyle({ gap: 12, alignItems: "flex-start" })}>
+          <Typography color={COLORS.GRAY3} size="12" weight={400}>
+            *과반수에 의해 강제 퇴장 시,
+            <br />
+            자동으로 다시 매칭을 시작합니다.
+          </Typography>
+        </div>
         <CheckButtonGroup
           gridDetailStyle={css`
             display: flex;
             flex-direction: column;
             width: 100%;
+            margin-top: 18px;
           `}
           buttonDetailStyle={css`
             width: 100%;
@@ -97,17 +94,18 @@ const ReportReasonModal = () => {
             미참여
           </CheckButtonGroup.CheckboxButton>
         </CheckButtonGroup>
+
         <Button
           bgColor={COLORS.SITUATION1}
           detailStyle={css`
             height: 52px;
             border-radius: 4px;
             padding: 8px 12px;
+            margin-top: 18px;
           `}
           onClick={() => {
             console.log("신고하기 완료 누름");
-            handleOnCloseReportModal();
-            handleOnCloseReportReasonModal();
+            handleOnCloseSingleReportModal();
             toast.success("신고가 완료되었습니다.");
           }}
         >
@@ -119,4 +117,4 @@ const ReportReasonModal = () => {
     </Modal>
   );
 };
-export default ReportReasonModal;
+export default SingleReportModal;

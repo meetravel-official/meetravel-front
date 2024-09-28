@@ -1,12 +1,12 @@
 import { css } from "@emotion/react";
 import { useReportReasonModal } from "states/useChat";
 
-import { IUserData } from "@/api/interfaces/chat";
+import { IUserDetailData } from "@/api/interfaces/chat";
 import { Button, Image, Typography } from "@/components";
 import { cssAlignHorizontalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
-const UserItem = ({ data }: { data: IUserData }) => {
+const UserItem = ({ data }: { data: IUserDetailData }) => {
   const { isOpenReportReasonModal, handleOnOpenReportReasonModal } =
     useReportReasonModal();
   return (
@@ -35,7 +35,7 @@ const UserItem = ({ data }: { data: IUserData }) => {
           `}
         >
           <Image
-            src={""} //TODO: data.profileImg 이미지 추가 예정
+            src={data.profileImageUrl}
             alt="profile-image"
             width="100%"
             height="100%"
@@ -49,7 +49,7 @@ const UserItem = ({ data }: { data: IUserData }) => {
           `}
         >
           <Typography size={16} weight={700} color={COLORS.GRAY3}>
-            {/* {data.gender === "female" ? "女":"男"} */}女
+            {data.gender === "여성" ? "女" : "男"}
           </Typography>
           <Typography size={16} weight={700} color={COLORS.GRAY5}>
             {data.nickname}

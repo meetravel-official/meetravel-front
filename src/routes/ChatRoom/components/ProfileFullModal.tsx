@@ -38,10 +38,6 @@ export const ProfileFullModal = ({
     };
   }, [onClose]);
 
-  const handleOnClickReport = () => {
-    //TODO: 신고 기능 연결
-  };
-
   return (
     <BorderModal
       title={
@@ -54,15 +50,13 @@ export const ProfileFullModal = ({
           <Typography color={COLORS.GRAY3} size="20" weight={700}>
             프로필
           </Typography>
-          <button css={cssDefaultBtnStyle} onClick={handleOnClickReport}>
-            <ReportIcon />
-          </button>
         </div>
       }
       modalType="full"
       isOpen={isOpen}
       onClose={onClose}
     >
+      {/* TODO: 타인의 프로필 조회하기 추가되면 수정 */}
       <ProfileForm userId={userId} />
     </BorderModal>
   );

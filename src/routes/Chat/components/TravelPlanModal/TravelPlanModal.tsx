@@ -19,7 +19,6 @@ interface TravelPlanModalProps {
   matchingInfo: {
     travelStartDate: string;
     travelEndDate: string;
-    travelArea: string;
     keyword: string[];
   };
 }

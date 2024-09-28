@@ -53,10 +53,17 @@ export interface IUserData {
   nickname: string;
   profileImageUrl: string;
 }
+export interface IUserDetailData {
+  userId: string;
+  nickname: string;
+  profileImageUrl: string;
+  gender: "남성" | "여성";
+  birthDate: string;
+}
 
 export interface IChatUserData {
-  users: IUserData[];
-  persons: IPerson;
+  joinedUsers: IUserDetailData[];
+  joinedPersons: IPerson;
   travelKeywords: string[];
   travelPlanDate: IDuration;
 }

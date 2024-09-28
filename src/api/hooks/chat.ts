@@ -19,6 +19,6 @@ export const useGetChatRooms = () => {
 export const useGetChatUsers = (chatRoomId: string) => {
   return useQuery<IChatUserData, AxiosError>({
     queryKey: ["useGetChatUsers"],
-    queryFn: () => api.get(`${chatApiRoute.chatRooms}/${chatRoomId}/users`),
+    queryFn: () => api.get(`${chatApiRoute.chatRooms}/${chatRoomId}`),
   });
 };
