@@ -31,6 +31,19 @@ export const cssRadioButtonStyle = (isActive: boolean) => css`
   background-color: ${isActive ? COLORS.GRAY1 : COLORS.GRAY2};
   outline: ${isActive ? `1px solid ${COLORS.PINK3}` : "none"} !important;
   color: ${isActive ? COLORS.PINK3 : COLORS.GRAY3};
+  svg {
+    path {
+      &.fill {
+        fill: ${isActive ? COLORS.PINK3 : COLORS.GRAY3};
+      }
+      &.stroke {
+        stroke: ${isActive ? COLORS.PINK3 : COLORS.GRAY3};
+      }
+    }
+    circle {
+      fill: ${isActive ? COLORS.PINK3 : COLORS.GRAY3};
+    }
+  }
 `;
 
 export const cssFormItemStyle = css`

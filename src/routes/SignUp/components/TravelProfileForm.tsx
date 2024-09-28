@@ -1,6 +1,10 @@
 import { css } from "@emotion/react";
 
 import { ISignUpTravelProfileForm } from "@/api/interfaces/kakaoSignUpInterface";
+import { ReactComponent as PlanImpromptuIcon } from "@/assets/icons/plan-impromptu.svg";
+import { ReactComponent as PlanPlannedIcon } from "@/assets/icons/plan-planned.svg";
+import { ReactComponent as ScheduleRelaxIcon } from "@/assets/icons/schedule-relax.svg";
+import { ReactComponent as ScheduleTightIcon } from "@/assets/icons/schedule-tight.svg";
 import Form from "@/components/Form/Form";
 import { FormItem } from "@/components/Form/FormItem";
 import { FormValues } from "@/components/Form/useForm";
@@ -12,6 +16,7 @@ import {
   SIGN_UP_SCHEDULE_TYPE,
   SIGN_UP_TRAVEL_FREQUENCY_TYPE,
 } from "@/constants/signUp";
+import { cssAlignHorizontalStyle } from "@/styles/align";
 
 import {
   cssFormItemStyle,
@@ -123,7 +128,10 @@ export const TravelProfileForm = ({
               form.scheduleType?.value === SIGN_UP_SCHEDULE_TYPE.TIGHT
             )}
           >
-            빠듯하게
+            <div css={cssAlignHorizontalStyle({ gap: 8 })}>
+              <ScheduleTightIcon />
+              <span>빠듯하게</span>
+            </div>
           </RadioButtonGroup.RadioButton>
           <RadioButtonGroup.RadioButton
             value={SIGN_UP_SCHEDULE_TYPE.RELAX}
@@ -131,7 +139,10 @@ export const TravelProfileForm = ({
               form.scheduleType?.value === SIGN_UP_SCHEDULE_TYPE.RELAX
             )}
           >
-            여유롭게
+            <div css={cssAlignHorizontalStyle({ gap: 8 })}>
+              <ScheduleRelaxIcon />
+              <span>여유롭게</span>
+            </div>
           </RadioButtonGroup.RadioButton>
         </RadioButtonGroup>
       </FormItem>
@@ -156,7 +167,10 @@ export const TravelProfileForm = ({
               form.planningType?.value === SIGN_UP_PLANNING_TYPE.PLANNED
             )}
           >
-            계획적으로
+            <div css={cssAlignHorizontalStyle({ gap: 8 })}>
+              <PlanPlannedIcon />
+              <span>계획적으로</span>
+            </div>
           </RadioButtonGroup.RadioButton>
           <RadioButtonGroup.RadioButton
             value={SIGN_UP_PLANNING_TYPE.IMPROMPTU}
@@ -164,7 +178,10 @@ export const TravelProfileForm = ({
               form.planningType?.value === SIGN_UP_PLANNING_TYPE.IMPROMPTU
             )}
           >
-            즉흥적으로
+            <div css={cssAlignHorizontalStyle({ gap: 8 })}>
+              <PlanImpromptuIcon />
+              <span>즉흥적으로</span>
+            </div>
           </RadioButtonGroup.RadioButton>
         </RadioButtonGroup>
       </FormItem>
