@@ -15,7 +15,13 @@ const AdminMessageItem = ({ data }: MessageItemProps) => {
       className="MessageItem"
       css={cssAlignHorizontalStyle({ gap: 12, alignItems: "flex-start" })}
     >
-      <LogoIcon fill={COLORS.PINK3} width={40} height={40} />
+      <div
+        css={css`
+          width: 40px;
+        `}
+      >
+        <LogoIcon fill={COLORS.PINK3} width={40} height={40} />
+      </div>
 
       <div css={cssAlignVerticalStyle({ gap: 8, alignItems: "flex-start" })}>
         <Typography weight={700} color={COLORS.PINK3}>

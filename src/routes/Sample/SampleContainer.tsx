@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { chatData1, chatUserData1, userData1 } from "dummies/chat";
 import { Fragment, useState } from "react";
 import { TravelInfoPreviewCard } from "routes/Chat/components/TravelInfoPreviewCard";
 import { TravelPlanModal } from "routes/Chat/components/TravelPlanModal/TravelPlanModal";
@@ -8,6 +9,7 @@ import { usePostKaKaoSignOut } from "@/api/hooks/auth";
 import { ReactComponent as ChatIcon } from "@/assets/icons/cross.svg";
 import { Button } from "@/components";
 import CheckButtonGroup from "@/components/CheckButton/CheckButtonGroup";
+import Drawer from "@/components/Drawer/Drawer";
 import Form from "@/components/Form/Form";
 import { FormItem } from "@/components/Form/FormItem";
 import useForm from "@/components/Form/useForm";
@@ -62,6 +64,8 @@ export const SampleContainer = () => {
 
   const [isOpenTravelPlanModal, setIsOpenTravelPlanModal] = useState(false);
   const [isOpenProfileFullModal, setIsOpenProfileFullModal] = useState(false);
+
+  const [isOpenDrawer, setIsOpenDrawer] = useState(false);
 
   const handleModal = () => {
     setModalOpen((prev) => !prev);
@@ -332,6 +336,10 @@ export const SampleContainer = () => {
         onClose={() => setIsOpenProfileFullModal(false)}
         userId="3708674128@kakao"
       />
+      <button onClick={() => setIsOpenDrawer(true)}>드로어 열기</button>
+      <Drawer isOpen={isOpenDrawer} onClose={() => setIsOpenDrawer(false)}>
+        드로어내용
+      </Drawer>
     </div>
   );
 };

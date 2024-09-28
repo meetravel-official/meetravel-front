@@ -53,6 +53,7 @@ const ChatItem = ({ chatData, statusVisible }: ChatItemProps) => {
         css={css`
           display: flex;
           gap: 4px;
+          margin-bottom: 4x;
         `}
       >
         {chatData.tags.map((item, index) => {

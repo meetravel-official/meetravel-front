@@ -1,8 +1,10 @@
 import { css } from "@emotion/react";
 import dayjs from "dayjs";
+import { useProfileModal } from "states/useChat";
 
 import { Image } from "@/components";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
+import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
 
 import { Typography } from "../Typography/Typography";
@@ -10,29 +12,43 @@ import { MessageItemProps } from ".";
 import { cssMessageItemContentStyle } from "./MessageItem.styles";
 
 const UserMessageItem = ({ data }: MessageItemProps) => {
+  const { isOpenProfileModal, handleOnOpenProfileModal } = useProfileModal();
+
   return (
     <div
       className="MessageItem"
       css={cssAlignHorizontalStyle({ gap: 12, alignItems: "flex-start" })}
     >
-      <div
+      <button
         css={css`
+          all: unset;
+          cursor: pointer;
           width: 40px;
-          aspect-ratio: 1/1;
-          border-radius: 8px;
-          background-color: ${COLORS.WHITE};
-          border: 1px solid ${COLORS.GRAY2};
-          overflow: hidden;
         `}
+        onClick={() => {
+          console.log("프로필 버튼을 누름");
+          handleOnOpenProfileModal();
+        }}
       >
-        <Image
-          src={""} //TODO: data.profileImg 이미지 추가 예정
-          alt="profile-image"
-          width="100%"
-          height="100%"
-          objectFit="cover"
-        />
-      </div>
+        <div
+          css={css`
+            width: 40px;
+            aspect-ratio: 1/1;
+            border-radius: 8px;
+            background-color: ${COLORS.WHITE};
+            border: 1px solid ${COLORS.GRAY2};
+            overflow: hidden;
+          `}
+        >
+          <Image
+            src={""} //TODO: data.profileImg 이미지 추가 예정
+            alt="profile-image"
+            width="100%"
+            height="100%"
+            objectFit="cover"
+          />
+        </div>
+      </button>
       <div css={cssAlignVerticalStyle({ gap: 8, alignItems: "flex-start" })}>
         <Typography weight={700} color={COLORS.GRAY4}>
           {/* TODO: userId=> 익명 혹은 닉네임으로 변경필요  */}

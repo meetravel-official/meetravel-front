@@ -1,6 +1,5 @@
 import { css } from "@emotion/react";
 import Cookies from "js-cookie";
-import { useChatState } from "states/useChat";
 
 import { IChatMessageData } from "@/api/interfaces/chat";
 
