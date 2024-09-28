@@ -1,6 +1,5 @@
 import { css } from "@emotion/react";
 import { checkUser } from "utils/check-user";
-import { getUserData } from "utils/token-utils";
 
 import { ProfileForm } from "@/components/ProfileForm/ProfileForm";
 
@@ -12,8 +11,8 @@ export const ProfileContainer = checkUser(() => {
         margin-top: 25%;
       `}
     >
-      <ProfileForm userId={getUserData().userId} />
-      <ProfileEditModal userId={getUserData().userId} />
+      <ProfileForm isMy />
+      <ProfileEditModal />
     </div>
   );
 });

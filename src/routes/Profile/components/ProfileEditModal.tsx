@@ -45,10 +45,7 @@ import {
   cssRadioButtonStyle,
 } from "./ProfileEditModal.styles";
 
-interface ProfileEditModalProps {
-  userId?: string;
-}
-export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
+export const ProfileEditModal = () => {
   const navigate = useNavigate();
 
   const [checkNickname, setCheckNickname] = useState<{
@@ -61,10 +58,10 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
   const { isOpenEditModal, handleOnCloseEditModal } = useProfile();
 
   const queryClient = useQueryClient();
-  const { data: profileData } = useGetMyPage(userId);
+  const { data: profileData } = useGetMyPage();
   const { mutate } = useGetCheckNickname();
-  const { mutateAsync: mutateInfo } = usePutInfo(userId);
-  const { mutateAsync: mutateNickname } = usePutNickname(userId);
+  const { mutateAsync: mutateInfo } = usePutInfo();
+  const { mutateAsync: mutateNickname } = usePutNickname();
 
   const { form, registerField, resetFields, invalidFields, setFields } =
     useForm({
@@ -244,7 +241,7 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
         onClose={handleOnClickClose}
         title={
           <Typography color={COLORS.GRAY3} size={20} weight={700}>
-            마이 페이지 편집
+            프로필 편집
           </Typography>
         }
       >
@@ -267,12 +264,12 @@ export const ProfileEditModal = ({ userId }: ProfileEditModalProps) => {
                 >
                   <button css={cssDefaultBtnStyle}>
                     <Typography color={COLORS.GRAY4} weight={700} size="16">
-                      프로필 삭제
+                      이미지 삭제
                     </Typography>
                   </button>
                   <button css={cssDefaultBtnStyle}>
                     <Typography color={COLORS.GRAY4} weight={700} size="16">
-                      갤러리 이동
+                      업로드
                     </Typography>
                   </button>
                 </Popover.Content>

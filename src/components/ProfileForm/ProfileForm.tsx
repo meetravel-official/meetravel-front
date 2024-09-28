@@ -8,10 +8,13 @@ import { COLORS } from "@/styles/color";
 
 interface ProfileFormProps {
   userId?: string;
+  isMy?: boolean;
 }
 
-export const ProfileForm = ({ userId }: ProfileFormProps) => {
-  const { data: profileData } = useGetMyPage(userId);
+export const ProfileForm = ({ userId, isMy }: ProfileFormProps) => {
+  const { data: myProfileData } = useGetMyPage();
+
+  const profileData = isMy ? myProfileData : undefined;
 
   return (
     <div

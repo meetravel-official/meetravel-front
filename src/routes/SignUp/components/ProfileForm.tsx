@@ -1,410 +1,332 @@
 import { css } from "@emotion/react";
-import { useMemo, useState } from "react";
-import { ISignUpFormValues, useSignUpFormState } from "states/useCheckUser";
+import dayjs from "dayjs";
+import { useEffect, useMemo, useState } from "react";
+import { useSignUpState } from "states/useSignUp";
+import { numberRegex } from "utils/regex-utils";
 
 import { useGetCheckNickname } from "@/api/hooks/auth";
-import { ISignUpEssentialForm } from "@/api/interfaces/kakaoSignUpInterface";
+import { IProfile } from "@/api/interfaces/kakaoSignUpInterface";
 import { Button, Typography } from "@/components";
 import Form from "@/components/Form/Form";
 import { FormItem } from "@/components/Form/FormItem";
-import useForm from "@/components/Form/useForm";
+import { FormValues } from "@/components/Form/useForm";
 import Input from "@/components/Input/Input";
-import { checkNotEmpty } from "@/components/Matching/Matching";
 import RadioButtonGroup from "@/components/RadioButton/RadioButtonGroup";
 import { SIGN_UP_GENDER_TYPE } from "@/constants/signUp";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
-import { ISignUpProps } from "../SignUpContainer";
-import { cssAgreetoTermsStyle } from "../styles/SignUpInnerContents.styles";
+import {
+  cssDateInputBoxStyle,
+  cssDateInputInnerStyle,
+  cssDateInputStyle,
+  cssFormItemStyle,
+  cssRadioButtonStyle,
+} from "../styles/SignUpInnerContents.styles";
 
-export const ProfileForm = ({ step }: ISignUpProps) => {
-  const [formErrors, setFormErrors] = useState<
-    { error: keyof ISignUpEssentialForm; errorText: string }[] | undefined
-  >(undefined);
+interface ProfileFormProps {
+  form: FormValues<IProfile>;
+  registerField: (key: keyof IProfile) => {
+    value?: string;
+    onChange: (e: any) => void;
+    error: string | undefined;
+  };
+}
 
+export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
   const [checkNickname, setCheckNickname] = useState<{
     isClick: boolean;
-    isValid: boolean;
-  }>({ isClick: false, isValid: false });
+    isDuplicated: boolean;
+    value: string;
+  }>({ isClick: false, isDuplicated: false, value: "" });
 
   // zustand
-  const { signUpInfo, setSignUpInfo } = useSignUpFormState();
+  const { setDisabled } = useSignUpState();
 
-  const mutationCheckNickName = useGetCheckNickname();
+  const { mutate } = useGetCheckNickname();
 
-  const { form, registerField, invalidFields } = useForm<ISignUpEssentialForm>({
-    initialValues: {
-      name: "",
-      nickname: "",
-      birthDayYear: "",
-      birthDayMonth: "",
-      birthDayDate: "",
-      gender: "",
-      phoneNumber: "",
-      verificationNumber: "",
-      profileImageUrl: "",
-    },
-    required: [
-      "name",
-      "nickname",
-      "birthDayYear",
-      "birthDayMonth",
-      "birthDayDate",
-      "gender",
-      "phoneNumber",
-      // "verificationNumber",
-      // "profileImageUrl",
-    ],
-    validate: {
-      nickname: (value) => {
-        if (value && value.length > 7) {
-          return "닉네임은 6자 이하로 입력해주세요.";
-        }
-        return undefined;
-      },
-      birthDayYear: (value) => {
-        const year = Number(value);
-        if (year <= 1900) {
-          return "1900년 이후의 년도를 입력해주세요.";
-        } else if (year > new Date().getFullYear()) {
-          return `${new Date().getFullYear()} 이후의 년도는 입력할 수 없습니다.`;
-        }
-        return undefined;
-      },
-      birthDayMonth: (value) => {
-        const month = Number(value);
-        if (month <= 0 || month > 12) {
-          return "1월부터 12월 사이의 숫자를 입력해주세요.";
-        }
-        return undefined;
-      },
-      birthDayDate: (value) => {
-        const date = Number(value);
-        if (date <= 0 || date > 31) {
-          return "1일부터 31일 사이의 숫자를 입력해주세요.";
-        }
-        return undefined;
-      },
-      phoneNumber: (value) => {
-        if (value && value.length < 9) {
-          return "휴대폰 번호를 입력해주세요.";
-        }
-        return undefined;
-      },
-    },
-  });
+  const { onChange: onChangeYear } = registerField("birthDayYear");
+  const { onChange: onChangeMonth } = registerField("birthDayMonth");
+  const { onChange: onChangeDate } = registerField("birthDayDate");
+  const { onChange: onChangePhoneNumber } = registerField("phoneNumber");
 
-  const { onChange: onChangeGender } = registerField("gender");
-
-  const handleFormErrors = () => {
-    invalidFields(({ errors }) => {
-      if (errors) {
-        setFormErrors(errors);
-      }
-    });
+  const handleCheckNickname = () => {
+    if (!!form.nickname?.value && !form.nickname?.error) {
+      mutate(form.nickname.value, {
+        onSuccess: (res) => {
+          setCheckNickname({
+            isClick: true,
+            isDuplicated: res.data,
+            value: form.nickname?.value || "",
+          });
+        },
+        onError: () => {
+          setCheckNickname({ isClick: false, isDuplicated: false, value: "" });
+        },
+      });
+    }
   };
 
-  const handleOnNextStep = () => {
-    invalidFields(({ errors }) => {
-      if (errors) {
-        setFormErrors(errors);
-      } else {
-        const padSingleDigit = (
-          value: string | undefined
-        ): string | undefined => {
-          if (value && value.length < 2 && Number(value) < 10) {
-            return `0${value}`;
-          }
-          return value;
-        };
-
-        const validateBirthDayMonth = padSingleDigit(
-          form?.birthDayMonth?.value
+  const checkNicknameText = useMemo(() => {
+    if (form.nickname?.error) {
+      return (
+        <Typography color={COLORS.SITUATION1} size="14">
+          {form.nickname.error}
+        </Typography>
+      );
+    } else if (checkNickname.isClick) {
+      if (checkNickname.isDuplicated) {
+        return (
+          <Typography color={COLORS.SITUATION1} size="14">
+            중복된 닉네임입니다.
+          </Typography>
         );
-        const validateBirthDayDate = padSingleDigit(form?.birthDayDate?.value);
-
-        const signUpFormInfo: ISignUpFormValues = {
-          name: form.name?.value || "",
-          nickname: form.nickname?.value || "",
-          birthDayYear: form.birthDayYear?.value || "",
-          birthDayMonth: validateBirthDayMonth || "",
-          birthDayDate: validateBirthDayDate || "",
-          gender: form.gender?.value || "",
-          phoneNumber: form.phoneNumber?.value || "",
-          verificationNumber: form.verificationNumber?.value || "",
-          profileImageUrl: form.profileImageUrl?.value || "",
-        };
-        setSignUpInfo({ ...signUpInfo, ...signUpFormInfo });
-        step.handleOnClickNext();
+      } else {
+        return (
+          <Typography color={COLORS.GRAY2} size="14">
+            사용 가능한 닉네임입니다.
+          </Typography>
+        );
       }
-    });
-  };
+    }
+    if (form.nickname?.value !== checkNickname.value) {
+      if (!checkNickname.isClick) {
+        return (
+          <Typography color={COLORS.SITUATION1} size="14">
+            중복 여부를 확인해주세요.
+          </Typography>
+        );
+      }
+    }
+  }, [checkNickname, form.nickname]);
 
-  const handleCheckNickname = async (nickname: string | undefined) => {
-    handleFormErrors();
-    if (nickname) {
-      const res = await mutationCheckNickName.mutateAsync(nickname);
-      setCheckNickname({ isClick: true, isValid: res.data });
+  const handleOnChangeYear = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number.parseInt(e.target.value || "0");
+
+    if (
+      numberRegex.test(e.target.value) &&
+      e.target.value.length <= 4 &&
+      value >= 0 &&
+      value <= dayjs().year()
+    ) {
+      onChangeYear(e.target.value);
     }
   };
 
-  const handleBlurOnScroll = (e: React.WheelEvent<HTMLInputElement>) => {
-    return (e.target as HTMLElement).blur();
+  const handleOnChangeMonth = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number.parseInt(e.target.value || "0");
+
+    if (
+      numberRegex.test(e.target.value) &&
+      e.target.value.length <= 2 &&
+      value >= 0 &&
+      value < 13
+    ) {
+      onChangeMonth(e.target.value);
+    }
+  };
+  const handleOnChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number.parseInt(e.target.value || "0");
+
+    if (
+      numberRegex.test(e.target.value) &&
+      e.target.value.length <= 2 &&
+      value >= 0 &&
+      value < 32
+    ) {
+      onChangeDate(e.target.value);
+    }
   };
 
-  const nicknameFormErrorMessage = useMemo(() => {
-    return formErrors?.find((error) => error.error === "nickname");
-  }, [formErrors]);
-  const handleCheckNicknameMessage = useMemo(() => {
-    if (checkNickname.isValid) {
-      return (
-        <Typography color={COLORS.SITUATION1} size={12}>
-          중복된 닉네임입니다.
-        </Typography>
-      );
+  const handleOnChangPhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (numberRegex.test(e.target.value) && e.target.value.length <= 11) {
+      onChangePhoneNumber(e.target.value);
     }
-    if (nicknameFormErrorMessage) {
-      return (
-        <Typography color={COLORS.SITUATION1} size={12}>
-          {nicknameFormErrorMessage.errorText}
-        </Typography>
-      );
-    } else {
-      return (
-        <Typography color={COLORS.GRAY2} size={12}>
-          사용 가능한 닉네임입니다.
-        </Typography>
-      );
-    }
-  }, [checkNickname, nicknameFormErrorMessage]);
+  };
+
+  useEffect(() => {
+    if (
+      checkNickname.isClick &&
+      !checkNickname.isDuplicated &&
+      checkNickname.value === form.nickname?.value
+    )
+      setDisabled(false);
+    else setDisabled(true);
+  }, [checkNickname, form.nickname?.value, setDisabled]);
 
   return (
-    <div
-      css={css`
-        ${cssAlignVerticalStyle({
-          justifyContent: "space-between",
-          alignItems: "space-between",
-        })}
-        ${cssAgreetoTermsStyle}
-      `}
-    >
-      <Form formValue={form}>
-        <FormItem label="이름" name="name">
-          <Input
-            {...registerField("name")}
-            type="text"
-            detailStyle={css`
-              width: 100%;
-            `}
-          />
-        </FormItem>
+    <Form formValue={form}>
+      <FormItem
+        label="이름"
+        name="name"
+        formItemStyle={cssFormItemStyle}
+        errorStyle={{ display: "block" }}
+      >
+        <Input
+          placeholder="최소 2자 이상/6자 이하 입력"
+          maxLength={6}
+          {...registerField("name")}
+          type="text"
+          detailStyle={css`
+            width: 100%;
+          `}
+        />
+      </FormItem>
+      <FormItem name="nickname" label="닉네임" formItemStyle={cssFormItemStyle}>
         <div
-          css={cssAlignHorizontalStyle({
+          css={cssAlignVerticalStyle({
+            gap: 8,
+            alignItems: "flex-start",
+          })}
+        >
+          <div css={cssAlignHorizontalStyle({ gap: 8, width: "100%" })}>
+            <Input
+              {...registerField("nickname")}
+              type="text"
+              detailStyle={css`
+                width: 100%;
+                outline: ${form.nickname?.error
+                  ? `1.5px solid ${COLORS.SITUATION1}`
+                  : `1.5px solid ${COLORS.PINK1}`};
+              `}
+              placeholder="최소 2자 이상/6자 이하 입력"
+              maxLength={6}
+              onChange={(e) => {
+                registerField("nickname").onChange(e);
+                setCheckNickname({
+                  isClick: false,
+                  isDuplicated: false,
+                  value: "",
+                });
+              }}
+            />
+            <Button
+              bgColor={COLORS.PINK2}
+              detailStyle={css`
+                width: 91px;
+                box-sizing: border-box;
+                padding: 14px 16px;
+                white-space: nowrap;
+              `}
+              onClick={handleCheckNickname}
+              disabled={
+                form.nickname?.value === checkNickname.value ||
+                !!form.nickname?.error
+              }
+            >
+              <Typography color={COLORS.WHITE} size={16} weight={700}>
+                중복 확인
+              </Typography>
+            </Button>
+          </div>
+          {checkNicknameText}
+        </div>
+      </FormItem>
+      <FormItem label="성별" name="gender" formItemStyle={cssFormItemStyle}>
+        <RadioButtonGroup
+          {...registerField("gender")}
+          gridDetailStyle={css`
+            width: 100%;
+          `}
+        >
+          <RadioButtonGroup.RadioButton
+            value={SIGN_UP_GENDER_TYPE.FEMALE}
+            detailStyle={cssRadioButtonStyle(
+              form.gender?.value === SIGN_UP_GENDER_TYPE.FEMALE
+            )}
+          >
+            여성
+          </RadioButtonGroup.RadioButton>
+          <RadioButtonGroup.RadioButton
+            value={SIGN_UP_GENDER_TYPE.MALE}
+            detailStyle={cssRadioButtonStyle(
+              form.gender?.value === SIGN_UP_GENDER_TYPE.MALE
+            )}
+          >
+            남성
+          </RadioButtonGroup.RadioButton>
+        </RadioButtonGroup>
+      </FormItem>
+      <div css={cssFormItemStyle}>
+        <div
+          css={cssAlignVerticalStyle({
+            gap: 10,
             alignItems: "flex-start",
             width: "100%",
           })}
         >
-          <FormItem
-            label="닉네임"
-            name="nickname"
-            formItemStyle={css`
-              width: 100%;
-            `}
-          >
-            <div>
-              <Input
-                {...registerField("nickname")}
-                type="text"
-                detailStyle={css`
-                  width: 100%;
-                `}
-              />
-              {handleCheckNicknameMessage}
-            </div>
-          </FormItem>
-          <Button
-            detailStyle={css`
-              margin-top: 30px;
-              white-space: nowrap;
-            `}
-            width={"max-content"}
-            bgColor={COLORS.PINK2}
-            color={COLORS.WHITE}
-            onClick={() => handleCheckNickname(form?.nickname?.value)}
-          >
-            중복확인
-          </Button>
-        </div>
-        <FormItem
-          label="성별"
-          labelStyle={css`
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 20.39px;
-          `}
-          name="gender"
-        >
-          <RadioButtonGroup
-            {...registerField("gender")}
-            defaultValue={
-              checkNotEmpty([form.gender]) ? form.gender?.value : undefined
-            }
-            onChange={(e) => {
-              onChangeGender(e);
-            }}
-            gridDetailStyle={css`
-              width: 100%;
-            `}
-          >
-            <RadioButtonGroup.RadioButton
-              value={SIGN_UP_GENDER_TYPE.FEMALE}
-              detailStyle={css`
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 20.39px;
-                width: 100%;
-                height: 48px;
-                background-color: ${form.gender?.value ===
-                SIGN_UP_GENDER_TYPE.MALE
-                  ? COLORS.GRAY2
-                  : ""};
-              `}
-            >
-              여성
-            </RadioButtonGroup.RadioButton>
-            <RadioButtonGroup.RadioButton
-              value={SIGN_UP_GENDER_TYPE.MALE}
-              detailStyle={css`
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 20.39px;
-                width: 100%;
-                height: 48px;
-                background-color: ${form.gender?.value ===
-                SIGN_UP_GENDER_TYPE.FEMALE
-                  ? COLORS.GRAY2
-                  : ""};
-              `}
-            >
-              남성
-            </RadioButtonGroup.RadioButton>
-          </RadioButtonGroup>
-        </FormItem>
-        <div
-          css={cssAlignHorizontalStyle({
-            justifyContent: "center",
-            alignItems: "flex-end",
-          })}
-        >
-          <FormItem label="생년월일" name="birthDayYear">
-            <Input
-              {...registerField("birthDayYear")}
-              type="number"
-              suffix={<Typography color={COLORS.PINK3}>년</Typography>}
-              detailStyle={css`
-                width: unset;
-              `}
-              onWheel={(event) => handleBlurOnScroll(event)}
-            />
-          </FormItem>
-          <Input
-            {...registerField("birthDayMonth")}
-            type="number"
-            suffix={<Typography color={COLORS.PINK3}>월</Typography>}
-            detailStyle={css`
-              width: unset;
-              margin-bottom: 8px;
-            `}
-            onWheel={(event) => handleBlurOnScroll(event)}
-          />
-          <Input
-            {...registerField("birthDayDate")}
-            type="number"
-            suffix={<Typography color={COLORS.PINK3}>일</Typography>}
-            detailStyle={css`
-              width: unset;
-              margin-bottom: 8px;
-            `}
-            onWheel={(event) => handleBlurOnScroll(event)}
-          />
-        </div>
-        <div
-          css={cssAlignHorizontalStyle({
-            alignItems: "flex-end",
-            width: "100%",
-          })}
-        >
-          <FormItem
-            label="전화번호"
-            name="phoneNumber"
-            formItemStyle={css`
-              width: 100%;
-            `}
-          >
-            <Input
-              {...registerField("phoneNumber")}
-              type="number"
-              detailStyle={css`
-                width: 100%;
-              `}
-            />
-          </FormItem>
-          <Button
-            detailStyle={css`
-              margin-bottom: 8px;
-              white-space: nowrap;
-            `}
-            width={"max-content"}
-            bgColor={COLORS.PINK2}
-            color={COLORS.WHITE}
-            // TODO: onClick
-          >
-            인증번호 발송
-          </Button>
-        </div>
-        <div
-          css={cssAlignHorizontalStyle({
-            alignItems: "flex-end",
-            width: "100%",
-          })}
-        >
-          <FormItem
-            label="인증번호"
-            name="verificationNumber"
-            formItemStyle={css`
-              width: 100%;
-            `}
-          >
-            <Input
-              {...registerField("verificationNumber")}
-              type="text"
-              detailStyle={css`
-                width: 100%;
-              `}
-            />
-          </FormItem>
-          <Button
-            detailStyle={css`
-              margin-bottom: 8px;
-              white-space: nowrap;
-            `}
-            width={"max-content"}
-            bgColor={COLORS.PINK2}
-            color={COLORS.WHITE}
-            // TODO: onClick
-          >
-            인증 완료
-          </Button>
-        </div>
-      </Form>
-      <div className="button-to-next">
-        <Button bgColor={COLORS.PINK3} onClick={handleOnNextStep}>
-          <Typography color={COLORS.WHITE} weight="bold" size={16}>
-            다음
+          <Typography size="16" color={COLORS.GRAY3} weight={700}>
+            생년월일
           </Typography>
-        </Button>
+          <div css={cssAlignHorizontalStyle({ gap: 8, width: "100%" })}>
+            <div css={cssDateInputBoxStyle(form.birthDayYear?.error)}>
+              <div css={cssDateInputInnerStyle}>
+                <input
+                  css={cssDateInputStyle(40)}
+                  {...registerField("birthDayYear")}
+                  onChange={handleOnChangeYear}
+                  onBlur={() => {
+                    if (form.birthDayYear?.value)
+                      onChangeYear(form.birthDayYear.value.padStart(4, "0"));
+                  }}
+                />
+                <Typography color={COLORS.PINK3}>년</Typography>
+              </div>
+            </div>
+            <div css={cssDateInputBoxStyle(form.birthDayMonth?.error)}>
+              <div css={cssDateInputInnerStyle}>
+                <input
+                  css={cssDateInputStyle(20)}
+                  {...registerField("birthDayMonth")}
+                  onChange={handleOnChangeMonth}
+                  onBlur={() => {
+                    if (form.birthDayMonth?.value)
+                      onChangeMonth(form.birthDayMonth.value.padStart(2, "0"));
+                  }}
+                />
+                <Typography color={COLORS.PINK3}>월</Typography>
+              </div>
+            </div>
+            <div css={cssDateInputBoxStyle(form.birthDayDate?.error)}>
+              <div css={cssDateInputInnerStyle}>
+                <input
+                  css={cssDateInputStyle(20)}
+                  {...registerField("birthDayDate")}
+                  onChange={handleOnChangeDate}
+                  onBlur={() => {
+                    if (form.birthDayDate?.value)
+                      onChangeDate(form.birthDayDate.value.padStart(2, "0"));
+                  }}
+                />
+                <Typography color={COLORS.PINK3}>일</Typography>
+              </div>
+            </div>
+          </div>
+          {(form.birthDayYear?.error ||
+            form.birthDayMonth?.error ||
+            form.birthDayDate?.error) && (
+            <Typography size="14" color={COLORS.SITUATION1} weight={400}>
+              {form.birthDayYear?.error ||
+                form.birthDayMonth?.error ||
+                form.birthDayDate?.error}
+            </Typography>
+          )}
+        </div>
       </div>
-    </div>
+      <FormItem
+        label="전화번호"
+        name="phoneNumber"
+        formItemStyle={cssFormItemStyle}
+        errorStyle={{ display: "block" }}
+      >
+        <Input
+          {...registerField("phoneNumber")}
+          detailStyle={css`
+            width: 100%;
+          `}
+          onChange={handleOnChangPhoneNumber}
+        />
+      </FormItem>
+    </Form>
   );
 };

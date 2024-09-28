@@ -26,7 +26,7 @@ export interface IPostKaKaoSignUpRequest {
   socialType?: string;
 }
 
-export interface ISignUpEssentialForm {
+export interface IProfile {
   name?: string;
   nickname?: string;
   birthDayYear?: string;
@@ -34,7 +34,6 @@ export interface ISignUpEssentialForm {
   birthDayDate?: string;
   gender?: string;
   phoneNumber?: string;
-  verificationNumber?: string;
   profileImageUrl?: string;
 }
 

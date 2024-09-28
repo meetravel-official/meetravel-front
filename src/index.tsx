@@ -12,6 +12,7 @@ import { cssGlobalStyle } from "@/styles/globalStyle";
 import { ChatLayout } from "./components/ChatLayout/ChatLayout";
 import { HomeLayout } from "./components/HomeLayout/HomeLayout";
 import { ProfileLayout } from "./components/ProfileLayout/ProfileLayout";
+import { SignUpLayout } from "./components/SignUpLayout/SignUpLayout";
 import { TravelInfoLayout } from "./components/TravelInfoLayout/TravelInfoLayout";
 import reportWebVitals from "./reportWebVitals";
 import { containerRoutes, pageRoutes } from "./routes";
@@ -70,14 +71,23 @@ const router = createBrowserRouter([
     ],
   },
   {
+    element: <SignUpLayout />,
+    children: [
+      {
+        path: pageRoutes.SIGN_UP,
+        Component: containerRoutes.SIGN_UP,
+      },
+    ],
+  },
+  {
     element: <SimpleLayout />,
     children: [
       { path: pageRoutes.SIGN_IN, Component: containerRoutes.SIGN_IN },
-      { path: pageRoutes.SIGN_UP, Component: containerRoutes.SIGN_UP },
       { path: pageRoutes.AUTH_CHECK, Component: containerRoutes.AUTH_CHECK },
       { path: pageRoutes.SAMPLE, Component: containerRoutes.SAMPLE },
     ],
   },
+
   {
     element: <MainLayout />,
     children: [

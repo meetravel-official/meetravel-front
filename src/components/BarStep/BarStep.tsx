@@ -8,11 +8,15 @@ export const BarStep = ({
   step,
   stepList,
   contentDetailStyle,
-}: StepProps & { contentDetailStyle?: SerializedStyles }) => {
+  disabled,
+}: StepProps & {
+  contentDetailStyle?: SerializedStyles;
+  disabled?: "prev" | "next" | "all";
+}) => {
   return (
     <Step step={step} stepList={stepList}>
       <div css={cssAlignVerticalStyle({ gap: 16, alignItems: "flex-start" })}>
-        <Step.Stepper disabled="all" />
+        <Step.Stepper disabled={disabled || "all"} />
         <Bar />
         <Step.Content detailStyle={contentDetailStyle} />
       </div>
