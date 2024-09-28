@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import { CompatClient, Stomp } from "@stomp/stompjs";
+import dayjs from "dayjs";
 import Cookies from "js-cookie";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -224,21 +225,6 @@ const ChatRoomContainer = () => {
               sendAt: "2024-09-08 12:34",
             }}
           />
-          <MessageItem
-            data={{
-              userId: "익명",
-              message: "안녕하세요!",
-              sendAt: "2024-09-08 12:34",
-            }}
-          />
-          <MessageItem
-            data={{
-              userId: "익명",
-              message: "반갑습니다",
-              sendAt: "2024-09-08 12:34",
-            }}
-            isSameUser={true}
-          />
 
           {chatMessageGroups.map((item, index) => {
             const isSameUser = prevUserId === item.userId;
@@ -333,9 +319,12 @@ const ChatRoomContainer = () => {
           setIsOpenTravelPlanModal(false);
         }}
         matchingInfo={{
-          travelStartDate: "2024-08-11",
-          travelEndDate: "2024-08-13",
-          travelArea: "강원도 동해",
+          travelStartDate: dayjs(
+            chatUsersData?.travelPlanDate.startDate
+          ).format("YYYY-MM-DD"),
+          travelEndDate: dayjs(chatUsersData?.travelPlanDate.endDate).format(
+            "YYYY-MM-DD"
+          ),
           keyword: ["산", "도시", "야경"],
         }}
       />

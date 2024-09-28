@@ -326,7 +326,6 @@ export const SampleContainer = () => {
         matchingInfo={{
           travelStartDate: "2024-08-11",
           travelEndDate: "2024-08-13",
-          travelArea: "강원도 동해",
           keyword: ["산", "도시", "야경"],
         }}
       />{" "}
