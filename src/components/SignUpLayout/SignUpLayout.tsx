@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useEffect } from "react";
 import { AgreetoTerms } from "routes/SignUp/components/AgreetoTerms";
 import { ProfileForm } from "routes/SignUp/components/ProfileForm";
@@ -69,8 +70,24 @@ export const SignUpLayout = () => {
         const year = Number(value);
         if (year <= 1900) {
           return "1900년 이후의 년도를 입력해주세요.";
-        } else if (year > new Date().getFullYear()) {
-          return `${new Date().getFullYear()} 이후의 년도는 입력할 수 없습니다.`;
+        }
+        if (
+          profileFormProps.form.birthDayYear?.value &&
+          profileFormProps.form.birthDayMonth?.value &&
+          profileFormProps.form.birthDayDate?.value
+        ) {
+          const birthStr = `${profileFormProps.form.birthDayYear?.value.padStart(
+            4,
+            "0"
+          )}-${profileFormProps.form.birthDayMonth?.value.padStart(
+            2,
+            "0"
+          )}-${profileFormProps.form.birthDayDate.value.padStart(2, "0")}`;
+          const birthDate = dayjs(birthStr, "YYYY-MM-DD");
+          const age16 = birthDate.add(16, "year");
+          if (dayjs().isBefore(age16)) {
+            return "만 16세 이상만 가입 가능합니다.";
+          }
         }
         return undefined;
       },
