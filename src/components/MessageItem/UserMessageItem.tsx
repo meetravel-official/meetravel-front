@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import dayjs from "dayjs";
-import { useProfileModal } from "states/useChat";
+import { useChatProfile, useChatUsers, useProfileModal } from "states/useChat";
 
 import { Image } from "@/components";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
@@ -12,7 +12,12 @@ import { MessageItemProps } from ".";
 import { cssMessageItemContentStyle } from "./MessageItem.styles";
 
 const UserMessageItem = ({ data }: MessageItemProps) => {
-  const { isOpenProfileModal, handleOnOpenProfileModal } = useProfileModal();
+  const { handleOnOpenProfileModal } = useProfileModal();
+  const { setProfileData } = useChatProfile();
+  const { chatUsersData } = useChatUsers();
+  const newProfileData = chatUsersData?.joinedUsers.find(
+    (user) => user.userId === data.userId
+  );
 
   return (
     <div
@@ -27,7 +32,11 @@ const UserMessageItem = ({ data }: MessageItemProps) => {
         `}
         onClick={() => {
           console.log("프로필 버튼을 누름");
-          handleOnOpenProfileModal();
+
+          if (newProfileData) {
+            setProfileData(newProfileData);
+            handleOnOpenProfileModal();
+          }
         }}
       >
         <div
@@ -51,8 +60,7 @@ const UserMessageItem = ({ data }: MessageItemProps) => {
       </button>
       <div css={cssAlignVerticalStyle({ gap: 8, alignItems: "flex-start" })}>
         <Typography weight={700} color={COLORS.GRAY4}>
-          {/* TODO: userId=> 익명 혹은 닉네임으로 변경필요  */}
-          {data.userId?.slice(0, 6) ?? "익명"}
+          {newProfileData?.nickname ?? "익명"}
         </Typography>
         <div css={cssAlignHorizontalStyle({ gap: 8, alignItems: "flex-end" })}>
           <div

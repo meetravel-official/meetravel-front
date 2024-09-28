@@ -1,15 +1,18 @@
 import { css } from "@emotion/react";
 import { CompatClient, Stomp } from "@stomp/stompjs";
-import { chatData1 } from "dummies/chat";
 import Cookies from "js-cookie";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { TravelPlanModal } from "routes/Chat/components/TravelPlanModal/TravelPlanModal";
 import SockJS from "sockjs-client";
-import { useProfileModal } from "states/useChat";
+import {
+  useChatUsers,
+  useProfileFullModal,
+  useProfileModal,
+} from "states/useChat";
 
 import { useGetChatUsers } from "@/api/hooks/chat";
-import { ChatStatus, IChatMessageData } from "@/api/interfaces/chat";
+import { IChatMessageData } from "@/api/interfaces/chat";
 import { ReactComponent as PlanIcon } from "@/assets/icons/plan.svg";
 import { Button, Typography } from "@/components";
 import { BackHeader } from "@/components/BackLayout/BackHeader";
@@ -17,6 +20,7 @@ import Input from "@/components/Input/Input";
 import MessageItem from "@/components/MessageItem";
 import ProfileDrawer from "@/components/ProfileDrawer/ProfileDrawer";
 import ReportReasonModal from "@/components/ReportReasonModal/ReportReasonModal";
+import SingleReportModal from "@/components/SingleReportModal/SingleReportModal";
 import TagKeyword from "@/components/TagKeyword/TagKeyword";
 import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
@@ -29,6 +33,7 @@ import {
   cssMessageListStyle,
 } from "./ChatRoomContainer.styles";
 import LeaveModal from "./components/LeaveModal";
+import { ProfileFullModal } from "./components/ProfileFullModal";
 import ReportModal from "./components/ReportModal";
 import TitleHeader from "./components/TitleHeader";
 
@@ -37,6 +42,8 @@ const ChatRoomContainer = () => {
   const [inputText, setInputText] = useState<string>();
   const [chatMessage, setChatMessage] = useState<IChatMessageData>();
   const { isOpenProfileModal, handleOnCloseProfileModal } = useProfileModal();
+  const { isOpenProfileFullModal, handleOnCloseProfileFullModal } =
+    useProfileFullModal();
 
   const [isOpenTravelPlanModal, setIsOpenTravelPlanModal] = useState(false);
 
@@ -45,7 +52,7 @@ const ChatRoomContainer = () => {
   const chatRoomId = match ? match[1] : null;
 
   const { data: chatUsersData } = useGetChatUsers(chatRoomId ?? "1");
-  // const chatMessageGroups = useMemo<MessageItemDataProps[]>(() => [], []);
+  const { setChatUsersData } = useChatUsers();
   const [chatMessageGroups, setChatMessageGroups] = useState<
     IChatMessageData[]
   >([]);
@@ -125,6 +132,13 @@ const ChatRoomContainer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (chatUsersData) {
+      setChatUsersData(chatUsersData);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatUsersData]);
+
   const addMessage = useCallback(() => {
     if (inputText !== "") {
       scrollToBottom();
@@ -180,22 +194,16 @@ const ChatRoomContainer = () => {
               z-index: 1;
             `}
           >
-            {chatData1.tags.map((item, index) => {
+            {chatUsersData?.travelKeywords?.map((item, index) => {
               return (
                 <TagKeyword
                   key={index}
                   keyword={item}
                   detailStyle={cssChatRoomKeywordStyle}
                   typographyStyle={css`
-                    color: ${chatData1.status === ChatStatus.DONE
-                      ? COLORS.GRAY2
-                      : COLORS.GRAY4};
+                    color: ${COLORS.GRAY4};
                   `}
-                  svgColor={
-                    chatData1.status === ChatStatus.DONE
-                      ? COLORS.GRAY2
-                      : COLORS.GRAY3
-                  }
+                  svgColor={COLORS.GRAY3}
                 />
               );
             })}
@@ -332,13 +340,18 @@ const ChatRoomContainer = () => {
         }}
       />
 
-      <ReportModal data={chatUsersData?.users} />
+      <ReportModal data={chatUsersData?.joinedUsers} />
       <LeaveModal />
       <ProfileDrawer
         isOpen={isOpenProfileModal}
         onClose={handleOnCloseProfileModal}
       />
       <ReportReasonModal />
+      <SingleReportModal />
+      <ProfileFullModal
+        isOpen={isOpenProfileFullModal}
+        onClose={handleOnCloseProfileFullModal}
+      />
     </Fragment>
   );
 };

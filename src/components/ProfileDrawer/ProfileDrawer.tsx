@@ -1,5 +1,11 @@
 import { css } from "@emotion/react";
+import dayjs from "dayjs";
 import { userData1 } from "dummies/chat";
+import {
+  useChatProfile,
+  useProfileFullModal,
+  useSingleReportModal,
+} from "states/useChat";
 
 import { IUserData } from "@/api/interfaces/chat";
 import { ReactComponent as ReportIcon } from "@/assets/icons/report.svg";
@@ -15,7 +21,9 @@ export interface ProfileDrawerProps {
 }
 
 const ProfileDrawer = ({ isOpen, onClose }: ProfileDrawerProps) => {
-  const data = userData1 as IUserData;
+  const { profileData: data } = useChatProfile();
+  const { handleOnOpenSingleReportModal } = useSingleReportModal();
+  const { handleOnOpenProfileFullModal } = useProfileFullModal();
   return (
     <Drawer isOpen={isOpen} onClose={onClose}>
       <div css={cssAlignHorizontalStyle({ justifyContent: "space-between" })}>
@@ -32,7 +40,7 @@ const ProfileDrawer = ({ isOpen, onClose }: ProfileDrawerProps) => {
             `}
           >
             <Image
-              src={""} //TODO: data.profileImg 이미지 추가 예정
+              src={data?.profileImageUrl} //TODO: data.profileImg 이미지 추가 예정
               alt="profile-image"
               width="100%"
               height="100%"
@@ -51,10 +59,10 @@ const ProfileDrawer = ({ isOpen, onClose }: ProfileDrawerProps) => {
             </Typography>
             <div css={cssAlignHorizontalStyle({ gap: 4 })}>
               <Typography size={16} weight={700} color={COLORS.GRAY3}>
-                {/* {data.gender === "female" ? "女":"男"} */}女
+                {data.gender === "여성" ? "女" : "男"}
               </Typography>
               <Typography size={16} weight={400} color={COLORS.GRAY4}>
-                1997{/* {data.date} */}년생
+                {dayjs(data.birthDate).format("YYYY")}년생
               </Typography>
             </div>
           </div>
@@ -68,6 +76,7 @@ const ProfileDrawer = ({ isOpen, onClose }: ProfileDrawerProps) => {
             css={cssDefaultBtnStyle}
             onClick={() => {
               console.log("신고버튼 누름");
+              handleOnOpenSingleReportModal();
             }}
           >
             <ReportIcon width={18} height={18} stroke={COLORS.SITUATION1} />
@@ -97,6 +106,7 @@ const ProfileDrawer = ({ isOpen, onClose }: ProfileDrawerProps) => {
             `}
             onClick={() => {
               console.log("프로필 더보기 버튼 누름");
+              handleOnOpenProfileFullModal();
             }}
           >
             <Typography size={16} weight={700} color={COLORS.WHITE}>

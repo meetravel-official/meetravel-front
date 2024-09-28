@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useLeaveModal, useReportModal } from "states/useChat";
 
 import { IChatData, IChatUserData } from "@/api/interfaces/chat";
@@ -28,8 +29,13 @@ const TitleHeader = ({ data }: { data?: IChatUserData }) => {
       >
         <div>
           <Typography size={14} color={COLORS.GRAY3}>
-            {/* {data.startDate} ~ {data.endDate} TODO: date 추가되면 수정 */}
-            2024/12/26 ~ 2024/12/27
+            {data?.travelPlanDate.startDate === data?.travelPlanDate.endDate
+              ? dayjs(data?.travelPlanDate.startDate).format("YYYY/MM/DD")
+              : `${dayjs(data?.travelPlanDate.startDate).format(
+                  "YYYY/MM/DD"
+                )} ~ ${dayjs(data?.travelPlanDate.endDate).format(
+                  "YYYY/MM/DD"
+                )}`}
           </Typography>
         </div>
         <div css={cssAlignHorizontalStyle({ gap: 8 })}>
@@ -38,7 +44,7 @@ const TitleHeader = ({ data }: { data?: IChatUserData }) => {
               女
             </Typography>
             <Typography weight={700} color={COLORS.GRAY4}>
-              {data?.persons.femaleCount}명
+              {data?.joinedPersons.femaleCount}명
             </Typography>
           </div>
           <div css={cssAlignHorizontalStyle({ gap: 4 })}>
@@ -46,7 +52,7 @@ const TitleHeader = ({ data }: { data?: IChatUserData }) => {
               男
             </Typography>
             <Typography weight={700} color={COLORS.GRAY4}>
-              {data?.persons.maleCount}명
+              {data?.joinedPersons.maleCount}명
             </Typography>
           </div>
           <div>
@@ -56,7 +62,7 @@ const TitleHeader = ({ data }: { data?: IChatUserData }) => {
           </div>
           <div>
             <Typography weight={700} color={COLORS.GRAY3}>
-              {data?.persons.totalCount}명
+              {data?.joinedPersons.totalCount}명
             </Typography>
           </div>
         </div>

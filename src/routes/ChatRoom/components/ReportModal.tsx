@@ -2,14 +2,14 @@ import { css } from "@emotion/react";
 import Cookies from "js-cookie";
 import { useReportModal } from "states/useChat";
 
-import { IUserData } from "@/api/interfaces/chat";
+import { IUserData, IUserDetailData } from "@/api/interfaces/chat";
 import { Typography } from "@/components";
 import Modal from "@/components/Modal/Modal";
 import UserItem from "@/components/UserItem/UserItem";
 import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
-const ReportModal = ({ data }: { data?: IUserData[] }) => {
+const ReportModal = ({ data }: { data?: IUserDetailData[] }) => {
   const { isOpenReportModal, handleOnCloseReportModal } = useReportModal();
   const myUserId =
     JSON.parse(Cookies.get("userInfo") as string)?.userId ?? "invalidCookies";
