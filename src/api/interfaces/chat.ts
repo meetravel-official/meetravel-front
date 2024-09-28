@@ -47,3 +47,16 @@ export interface IChatMessageData {
   type?: string;
   sendAt?: string;
 }
+
+export interface IUserData {
+  userId: string;
+  nickname: string;
+  profileImageUrl: string;
+}
+
+export interface IChatUserData {
+  users: IUserData[];
+  persons: IPerson;
+  travelKeywords: string[];
+  travelPlanDate: IDuration;
+}
