@@ -10,3 +10,13 @@ export const cssMenuBtnStyle = css`
   gap: 8px;
   align-items: center;
 `;
+
+export const cssSettingContainerStyle = css`
+  min-height: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding-bottom: 16px;
+`;

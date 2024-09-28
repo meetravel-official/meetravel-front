@@ -7,9 +7,13 @@ import { ReactComponent as QnaIcon } from "@/assets/icons/qna.svg";
 import { Typography } from "@/components";
 import { ToggleSwitch } from "@/components/ToggleSwitch/ToggleSwitch";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
+import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
 
-import { cssMenuBtnStyle } from "./SettingContainter.styles";
+import {
+  cssMenuBtnStyle,
+  cssSettingContainerStyle,
+} from "./SettingContainter.styles";
 
 export const SettingContainer = () => {
   const { setTitle } = useHeaderState();
@@ -36,27 +40,47 @@ export const SettingContainer = () => {
   }, [isOn]);
 
   return (
-    <div css={cssAlignVerticalStyle({ gap: 24 })}>
-      <button css={cssMenuBtnStyle} onClick={handleOnClickQna}>
-        <QnaIcon />
-        <Typography color={COLORS.GRAY4} size={16} weight={700}>
-          문의하기
-        </Typography>
-      </button>
-      <button css={cssMenuBtnStyle}>
-        <BellInfoIcon />
-        <div
-          css={cssAlignHorizontalStyle({
-            justifyContent: "space-between",
-            width: "100%",
-          })}
-        >
+    <div css={cssSettingContainerStyle}>
+      <div css={cssAlignVerticalStyle({ gap: 24 })}>
+        <button css={cssMenuBtnStyle} onClick={handleOnClickQna}>
+          <QnaIcon />
           <Typography color={COLORS.GRAY4} size={16} weight={700}>
-            알림 설정
+            문의하기
           </Typography>
-          <ToggleSwitch isOn={isOn} handleToggle={handleOnClickNotification} />
-        </div>
-      </button>
+        </button>
+        <button css={cssMenuBtnStyle}>
+          <BellInfoIcon />
+          <div
+            css={cssAlignHorizontalStyle({
+              justifyContent: "space-between",
+              width: "100%",
+            })}
+          >
+            <Typography color={COLORS.GRAY4} size={16} weight={700}>
+              알림 설정
+            </Typography>
+            <ToggleSwitch
+              isOn={isOn}
+              handleToggle={handleOnClickNotification}
+            />
+          </div>
+        </button>
+      </div>
+      <div css={cssAlignHorizontalStyle({ gap: 40 })}>
+        <button css={cssDefaultBtnStyle}>
+          <Typography color={COLORS.GRAY2} size="12" weight={400}>
+            로그아웃
+          </Typography>
+        </button>
+        <Typography color={COLORS.GRAY2} size="12" weight={400}>
+          |
+        </Typography>
+        <button css={cssDefaultBtnStyle}>
+          <Typography color={COLORS.GRAY2} size="12" weight={400}>
+            회원탈퇴
+          </Typography>
+        </button>
+      </div>
     </div>
   );
 };
