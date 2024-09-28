@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { toast } from "react-toastify";
 import { useReportModal, useReportReasonModal } from "states/useChat";
 
 import { cssAlignVerticalStyle } from "@/styles/align";
@@ -107,6 +108,7 @@ const ReportReasonModal = () => {
             console.log("신고하기 완료 누름");
             handleOnCloseReportModal();
             handleOnCloseReportReasonModal();
+            toast.success("신고가 완료되었습니다.");
           }}
         >
           <Typography size={16} weight={700} color={COLORS.WHITE}>

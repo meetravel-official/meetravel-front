@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { toast } from "react-toastify";
 import { useChatProfile, useSingleReportModal } from "states/useChat";
 
 import { Button, Typography } from "@/components";
@@ -105,7 +106,7 @@ const SingleReportModal = () => {
           onClick={() => {
             console.log("신고하기 완료 누름");
             handleOnCloseSingleReportModal();
-            //TODO: 신고하기 API 호출
+            toast.success("신고가 완료되었습니다.");
           }}
         >
           <Typography size={16} weight={700} color={COLORS.WHITE}>
