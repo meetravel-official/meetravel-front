@@ -2,13 +2,13 @@ import { css } from "@emotion/react";
 import React from "react";
 
 import { Step, Typography } from "@/components";
+import { BarStep } from "@/components/BarStep/BarStep";
 import { StepInstance } from "@/components/Step/StepInterface";
 import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
 import { AgreetoTerms } from "./components/AgreetoTerms";
 import { ProfileForm } from "./components/ProfileForm";
-import { SignUpContent } from "./components/SignUpContent";
 import { SignUpHeader } from "./components/SignUpHeader";
 import { TravelProfileForm } from "./components/TravelProfileForm";
 import { cssSignUpContainerStyle } from "./styles/SignUpContainer.styles";
@@ -26,17 +26,17 @@ export const SignUpContainer = () => {
     {
       title: "이용약관 동의",
       header: (
-        <React.Fragment>
-          <Typography color={COLORS.GRAY4} size={20} weight="bold">
+        <div css={cssAlignVerticalStyle({ gap: 4, alignItems: "flex-start" })}>
+          <Typography color={COLORS.GRAY4} size={20} weight="bold" mode="block">
             미트래블을 이용하기 위해선
           </Typography>
-          <Typography color={COLORS.GRAY4} size={20} weight="bold">
+          <Typography color={COLORS.GRAY4} size={20} weight="bold" mode="block">
             <Typography color={COLORS.PINK2} size={20} weight="bold">
               이용약관 동의
             </Typography>
             가 필요해요.
           </Typography>
-        </React.Fragment>
+        </div>
       ),
       content: <AgreetoTerms step={step} />,
       button: "약관 전체 허용",
@@ -44,7 +44,7 @@ export const SignUpContainer = () => {
     {
       title: "필수 프로필 작성",
       header: (
-        <React.Fragment>
+        <div css={cssAlignVerticalStyle({ gap: 4, alignItems: "flex-start" })}>
           <Typography color={COLORS.GRAY4} size={20} weight="bold">
             시작하기 전, 미트래블에서
           </Typography>
@@ -54,7 +54,7 @@ export const SignUpContainer = () => {
             </Typography>
             을 만들어 봐요.
           </Typography>
-        </React.Fragment>
+        </div>
       ),
       content: <ProfileForm step={step} />,
       button: "다음",
@@ -62,18 +62,17 @@ export const SignUpContainer = () => {
     {
       title: "선택 프로필 작성",
       header: (
-        <React.Fragment>
+        <div css={cssAlignVerticalStyle({ gap: 4, alignItems: "flex-start" })}>
           <Typography color={COLORS.GRAY4} size={20} weight="bold">
             조금 더 자신을 소개하고 싶다면,
           </Typography>
           <Typography color={COLORS.GRAY4} size={20} weight="bold">
-            적어도 되지만
+            적어도 되지만{" "}
             <Typography color={COLORS.PINK2} size={20} weight="bold">
-              {" "}
               꼭 적을 필요는 없어요.
             </Typography>
           </Typography>
-        </React.Fragment>
+        </div>
       ),
       content: <TravelProfileForm />,
       button: "시작하기",
@@ -92,11 +91,8 @@ export const SignUpContainer = () => {
       `}
     >
       <div>
-        <SignUpHeader
-          step={step}
-          headerContent={stepList[step.current].header}
-        />
-        <SignUpContent step={step} stepList={stepList} />
+        <SignUpHeader headerContent={stepList[step.current].header} />
+        <BarStep step={step} stepList={stepList} disabled="next" />
       </div>
     </div>
   );
