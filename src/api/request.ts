@@ -1,5 +1,9 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import Cookies from "js-cookie";
+import {
+  setAccessTokenToCookie,
+  setRefreshTokenToCookie,
+} from "utils/token-utils";
 
 import { HOST_API_URL } from "./hosts/index";
 
@@ -54,10 +58,21 @@ request.interceptors.request.use((req) => {
 request.interceptors.response.use(
   (res) => {
     if (res.request.responseURL.includes(process.env.REACT_APP_HOST_API_URL)) {
+      if (res.headers["authorization"]) {
+        setAccessTokenToCookie(
+          res.headers["authorization"].replaceAll("Bearer ", "")
+        );
+      }
+      if (res.headers["authorization-refresh"]) {
+        setRefreshTokenToCookie(
+          res.headers["authorization-refresh"].replaceAll("Bearer ", "")
+        );
+      }
       return res.data;
     }
     return res;
   },
+
   async (error) => {
     const {
       config,
