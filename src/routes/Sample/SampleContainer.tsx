@@ -5,7 +5,7 @@ import { TravelInfoPreviewCard } from "routes/Chat/components/TravelInfoPreviewC
 import { TravelPlanModal } from "routes/Chat/components/TravelPlanModal/TravelPlanModal";
 import { ProfileFullModal } from "routes/ChatRoom/components/ProfileFullModal";
 
-import { usePostKaKaoSignOut } from "@/api/hooks/auth";
+import { usePostSignOut } from "@/api/hooks/auth";
 import { ReactComponent as ChatIcon } from "@/assets/icons/cross.svg";
 import { Button } from "@/components";
 import CheckButtonGroup from "@/components/CheckButton/CheckButtonGroup";
@@ -81,7 +81,7 @@ export const SampleContainer = () => {
     setIsOpenProfileFullModal(true);
   };
 
-  const mutationLogOut = usePostKaKaoSignOut();
+  const mutationLogOut = usePostSignOut();
 
   const handleLogOut = () => {
     mutationLogOut.mutate();

@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useHeaderState } from "states/useHeader";
+import { removeUserCookie } from "utils/token-utils";
 
+import { usePostSignOut } from "@/api/hooks/auth";
 import { ReactComponent as BellInfoIcon } from "@/assets/icons/bell-info.svg";
 import { ReactComponent as QnaIcon } from "@/assets/icons/qna.svg";
 import { Typography } from "@/components";
@@ -10,13 +13,17 @@ import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
 
+import { pageRoutes } from "..";
 import {
   cssMenuBtnStyle,
   cssSettingContainerStyle,
 } from "./SettingContainter.styles";
 
 export const SettingContainer = () => {
+  const navigate = useNavigate();
   const { setTitle } = useHeaderState();
+
+  const { mutate } = usePostSignOut();
 
   const [isOn, setIsOn] = useState(localStorage.getItem("isOn") === "true");
 
@@ -38,6 +45,16 @@ export const SettingContainer = () => {
       toast.success("알림이 꺼졌습니다.");
     }
   }, [isOn]);
+
+  const handleOnClickSignOut = () => {
+    mutate(undefined, {
+      onSettled: () => {
+        toast.success("로그아웃을 성공했습니다.");
+        removeUserCookie();
+        navigate(pageRoutes.SIGN_IN);
+      },
+    });
+  };
 
   return (
     <div css={cssSettingContainerStyle}>
@@ -67,7 +84,7 @@ export const SettingContainer = () => {
         </button>
       </div>
       <div css={cssAlignHorizontalStyle({ gap: 40 })}>
-        <button css={cssDefaultBtnStyle}>
+        <button css={cssDefaultBtnStyle} onClick={handleOnClickSignOut}>
           <Typography color={COLORS.GRAY2} size="12" weight={400}>
             로그아웃
           </Typography>
