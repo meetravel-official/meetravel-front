@@ -12,10 +12,9 @@ import {
   SIGN_UP_SCHEDULE_TYPE,
   SIGN_UP_TRAVEL_FREQUENCY_TYPE,
 } from "@/constants/signUp";
-import { cssAlignVerticalStyle } from "@/styles/align";
 
 import {
-  cssAgreetoTermsStyle,
+  cssFormItemStyle,
   cssRadioButtonStyle,
 } from "../styles/SignUpInnerContents.styles";
 
@@ -38,177 +37,171 @@ export const TravelProfileForm = ({
   const { onChange: onChangePlanningType } = registerField("planningType");
 
   return (
-    <div
-      css={css`
-        ${cssAlignVerticalStyle({
-          justifyContent: "space-between",
-          alignItems: "space-between",
-        })}
-        ${cssAgreetoTermsStyle}
-      `}
-    >
-      <Form formValue={form}>
-        <FormItem
-          label="1년에 여행은 몇 번정도 가시나요?"
-          name="travelFrequency"
-        >
-          <RadioButtonGroup
-            {...registerField("travelFrequency")}
-            defaultValue={
-              checkNotEmpty([form.travelFrequency])
-                ? form.travelFrequency?.value
-                : undefined
-            }
-            onChange={(e) => {
-              onChangeTravelFrequency(e);
-            }}
-            gridDetailStyle={css`
-              width: 100%;
-            `}
-          >
-            <RadioButtonGroup.RadioButton
-              value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.NEVER}
-              detailStyle={cssRadioButtonStyle(
-                form.travelFrequency?.value ===
-                  SIGN_UP_TRAVEL_FREQUENCY_TYPE.NEVER
-              )}
-            >
-              안 가요!
-            </RadioButtonGroup.RadioButton>
-            <RadioButtonGroup.RadioButton
-              value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.ONE_TO_THREE_TIMES}
-              detailStyle={cssRadioButtonStyle(
-                form.travelFrequency?.value ===
-                  SIGN_UP_TRAVEL_FREQUENCY_TYPE.ONE_TO_THREE_TIMES
-              )}
-            >
-              1-3
-            </RadioButtonGroup.RadioButton>
-            <RadioButtonGroup.RadioButton
-              value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.FOUR_TO_SIX_TIMES}
-              detailStyle={cssRadioButtonStyle(
-                form.travelFrequency?.value ===
-                  SIGN_UP_TRAVEL_FREQUENCY_TYPE.FOUR_TO_SIX_TIMES
-              )}
-            >
-              4-6
-            </RadioButtonGroup.RadioButton>
-            <RadioButtonGroup.RadioButton
-              value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.MORE_SEVEN_TIMES}
-              detailStyle={cssRadioButtonStyle(
-                form.travelFrequency?.value ===
-                  SIGN_UP_TRAVEL_FREQUENCY_TYPE.MORE_SEVEN_TIMES
-              )}
-            >
-              7번 이상
-            </RadioButtonGroup.RadioButton>
-          </RadioButtonGroup>
-        </FormItem>
-        <FormItem label="여행 취향은 어떻게 되세요?" name="travelFrequency">
-          <RadioButtonGroup
-            {...registerField("travelFrequency")}
-            defaultValue={
-              checkNotEmpty([form.travelFrequency])
-                ? form.travelFrequency?.value
-                : undefined
-            }
-            onChange={(e) => {
-              onChangeScheduleType(e);
-            }}
-            gridDetailStyle={css`
-              width: 100%;
-            `}
-          >
-            <RadioButtonGroup.RadioButton
-              value={SIGN_UP_SCHEDULE_TYPE.TIGHT}
-              detailStyle={cssRadioButtonStyle(
-                form.scheduleType?.value === SIGN_UP_SCHEDULE_TYPE.TIGHT
-              )}
-            >
-              빠듯하게
-            </RadioButtonGroup.RadioButton>
-            <RadioButtonGroup.RadioButton
-              value={SIGN_UP_SCHEDULE_TYPE.RELAX}
-              detailStyle={cssRadioButtonStyle(
-                form.scheduleType?.value === SIGN_UP_SCHEDULE_TYPE.RELAX
-              )}
-            >
-              여유롭게
-            </RadioButtonGroup.RadioButton>
-          </RadioButtonGroup>
-        </FormItem>
-        <FormItem
-          label=""
-          labelStyle={css`
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 20.39px;
+    <Form formValue={form}>
+      <FormItem
+        label="1년에 여행은 몇 번정도 가시나요?"
+        name="travelFrequency"
+        formItemStyle={cssFormItemStyle}
+      >
+        <RadioButtonGroup
+          {...registerField("travelFrequency")}
+          defaultValue={
+            checkNotEmpty([form.travelFrequency])
+              ? form.travelFrequency?.value
+              : undefined
+          }
+          onChange={(e) => {
+            onChangeTravelFrequency(e);
+          }}
+          gridDetailStyle={css`
+            width: 100%;
           `}
-          name="planningType"
         >
-          <RadioButtonGroup
-            {...registerField("planningType")}
-            defaultValue={
-              checkNotEmpty([form.planningType])
-                ? form.planningType?.value
-                : undefined
-            }
-            onChange={(e) => {
-              onChangePlanningType(e);
-            }}
-            gridDetailStyle={css`
-              width: 100%;
-            `}
+          <RadioButtonGroup.RadioButton
+            value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.NEVER}
+            detailStyle={cssRadioButtonStyle(
+              form.travelFrequency?.value ===
+                SIGN_UP_TRAVEL_FREQUENCY_TYPE.NEVER
+            )}
           >
-            <RadioButtonGroup.RadioButton
-              value={SIGN_UP_PLANNING_TYPE.PLANNED}
-              detailStyle={cssRadioButtonStyle(
-                form.planningType?.value === SIGN_UP_PLANNING_TYPE.PLANNED
-              )}
-            >
-              계획적으로
-            </RadioButtonGroup.RadioButton>
-            <RadioButtonGroup.RadioButton
-              value={SIGN_UP_PLANNING_TYPE.IMPROMPTU}
-              detailStyle={cssRadioButtonStyle(
-                form.planningType?.value === SIGN_UP_PLANNING_TYPE.IMPROMPTU
-              )}
-            >
-              즉흥적으로
-            </RadioButtonGroup.RadioButton>
-          </RadioButtonGroup>
-        </FormItem>
-        <FormItem label="취미" name="hobby">
-          <Input
-            {...registerField("hobby")}
-            type="text"
-            placeholder="취미를 적어주세요."
-            detailStyle={css`
-              width: 100%;
-            `}
-          />
-        </FormItem>
-        <FormItem label="MBTI" name="mbti">
-          <Input
-            {...registerField("mbti")}
-            type="text"
-            placeholder="MBTI는 어떻게 되시나요?"
-            detailStyle={css`
-              width: 100%;
-            `}
-          />
-        </FormItem>
-        <FormItem label="한 줄 자기 소개" name="intro">
-          <Input
-            {...registerField("intro")}
-            type="text"
-            placeholder="본인을 한 줄로 표현한다면?"
-            detailStyle={css`
-              width: 100%;
-            `}
-          />
-        </FormItem>
-      </Form>
-    </div>
+            안 가요!
+          </RadioButtonGroup.RadioButton>
+          <RadioButtonGroup.RadioButton
+            value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.ONE_TO_THREE_TIMES}
+            detailStyle={cssRadioButtonStyle(
+              form.travelFrequency?.value ===
+                SIGN_UP_TRAVEL_FREQUENCY_TYPE.ONE_TO_THREE_TIMES
+            )}
+          >
+            1-3
+          </RadioButtonGroup.RadioButton>
+          <RadioButtonGroup.RadioButton
+            value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.FOUR_TO_SIX_TIMES}
+            detailStyle={cssRadioButtonStyle(
+              form.travelFrequency?.value ===
+                SIGN_UP_TRAVEL_FREQUENCY_TYPE.FOUR_TO_SIX_TIMES
+            )}
+          >
+            4-6
+          </RadioButtonGroup.RadioButton>
+          <RadioButtonGroup.RadioButton
+            value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.MORE_SEVEN_TIMES}
+            detailStyle={cssRadioButtonStyle(
+              form.travelFrequency?.value ===
+                SIGN_UP_TRAVEL_FREQUENCY_TYPE.MORE_SEVEN_TIMES
+            )}
+          >
+            7번 이상
+          </RadioButtonGroup.RadioButton>
+        </RadioButtonGroup>
+      </FormItem>
+      <FormItem
+        label="여행 취향은 어떻게 되세요?"
+        name="travelFrequency"
+        formItemStyle={css`
+          ${cssFormItemStyle};
+          margin-bottom: 16px;
+        `}
+      >
+        <RadioButtonGroup
+          {...registerField("travelFrequency")}
+          defaultValue={
+            checkNotEmpty([form.travelFrequency])
+              ? form.travelFrequency?.value
+              : undefined
+          }
+          onChange={(e) => {
+            onChangeScheduleType(e);
+          }}
+          gridDetailStyle={css`
+            width: 100%;
+          `}
+        >
+          <RadioButtonGroup.RadioButton
+            value={SIGN_UP_SCHEDULE_TYPE.TIGHT}
+            detailStyle={cssRadioButtonStyle(
+              form.scheduleType?.value === SIGN_UP_SCHEDULE_TYPE.TIGHT
+            )}
+          >
+            빠듯하게
+          </RadioButtonGroup.RadioButton>
+          <RadioButtonGroup.RadioButton
+            value={SIGN_UP_SCHEDULE_TYPE.RELAX}
+            detailStyle={cssRadioButtonStyle(
+              form.scheduleType?.value === SIGN_UP_SCHEDULE_TYPE.RELAX
+            )}
+          >
+            여유롭게
+          </RadioButtonGroup.RadioButton>
+        </RadioButtonGroup>
+      </FormItem>
+      <FormItem label="" name="planningType" formItemStyle={cssFormItemStyle}>
+        <RadioButtonGroup
+          {...registerField("planningType")}
+          defaultValue={
+            checkNotEmpty([form.planningType])
+              ? form.planningType?.value
+              : undefined
+          }
+          onChange={(e) => {
+            onChangePlanningType(e);
+          }}
+          gridDetailStyle={css`
+            width: 100%;
+          `}
+        >
+          <RadioButtonGroup.RadioButton
+            value={SIGN_UP_PLANNING_TYPE.PLANNED}
+            detailStyle={cssRadioButtonStyle(
+              form.planningType?.value === SIGN_UP_PLANNING_TYPE.PLANNED
+            )}
+          >
+            계획적으로
+          </RadioButtonGroup.RadioButton>
+          <RadioButtonGroup.RadioButton
+            value={SIGN_UP_PLANNING_TYPE.IMPROMPTU}
+            detailStyle={cssRadioButtonStyle(
+              form.planningType?.value === SIGN_UP_PLANNING_TYPE.IMPROMPTU
+            )}
+          >
+            즉흥적으로
+          </RadioButtonGroup.RadioButton>
+        </RadioButtonGroup>
+      </FormItem>
+      <FormItem label="취미" name="hobby" formItemStyle={cssFormItemStyle}>
+        <Input
+          {...registerField("hobby")}
+          type="text"
+          placeholder="취미를 적어주세요."
+          detailStyle={css`
+            width: 100%;
+          `}
+        />
+      </FormItem>
+      <FormItem label="MBTI" name="mbti" formItemStyle={cssFormItemStyle}>
+        <Input
+          {...registerField("mbti")}
+          type="text"
+          placeholder="MBTI는 어떻게 되시나요?"
+          detailStyle={css`
+            width: 100%;
+          `}
+        />
+      </FormItem>
+      <FormItem
+        label="한 줄 자기 소개"
+        name="intro"
+        formItemStyle={cssFormItemStyle}
+      >
+        <Input
+          {...registerField("intro")}
+          type="text"
+          placeholder="본인을 한 줄로 표현한다면?"
+          detailStyle={css`
+            width: 100%;
+          `}
+        />
+      </FormItem>
+    </Form>
   );
 };

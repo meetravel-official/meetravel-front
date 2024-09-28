@@ -31,3 +31,9 @@ export const cssRadioButtonStyle = (isActive: boolean) => css`
   outline: ${isActive ? `1px solid ${COLORS.PINK3}` : "none"} !important;
   color: ${isActive ? COLORS.PINK3 : COLORS.GRAY3};
 `;
+
+export const cssFormItemStyle = css`
+  width: calc(100% - 2px);
+  margin-bottom: 20px;
+  transform: translateX(1px);
+`;
