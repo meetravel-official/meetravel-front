@@ -27,3 +27,9 @@ export const getUserData: () => IGetKakaoLoginResponse = () => {
   if (cookieUserInfo) return JSON.parse(cookieUserInfo);
   return {};
 };
+
+export const removeUserCookie = () => {
+  Cookies.remove(accessTokenKey);
+  Cookies.remove(userInfoKey);
+  Cookies.remove(refreshTokenKey);
+};

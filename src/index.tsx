@@ -9,7 +9,13 @@ import { HelmetProvider } from "react-helmet-async";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
-import { CloseLayout, MainLayout, Meta, SimpleLayout } from "@/components";
+import {
+  BackLayout,
+  CloseLayout,
+  MainLayout,
+  Meta,
+  SimpleLayout,
+} from "@/components";
 import { cssGlobalStyle } from "@/styles/globalStyle";
 
 import { ChatLayout } from "./components/ChatLayout/ChatLayout";
@@ -52,6 +58,12 @@ const router = createBrowserRouter([
     element: <ProfileLayout />,
     children: [
       { path: pageRoutes.PROFILE, Component: containerRoutes.PROFILE },
+    ],
+  },
+  {
+    element: <BackLayout />,
+    children: [
+      { path: pageRoutes.SETTING, Component: containerRoutes.SETTING },
     ],
   },
   {

@@ -3,12 +3,9 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
 import { getUserData } from "utils/token-utils";
 
 import { SIGN_UP_SOCIAL_TYPE } from "@/constants/signUp";
-import { pageRoutes } from "@/routes";
 
 import {
   IGetKakaoLoginResponse,
@@ -52,20 +49,18 @@ export const usePostSignUp = () => {
   });
 };
 
-export const usePostKaKaoSignOut = () => {
-  const navigate = useNavigate();
+export const usePostSignOut = () => {
   return useMutation({
     mutationFn: (): Promise<AxiosResponse<any, any>> => {
       return api.post(authApiRoute.postLogOut, undefined);
     },
-    onSuccess: () => {
-      console.log("로그아웃을 성공했습니다.");
-      Cookies.remove("accessToken");
-      Cookies.remove("refreshToken");
-      navigate(pageRoutes.SIGN_IN);
-    },
-    onError: (error) => {
-      console.error("로그아웃을 실패했습니다.", error);
+  });
+};
+
+export const useDeleteUser = () => {
+  return useMutation<AxiosResponse, AxiosError>({
+    mutationFn: () => {
+      return api.delete(authApiRoute.usersDelete);
     },
   });
 };
