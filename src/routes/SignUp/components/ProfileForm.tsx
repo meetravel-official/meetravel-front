@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import { useEffect, useMemo, useState } from "react";
+import { cssRadioButtonStyle } from "routes/Profile/components/ProfileEditModal.styles";
 import { useSignUpState } from "states/useSignUp";
 
 import { useGetCheckNickname } from "@/api/hooks/auth";
@@ -189,33 +190,17 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
           >
             <RadioButtonGroup.RadioButton
               value={SIGN_UP_GENDER_TYPE.FEMALE}
-              detailStyle={css`
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 20.39px;
-                width: 100%;
-                height: 48px;
-                background-color: ${form.gender?.value ===
-                SIGN_UP_GENDER_TYPE.MALE
-                  ? COLORS.GRAY2
-                  : ""};
-              `}
+              detailStyle={cssRadioButtonStyle(
+                form.gender?.value === SIGN_UP_GENDER_TYPE.FEMALE
+              )}
             >
               여성
             </RadioButtonGroup.RadioButton>
             <RadioButtonGroup.RadioButton
               value={SIGN_UP_GENDER_TYPE.MALE}
-              detailStyle={css`
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 20.39px;
-                width: 100%;
-                height: 48px;
-                background-color: ${form.gender?.value ===
-                SIGN_UP_GENDER_TYPE.FEMALE
-                  ? COLORS.GRAY2
-                  : ""};
-              `}
+              detailStyle={cssRadioButtonStyle(
+                form.gender?.value === SIGN_UP_GENDER_TYPE.MALE
+              )}
             >
               남성
             </RadioButtonGroup.RadioButton>

@@ -13,9 +13,11 @@ import {
   SIGN_UP_TRAVEL_FREQUENCY_TYPE,
 } from "@/constants/signUp";
 import { cssAlignVerticalStyle } from "@/styles/align";
-import { COLORS } from "@/styles/color";
 
-import { cssAgreetoTermsStyle } from "../styles/SignUpInnerContents.styles";
+import {
+  cssAgreetoTermsStyle,
+  cssRadioButtonStyle,
+} from "../styles/SignUpInnerContents.styles";
 
 interface TravelProfileFormProps {
   form: FormValues<ISignUpTravelProfileForm>;
@@ -71,65 +73,37 @@ export const TravelProfileForm = ({
           >
             <RadioButtonGroup.RadioButton
               value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.NEVER}
-              detailStyle={css`
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 20.39px;
-                width: 100%;
-                height: 48px;
-                background-color: ${form.travelFrequency?.value !==
-                SIGN_UP_TRAVEL_FREQUENCY_TYPE.NEVER
-                  ? COLORS.GRAY2
-                  : ""};
-              `}
+              detailStyle={cssRadioButtonStyle(
+                form.travelFrequency?.value ===
+                  SIGN_UP_TRAVEL_FREQUENCY_TYPE.NEVER
+              )}
             >
               안 가요!
             </RadioButtonGroup.RadioButton>
             <RadioButtonGroup.RadioButton
               value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.ONE_TO_THREE_TIMES}
-              detailStyle={css`
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 20.39px;
-                width: 100%;
-                height: 48px;
-                background-color: ${form.travelFrequency?.value !==
-                SIGN_UP_TRAVEL_FREQUENCY_TYPE.ONE_TO_THREE_TIMES
-                  ? COLORS.GRAY2
-                  : ""};
-              `}
+              detailStyle={cssRadioButtonStyle(
+                form.travelFrequency?.value ===
+                  SIGN_UP_TRAVEL_FREQUENCY_TYPE.ONE_TO_THREE_TIMES
+              )}
             >
               1-3
             </RadioButtonGroup.RadioButton>
             <RadioButtonGroup.RadioButton
               value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.FOUR_TO_SIX_TIMES}
-              detailStyle={css`
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 20.39px;
-                width: 100%;
-                height: 48px;
-                background-color: ${form.travelFrequency?.value !==
-                SIGN_UP_TRAVEL_FREQUENCY_TYPE.FOUR_TO_SIX_TIMES
-                  ? COLORS.GRAY2
-                  : ""};
-              `}
+              detailStyle={cssRadioButtonStyle(
+                form.travelFrequency?.value ===
+                  SIGN_UP_TRAVEL_FREQUENCY_TYPE.FOUR_TO_SIX_TIMES
+              )}
             >
               4-6
             </RadioButtonGroup.RadioButton>
             <RadioButtonGroup.RadioButton
               value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.MORE_SEVEN_TIMES}
-              detailStyle={css`
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 20.39px;
-                width: 100%;
-                height: 48px;
-                background-color: ${form.travelFrequency?.value !==
-                SIGN_UP_TRAVEL_FREQUENCY_TYPE.MORE_SEVEN_TIMES
-                  ? COLORS.GRAY2
-                  : ""};
-              `}
+              detailStyle={cssRadioButtonStyle(
+                form.travelFrequency?.value ===
+                  SIGN_UP_TRAVEL_FREQUENCY_TYPE.MORE_SEVEN_TIMES
+              )}
             >
               7번 이상
             </RadioButtonGroup.RadioButton>
@@ -160,33 +134,17 @@ export const TravelProfileForm = ({
           >
             <RadioButtonGroup.RadioButton
               value={SIGN_UP_SCHEDULE_TYPE.TIGHT}
-              detailStyle={css`
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 20.39px;
-                width: 100%;
-                height: 48px;
-                background-color: ${form.scheduleType?.value ===
-                SIGN_UP_SCHEDULE_TYPE.RELAX
-                  ? COLORS.GRAY2
-                  : ""};
-              `}
+              detailStyle={cssRadioButtonStyle(
+                form.scheduleType?.value === SIGN_UP_SCHEDULE_TYPE.TIGHT
+              )}
             >
               빠듯하게
             </RadioButtonGroup.RadioButton>
             <RadioButtonGroup.RadioButton
               value={SIGN_UP_SCHEDULE_TYPE.RELAX}
-              detailStyle={css`
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 20.39px;
-                width: 100%;
-                height: 48px;
-                background-color: ${form.scheduleType?.value ===
-                SIGN_UP_SCHEDULE_TYPE.TIGHT
-                  ? COLORS.GRAY2
-                  : ""};
-              `}
+              detailStyle={cssRadioButtonStyle(
+                form.scheduleType?.value === SIGN_UP_SCHEDULE_TYPE.RELAX
+              )}
             >
               여유롭게
             </RadioButtonGroup.RadioButton>
@@ -217,33 +175,17 @@ export const TravelProfileForm = ({
           >
             <RadioButtonGroup.RadioButton
               value={SIGN_UP_PLANNING_TYPE.PLANNED}
-              detailStyle={css`
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 20.39px;
-                width: 100%;
-                height: 48px;
-                background-color: ${form.planningType?.value ==
-                SIGN_UP_PLANNING_TYPE.IMPROMPTU
-                  ? COLORS.GRAY2
-                  : ""};
-              `}
+              detailStyle={cssRadioButtonStyle(
+                form.planningType?.value === SIGN_UP_PLANNING_TYPE.PLANNED
+              )}
             >
               계획적으로
             </RadioButtonGroup.RadioButton>
             <RadioButtonGroup.RadioButton
               value={SIGN_UP_PLANNING_TYPE.IMPROMPTU}
-              detailStyle={css`
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 20.39px;
-                width: 100%;
-                height: 48px;
-                background-color: ${form.planningType?.value ==
-                SIGN_UP_PLANNING_TYPE.PLANNED
-                  ? COLORS.GRAY2
-                  : ""};
-              `}
+              detailStyle={cssRadioButtonStyle(
+                form.planningType?.value === SIGN_UP_PLANNING_TYPE.IMPROMPTU
+              )}
             >
               즉흥적으로
             </RadioButtonGroup.RadioButton>

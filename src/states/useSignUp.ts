@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 import { IProfile } from "@/api/interfaces/kakaoSignUpInterface";
+import { SIGN_UP_GENDER_TYPE } from "@/constants/signUp";
 
 interface ISignUpState {
   agreePrivacy: boolean;
@@ -25,7 +26,7 @@ export const useSignUpState = create<ISignUpState>((set) => {
       birthDayYear: "",
       birthDayMonth: "",
       birthDayDate: "",
-      gender: "",
+      gender: SIGN_UP_GENDER_TYPE.FEMALE,
       phoneNumber: "",
       profileImageUrl: "",
     },
