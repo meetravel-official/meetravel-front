@@ -1,4 +1,4 @@
-import { css } from "@emotion/react";
+import { useEffect } from "react";
 import { useSignUpState } from "states/useSignUp";
 
 import { Button, Typography } from "@/components";
@@ -7,7 +7,6 @@ import { privacyPolicyLink, termsOfUseLink } from "@/constants/link";
 import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
-import { ISignUpProps } from "../SignUpContainer";
 import {
   cssAgreetoTermsStyle,
   cssTermBtnBoxStyle,
@@ -15,9 +14,14 @@ import {
   cssTermCheckboxStyle,
 } from "../styles/SignUpInnerContents.styles";
 
-export const AgreetoTerms = ({ step }: ISignUpProps) => {
-  const { agreePrivacy, agreeTermsOfUse, setAgreePrivacy, setAgreeTermsOfUse } =
-    useSignUpState();
+export const AgreetoTerms = () => {
+  const {
+    agreePrivacy,
+    agreeTermsOfUse,
+    setAgreePrivacy,
+    setAgreeTermsOfUse,
+    setNextButtonProps,
+  } = useSignUpState();
 
   const handleOnClickTerms = (type: "private" | "termsOfUse") => {
     if (type === "private") {
@@ -27,9 +31,13 @@ export const AgreetoTerms = ({ step }: ISignUpProps) => {
     }
   };
 
-  const handleOnClickNext = () => {
-    step.handleOnClickNext();
-  };
+  useEffect(() => {
+    if (agreePrivacy && agreeTermsOfUse) {
+      setNextButtonProps({ disabled: false });
+    } else {
+      setNextButtonProps({ disabled: true });
+    }
+  }, [agreePrivacy, agreeTermsOfUse, setNextButtonProps]);
 
   return (
     <div css={cssAgreetoTermsStyle}>
@@ -70,30 +78,6 @@ export const AgreetoTerms = ({ step }: ISignUpProps) => {
             </Typography>
           </Button>
         </div>
-      </div>
-      <div css={cssAlignVerticalStyle} className="button-to-next">
-        <div
-          css={css`
-            padding: 32px;
-            ${cssAlignVerticalStyle({})}
-          `}
-        >
-          <Typography color={COLORS.GRAY4} size="12">
-            *이용약관 미동의 시,
-          </Typography>
-          <Typography color={COLORS.GRAY4} size="12">
-            미트래블 이용이 불가해요.
-          </Typography>
-        </div>
-        <Button
-          bgColor={COLORS.PINK3}
-          onClick={handleOnClickNext}
-          disabled={!agreePrivacy || !agreeTermsOfUse}
-        >
-          <Typography color={COLORS.WHITE} weight="bold" size={16}>
-            다음
-          </Typography>
-        </Button>
       </div>
     </div>
   );

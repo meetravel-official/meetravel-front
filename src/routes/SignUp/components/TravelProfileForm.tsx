@@ -6,7 +6,6 @@ import {
   IPostKaKaoSignUpRequest,
   ISignUpTravelProfileForm,
 } from "@/api/interfaces/kakaoSignUpInterface";
-import { Button, Typography } from "@/components";
 import Form from "@/components/Form/Form";
 import { FormItem } from "@/components/Form/FormItem";
 import useForm from "@/components/Form/useForm";
@@ -318,13 +317,6 @@ export const TravelProfileForm = () => {
           />
         </FormItem>
       </Form>
-      <div className="button-to-next">
-        <Button bgColor={COLORS.PINK3} onClick={handleOnNextStep}>
-          <Typography color={COLORS.WHITE} weight="bold" size={16}>
-            시작하기
-          </Typography>
-        </Button>
-      </div>
     </div>
   );
 };

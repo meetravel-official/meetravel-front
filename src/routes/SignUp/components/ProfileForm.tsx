@@ -15,10 +15,9 @@ import { SIGN_UP_GENDER_TYPE } from "@/constants/signUp";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
-import { ISignUpProps } from "../SignUpContainer";
 import { cssAgreetoTermsStyle } from "../styles/SignUpInnerContents.styles";
 
-export const ProfileForm = ({ step }: ISignUpProps) => {
+export const ProfileForm = () => {
   const [formErrors, setFormErrors] = useState<
     { error: keyof ISignUpEssentialForm; errorText: string }[] | undefined
   >(undefined);
@@ -136,7 +135,6 @@ export const ProfileForm = ({ step }: ISignUpProps) => {
           profileImageUrl: form.profileImageUrl?.value || "",
         };
         setSignUpInfo({ ...signUpInfo, ...signUpFormInfo });
-        step.handleOnClickNext();
       }
     });
   };
@@ -392,19 +390,11 @@ export const ProfileForm = ({ step }: ISignUpProps) => {
             width={"max-content"}
             bgColor={COLORS.PINK2}
             color={COLORS.WHITE}
-            // TODO: onClick
           >
             인증 완료
           </Button>
         </div>
       </Form>
-      <div className="button-to-next">
-        <Button bgColor={COLORS.PINK3} onClick={handleOnNextStep}>
-          <Typography color={COLORS.WHITE} weight="bold" size={16}>
-            다음
-          </Typography>
-        </Button>
-      </div>
     </div>
   );
 };
