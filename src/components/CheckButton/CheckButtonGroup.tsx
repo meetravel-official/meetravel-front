@@ -1,5 +1,5 @@
 import { SerializedStyles } from "@emotion/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { GroupContainer } from "../RadioButton/RadioButton.style";
 import CheckButton from "./CheckButton";
@@ -10,6 +10,7 @@ export type GridType = "column" | "row";
 interface ICheckButtonGroupProps {
   children: React.ReactNode;
   defaultValue?: string[];
+  value?: string | string[];
   onChange?: (value: string[]) => void;
   gridType?: GridType;
   gridDetailStyle?: SerializedStyles;
@@ -25,6 +26,7 @@ interface ICheckButtonGroupProps {
  */
 const CheckButtonGroup = ({
   children,
+  value,
   defaultValue,
   maxSelect,
   onChange,
@@ -57,6 +59,16 @@ const CheckButtonGroup = ({
       );
     }
   };
+
+  useEffect(() => {
+    if (value) {
+      if (Array.isArray(value)) setSelectedValue(value);
+      else {
+        if (value.length > 0) setSelectedValue([value]);
+        else setSelectedValue([]);
+      }
+    }
+  }, [value]);
 
   return (
     <div role="group" css={GroupContainer(gridType, gridDetailStyle)}>

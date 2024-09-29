@@ -62,8 +62,7 @@ export const TravelPlanModal = ({
           <div css={cssAlignVerticalStyle({ gap: 32 })}>
             <FormItem name="keyword" label="이번 여행의 테마는">
               <CheckButtonGroup
-                {...registerField("keyword")}
-                buttonDetailStyle={css``}
+                {...registerField<"keyword">("keyword")}
                 gridDetailStyle={css`
                   all: unset;
                   display: flex;
