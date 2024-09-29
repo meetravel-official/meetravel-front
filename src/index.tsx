@@ -64,6 +64,10 @@ const router = createBrowserRouter([
     element: <BackLayout />,
     children: [
       { path: pageRoutes.SETTING, Component: containerRoutes.SETTING },
+      {
+        path: pageRoutes.NOTIFICATION,
+        Component: containerRoutes.NOTIFICATION,
+      },
     ],
   },
   {
