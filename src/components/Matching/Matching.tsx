@@ -10,6 +10,7 @@ import { Button } from "../Button/Button";
 import Form from "../Form/Form";
 import useForm from "../Form/useForm";
 import Modal from "../Modal/Modal";
+import Potal from "../Potal/Potal";
 import { Step } from "../Step";
 import { Typography } from "../Typography/Typography";
 import First from "./First";
