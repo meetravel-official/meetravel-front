@@ -187,18 +187,15 @@ export const ProfileEditModal = () => {
       try {
         await mutateNickname({ nickname: value.nickname.value || "" });
         await mutateInfo({
-          travelFrequency:
-            (value.travelFrequency
-              .value as GetMyPageResponseTravelFrequencyEnum) || "",
-          mbti: (value.mbti.value as GetMyPageResponseMbtiEnum) || "",
-          planningType:
-            (value.planningType.value as GetMyPageResponsePlanningTypeEnum) ||
-            "",
-          scheduleType:
-            (value.scheduleType.value as GetMyPageResponseScheduleTypeEnum) ||
-            "",
-          hobby: value.hobby.value || "",
-          intro: value.intro.value || "",
+          travelFrequency: value.travelFrequency
+            .value as GetMyPageResponseTravelFrequencyEnum,
+          mbti: (value.mbti.value as GetMyPageResponseMbtiEnum) || undefined,
+          planningType: value.planningType
+            .value as GetMyPageResponsePlanningTypeEnum,
+          scheduleType: value.scheduleType
+            .value as GetMyPageResponseScheduleTypeEnum,
+          hobby: value.hobby.value,
+          intro: value.intro.value,
         });
         await queryClient.invalidateQueries({ queryKey: ["useGetMyPage"] });
         toast.success("프로필이 수정되었습니다.");
