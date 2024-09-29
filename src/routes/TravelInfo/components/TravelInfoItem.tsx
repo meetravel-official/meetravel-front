@@ -29,9 +29,7 @@ export const TravelInfoItem = ({ travelInfo }: TravelInfoItemProps) => {
     useTravelInfo();
 
   const [isLike, setIsLike] = useState(
-    travelInfo.contentid
-      ? localStorage.getItem(travelInfo.contentid) === "like"
-      : false
+    travelInfo.contentid ? !!localStorage.getItem(travelInfo.contentid) : false
   );
   const [isOpenShareModal, setIsOpenShareModal] = useState(false);
 
@@ -46,7 +44,7 @@ export const TravelInfoItem = ({ travelInfo }: TravelInfoItemProps) => {
         localStorage.removeItem(travelInfo.contentid);
         setIsLike(false);
       } else {
-        localStorage.setItem(travelInfo.contentid, "like");
+        localStorage.setItem(travelInfo.contentid, JSON.stringify(travelInfo));
         setIsLike(true);
       }
     }
