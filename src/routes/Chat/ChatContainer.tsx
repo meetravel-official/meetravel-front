@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import { chatData1 } from "dummies/chat";
 import { Fragment, ReactNode, useState } from "react";
 import { Link } from "react-router-dom";
+import { checkUser } from "utils/check-user";
 
 import { useGetChatRooms } from "@/api/hooks/chat";
 import { ChatStatus, IChatData } from "@/api/interfaces/chat";
@@ -15,7 +16,7 @@ import { cssChatHrStyle } from "./ChatContainer.styles";
 import NotFoundChat from "./components/NotFoundChat";
 import { TravelReviewModal } from "./components/TravelReviewModal/TravelReviewModal";
 
-export const ChatContainer = () => {
+export const ChatContainer = checkUser(() => {
   const [isOpenTravelReviewModal, setIsOpenTravelReviewModal] = useState(false);
   const [isOpenTravelDoneModal, setIsOpenTravelDoneModal] = useState(false);
 
@@ -122,4 +123,4 @@ export const ChatContainer = () => {
       />
     </Fragment>
   );
-};
+});

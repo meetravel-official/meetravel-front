@@ -11,6 +11,7 @@ import {
   useProfileFullModal,
   useProfileModal,
 } from "states/useChat";
+import { checkUser } from "utils/check-user";
 
 import { useGetChatUsers } from "@/api/hooks/chat";
 import { IChatMessageData } from "@/api/interfaces/chat";
@@ -38,7 +39,7 @@ import { ProfileFullModal } from "./components/ProfileFullModal";
 import ReportModal from "./components/ReportModal";
 import TitleHeader from "./components/TitleHeader";
 
-const ChatRoomContainer = () => {
+const ChatRoomContainer = checkUser(() => {
   const client = useRef<CompatClient>();
   const [inputText, setInputText] = useState<string>();
   const [chatMessage, setChatMessage] = useState<IChatMessageData>();
@@ -343,5 +344,5 @@ const ChatRoomContainer = () => {
       />
     </Fragment>
   );
-};
+});
 export default ChatRoomContainer;

@@ -2,6 +2,7 @@ import { Fragment, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useHeaderState } from "states/useHeader";
+import { checkUser } from "utils/check-user";
 import { removeUserCookie } from "utils/token-utils";
 
 import { useDeleteUser, usePostSignOut } from "@/api/hooks/auth";
@@ -21,7 +22,7 @@ import {
   cssSettingContainerStyle,
 } from "./SettingContainter.styles";
 
-export const SettingContainer = () => {
+export const SettingContainer = checkUser(() => {
   const navigate = useNavigate();
   const { setTitle } = useHeaderState();
 
@@ -152,4 +153,4 @@ export const SettingContainer = () => {
       </Modal>
     </div>
   );
-};
+});

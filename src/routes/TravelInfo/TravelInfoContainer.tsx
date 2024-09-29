@@ -1,11 +1,12 @@
 import { Fragment, useEffect } from "react";
 import { useTravelInfo } from "states/useTravelInfo";
+import { checkUser } from "utils/check-user";
 
 import { TravelInfoDetailModal } from "@/components/TravelInfoDetailModal/TravelInfoDetailModal";
 
 import { TravelInfoList } from "./components/TravelInfoList";
 
-export const TravelInfoContainer = () => {
+export const TravelInfoContainer = checkUser(() => {
   const {
     isOpenTravelInfoDetailModal,
     setIsOpenTravelInfoDetailModal,
@@ -28,4 +29,4 @@ export const TravelInfoContainer = () => {
       />
     </Fragment>
   );
-};
+});

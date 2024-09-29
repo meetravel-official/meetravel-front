@@ -1,10 +1,11 @@
 import { css } from "@emotion/react";
 import { useEffect } from "react";
 import { useHeaderState } from "states/useHeader";
+import { checkUser } from "utils/check-user";
 
 import NotFound from "@/components/NotFound/NotFound";
 
-export const NotificationContainer = () => {
+export const NotificationContainer = checkUser(() => {
   const { setTitle } = useHeaderState();
 
   useEffect(() => {
@@ -21,4 +22,4 @@ export const NotificationContainer = () => {
       />
     </div>
   );
-};
+});
