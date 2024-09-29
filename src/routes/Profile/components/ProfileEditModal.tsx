@@ -261,7 +261,7 @@ export const ProfileEditModal = () => {
         }
       >
         <div css={cssAlignVerticalStyle({ gap: 16, alignItems: "center" })}>
-          <div css={cssEditProfileImgBoxStyle}>
+          {/* <div css={cssEditProfileImgBoxStyle}>
             <UserAvatar profileUrl={form.profileImageUrl.value} size={80} />
             <Popover.Root open={isOpenPopover}>
               <Popover.Trigger asChild>
@@ -290,7 +290,7 @@ export const ProfileEditModal = () => {
                 </Popover.Content>
               </Popover.Portal>
             </Popover.Root>
-          </div>
+          </div> */}
           <Form
             formValue={form}
             formStyle={css`
