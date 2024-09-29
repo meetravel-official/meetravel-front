@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useTravelInfo } from "states/useTravelInfo";
 
 import { IAreaBasedList } from "@/api/interfaces/visitKorea";
 import { ReactComponent as HearIcon } from "@/assets/icons/heart.svg";
@@ -22,30 +21,45 @@ import {
 
 interface TravelInfoItemProps {
   travelInfo: IAreaBasedList;
+  onClickItem: (travelInfo: IAreaBasedList) => void;
 }
 
-export const TravelInfoItem = ({ travelInfo }: TravelInfoItemProps) => {
-  const { setSelectedContent, setIsOpenTravelInfoDetailModal } =
-    useTravelInfo();
-
+export const TravelInfoItem = ({
+  travelInfo,
+  onClickItem,
+}: TravelInfoItemProps) => {
   const [isLike, setIsLike] = useState(
     travelInfo.contentid ? !!localStorage.getItem(travelInfo.contentid) : false
   );
   const [isOpenShareModal, setIsOpenShareModal] = useState(false);
 
   const handleOnClickTravelInfoItem = () => {
-    setSelectedContent(travelInfo);
-    setIsOpenTravelInfoDetailModal(true);
+    onClickItem(travelInfo);
   };
 
   const handleOnLike = () => {
     if (travelInfo.contentid) {
+      const likePlaceList: string[] =
+        typeof localStorage.getItem("likePlaceList") === "string"
+          ? JSON.parse(localStorage.getItem("likePlaceList") as string)
+          : [];
       if (isLike) {
-        localStorage.removeItem(travelInfo.contentid);
+        const filteredLikePlaceList = likePlaceList.filter(
+          (item: string) => item !== travelInfo.contentid
+        );
         setIsLike(false);
+        localStorage.removeItem(travelInfo.contentid);
+        localStorage.setItem(
+          "likePlaceList",
+          JSON.stringify(filteredLikePlaceList)
+        );
       } else {
         localStorage.setItem(travelInfo.contentid, JSON.stringify(travelInfo));
         setIsLike(true);
+        localStorage.setItem(
+          "likePlaceList",
+          JSON.stringify([...likePlaceList, travelInfo.contentid])
+        );
       }
     }
   };
@@ -68,7 +82,6 @@ export const TravelInfoItem = ({ travelInfo }: TravelInfoItemProps) => {
   };
 
   const handleOnShare = () => {
-    console.log("share");
     handleOnCloseShareModal();
   };
 

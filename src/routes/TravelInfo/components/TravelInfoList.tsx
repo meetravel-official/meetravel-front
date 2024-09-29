@@ -3,12 +3,14 @@ import { useInView } from "react-intersection-observer";
 import { useTravelInfo } from "states/useTravelInfo";
 
 import { useGetAreaBasedList } from "@/api/hooks/visitKorea";
+import { IAreaBasedList } from "@/api/interfaces/visitKorea";
 import { cssAlignVerticalStyle } from "@/styles/align";
 
 import { TravelInfoItem } from "./TravelInfoItem";
 
 export const TravelInfoList = () => {
-  const { searchValue } = useTravelInfo();
+  const { searchValue, setSelectedContent, setIsOpenTravelInfoDetailModal } =
+    useTravelInfo();
 
   const {
     data: areaBasedListData,
@@ -29,6 +31,11 @@ export const TravelInfoList = () => {
     return [];
   }, [areaBasedListData]);
 
+  const handleOnClickTravelInfoItem = (travelInfo: IAreaBasedList) => {
+    setSelectedContent(travelInfo);
+    setIsOpenTravelInfoDetailModal(true);
+  };
+
   useEffect(() => {
     if (inView && hasNextPage) {
       fetchNextPage();
@@ -38,7 +45,11 @@ export const TravelInfoList = () => {
   return (
     <div css={cssAlignVerticalStyle({ gap: 8 })}>
       {travelInfoItemList.map((item, index) => (
-        <TravelInfoItem key={index} travelInfo={item} />
+        <TravelInfoItem
+          key={index}
+          travelInfo={item}
+          onClickItem={handleOnClickTravelInfoItem}
+        />
       ))}
       <div ref={ref} />
     </div>
