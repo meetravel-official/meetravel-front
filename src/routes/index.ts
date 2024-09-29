@@ -1,6 +1,7 @@
 import { ChatContainer } from "./Chat/ChatContainer";
 import ChatRoomContainer from "./ChatRoom/ChatRoomContainer";
 import { HomeContainer } from "./Home/HomeContainer";
+import { LikePlaceContainer } from "./LikePlace/LikePlaceContainer";
 import NotFoundPage from "./NotFoundPage";
 import { NotificationContainer } from "./Notification/NotificationContainer";
 import { ProfileContainer } from "./Profile/ProfileContainer";
@@ -27,6 +28,7 @@ export const pageRoutes = {
   SAMPLE: "/sample",
   NOTFOUND: "/*",
   NOTIFICATION: "/notification",
+  LIKE_PLACE: "/like-place",
 };
 
 export const containerRoutes = {
@@ -44,4 +46,5 @@ export const containerRoutes = {
   TRAVEL_INFO: TravelInfoContainer,
   NOTFOUND: NotFoundPage,
   NOTIFICATION: NotificationContainer,
+  LIKE_PLACE: LikePlaceContainer,
 };
