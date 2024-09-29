@@ -176,7 +176,7 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
         padding-bottom: 80px;
       `}
     >
-      <div css={cssEditProfileImgBoxStyle}>
+      {/* <div css={cssEditProfileImgBoxStyle}>
         <UserAvatar profileUrl={form.profileImageUrl?.value} size={80} />
         <Popover.Root open={isOpenPopover}>
           <Popover.Trigger asChild>
@@ -205,7 +205,7 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
             </Popover.Content>
           </Popover.Portal>
         </Popover.Root>
-      </div>
+      </div> */}
       <FormItem
         label="이름"
         name="name"
