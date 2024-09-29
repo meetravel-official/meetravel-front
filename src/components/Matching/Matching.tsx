@@ -10,6 +10,7 @@ import { Button } from "../Button/Button";
 import Form from "../Form/Form";
 import useForm from "../Form/useForm";
 import Modal from "../Modal/Modal";
+import Potal from "../Potal/Potal";
 import { Step } from "../Step";
 import { Typography } from "../Typography/Typography";
 import First from "./First";
@@ -111,7 +112,9 @@ const MatchingButton = () => {
       >
         <Logo fill={COLORS.WHITE} width={60} height={60} />
       </Button>
+      <Potal>
       <Modal
+          zIndex={105}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title={
@@ -168,6 +171,7 @@ const MatchingButton = () => {
           />
         </Form>
       </Modal>
+      </Potal>
     </Fragment>
   );
 };
