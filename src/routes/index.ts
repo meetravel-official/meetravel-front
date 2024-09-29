@@ -2,6 +2,7 @@ import { ChatContainer } from "./Chat/ChatContainer";
 import ChatRoomContainer from "./ChatRoom/ChatRoomContainer";
 import { HomeContainer } from "./Home/HomeContainer";
 import NotFoundPage from "./NotFoundPage";
+import { NotificationContainer } from "./Notification/NotificationContainer";
 import { ProfileContainer } from "./Profile/ProfileContainer";
 import { SampleContainer } from "./Sample/SampleContainer";
 import { SearchContainer } from "./Search/SearchContainer";
@@ -25,6 +26,7 @@ export const pageRoutes = {
   TOS: "/terms-of-service",
   SAMPLE: "/sample",
   NOTFOUND: "/*",
+  NOTIFICATION: "/notification",
 };
 
 export const containerRoutes = {
@@ -41,4 +43,5 @@ export const containerRoutes = {
   TOS: TermsOfServiceContainer,
   TRAVEL_INFO: TravelInfoContainer,
   NOTFOUND: NotFoundPage,
+  NOTIFICATION: NotificationContainer,
 };

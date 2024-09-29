@@ -1,5 +1,6 @@
 import { dummyChatData } from "dummies/chat";
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { checkUser } from "utils/check-user";
 
 import { ChatStatus, IChatData } from "@/api/interfaces/chat";
@@ -12,9 +13,12 @@ import { cssAlignVerticalStyle } from "@/styles/align";
 import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
 
+import { pageRoutes } from "..";
 import { BannerCarousel } from "./components/BannerCarousel";
 import { cssHomeContainerStyle } from "./HomeContainer.styles";
 export const HomeContainer = checkUser(() => {
+  const navigate = useNavigate();
+
   const pageSize = 3;
   const [page, setPage] = useState<number>(0);
 
@@ -63,6 +67,9 @@ export const HomeContainer = checkUser(() => {
             align="start"
             link
             linkColor={COLORS.GRAY2}
+            onClick={() => {
+              navigate(pageRoutes.NOTIFICATION);
+            }}
           >
             <Typography color={COLORS.GRAY4} weight="bold" size={16}>
               알림 내역
