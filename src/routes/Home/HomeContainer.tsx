@@ -5,6 +5,7 @@ import { checkUser } from "utils/check-user";
 
 import { ChatStatus, IChatData } from "@/api/interfaces/chat";
 import { ReactComponent as Bell } from "@/assets/icons/bell.svg";
+import { ReactComponent as Heart } from "@/assets/icons/heart.svg";
 import { Button, Typography } from "@/components";
 import ChatItem from "@/components/Chat/ChatItem";
 import { EnterChatRoomModal } from "@/components/EnterChatRoomModal/EnterChatRoomModal";
@@ -61,20 +62,36 @@ export const HomeContainer = checkUser(() => {
       <div css={cssAlignVerticalStyle({ gap: 28 })}>
         <div css={cssAlignVerticalStyle({ gap: 20 })}>
           <BannerCarousel />
-          <Button
-            icon={<Bell />}
-            height="large"
-            align="start"
-            link
-            linkColor={COLORS.GRAY2}
-            onClick={() => {
-              navigate(pageRoutes.NOTIFICATION);
-            }}
-          >
-            <Typography color={COLORS.GRAY4} weight="bold" size={16}>
-              알림 내역
-            </Typography>
-          </Button>
+          <div css={cssAlignVerticalStyle({ gap: 8 })}>
+            <Button
+              icon={<Bell />}
+              height="large"
+              align="start"
+              link
+              linkColor={COLORS.GRAY2}
+              onClick={() => {
+                navigate(pageRoutes.NOTIFICATION);
+              }}
+            >
+              <Typography color={COLORS.GRAY4} weight="bold" size={16}>
+                알림 내역
+              </Typography>
+            </Button>
+            <Button
+              icon={<Heart width={20} height={20} stroke={COLORS.PINK2} />}
+              height="large"
+              align="start"
+              link
+              linkColor={COLORS.GRAY2}
+              onClick={() => {
+                navigate(pageRoutes.LIKE_PLACE);
+              }}
+            >
+              <Typography color={COLORS.GRAY4} weight="bold" size={16}>
+                좋아요한 여행 장소
+              </Typography>
+            </Button>
+          </div>
 
           <div
             css={cssAlignVerticalStyle({ gap: 8, alignItems: "flex-start" })}

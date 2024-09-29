@@ -68,6 +68,10 @@ const router = createBrowserRouter([
         path: pageRoutes.NOTIFICATION,
         Component: containerRoutes.NOTIFICATION,
       },
+      {
+        path: pageRoutes.LIKE_PLACE,
+        Component: containerRoutes.LIKE_PLACE,
+      },
     ],
   },
   {
