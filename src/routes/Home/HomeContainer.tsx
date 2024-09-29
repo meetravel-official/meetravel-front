@@ -93,7 +93,7 @@ export const HomeContainer = checkUser(() => {
             </Button>
           </div>
 
-          <div
+          {/* <div
             css={cssAlignVerticalStyle({ gap: 8, alignItems: "flex-start" })}
           >
             <Typography color={COLORS.GRAY3} weight="bold" size={16}>
@@ -118,7 +118,7 @@ export const HomeContainer = checkUser(() => {
               </div>
               <Pagination page={page} maxPage={maxPage} setPage={setPage} />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <EnterChatRoomModal
