@@ -9,13 +9,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
-import {
-  BackLayout,
-  CloseLayout,
-  MainLayout,
-  Meta,
-  SimpleLayout,
-} from "@/components";
+import { BackLayout, MainLayout, Meta, SimpleLayout } from "@/components";
 import { cssGlobalStyle } from "@/styles/globalStyle";
 
 import { ChatLayout } from "./components/ChatLayout/ChatLayout";
@@ -84,16 +78,6 @@ const router = createBrowserRouter([
     ],
   },
   {
-    element: <CloseLayout />,
-    children: [
-      {
-        path: pageRoutes.TOS,
-        caseSensitive: true,
-        Component: containerRoutes.TOS,
-      },
-    ],
-  },
-  {
     element: <SignUpLayout />,
     children: [
       {
@@ -107,7 +91,6 @@ const router = createBrowserRouter([
     children: [
       { path: pageRoutes.SIGN_IN, Component: containerRoutes.SIGN_IN },
       { path: pageRoutes.AUTH_CHECK, Component: containerRoutes.AUTH_CHECK },
-      { path: pageRoutes.SAMPLE, Component: containerRoutes.SAMPLE },
     ],
   },
 
