@@ -111,7 +111,9 @@ const MatchingButton = () => {
       >
         <Logo fill={COLORS.WHITE} width={60} height={60} />
       </Button>
+      <Potal>
       <Modal
+          zIndex={105}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title={
@@ -168,6 +170,7 @@ const MatchingButton = () => {
           />
         </Form>
       </Modal>
+      </Potal>
     </Fragment>
   );
 };
