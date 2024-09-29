@@ -2,13 +2,14 @@ import { css } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { TravelInfoItem } from "routes/TravelInfo/components/TravelInfoItem";
 import { useHeaderState } from "states/useHeader";
+import { checkUser } from "utils/check-user";
 
 import { IAreaBasedList } from "@/api/interfaces/visitKorea";
 import NotFound from "@/components/NotFound/NotFound";
 import { TravelInfoDetailModal } from "@/components/TravelInfoDetailModal/TravelInfoDetailModal";
 import { cssAlignVerticalStyle } from "@/styles/align";
 
-export const LikePlaceContainer = () => {
+export const LikePlaceContainer = checkUser(() => {
   const { setTitle } = useHeaderState();
 
   const [isOpenTravelInfoDetailModal, setIsOpenTravelInfoDetailModal] =
@@ -64,4 +65,4 @@ export const LikePlaceContainer = () => {
       />
     </div>
   );
-};
+});

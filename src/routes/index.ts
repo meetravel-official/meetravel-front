@@ -5,13 +5,11 @@ import { LikePlaceContainer } from "./LikePlace/LikePlaceContainer";
 import NotFoundPage from "./NotFoundPage";
 import { NotificationContainer } from "./Notification/NotificationContainer";
 import { ProfileContainer } from "./Profile/ProfileContainer";
-import { SampleContainer } from "./Sample/SampleContainer";
 import { SearchContainer } from "./Search/SearchContainer";
 import { SettingContainer } from "./Setting/SettingContainer";
 import { KaKaoAuthCheckContainer } from "./SignIn/KaKaoAuthCheckContainer";
 import { SignInContainer } from "./SignIn/SignInContainer";
 import { SignUpContainer } from "./SignUp/SignUpContainer";
-import { TermsOfServiceContainer } from "./TermsOfService/TermsOfServiceContainer";
 import { TravelInfoContainer } from "./TravelInfo/TravelInfoContainer";
 
 export const pageRoutes = {
@@ -24,15 +22,12 @@ export const pageRoutes = {
   AUTH_CHECK: "/auth/sign-in/check",
   SETTING: "/setting",
   TRAVEL_INFO: "/travel-info",
-  TOS: "/terms-of-service",
-  SAMPLE: "/sample",
   NOTFOUND: "/*",
   NOTIFICATION: "/notification",
   LIKE_PLACE: "/like-place",
 };
 
 export const containerRoutes = {
-  SAMPLE: SampleContainer,
   HOME: HomeContainer,
   SEARCH: SearchContainer,
   CHAT: ChatContainer,
@@ -42,7 +37,6 @@ export const containerRoutes = {
   SETTING: SettingContainer,
   SIGN_UP: SignUpContainer,
   AUTH_CHECK: KaKaoAuthCheckContainer,
-  TOS: TermsOfServiceContainer,
   TRAVEL_INFO: TravelInfoContainer,
   NOTFOUND: NotFoundPage,
   NOTIFICATION: NotificationContainer,
