@@ -88,7 +88,7 @@ export const HomeContainer = checkUser(() => {
               }}
             >
               <Typography color={COLORS.GRAY4} weight="bold" size={16}>
-                좋아요한 여행 장소
+                좋아요한 여행 정보
               </Typography>
             </Button>
           </div>
