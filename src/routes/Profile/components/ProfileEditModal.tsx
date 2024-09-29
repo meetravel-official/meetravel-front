@@ -25,13 +25,12 @@ import { ReactComponent as ScheduleRelaxIcon } from "@/assets/icons/schedule-rel
 import { ReactComponent as ScheduleTightIcon } from "@/assets/icons/schedule-tight.svg";
 import { Button, Typography, UserAvatar } from "@/components";
 import BorderModal from "@/components/BorderModal/BorderModal";
+import CheckButtonGroup from "@/components/CheckButton/CheckButtonGroup";
 import Form from "@/components/Form/Form";
 import { FormItem } from "@/components/Form/FormItem";
 import useForm from "@/components/Form/useForm";
 import Input from "@/components/Input/Input";
-import { checkNotEmpty } from "@/components/Matching/Matching";
 import Modal from "@/components/Modal/Modal";
-import RadioButtonGroup from "@/components/RadioButton/RadioButtonGroup";
 import {
   SIGN_UP_PLANNING_TYPE,
   SIGN_UP_SCHEDULE_TYPE,
@@ -101,11 +100,6 @@ export const ProfileEditModal = () => {
       },
     });
 
-  const { onChange: onChangeTravelFrequency } =
-    registerField("travelFrequency");
-  const { onChange: onChangeScheduleType } = registerField("scheduleType");
-  const { onChange: onChangePlanningType } = registerField("planningType");
-
   const handleCheckNickname = async () => {
     if (!!form.nickname.value && !form.nickname.error) {
       mutate(form.nickname.value, {
@@ -157,6 +151,18 @@ export const ProfileEditModal = () => {
     form.nickname.value,
     profileData?.nickname,
   ]);
+
+  const handleOnCheckChange = (
+    e: string[],
+    type: "travelFrequency" | "scheduleType" | "planningType"
+  ) => {
+    const lastSelect = e?.[e.length - 1];
+    if (lastSelect === form?.[type]?.value) {
+      registerField(type).onChange("");
+      return;
+    }
+    registerField(type).onChange(lastSelect || "");
+  };
 
   const handleOnOpenPopOver = () => {
     setIsOpenPopover(true);
@@ -361,21 +367,14 @@ export const ProfileEditModal = () => {
               formItemStyle={cssFormItemStyle}
               name="travelFrequency"
             >
-              <RadioButtonGroup
+              <CheckButtonGroup
                 {...registerField("travelFrequency")}
-                defaultValue={
-                  checkNotEmpty([form.travelFrequency])
-                    ? form.travelFrequency?.value
-                    : undefined
-                }
-                onChange={(e) => {
-                  onChangeTravelFrequency(e);
-                }}
+                onChange={(e) => handleOnCheckChange(e, "travelFrequency")}
                 gridDetailStyle={css`
                   width: 100%;
                 `}
               >
-                <RadioButtonGroup.RadioButton
+                <CheckButtonGroup.CheckboxButton
                   value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.NEVER}
                   detailStyle={cssRadioButtonStyle(
                     form.travelFrequency?.value ===
@@ -383,8 +382,8 @@ export const ProfileEditModal = () => {
                   )}
                 >
                   안 가요!
-                </RadioButtonGroup.RadioButton>
-                <RadioButtonGroup.RadioButton
+                </CheckButtonGroup.CheckboxButton>
+                <CheckButtonGroup.CheckboxButton
                   value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.ONE_TO_THREE_TIMES}
                   detailStyle={cssRadioButtonStyle(
                     form.travelFrequency?.value ===
@@ -392,8 +391,8 @@ export const ProfileEditModal = () => {
                   )}
                 >
                   1-3
-                </RadioButtonGroup.RadioButton>
-                <RadioButtonGroup.RadioButton
+                </CheckButtonGroup.CheckboxButton>
+                <CheckButtonGroup.CheckboxButton
                   value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.FOUR_TO_SIX_TIMES}
                   detailStyle={cssRadioButtonStyle(
                     form.travelFrequency?.value ===
@@ -401,8 +400,8 @@ export const ProfileEditModal = () => {
                   )}
                 >
                   4-6
-                </RadioButtonGroup.RadioButton>
-                <RadioButtonGroup.RadioButton
+                </CheckButtonGroup.CheckboxButton>
+                <CheckButtonGroup.CheckboxButton
                   value={SIGN_UP_TRAVEL_FREQUENCY_TYPE.MORE_SEVEN_TIMES}
                   detailStyle={cssRadioButtonStyle(
                     form.travelFrequency?.value ===
@@ -410,8 +409,8 @@ export const ProfileEditModal = () => {
                   )}
                 >
                   7번 이상
-                </RadioButtonGroup.RadioButton>
-              </RadioButtonGroup>
+                </CheckButtonGroup.CheckboxButton>
+              </CheckButtonGroup>
             </FormItem>
             <FormItem
               label="여행 취향은 어떻게 되세요?"
@@ -419,23 +418,16 @@ export const ProfileEditModal = () => {
                 ${cssFormItemStyle};
                 margin: 16px;
               `}
-              name="travelFrequency"
+              name="scheduleType"
             >
-              <RadioButtonGroup
-                {...registerField("travelFrequency")}
-                defaultValue={
-                  checkNotEmpty([form.travelFrequency])
-                    ? form.travelFrequency?.value
-                    : undefined
-                }
-                onChange={(e) => {
-                  onChangeScheduleType(e);
-                }}
+              <CheckButtonGroup
+                {...registerField("scheduleType")}
+                onChange={(e) => handleOnCheckChange(e, "scheduleType")}
                 gridDetailStyle={css`
                   width: 100%;
                 `}
               >
-                <RadioButtonGroup.RadioButton
+                <CheckButtonGroup.CheckboxButton
                   value={SIGN_UP_SCHEDULE_TYPE.TIGHT}
                   detailStyle={cssRadioButtonStyle(
                     form.scheduleType?.value === SIGN_UP_SCHEDULE_TYPE.TIGHT
@@ -445,8 +437,8 @@ export const ProfileEditModal = () => {
                     <ScheduleTightIcon />
                     <span>빠듯하게</span>
                   </div>
-                </RadioButtonGroup.RadioButton>
-                <RadioButtonGroup.RadioButton
+                </CheckButtonGroup.CheckboxButton>
+                <CheckButtonGroup.CheckboxButton
                   value={SIGN_UP_SCHEDULE_TYPE.RELAX}
                   detailStyle={cssRadioButtonStyle(
                     form.scheduleType?.value === SIGN_UP_SCHEDULE_TYPE.RELAX
@@ -456,8 +448,8 @@ export const ProfileEditModal = () => {
                     <ScheduleRelaxIcon />
                     <span>여유롭게</span>
                   </div>
-                </RadioButtonGroup.RadioButton>
-              </RadioButtonGroup>
+                </CheckButtonGroup.CheckboxButton>
+              </CheckButtonGroup>
             </FormItem>
             <FormItem
               label=""
@@ -467,21 +459,14 @@ export const ProfileEditModal = () => {
                 display: none;
               `}
             >
-              <RadioButtonGroup
+              <CheckButtonGroup
                 {...registerField("planningType")}
-                defaultValue={
-                  checkNotEmpty([form.planningType])
-                    ? form.planningType?.value
-                    : undefined
-                }
-                onChange={(e) => {
-                  onChangePlanningType(e);
-                }}
+                onChange={(e) => handleOnCheckChange(e, "planningType")}
                 gridDetailStyle={css`
                   width: 100%;
                 `}
               >
-                <RadioButtonGroup.RadioButton
+                <CheckButtonGroup.CheckboxButton
                   value={SIGN_UP_PLANNING_TYPE.PLANNED}
                   detailStyle={cssRadioButtonStyle(
                     form.planningType?.value === SIGN_UP_PLANNING_TYPE.PLANNED
@@ -491,8 +476,8 @@ export const ProfileEditModal = () => {
                     <PlanPlannedIcon />
                     <span>계획적으로</span>
                   </div>
-                </RadioButtonGroup.RadioButton>
-                <RadioButtonGroup.RadioButton
+                </CheckButtonGroup.CheckboxButton>
+                <CheckButtonGroup.CheckboxButton
                   value={SIGN_UP_PLANNING_TYPE.IMPROMPTU}
                   detailStyle={cssRadioButtonStyle(
                     form.planningType?.value === SIGN_UP_PLANNING_TYPE.IMPROMPTU
@@ -502,8 +487,8 @@ export const ProfileEditModal = () => {
                     <PlanImpromptuIcon />
                     <span>즉흥적으로</span>
                   </div>
-                </RadioButtonGroup.RadioButton>
-              </RadioButtonGroup>
+                </CheckButtonGroup.CheckboxButton>
+              </CheckButtonGroup>
             </FormItem>
             <FormItem
               label="취미"
