@@ -64,7 +64,7 @@ export const HomeContainer = checkUser(() => {
           <BannerCarousel />
           <div css={cssAlignVerticalStyle({ gap: 8 })}>
             <Button
-              icon={<Bell />}
+              icon={<Bell stroke={COLORS.PINK2} />}
               height="large"
               align="start"
               link
