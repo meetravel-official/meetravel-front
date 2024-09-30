@@ -11,6 +11,7 @@ import { Typography } from "../Typography/Typography";
 import {
   cssNotificationLinkStyle,
   cssNotificationStyle,
+  cssNotificationTitleStyle,
   cssNotificationWrapperStyle,
 } from "./Notification.styles";
 
@@ -58,14 +59,15 @@ export const Notification = ({
                 width: "100%",
               })}
             >
-              <Typography
-                color={readColor || COLORS.GRAY4}
-                size="16"
-                weight={700}
-              >
-                {title}
-                {/* TODO: title ellipsis 처리 */}
-              </Typography>
+              <div css={cssNotificationTitleStyle}>
+                <Typography
+                  color={readColor || COLORS.GRAY4}
+                  size="16"
+                  weight={700}
+                >
+                  {title}
+                </Typography>
+              </div>
               <Typography
                 color={readColor || COLORS.GRAY2}
                 size="12"

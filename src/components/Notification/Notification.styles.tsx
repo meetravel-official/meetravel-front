@@ -18,6 +18,13 @@ export const cssNotificationStyle = ({
   padding: 12px 16px;
 `;
 
+export const cssNotificationTitleStyle = css`
+  width: 85%;
+  .typography {
+    word-break: keep-all;
+  }
+`;
+
 export const cssNotificationLinkStyle = css`
   all: unset;
   cursor: pointer;
