@@ -25,9 +25,9 @@ export const AgreetoTerms = () => {
 
   const handleOnClickTerms = (type: "private" | "termsOfUse") => {
     if (type === "private") {
-      window.open(privacyPolicyLink, "_blank");
+      window.open(privacyPolicyLink, "_self");
     } else {
-      window.open(termsOfUseLink, "_blank");
+      window.open(termsOfUseLink, "_self");
     }
   };
 
