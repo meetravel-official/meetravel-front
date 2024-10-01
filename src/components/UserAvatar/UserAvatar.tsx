@@ -8,6 +8,7 @@ import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
 
 import {
+  cssEditProfileImgBoxStyle,
   cssEditProfileImgButtonStyle,
   cssPopOverContentStyle,
   cssUserAvatarBoxStyle,
@@ -81,7 +82,7 @@ export const UserAvatarUpload = ({
   };
 
   return (
-    <div>
+    <div css={cssEditProfileImgBoxStyle}>
       <UserAvatar profileUrl={fileUrl} size={80} />
       <input
         css={css`
