@@ -22,6 +22,7 @@ import { Image, Typography } from "@/components";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
+import { Spin } from "../Spin/Spin";
 import {
   cssTravelImageStyle,
   cssTravelMapStyle,
@@ -34,12 +35,14 @@ interface TravelInfoDetailProps {
 export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
   const { kakao } = window;
 
-  const { data: detailCommonData } = useGetDetailCommon(travelInfo?.contentid);
-  const { data: detailIntroData } = useGetDetailIntro({
-    contentId: travelInfo?.contentid,
-    contentTypeId:
-      detailCommonData?.data.response.body.items.item?.[0].contenttypeid,
-  });
+  const { data: detailCommonData, isLoading: isLoadingDetailCommon } =
+    useGetDetailCommon(travelInfo?.contentid);
+  const { data: detailIntroData, isLoading: isLoadingDetailIntro } =
+    useGetDetailIntro({
+      contentId: travelInfo?.contentid,
+      contentTypeId:
+        detailCommonData?.data.response.body.items.item?.[0].contenttypeid,
+    });
 
   const detailCommon = useMemo(() => {
     return detailCommonData?.data?.response?.body?.items
@@ -239,7 +242,13 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
   }, [travelCommonInfo]);
 
   useEffect(() => {
-    if (travelCommonInfo?.mapx && travelCommonInfo.mapy && kakao?.maps) {
+    if (
+      !isLoadingDetailIntro &&
+      !isLoadingDetailCommon &&
+      travelCommonInfo?.mapx &&
+      travelCommonInfo.mapy &&
+      kakao?.maps
+    ) {
       const container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
       const options = {
         //지도를 생성할 때 필요한 기본 옵션
@@ -266,7 +275,16 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
     }
   }, [kakao?.maps, travelCommonInfo]);
 
-  return (
+  return isLoadingDetailCommon || isLoadingDetailIntro ? (
+    <div
+      css={cssAlignVerticalStyle({
+        alignItems: "center",
+        justifyContent: "center",
+      })}
+    >
+      <Spin size={36} />
+    </div>
+  ) : (
     <div css={cssAlignVerticalStyle({ gap: 16, alignItems: "flex-start" })}>
       <div css={cssTravelImageStyle}>
         <Image

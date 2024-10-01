@@ -6,17 +6,28 @@ import { Typography, UserAvatar } from "@/components";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
+import { Spin } from "../Spin/Spin";
+
 interface ProfileFormProps {
   userId?: string;
   isMy?: boolean;
 }
 
 export const ProfileForm = ({ userId, isMy }: ProfileFormProps) => {
-  const { data: myProfileData } = useGetMyPage();
+  const { data: myProfileData, isLoading } = useGetMyPage();
 
   const profileData = isMy ? myProfileData : undefined;
 
-  return (
+  return isLoading ? (
+    <div
+      css={cssAlignVerticalStyle({
+        alignItems: "center",
+        justifyContent: "center",
+      })}
+    >
+      <Spin size={36} />
+    </div>
+  ) : (
     <div
       css={cssAlignVerticalStyle({
         gap: 50,
