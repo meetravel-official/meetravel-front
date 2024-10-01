@@ -42,4 +42,5 @@ export const authApiRoute = {
   userInfo: `${API_URL}/users/info`,
   userNickname: `${API_URL}/users/nickname`,
   usersDelete: `${API_URL}/users/delete`,
+  userProfileImage: `${API_URL}/users/profileImage`,
 };
