@@ -1,15 +1,22 @@
 import { css } from "@emotion/react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Fragment } from "react";
+import { useNavigate } from "react-router-dom";
 import { useLeaveModal } from "states/useChat";
 
+import { usePostLeaveChatRoom } from "@/api/hooks/chat";
 import { ReactComponent as ExclamationCircleIcon } from "@/assets/icons/exclamation-circle.svg";
 import { Button, Typography } from "@/components";
 import Modal from "@/components/Modal/Modal";
+import { pageRoutes } from "@/routes";
 import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
-const LeaveModal = () => {
+const LeaveModal = ({ chatRoomId }: { chatRoomId?: string }) => {
   const { isOpenLeaveModal, handleOnCloseLeaveModal } = useLeaveModal();
+  const mutationPostLeaveChatRoom = usePostLeaveChatRoom();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   return (
     <Modal
@@ -25,7 +32,23 @@ const LeaveModal = () => {
               안 나갈래요!
             </Typography>
           </Button>
-          <Button onClick={handleOnCloseLeaveModal}>
+          <Button
+            onClick={() => {
+              console.log("나갈래요 버튼을 누름");
+              if (chatRoomId)
+                mutationPostLeaveChatRoom.mutate(Number(chatRoomId), {
+                  onSuccess: () => {
+                    console.log("채팅방 나가기 성공");
+                    queryClient.invalidateQueries({
+                      queryKey: ["useGetChatRooms"],
+                    });
+                    navigate(pageRoutes.CHAT);
+                  },
+                });
+
+              handleOnCloseLeaveModal();
+            }}
+          >
             <Typography color={COLORS.GRAY3} size="16" weight={700}>
               나갈래요!
             </Typography>

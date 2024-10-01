@@ -412,7 +412,7 @@ const ChatRoomContainer = checkUser(() => {
       />
 
       <ReportModal data={chatUsersData?.joinedUsers} />
-      <LeaveModal />
+      <LeaveModal chatRoomId={chatRoomId ?? undefined} />
       <ProfileDrawer
         isOpen={isOpenProfileModal}
         onClose={handleOnCloseProfileModal}
