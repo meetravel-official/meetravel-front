@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import { IChatMessageData } from "@/api/interfaces/chat";
 
 import AddMessage from "./AddMessage";
+import AdminAddMessage from "./AdminAddMessage";
 import AdminMessageItem from "./AdminMessageItem";
 import MyMessage from "./MyMessage";
 import UserMessageItem from "./UserMessageItem";
@@ -25,6 +26,9 @@ const MessageItem = ({ type, isSameUser, data }: MessageItemProps) => {
     JSON.parse(Cookies.get("userInfo") as string)?.userId ?? "invalidCookies";
 
   if (type === "admin") {
+    if (isSameUser) {
+      return <AdminAddMessage data={data} />;
+    }
     return (
       <div
         css={css`

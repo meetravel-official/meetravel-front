@@ -35,6 +35,14 @@ const EditModal = ({ form }: { form?: any }) => {
               });
             },
           });
+        } else {
+          console.log("채팅방이 없습니다.");
+          mutationPostMatchingForm.mutate(form, {
+            onSuccess: () => {
+              handleOnOpenMatchingProcessModal();
+              handleOnCloseEditModal();
+            },
+          });
         }
       });
     } catch (error) {

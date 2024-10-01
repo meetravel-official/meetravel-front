@@ -69,8 +69,6 @@ const ChatRoomContainer = checkUser(() => {
   // 일단은 내가 메세지 전송할때만 아래로 내리도록 함
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
-      // messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
-
       setTimeout(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
       }, 100);
@@ -155,22 +153,6 @@ const ChatRoomContainer = checkUser(() => {
     console.log("chatMessageGroups", chatMessageGroups);
   }, [chatMessageGroups]);
 
-  //TODO: 매칭로직에 join api 붙여야함
-  const joinRoom = useCallback(() => {
-    console.log("pushMessage");
-    client.current?.send(
-      `/pub/chat.join`,
-      {
-        Authorization: `Bearer ${token}`,
-      },
-      JSON.stringify({
-        type: "JOIN",
-        message: null,
-        chatRoomId: chatRoomId,
-      })
-    );
-  }, []);
-
   const handleOnOpenTravelPlanModal = () => {
     setIsOpenTravelPlanModal(true);
   };
@@ -216,9 +198,28 @@ const ChatRoomContainer = checkUser(() => {
             type={"admin"}
             data={{
               userId: "닉네임",
+              message: "안녕하세요, 미트래블입니다!",
+              sendAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+            }}
+          />
+          <MessageItem
+            type={"admin"}
+            isSameUser={true}
+            data={{
+              userId: "닉네임",
               message:
-                "안녕하세요! 여러분들의 여행을 책임질 ‘진행봇’입니다. 저를 함께 여행계획을 세워봐요!",
-              sendAt: "2024-09-08 12:34",
+                "여행 계획을 시작해볼까요? 여행의 관광지, 식당, 숙박 등 장소를 정하는 방법은 간단해요.",
+              sendAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+            }}
+          />
+          <MessageItem
+            type={"admin"}
+            isSameUser={true}
+            data={{
+              userId: "닉네임",
+              message:
+                "미트래블의 여행정보 탭에서 추천 장소를 확인하고, 채팅방으로 공유해 보세요.",
+              sendAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
             }}
           />
 
