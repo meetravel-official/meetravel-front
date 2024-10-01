@@ -77,11 +77,6 @@ const ChatRoomContainer = checkUser(() => {
     }
   };
 
-  // 컴포넌트가 렌더링되거나 메시지가 추가될 때 스크롤을 아래로 내림
-  // useEffect(() => {
-  //   scrollToBottom();
-  // }, [chatMessageGroups]);
-
   const connectHandler = () => {
     setTimeout(() => {
       client.current = Stomp.over(() => {

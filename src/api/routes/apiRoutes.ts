@@ -19,6 +19,11 @@ export const chatApiRoute = {
   chatRooms__leave: `${API_URL}/chat-rooms/leave`, //채팅방 퇴장
 };
 
+export const matchingApiRoute = {
+  matchingForm: `${API_URL}/matching-form`, // 매칭 신청서
+  matchingForm__match: `${API_URL}/matching-form/match`, // 매칭
+};
+
 export const authApiRoute = {
   postAuthKakaoLogin: ({
     authorizationCode,

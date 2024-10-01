@@ -8,19 +8,41 @@ import RadioButtonGroup from "../RadioButton/RadioButtonGroup";
 import { Typography } from "../Typography/Typography";
 import { checkNotEmpty } from "./Matching";
 
+const AreaMapping: { [key: string]: string } = {
+  서울: "1",
+  인천: "2",
+  대전: "3",
+  대구: "4",
+  광주: "5",
+  부산: "6",
+  울산: "7",
+  세종특별자치시: "8",
+  경기도: "31",
+  강원특별자치도: "32",
+  충청북도: "33",
+  충청남도: "34",
+  경상북도: "35",
+  경상남도: "36",
+  전북특별자치도: "37",
+  전라남도: "38",
+  제주도: "39",
+};
+
 const Second = ({ form, registerField }: { form: any; registerField: any }) => {
   const { onChange } = registerField("areaCode");
   const { onChange: onChangeDetail } = registerField("areaDetailCode");
   const [areaCode, setAreaCode] = useState<string>();
   const { data } = useGetAreaCode();
-  const { data: detailData } = useGetAreaCode({ areaCode });
+  const { data: detailData } = useGetAreaCode({
+    areaCode: areaCode ? AreaMapping[areaCode] : undefined,
+  });
   const renderRadioButtonGroups = useMemo(() => {
     const radioButtonGroups: any[] = [];
     const areaCodeData = data?.data.response?.body?.items?.item;
     if (areaCodeData) {
       areaCodeData.forEach((item: { code: string; name: string }) => {
         radioButtonGroups.push(
-          <RadioButtonGroup.RadioButton key={item.name} value={item.code}>
+          <RadioButtonGroup.RadioButton key={item.name} value={item.name}>
             {item.name}
           </RadioButtonGroup.RadioButton>
         );
@@ -36,7 +58,7 @@ const Second = ({ form, registerField }: { form: any; registerField: any }) => {
     if (areaCodeData && areaCode) {
       areaCodeData.forEach((item: { code: string; name: string }) => {
         radioButtonGroups.push(
-          <RadioButtonGroup.RadioButton key={item.name} value={item.code}>
+          <RadioButtonGroup.RadioButton key={item.name} value={item.name}>
             {item.name}
           </RadioButtonGroup.RadioButton>
         );
@@ -58,7 +80,7 @@ const Second = ({ form, registerField }: { form: any; registerField: any }) => {
         <RadioButtonGroup
           {...registerField("areaCode")}
           defaultValue={
-            checkNotEmpty([form.areaCode]) ? form.areaCode.value : "all"
+            checkNotEmpty([form.areaCode]) ? form.areaCode.value : undefined
           }
           gridType="row"
           buttonDetailStyle={css`
@@ -69,8 +91,9 @@ const Second = ({ form, registerField }: { form: any; registerField: any }) => {
           `}
           onChange={(value) => {
             console.log(value);
+
             onChange(value);
-            setAreaCode(value);
+            if (value !== "all") setAreaCode(value);
           }}
         >
           <RadioButtonGroup.RadioButton value="all">

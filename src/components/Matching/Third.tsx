@@ -47,16 +47,16 @@ const Third = ({ form, registerField }: { form: any; registerField: any }) => {
             width: 100%;
           `}
         >
-          <RadioButtonGroup.RadioButton value="diff">
+          <RadioButtonGroup.RadioButton value="이성끼리">
             이성끼리
           </RadioButtonGroup.RadioButton>
-          <RadioButtonGroup.RadioButton value="same">
+          <RadioButtonGroup.RadioButton value="동성끼리">
             동성끼리
           </RadioButtonGroup.RadioButton>
         </RadioButtonGroup>
       </FormItem>
       <FormItem
-        label="원하는 여행 스타일을 골라주세요. (3개 선택)"
+        label="원하는 여행 테마를 골라주세요. (3개 선택)"
         labelStyle={css`
           font-size: 16px;
           font-weight: 400;

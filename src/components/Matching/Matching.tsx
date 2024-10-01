@@ -1,7 +1,16 @@
 import { css } from "@emotion/react";
-import { Fragment, useCallback, useMemo, useState } from "react";
+import { group } from "console";
+import { on } from "events";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
+import {
+  useEditModal,
+  useMatchingModal,
+  useMatchingProcessModal,
+} from "states/useMatching";
 
+
+import { useGetMatchingForm, usePostMatchingForm } from "@/api/hooks/matching";
 import { ReactComponent as Group } from "@/assets/icons/group.svg";
 import { ReactComponent as Logo } from "@/assets/icons/logo.svg";
 import { COLORS } from "@/styles/color";
@@ -14,6 +23,7 @@ import Modal from "../Modal/Modal";
 import Potal from "../Potal/Potal";
 import { Step } from "../Step";
 import { Typography } from "../Typography/Typography";
+import EditModal from "./EditModal";
 import First from "./First";
 import {
   cssModalButtonStyle,
@@ -21,6 +31,7 @@ import {
   cssModalTitleStyle,
   cssModalTitleTextStyle,
 } from "./Matching.styles";
+import MatchingProcessModal from "./MatchingProcessModal";
 import Second from "./Second";
 import Third from "./Third";
 
@@ -39,28 +50,42 @@ export const checkNotEmpty = (values: any[]) => {
 };
 
 const MatchingButton = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [step] = Step.useStep();
-  const { form, registerField, invalidFields, resetFields } =
-    useForm<MatchingForm>({
-      initialValues: {
-        duration: "",
-        startDate: "",
-        endDate: "",
-        areaCode: "",
-        areaDetailCode: "",
-        genderRatio: "",
-        keyword: "",
-      },
-      required: [
-        "duration",
-        "startDate",
-        "endDate",
-        "areaCode",
-        "genderRatio",
-        "keyword",
-      ],
-    });
+  const {
+    isOpenMatchingModal,
+    handleOnCloseMatchingModal,
+    handleOnOpenMatchingModal,
+  } = useMatchingModal();
+
+  const mutationPostMatchingForm = usePostMatchingForm();
+  const { data: prevMatchingFormData, refetch: refetchMyMatchingForm } =
+    useGetMatchingForm();
+
+  const { handleOnOpenMatchingProcessModal } = useMatchingProcessModal();
+  const { handleOnOpenEditModal } = useEditModal();
+
+  const [postFormValue, setPostFormValue] = useState<MatchingForm>();
+
+  const { form, registerField, invalidFields } = useForm<MatchingForm>({
+    initialValues: {
+      duration: "",
+      startDate: "",
+      endDate: "",
+      areaCode: "",
+      areaDetailCode: "",
+      genderRatio: "",
+      keyword: "",
+    },
+    required: [
+      "duration",
+      "startDate",
+      "endDate",
+      "areaCode",
+      "genderRatio",
+      "keyword",
+    ],
+  });
+
   const stepList = [
     {
       title: "first",
@@ -77,25 +102,66 @@ const MatchingButton = () => {
   ];
 
   const handleOnSubmit = useCallback(() => {
-    //TODO:form value 확인용으로 임시 작성
-    // invalidFields(({ errors }) => {
-    //   if (errors) {
-    //     console.log("error in if", errors);
-    //   } else {
-    //     console.log("success", form);
-    //   }
-    // });
-    toast.success(
-      <div>
-        매칭 신청서가 제출되었어요.
-        <br />
-        매칭 결과는 2~3일 후 알림으로 확인해주세요!
-      </div>
-    );
-    setIsModalOpen(false);
-    step.setCurrent(0);
-    resetFields();
-  }, [resetFields, step]);
+    invalidFields(({ errors, value }) => {
+      if (errors) {
+        console.log("error in if", errors);
+        toast.error("필수 입력값을 확인해주세요.");
+      } else {
+        console.log("success", value);
+
+        const durationMapping = {
+          "1": "당일치기",
+          "2": "1박2일",
+          "3": "2박3일",
+        };
+
+        const postValue = {
+          groupSize: "4명",
+          cost: "1~5만원",
+          genderRatio: value.genderRatio?.value || "",
+          duration: value.duration?.value
+            ? durationMapping[
+                value.duration.value as keyof typeof durationMapping
+              ]
+            : "",
+          startDate: value.startDate?.value || "",
+          endDate: value.endDate?.value || "",
+          area: {
+            code: value.areaCode?.value || "",
+            name: value.areaCode?.value || "",
+          },
+          detailArea: {
+            detailCode: value.areaDetailCode?.value || undefined,
+            detailName: value.areaDetailCode?.value || undefined,
+          },
+          travelKeywordList: value.keyword?.value
+            ? (value.keyword.value as unknown as string[])
+            : [],
+        };
+        setPostFormValue(postValue);
+        console.log("postValue", postValue);
+        if (prevMatchingFormData) {
+          console.log("수정");
+
+          handleOnOpenEditModal();
+        } else {
+          console.log("생성");
+          mutationPostMatchingForm.mutate(postValue, {
+            onSuccess: () => {
+              handleOnOpenMatchingProcessModal();
+            },
+          });
+        }
+      }
+    });
+  }, [
+    handleOnOpenEditModal,
+    handleOnOpenMatchingProcessModal,
+    invalidFields,
+    mutationPostMatchingForm,
+    prevMatchingFormData,
+  ]);
+
 
   const isEnableNextPage = useMemo(() => {
     if (step.current === 0) {
@@ -103,7 +169,8 @@ const MatchingButton = () => {
     } else if (step.current === 1) {
       return checkNotEmpty([form.areaCode]);
     } else if (step.current === 2) {
-      return checkNotEmpty([form.genderRatio]);
+      const isKeywordListLength = form.keyword?.value?.length ?? 0;
+      return checkNotEmpty([form.genderRatio]) && isKeywordListLength >= 3;
     }
     return false;
   }, [
@@ -111,15 +178,23 @@ const MatchingButton = () => {
     form.duration,
     form.endDate,
     form.genderRatio,
+    form.keyword?.value?.length,
     form.startDate,
     step,
   ]);
+
+  useEffect(() => {
+    if (isOpenMatchingModal) {
+      refetchMyMatchingForm();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpenMatchingModal]);
 
   return (
     <Fragment>
       <Button
         bgColor={COLORS.PINK3}
-        onClick={() => setIsModalOpen(true)}
+        onClick={handleOnOpenMatchingModal}
         detailStyle={cssModalButtonStyle}
       >
         <Logo fill={COLORS.WHITE} width={60} height={60} />
@@ -127,8 +202,8 @@ const MatchingButton = () => {
       <Potal>
         <Modal
           zIndex={105}
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          isOpen={isOpenMatchingModal}
+          onClose={handleOnCloseMatchingModal}
           title={
             <div css={cssModalTitleStyle}>
               <Group stroke={COLORS.GRAY4} />
@@ -168,7 +243,11 @@ const MatchingButton = () => {
                 }}
                 disabled={!isEnableNextPage}
               >
-                {step.current === 2 ? "여행 시작!" : "다음"}
+                {step.current === 2
+                  ? prevMatchingFormData
+                    ? "수정하기"
+                    : "여행 시작!"
+                  : "다음"}
               </Button>
             </div>
           }
@@ -178,11 +257,18 @@ const MatchingButton = () => {
               step={step}
               stepList={stepList}
               contentDetailStyle={css`
-                padding: 1px;
+                width: 99%;
+                margin: 0 auto;
               `}
             />
           </Form>
         </Modal>
+      </Potal>
+      <Potal>
+        <MatchingProcessModal />
+      </Potal>
+      <Potal>
+        <EditModal form={postFormValue} />
       </Potal>
     </Fragment>
   );
