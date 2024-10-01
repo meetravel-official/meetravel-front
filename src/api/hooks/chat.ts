@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { AxiosError } from "axios";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { AxiosError, AxiosResponse } from "axios";
 
 import { IChatUserData, IMatchingData } from "../interfaces/chat";
 import { api } from "../request";
@@ -20,5 +20,39 @@ export const useGetChatUsers = (chatRoomId: string) => {
   return useQuery<IChatUserData, AxiosError>({
     queryKey: ["useGetChatUsers"],
     queryFn: () => api.get(`${chatApiRoute.chatRooms}/${chatRoomId}`),
+  });
+};
+
+export const usePostJoinChatRoom = () => {
+  return useMutation<AxiosResponse, AxiosError, number>({
+    mutationFn: (chatRoomId: number) => {
+      return api.post(chatApiRoute.chatRooms__join, chatRoomId);
+    },
+  });
+};
+
+interface IChatRoomsResponse {
+  chatRoomId: number;
+  createdAt: string;
+}
+
+interface PostChatRoomsParams {
+  matchingFormId: number;
+}
+
+export const usePostChatRooms = () => {
+  return useMutation<IChatRoomsResponse, AxiosError, PostChatRoomsParams>({
+    mutationFn: (params: PostChatRoomsParams) => {
+      return api.post(chatApiRoute.chatRooms, params);
+    },
+    onSuccess: (res) => {
+      if (res.chatRoomId) {
+        usePostJoinChatRoom().mutate(res.chatRoomId);
+        console.log("입장 성공");
+      }
+    },
+    onError: () => {
+      console.log("생성 실패");
+    },
   });
 };
