@@ -5,8 +5,8 @@ export interface IMatchingArea {
   name: string;
 }
 export interface IMatchingDetailArea {
-  detailCode: string;
-  detailName: string;
+  detailCode?: string;
+  detailName?: string;
 }
 
 export interface IMatchingForm {
