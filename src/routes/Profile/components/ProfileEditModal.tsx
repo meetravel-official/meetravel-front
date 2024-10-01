@@ -58,9 +58,10 @@ export const ProfileEditModal = () => {
 
   const queryClient = useQueryClient();
   const { data: profileData, isLoading } = useGetMyPage();
-  const { mutate } = useGetCheckNickname();
-  const { mutateAsync: mutateInfo } = usePutInfo();
-  const { mutateAsync: mutateNickname } = usePutNickname();
+  const { mutate, isPending: isPendingCheckNickname } = useGetCheckNickname();
+  const { mutateAsync: mutateInfo, isPending: isPendingPutInfo } = usePutInfo();
+  const { mutateAsync: mutateNickname, isPending: isPendingPutNickname } =
+    usePutNickname();
 
   const { form, registerField, resetFields, invalidFields, setFields } =
     useForm({
@@ -312,11 +313,12 @@ export const ProfileEditModal = () => {
                     <Button
                       bgColor={COLORS.PINK2}
                       detailStyle={css`
-                        width: 91px;
+                        max-width: 120px;
                         box-sizing: border-box;
                         padding: 14px 16px;
                         white-space: nowrap;
                       `}
+                      loading={isPendingCheckNickname}
                       onClick={handleCheckNickname}
                       disabled={
                         form.nickname.value === profileData?.nickname ||
@@ -524,6 +526,7 @@ export const ProfileEditModal = () => {
               bgColor={COLORS.PINK3}
               height="large"
               onClick={handleOnClickSubmit}
+              loading={isPendingPutInfo || isPendingPutNickname}
             >
               <Typography color={COLORS.WHITE} weight={700} size="16">
                 저장
