@@ -4,6 +4,7 @@ import { PropsWithChildren } from "react";
 import { ReactComponent as LinkArrow } from "@/assets/icons/link-arrow.svg";
 import { COLORS } from "@/styles/color";
 
+import { Spin } from "../Spin/Spin";
 import { cssButtonStyle, cssLinkStyle } from "./Button.styles";
 
 type TButtonHeightProps = "regular" | "large";
@@ -19,6 +20,7 @@ export interface IButtonStyle {
   linkColor?: string;
   detailStyle?: SerializedStyles;
   onClick?: () => void;
+  loading?: boolean;
 }
 
 export type TButtonProps = PropsWithChildren & IButtonStyle;
@@ -35,6 +37,7 @@ export type TButtonProps = PropsWithChildren & IButtonStyle;
  * @param linkColor 화살표 아이콘 컬러 default:#FF96AF
  * @param detailStyle 기타 세부 css 전달
  * @param onClick 버튼 클릭 이벤트
+ * @param loading 로딩 중인지 여부
  */
 
 export const Button = ({
@@ -50,6 +53,7 @@ export const Button = ({
   disabled,
   detailStyle,
   onClick,
+  loading,
 }: TButtonProps) => {
   const buttonHeight = (height: TButtonHeightProps | number | string) => {
     if (typeof height === "string") {
@@ -79,7 +83,7 @@ export const Button = ({
         detailStyle,
       })}
       onClick={onClick}
-      disabled={disabled}
+      disabled={disabled || loading}
     >
       {icon}
       {children}
@@ -92,6 +96,7 @@ export const Button = ({
           height={16}
         />
       )}
+      {loading && <Spin />}
     </button>
   );
 };
