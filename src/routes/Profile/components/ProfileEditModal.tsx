@@ -200,7 +200,7 @@ export const ProfileEditModal = () => {
         await queryClient.invalidateQueries({ queryKey: ["useGetMyPage"] });
         toast.success("프로필이 수정되었습니다.");
         resetFields();
-        handleOnCloseEditModal();
+        handleOnClickCloseModalAll();
       } catch (error) {
         toast.error("잠시 후 다시 시도해주세요.");
       }
@@ -217,11 +217,17 @@ export const ProfileEditModal = () => {
     handleOnCloseEditModal();
   };
 
+  const handleOnClickCloseModalAll = () => {
+    handleOnCloseEditModalAll();
+    navigate(-1);
+  };
+
   useEffect(() => {
-    navigate("", {
-      state: { isModal: true },
-    });
-  }, [navigate]);
+    if (isOpenEditModal)
+      navigate("", {
+        state: { isModal: true },
+      });
+  }, [navigate, isOpenEditModal]);
 
   useEffect(() => {
     window.addEventListener("popstate", () => {
@@ -551,7 +557,7 @@ export const ProfileEditModal = () => {
         closableIcon={false}
         footer={
           <Fragment>
-            <Button bgColor={COLORS.PINK3} onClick={handleOnCloseEditModalAll}>
+            <Button bgColor={COLORS.PINK3} onClick={handleOnClickCloseModalAll}>
               <Typography color={COLORS.WHITE} size="16" weight={700}>
                 나갈래요!
               </Typography>

@@ -22,10 +22,12 @@ export const ProfileFullModal = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate("", {
-      state: { isModal: true },
-    });
-  }, [navigate]);
+    if (isOpen) {
+      navigate("", {
+        state: { isModal: true },
+      });
+    }
+  }, [isOpen, navigate]);
 
   useEffect(() => {
     window.addEventListener("popstate", () => {
@@ -37,6 +39,11 @@ export const ProfileFullModal = ({
       });
     };
   }, [onClose]);
+
+  const handleOnClose = () => {
+    navigate(-1);
+    onClose();
+  };
 
   return (
     <BorderModal
@@ -54,7 +61,7 @@ export const ProfileFullModal = ({
       }
       modalType="full"
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleOnClose}
     >
       {/* TODO: 타인의 프로필 조회하기 추가되면 수정 */}
       <ProfileForm userId={userId} />
