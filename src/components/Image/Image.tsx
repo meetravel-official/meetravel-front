@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import NoImageSvg from "@/assets/icons/no-image.svg";
 
@@ -46,6 +46,11 @@ export const Image = ({
   const handleOnLoad = () => {
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    setIsLoading(true);
+    setIsError(false);
+  }, [src]);
 
   return isError ? (
     <div css={cssNoImageStyle({ width, height })}>
