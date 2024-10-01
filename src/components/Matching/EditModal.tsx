@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import { Fragment } from "react";
 import { useEditModal, useMatchingProcessModal } from "states/useMatching";
 
+import { useGetChatRooms, usePostLeaveChatRoom } from "@/api/hooks/chat";
 import { usePostMatchingForm } from "@/api/hooks/matching";
 import { ReactComponent as ExclamationCircleIcon } from "@/assets/icons/exclamation-circle.svg";
 import { cssAlignVerticalStyle } from "@/styles/align";
@@ -14,15 +15,27 @@ import { Typography } from "../Typography/Typography";
 const EditModal = ({ form }: { form?: any }) => {
   const { isOpenEditModal, handleOnCloseEditModal } = useEditModal();
   const { handleOnOpenMatchingProcessModal } = useMatchingProcessModal();
+  const { refetch: refetchMyChatRoom } = useGetChatRooms();
+  const mutationPostLeaveChatRoom = usePostLeaveChatRoom();
   const mutationPostMatchingForm = usePostMatchingForm();
 
   const handleOnEditMatchingForm = () => {
     try {
-      mutationPostMatchingForm.mutate(form, {
-        onSuccess: () => {
-          handleOnOpenMatchingProcessModal();
-          handleOnCloseEditModal();
-        },
+      refetchMyChatRoom().then((res) => {
+        if (res.data?.chatRooms[0]?.chatRoomId) {
+          console.log("채팅방이 있습니다.");
+          mutationPostLeaveChatRoom.mutate(res.data?.chatRooms[0]?.chatRoomId, {
+            onSuccess: () => {
+              console.log("채팅방 나가기 성공");
+              mutationPostMatchingForm.mutate(form, {
+                onSuccess: () => {
+                  handleOnOpenMatchingProcessModal();
+                  handleOnCloseEditModal();
+                },
+              });
+            },
+          });
+        }
       });
     } catch (error) {
       console.error(error);
