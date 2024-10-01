@@ -70,7 +70,7 @@ export const ChatContainer = () => {
       <Header
         titleContent={
           <Typography size="20" weight="bold" color={COLORS.GRAY3}>
-            채팅창
+            채팅방
           </Typography>
         }
         detailStyle={css`
