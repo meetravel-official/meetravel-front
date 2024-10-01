@@ -143,7 +143,10 @@ const ChatRoomContainer = checkUser(() => {
         { Authorization: `Bearer ${token}` },
         JSON.stringify({
           chatRoomId: chatRoomId,
-          message: inputText,
+          message:
+            inputText && inputText.length > 500
+              ? inputText.slice(0, 500)
+              : inputText,
         })
       );
     }
