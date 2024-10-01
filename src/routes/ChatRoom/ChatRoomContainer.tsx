@@ -13,7 +13,11 @@ import {
 } from "states/useChat";
 import { checkUser } from "utils/check-user";
 
-import { useGetChatUsers } from "@/api/hooks/chat";
+import {
+  IGetChatRoomMessagesParams,
+  useGetChatRoomMessages,
+  useGetChatUsers,
+} from "@/api/hooks/chat";
 import { IChatMessageData } from "@/api/interfaces/chat";
 import { ReactComponent as PlanIcon } from "@/assets/icons/plan.svg";
 import { Button, Typography } from "@/components";
@@ -58,6 +62,21 @@ const ChatRoomContainer = checkUser(() => {
   const [chatMessageGroups, setChatMessageGroups] = useState<
     IChatMessageData[]
   >([]);
+
+  const [chatMessagesHistory, setChatMessagesHistory] = useState<
+    IChatMessageData[]
+  >([]);
+  const [chatMessagesHistoryParams, setChatMessagesHistoryParams] =
+    useState<IGetChatRoomMessagesParams>({
+      chatRoomId: Number(chatRoomId) ?? 1,
+      page: 1,
+      pageSize: 10,
+    });
+
+  const { data: chatMessagesHistoryData } = useGetChatRoomMessages(
+    chatMessagesHistoryParams
+  );
+
   let prevUserId: string;
 
   const token = Cookies.get("accessToken");
@@ -74,6 +93,16 @@ const ChatRoomContainer = checkUser(() => {
       }, 100);
     }
   };
+
+  useEffect(() => {
+    console.log("chatMessagesHistoryData", chatMessagesHistoryData);
+    if (chatMessagesHistoryData) {
+      setChatMessagesHistory((prev) => [
+        ...chatMessagesHistoryData.content.reverse(),
+        ...prev,
+      ]);
+    }
+  }, [chatMessagesHistoryData, chatRoomId]);
 
   const connectHandler = () => {
     setTimeout(() => {
@@ -197,48 +226,101 @@ const ChatRoomContainer = checkUser(() => {
               height: 39px;
             `}
           />
-          <MessageItem
-            type={"admin"}
-            data={{
-              userId: "닉네임",
-              message: "안녕하세요, 미트래블입니다!",
-              sendAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
-            }}
-          />
-          <MessageItem
-            type={"admin"}
-            isSameUser={true}
-            data={{
-              userId: "닉네임",
-              message:
-                "여행 계획을 시작해볼까요? 여행의 관광지, 식당, 숙박 등 장소를 정하는 방법은 간단해요.",
-              sendAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
-            }}
-          />
-          <MessageItem
-            type={"admin"}
-            isSameUser={true}
-            data={{
-              userId: "닉네임",
-              message:
-                "미트래블의 여행 정보 탭에서 추천 장소를 확인하고, 채팅방으로 공유해 보세요.",
-              sendAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
-            }}
-          />
+          {
+            <div
+              css={css`
+                display: flex;
+                justify-content: center;
+              `}
+            >
+              <Button
+                detailStyle={css`
+                  width: fit-content;
+                  border: 1px solid ${COLORS.PINK2};
+                  margin-top: 40px;
+                  height: 30px;
+                  color: ${COLORS.PINK2};
+                `}
+                onClick={() => {
+                  setChatMessagesHistoryParams({
+                    chatRoomId: Number(chatRoomId) ?? 1,
+                    page: (chatMessagesHistoryParams.page ?? 0) + 1,
+                    pageSize: 10,
+                  });
+                }}
+              >
+                이전 대화 내역 불러오기
+              </Button>
+            </div>
+          }
 
-          {chatMessageGroups.map((item, index) => {
+          {chatMessagesHistory.map((item, index) => {
             const isSameUser = prevUserId === item.userId;
             prevUserId = item.userId;
-            return (
-              item.type === "CHAT" && (
+            if (item.type === "CHAT")
+              return (
                 <MessageItem
-                  key={index}
+                  key={item.chatMessageId}
                   type="me"
                   data={item}
                   isSameUser={isSameUser}
                 />
-              )
-            );
+              );
+            else if (item.type === "BOT")
+              return (
+                <MessageItem
+                  key={item.chatMessageId}
+                  type="admin"
+                  data={item}
+                  isSameUser={isSameUser}
+                />
+              );
+            else if (item.type === "JOIN" || item.type === "LEAVE")
+              return (
+                <div
+                  css={css`
+                    display: flex;
+                    justify-content: center;
+                    margin: 20px 0;
+                  `}
+                >
+                  <Typography size={14} color={COLORS.GRAY2}>
+                    -{item.message}-
+                  </Typography>
+                </div>
+              );
+          })}
+
+          {chatMessageGroups.map((item, index) => {
+            const isSameUser = prevUserId === item.userId;
+            prevUserId = item.userId;
+            if (item.type === "CHAT")
+              return (
+                <MessageItem
+                  key={item.chatMessageId}
+                  type="me"
+                  data={item}
+                  isSameUser={isSameUser}
+                />
+              );
+            else if (item.type === "BOT")
+              return (
+                <MessageItem
+                  key={item.chatMessageId}
+                  type="admin"
+                  data={item}
+                  isSameUser={isSameUser}
+                />
+              );
+            else if (item.type === "JOIN" || item.type === "LEAVE")
+              return (
+                <MessageItem
+                  key={item.chatMessageId}
+                  type="admin"
+                  data={item}
+                  isSameUser={isSameUser}
+                />
+              );
           })}
           {/**여기까지 채팅입니다 */}
           <div ref={messagesEndRef}></div>
