@@ -104,7 +104,19 @@ export const ChatContainer = checkUser(() => {
                 }}
               >
                 {/* TODO: api에 status 생기면 수정 */}
-                <ChatItem chatData={chatData1} />
+                <ChatItem
+                  chatData={{
+                    ...chatData,
+                    status: ChatStatus.INPROGRESS,
+                    isActive: true,
+                    tags: chatData.travelKeywords,
+                    link: `/chat/${chatData.chatRoomId}`,
+                    title: chatData.area.areaName,
+                    startDate: chatData.travelPlanDate.startDate,
+                    endDate: chatData.travelPlanDate.endDate,
+                    person: chatData.persons,
+                  }}
+                />
               </ChatWrapper>
             );
           })}
