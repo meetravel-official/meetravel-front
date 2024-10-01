@@ -129,8 +129,8 @@ const MatchingButton = () => {
             name: value.areaCode?.value || "",
           },
           detailArea: {
-            detailCode: value.areaDetailCode?.value || "",
-            detailName: value.areaDetailCode?.value || "",
+            detailCode: value.areaDetailCode?.value || undefined,
+            detailName: value.areaDetailCode?.value || undefined,
           },
           travelKeywordList: value.keyword?.value
             ? (value.keyword.value as unknown as string[])
@@ -140,6 +140,7 @@ const MatchingButton = () => {
         console.log("postValue", postValue);
         if (prevMatchingFormData) {
           console.log("수정");
+
           handleOnOpenEditModal();
         } else {
           console.log("생성");
