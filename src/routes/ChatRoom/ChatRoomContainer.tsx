@@ -221,7 +221,7 @@ const ChatRoomContainer = checkUser(() => {
             data={{
               userId: "닉네임",
               message:
-                "미트래블의 여행정보 탭에서 추천 장소를 확인하고, 채팅방으로 공유해 보세요.",
+                "미트래블의 여행 정보 탭에서 추천 장소를 확인하고, 채팅방으로 공유해 보세요.",
               sendAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
             }}
           />
