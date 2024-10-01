@@ -19,11 +19,18 @@ export const TravelInfoDetailModal = ({
 }: TravelInfoDetailModalProps) => {
   const navigate = useNavigate();
 
+  const handleOnClose = () => {
+    navigate(-1);
+    onClose();
+  };
+
   useEffect(() => {
-    navigate("", {
-      state: { isModal: true },
-    });
-  }, [navigate]);
+    if (isOpen) {
+      navigate("", {
+        state: { isModal: true },
+      });
+    }
+  }, [isOpen, navigate]);
 
   useEffect(() => {
     window.addEventListener("popstate", () => {
@@ -34,10 +41,10 @@ export const TravelInfoDetailModal = ({
         onClose();
       });
     };
-  }, [onClose]);
+  }, [isOpen, navigate, onClose]);
 
   return (
-    <BorderModal modalType="full" isOpen={isOpen} onClose={onClose}>
+    <BorderModal modalType="full" isOpen={isOpen} onClose={handleOnClose}>
       <TravelInfoDetail travelInfo={travelInfo} />
     </BorderModal>
   );

@@ -28,10 +28,11 @@ export const PostModal = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate("", {
-      state: { isModal: true },
-    });
-  }, [navigate]);
+    if (isOpen)
+      navigate("", {
+        state: { isModal: true },
+      });
+  }, [isOpen, navigate]);
 
   useEffect(() => {
     window.addEventListener("popstate", () => {
@@ -43,6 +44,11 @@ export const PostModal = ({
       });
     };
   }, [onClose]);
+
+  const handleOnClose = () => {
+    navigate(-1);
+    onClose();
+  };
 
   useEffect(() => {
     if (scrollTo) {
@@ -63,7 +69,7 @@ export const PostModal = ({
   };
 
   return (
-    <BorderModal modalType="full" isOpen={isOpen} onClose={onClose}>
+    <BorderModal modalType="full" isOpen={isOpen} onClose={handleOnClose}>
       <div css={cssPostModalBodyStyle}>
         {postContent({ imgDataList, handleOnLinkMap })}
       </div>

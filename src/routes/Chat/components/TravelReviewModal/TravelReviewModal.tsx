@@ -103,6 +103,11 @@ TravelReviewModalProps) => {
     onClose();
   }, [onClose]);
 
+  const handleOnClickCloseReviewModal = useCallback(() => {
+    navigate(-1);
+    handleOnCloseReviewModal();
+  }, [handleOnCloseReviewModal, navigate]);
+
   const handleOnCloseCancelModal = useCallback(() => {
     setIsOpenCancelModal(false);
   }, []);
@@ -113,8 +118,10 @@ TravelReviewModalProps) => {
 
   const handleOnConfirmCloseReviewModal = useCallback(() => {
     if (isEnableReview) setIsOpenCancelModal(true);
-    else handleOnCloseReviewModal();
-  }, [handleOnCloseReviewModal, isEnableReview]);
+    else {
+      handleOnClickCloseReviewModal();
+    }
+  }, [handleOnClickCloseReviewModal, isEnableReview]);
 
   const handleOnFinishReview = useCallback(() => {
     setIsOpenFinishModal(true);
@@ -122,16 +129,18 @@ TravelReviewModalProps) => {
 
   const handleOnLinkChatRoom = useCallback(() => {
     if (chatData?.link) {
-      handleOnCloseReviewModal();
+      handleOnClickCloseReviewModal();
       navigate(chatData?.link);
     }
-  }, [chatData?.link, handleOnCloseReviewModal, navigate]);
+  }, [chatData?.link, handleOnClickCloseReviewModal, navigate]);
 
   useEffect(() => {
-    navigate("", {
-      state: { isModal: true },
-    });
-  }, [navigate]);
+    if (isOpen) {
+      navigate("", {
+        state: { isModal: true },
+      });
+    }
+  }, [isOpen, navigate]);
 
   useEffect(() => {
     window.addEventListener("popstate", () => {
@@ -244,7 +253,7 @@ TravelReviewModalProps) => {
             <Modal.Button
               bgColor={COLORS.GRAY1}
               color={COLORS.GRAY3}
-              onClick={handleOnCloseReviewModal}
+              onClick={handleOnClickCloseReviewModal}
             >
               <Typography color={COLORS.GRAY3} size="16" weight={700}>
                 나갈래요.
@@ -281,7 +290,7 @@ TravelReviewModalProps) => {
             <Modal.Button
               bgColor={COLORS.GRAY1}
               color={COLORS.GRAY3}
-              onClick={handleOnCloseReviewModal}
+              onClick={handleOnClickCloseReviewModal}
             >
               <Typography color={COLORS.GRAY3} size="16" weight={700}>
                 괜찮아요.
