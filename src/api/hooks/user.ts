@@ -29,3 +29,14 @@ export const usePutNickname = () => {
     retry: false,
   });
 };
+
+export const usePutUserProfileImage = () => {
+  return useMutation<
+    AxiosResponse,
+    AxiosError,
+    { profileImageUrl?: string | null }
+  >({
+    mutationFn: (profileImageUrl) =>
+      api.put(authApiRoute.userProfileImage, profileImageUrl),
+  });
+};

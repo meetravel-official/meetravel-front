@@ -11,6 +11,7 @@ export const apiRoute = {
   detailCommon: `${visitKoreaApiBaseRoute.koreanVisitService}/detailCommon1`, // 공통정보 조회
   detailIntro: `${visitKoreaApiBaseRoute.koreanVisitService}/detailIntro1`, // 소개정보 조회
   gallerySearchList: `${visitKoreaApiBaseRoute.photoGalleryService}/gallerySearchList1`, // 관광사진 갤러리 키워드 검색 목록 조회
+  file: (filePath: string) => `${API_URL}/files?filePath=${filePath}`, // 파일 업로드
 };
 
 export const chatApiRoute = {
@@ -41,4 +42,5 @@ export const authApiRoute = {
   userInfo: `${API_URL}/users/info`,
   userNickname: `${API_URL}/users/nickname`,
   usersDelete: `${API_URL}/users/delete`,
+  userProfileImage: `${API_URL}/users/profileImage`,
 };

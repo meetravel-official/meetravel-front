@@ -36,7 +36,7 @@ export const ProfileForm = ({ userId, isMy }: ProfileFormProps) => {
       })}
     >
       <div css={cssAlignVerticalStyle({ gap: 12 })}>
-        {/* <UserAvatar profileUrl={profileData?.profileImageUrl} size={80} /> */}
+        <UserAvatar profileUrl={profileData?.profileImageUrl || ""} size={80} />
         <div css={cssAlignVerticalStyle({ gap: 4 })}>
           <Typography color={COLORS.GRAY5} size="16" weight={700}>
             {profileData?.nickname || "-"}

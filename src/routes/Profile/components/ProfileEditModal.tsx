@@ -8,7 +8,13 @@ import { useProfile } from "states/useProfile";
 import { nicknameRegex } from "utils/regex-utils";
 
 import { useGetCheckNickname } from "@/api/hooks/auth";
-import { useGetMyPage, usePutInfo, usePutNickname } from "@/api/hooks/user";
+import { usePostFileUpload } from "@/api/hooks/file";
+import {
+  useGetMyPage,
+  usePutInfo,
+  usePutNickname,
+  usePutUserProfileImage,
+} from "@/api/hooks/user";
 import {
   GetMyPageResponseMbtiEnum,
   GetMyPageResponseMbtiEnumArray,
@@ -40,7 +46,6 @@ import { COLORS } from "@/styles/color";
 
 import {
   cssDisableEditAreaStyle,
-  cssEditProfileImgBoxStyle,
   cssFormItemStyle,
   cssRadioButtonStyle,
 } from "./ProfileEditModal.styles";
@@ -55,6 +60,7 @@ export const ProfileEditModal = () => {
   const [isOpenCancelModal, setIsOpenCancelModal] = useState(false);
 
   const { isOpenEditModal, handleOnCloseEditModal } = useProfile();
+  const [file, setFile] = useState<File>();
 
   const queryClient = useQueryClient();
   const { data: profileData, isLoading } = useGetMyPage();
@@ -62,6 +68,10 @@ export const ProfileEditModal = () => {
   const { mutateAsync: mutateInfo, isPending: isPendingPutInfo } = usePutInfo();
   const { mutateAsync: mutateNickname, isPending: isPendingPutNickname } =
     usePutNickname();
+  const { mutateAsync: mutateFile, isPending: isPendingFile } =
+    usePostFileUpload("PROFILE");
+  const { mutateAsync: mutateProfileImage, isPending: isPendingProfileImage } =
+    usePutUserProfileImage();
 
   const { form, registerField, resetFields, invalidFields, setFields } =
     useForm({
@@ -166,13 +176,26 @@ export const ProfileEditModal = () => {
   };
 
   const handleOnClickSubmit = () => {
-    if (form.nickname.value !== profileData?.nickname) {
-      if (checkNickname.isDuplicated || !checkNickname.isClick) {
-        return;
+    try {
+      if (form.nickname.value !== profileData?.nickname) {
+        if (checkNickname.isDuplicated || !checkNickname.isClick) {
+          return;
+        }
       }
-    }
-    invalidFields(async ({ value }) => {
-      try {
+
+      invalidFields(async ({ value }) => {
+        if (file) {
+          const formData = new FormData();
+          formData.append("file", file);
+          const fileUrlData = await mutateFile(formData);
+          if (fileUrlData && fileUrlData.fileUrl) {
+            await mutateProfileImage({ profileImageUrl: fileUrlData.fileUrl });
+          }
+        } else {
+          if (!profileData?.profileImageUrl)
+            await mutateProfileImage({ profileImageUrl: null });
+        }
+
         await mutateNickname({ nickname: value.nickname.value || "" });
         await mutateInfo({
           travelFrequency: value.travelFrequency
@@ -189,10 +212,10 @@ export const ProfileEditModal = () => {
         toast.success("프로필이 수정되었습니다.");
         resetFields();
         handleOnClickCloseModalAll();
-      } catch (error) {
-        toast.error("잠시 후 다시 시도해주세요.");
-      }
-    });
+      });
+    } catch (error) {
+      toast.error("잠시 후 시도해주세요.");
+    }
   };
 
   const handleOnCloseCancelModal = () => {
@@ -264,14 +287,12 @@ export const ProfileEditModal = () => {
           </div>
         ) : (
           <div css={cssAlignVerticalStyle({ gap: 16, alignItems: "center" })}>
-            <div css={cssEditProfileImgBoxStyle}>
-              <UserAvatar.Upload
-                defaultProfileUrl={profileData?.profileImageUrl}
-                onChange={(file) => {
-                  console.log(file);
-                }}
-              />
-            </div>
+            <UserAvatar.Upload
+              defaultProfileUrl={profileData?.profileImageUrl}
+              onChange={(file) => {
+                setFile(file);
+              }}
+            />
             <Form
               formValue={form}
               formStyle={css`
@@ -526,7 +547,12 @@ export const ProfileEditModal = () => {
               bgColor={COLORS.PINK3}
               height="large"
               onClick={handleOnClickSubmit}
-              loading={isPendingPutInfo || isPendingPutNickname}
+              loading={
+                isPendingPutInfo ||
+                isPendingPutNickname ||
+                isPendingFile ||
+                isPendingProfileImage
+              }
             >
               <Typography color={COLORS.WHITE} weight={700} size="16">
                 저장

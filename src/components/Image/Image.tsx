@@ -48,7 +48,6 @@ export const Image = ({
   };
 
   useEffect(() => {
-    setIsLoading(true);
     setIsError(false);
   }, [src]);
 
