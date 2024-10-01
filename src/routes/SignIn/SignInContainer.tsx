@@ -45,10 +45,11 @@ export const SignInContainer = checkUser(() => {
         </div>
       </div>
 
-      <Link
-        to={`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}`}
+      <a
+        href={`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}`}
         className="kakao-sign-in-link"
         onClick={() => setRequestToKakao(true)}
+        target="_self"
       >
         <Button
           height={56}
@@ -61,7 +62,7 @@ export const SignInContainer = checkUser(() => {
           <KakaoLogo width={20} height={20} />
           <Typography>카카오 로그인</Typography>
         </Button>
-      </Link>
+      </a>
     </div>
   );
 });

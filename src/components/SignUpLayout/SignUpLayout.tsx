@@ -257,7 +257,7 @@ export const SignUpLayout = () => {
       <Step step={step} stepList={stepList}>
         <Layout.Header css={cssSignUpHeaderStyle}>
           <div>{stepList[step.current].header}</div>
-          <Step.Stepper />
+          <Step.Stepper disabled="next" />
         </Layout.Header>
         <Layout.Content>
           <Step.Content />

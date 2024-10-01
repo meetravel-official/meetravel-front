@@ -9,7 +9,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
-import { CloseLayout, MainLayout, Meta, SimpleLayout } from "@/components";
+import { BackLayout, MainLayout, Meta, SimpleLayout } from "@/components";
 import { cssGlobalStyle } from "@/styles/globalStyle";
 
 import { ChatLayout } from "./components/ChatLayout/ChatLayout";
@@ -55,21 +55,25 @@ const router = createBrowserRouter([
     ],
   },
   {
+    element: <BackLayout />,
+    children: [
+      { path: pageRoutes.SETTING, Component: containerRoutes.SETTING },
+      {
+        path: pageRoutes.NOTIFICATION,
+        Component: containerRoutes.NOTIFICATION,
+      },
+      {
+        path: pageRoutes.LIKE_PLACE,
+        Component: containerRoutes.LIKE_PLACE,
+      },
+    ],
+  },
+  {
     element: <ChatLayout />,
     children: [
       {
         path: `${pageRoutes.CHAT}/:chatId`,
         Component: containerRoutes.CHAT_ROOM,
-      },
-    ],
-  },
-  {
-    element: <CloseLayout />,
-    children: [
-      {
-        path: pageRoutes.TOS,
-        caseSensitive: true,
-        Component: containerRoutes.TOS,
       },
     ],
   },
@@ -87,7 +91,6 @@ const router = createBrowserRouter([
     children: [
       { path: pageRoutes.SIGN_IN, Component: containerRoutes.SIGN_IN },
       { path: pageRoutes.AUTH_CHECK, Component: containerRoutes.AUTH_CHECK },
-      { path: pageRoutes.SAMPLE, Component: containerRoutes.SAMPLE },
     ],
   },
 

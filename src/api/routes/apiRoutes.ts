@@ -40,4 +40,5 @@ export const authApiRoute = {
     `${API_URL}/signup/check-nickname?nickName=${nickName}`, // 닉네임 중복 확인
   userInfo: `${API_URL}/users/info`,
   userNickname: `${API_URL}/users/nickname`,
+  usersDelete: `${API_URL}/users/delete`,
 };

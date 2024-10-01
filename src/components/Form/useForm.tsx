@@ -52,18 +52,15 @@ function useForm<T extends Record<string, any>>({
     [validate]
   );
 
-  const registerField = useCallback(
-    (name: keyof T) => {
-      return {
-        value: form[name].value,
-        onChange: (e: any) => {
-          return handleChange(name, e?.target?.value ?? e);
-        },
-        error: form[name].error,
-      };
-    },
-    [form, handleChange]
-  );
+  function registerField<K extends keyof T>(name: keyof T) {
+    return {
+      value: form[name].value as T[K],
+      onChange: (e: any) => {
+        return handleChange(name, e?.target?.value ?? e);
+      },
+      error: form[name].error,
+    };
+  }
 
   const invalidFields = useCallback(
     (

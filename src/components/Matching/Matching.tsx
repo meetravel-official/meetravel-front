@@ -9,6 +9,7 @@ import {
   useMatchingProcessModal,
 } from "states/useMatching";
 
+
 import { useGetMatchingForm, usePostMatchingForm } from "@/api/hooks/matching";
 import { ReactComponent as Group } from "@/assets/icons/group.svg";
 import { ReactComponent as Logo } from "@/assets/icons/logo.svg";
@@ -84,6 +85,7 @@ const MatchingButton = () => {
       "keyword",
     ],
   });
+
   const stepList = [
     {
       title: "first",
@@ -159,6 +161,7 @@ const MatchingButton = () => {
     mutationPostMatchingForm,
     prevMatchingFormData,
   ]);
+
 
   const isEnableNextPage = useMemo(() => {
     if (step.current === 0) {

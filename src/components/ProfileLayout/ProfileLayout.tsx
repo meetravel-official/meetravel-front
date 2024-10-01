@@ -1,8 +1,9 @@
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { useProfile } from "states/useProfile";
 
 import { ReactComponent as EditIcon } from "@/assets/icons/edit.svg";
 import { ReactComponent as SettingIcon } from "@/assets/icons/setting.svg";
+import { pageRoutes } from "@/routes";
 import { cssAlignHorizontalStyle } from "@/styles/align";
 import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
@@ -29,9 +30,9 @@ export const ProfileLayout = () => {
               <button css={cssDefaultBtnStyle} onClick={handleOnOpenEditModal}>
                 <EditIcon />
               </button>
-              <button css={cssDefaultBtnStyle}>
+              <Link to={pageRoutes.SETTING} css={cssDefaultBtnStyle}>
                 <SettingIcon />
-              </button>
+              </Link>
             </div>
           }
         />
