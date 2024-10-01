@@ -27,7 +27,7 @@ export const SettingContainer = checkUser(() => {
   const { setTitle } = useHeaderState();
 
   const { mutate } = usePostSignOut();
-  const { mutate: mutateDelete } = useDeleteUser();
+  const { mutate: mutateDelete, isPending: isPendingDelete } = useDeleteUser();
 
   const [isOn, setIsOn] = useState(localStorage.getItem("isOn") === "true");
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
@@ -136,7 +136,7 @@ export const SettingContainer = checkUser(() => {
                 아니요
               </Typography>
             </Button>
-            <Button onClick={handleOnClickDeleteUser}>
+            <Button onClick={handleOnClickDeleteUser} loading={isPendingDelete}>
               <Typography color={COLORS.GRAY3} size="16" weight={700}>
                 탈퇴
               </Typography>

@@ -9,6 +9,7 @@ import NotFound from "@/components/NotFound/NotFound";
 import { cssAlignVerticalStyle } from "@/styles/align";
 
 import { TravelInfoItem } from "./TravelInfoItem";
+import { Spin } from "@/components/Spin/Spin";
 
 export const TravelInfoList = () => {
   const { searchValue, setSelectedContent, setIsOpenTravelInfoDetailModal } =
@@ -18,6 +19,7 @@ export const TravelInfoList = () => {
     data: areaBasedListData,
     fetchNextPage,
     hasNextPage,
+    isLoading,
   } = useGetAreaBasedList(searchValue);
 
   const { ref, inView } = useInView({
@@ -44,7 +46,16 @@ export const TravelInfoList = () => {
     }
   }, [fetchNextPage, hasNextPage, inView]);
 
-  return (
+  return isLoading ? (
+    <div
+      css={cssAlignVerticalStyle({
+        alignItems: "center",
+        justifyContent: "center",
+      })}
+    >
+      <Spin size={36} />
+    </div>
+  ) : (
     <div css={cssAlignVerticalStyle({ gap: 8 })}>
       {travelInfoItemList && travelInfoItemList.length > 0 ? (
         travelInfoItemList.map((item, index) => (
