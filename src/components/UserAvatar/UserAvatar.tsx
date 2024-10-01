@@ -57,6 +57,7 @@ export const UserAvatarUpload = ({
   };
 
   const handleOnChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleOnClosePopOver();
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
@@ -67,12 +68,12 @@ export const UserAvatarUpload = ({
         };
       });
     }
-    handleOnClosePopOver();
   };
 
   const handleOnClickDelete = () => {
     setFileUrl("");
     onChange(undefined);
+    handleOnClosePopOver();
   };
 
   const handleOnClickUpload = () => {
