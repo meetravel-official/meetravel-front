@@ -250,7 +250,7 @@ const MatchingButton = () => {
               step={step}
               stepList={stepList}
               contentDetailStyle={css`
-                width: calc(99%);
+                width: 99%;
                 margin: 0 auto;
               `}
             />
