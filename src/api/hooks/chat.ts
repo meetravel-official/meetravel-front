@@ -1,7 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
 
-import { IChatUserData, IMatchingData } from "../interfaces/chat";
+import {
+  IChatMessageData,
+  IChatUserData,
+  IMatchingData,
+} from "../interfaces/chat";
 import { api } from "../request";
 import { chatApiRoute } from "../routes/apiRoutes";
 
@@ -59,5 +63,28 @@ export const usePostChatRooms = () => {
     mutationFn: (params: PostChatRoomsParams) => {
       return api.post(chatApiRoute.chatRooms, params);
     },
+  });
+};
+
+export interface IGetChatRoomMessagesParams {
+  chatRoomId: number;
+  lastChatMessageId?: number;
+  page?: number;
+  pageSize?: number;
+}
+
+export interface IGetChatRoomMessagesResponse {
+  totalElements: number;
+  totalPages: number;
+  content: IChatMessageData[];
+}
+
+export const useGetChatRoomMessages = (params: IGetChatRoomMessagesParams) => {
+  return useQuery<IGetChatRoomMessagesResponse, AxiosError>({
+    queryKey: ["useGetChatRoomMessages", params.page],
+    queryFn: () =>
+      api.get(`${chatApiRoute.chatRooms}/${params.chatRoomId}/messages`, {
+        params,
+      }),
   });
 };

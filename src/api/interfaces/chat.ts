@@ -46,6 +46,7 @@ export interface IChatMessageData {
   message?: string;
   type?: string;
   sendAt?: string;
+  chatMessageId?: string;
 }
 
 export interface IUserData {

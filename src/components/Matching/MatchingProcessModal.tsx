@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -22,6 +23,7 @@ const MatchingProcessModal = () => {
   const { isOpenMatchingProcessModal, handleOnCloseMatchingProcessModal } =
     useMatchingProcessModal();
   const [myMatchingFormId, setMyMatchingFormId] = useState<number>();
+  const queryClient = useQueryClient();
 
   const { handleOnCloseMatchingModal } = useMatchingModal();
   const navigate = useNavigate();
@@ -73,6 +75,7 @@ const MatchingProcessModal = () => {
             toast.success("매칭이 완료되었습니다.");
             handleOnCloseMatchingProcessModal();
             handleOnCloseMatchingModal();
+            queryClient.invalidateQueries({ queryKey: ["useGetChatRooms"] });
             navigate(pageRoutes.CHAT);
           }, 4000);
         })

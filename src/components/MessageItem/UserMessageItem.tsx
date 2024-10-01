@@ -50,7 +50,7 @@ const UserMessageItem = ({ data }: MessageItemProps) => {
           `}
         >
           <Image
-            src={newProfileData?.profileImageUrl}
+            src={newProfileData?.profileImageUrl ?? ""}
             alt="profile-image"
             width="100%"
             height="100%"
@@ -60,7 +60,7 @@ const UserMessageItem = ({ data }: MessageItemProps) => {
       </button>
       <div css={cssAlignVerticalStyle({ gap: 8, alignItems: "flex-start" })}>
         <Typography weight={700} color={COLORS.GRAY4}>
-          {newProfileData?.nickname ?? "익명"}
+          {newProfileData?.nickname ?? "알수없는 사용자"}
         </Typography>
         <div css={cssAlignHorizontalStyle({ gap: 8, alignItems: "flex-end" })}>
           <div
