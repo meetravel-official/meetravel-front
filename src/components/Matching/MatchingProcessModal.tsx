@@ -1,11 +1,15 @@
 import { css } from "@emotion/react";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useMatchingModal, useMatchingProcessModal } from "states/useMatching";
 
-import { usePostChatRooms, usePostJoinChatRoom } from "@/api/hooks/chat";
-import { useGetMatchingResult } from "@/api/hooks/matching";
+import {
+  usePostChatRooms,
+  usePostJoinChatRoom,
+  usePostLeaveChatRoom,
+} from "@/api/hooks/chat";
+import { useGetMatchingForm, useGetMatchingResult } from "@/api/hooks/matching";
 import { ReactComponent as LogoIcon } from "@/assets/icons/logo.svg";
 import { pageRoutes } from "@/routes";
 import { cssAlignVerticalStyle } from "@/styles/align";
@@ -17,23 +21,50 @@ import { Typography } from "../Typography/Typography";
 const MatchingProcessModal = () => {
   const { isOpenMatchingProcessModal, handleOnCloseMatchingProcessModal } =
     useMatchingProcessModal();
+  const [myMatchingFormId, setMyMatchingFormId] = useState<number>();
+
   const { handleOnCloseMatchingModal } = useMatchingModal();
   const navigate = useNavigate();
   const mutationPostChatRooms = usePostChatRooms();
   const mutationPostJoinChatRoom = usePostJoinChatRoom();
 
-  const myMatchingFormId = 5; // TODO: 내 매칭폼 아이디
+  const { data: myMatchingFormIdData, refetch: refetchMyMatchingFormId } =
+    useGetMatchingForm();
 
-  const { data, refetch } = useGetMatchingResult(myMatchingFormId);
+  const { data, refetch } = useGetMatchingResult(myMatchingFormId ?? 0);
+
+  useEffect(() => {
+    if (isOpenMatchingProcessModal) {
+      console.log("myMatchingFormId", myMatchingFormId);
+      refetchMyMatchingFormId().then((res) => {
+        console.log("resdsds", res);
+        if (res.data?.matchingFormId) {
+          setMyMatchingFormId(res.data?.matchingFormId);
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpenMatchingProcessModal, refetchMyMatchingFormId]);
 
   useEffect(() => {
     if (isOpenMatchingProcessModal)
       refetch() //매칭 결과 조회
         .then((res) => {
           console.log("res", res);
-          if (res.data?.matchingFormId === null) {
-            //매칭 결과가 없을때 새 채팅방 생성
-            mutationPostChatRooms.mutate({ matchingFormId: myMatchingFormId });
+          if (res.data?.matchingFormId === null && myMatchingFormId) {
+            //매칭 결과가 없을때 새 채팅방 생성 및 입장
+            mutationPostChatRooms.mutate(
+              { matchingFormId: myMatchingFormId },
+              {
+                onSuccess: (res: { chatRoomId: number }) => {
+                  console.log("redds", res.chatRoomId);
+                  if (res.chatRoomId) {
+                    mutationPostJoinChatRoom.mutate(res.chatRoomId);
+                    console.log("입장 성공");
+                  }
+                },
+              }
+            );
           } else if (res.data?.matchingFormId) {
             //매칭 결과가 있을때 해당 채팅방 입장
             mutationPostJoinChatRoom.mutate(Number(res.data.matchingFormId));
@@ -52,7 +83,7 @@ const MatchingProcessModal = () => {
         });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpenMatchingProcessModal]);
+  }, [myMatchingFormId]);
 
   return (
     <Modal
