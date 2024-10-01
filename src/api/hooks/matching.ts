@@ -22,6 +22,7 @@ export const useGetMatchingResult = (matchingFormId: number) => {
     queryKey: ["useGetMatchingResult"],
     queryFn: () =>
       api.get(`${matchingApiRoute.matchingForm__match}/${matchingFormId}`),
+    enabled: false,
   });
 };
 
