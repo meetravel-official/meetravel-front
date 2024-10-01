@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   createContext,
   PropsWithChildren,
@@ -6,7 +7,6 @@ import {
   useMemo,
   useState,
 } from "react";
-import { useLocation } from "react-router-dom";
 
 import {
   cssLayoutContentStyle,
@@ -66,14 +66,13 @@ const LayoutFixedFooter = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => {
   return (
-    <footer className="fixed" css={cssLayoutFixedFooterStyle} {...props}>
+    <footer id="fixed" css={cssLayoutFixedFooterStyle} {...props}>
       {children}
     </footer>
   );
 };
 
 export const Layout = ({ children }: PropsWithChildren) => {
-  const location = useLocation();
   const [fixedHeaderHeight, setFixedHeaderHeight] = useState<number>();
   const [fixedFooterHeight, setFixedFooterHeight] = useState<number>();
 
@@ -90,23 +89,40 @@ export const Layout = ({ children }: PropsWithChildren) => {
     };
   }, []);
 
-  useEffect(() => {
-    // 자동으로 fixed header, footer의 높이를 계산
-    setFixedFooterHeight(
-      window.document.querySelector("footer.fixed")?.getBoundingClientRect()
-        .height
-    );
-    setFixedHeaderHeight(
-      window.document.querySelector("header")?.getBoundingClientRect().height
-    );
-  }, [location.pathname]);
+  const headerObserver = new ResizeObserver((entries) => {
+    for (const entry of entries) {
+      setFixedHeaderHeight(entry.borderBoxSize?.[0].blockSize || 0);
+    }
+  });
 
-  const layoutValue = useMemo(
-    () => ({
+  const footerObserver = new ResizeObserver((entries) => {
+    for (const entry of entries) {
+      setFixedFooterHeight(entry.borderBoxSize?.[0].blockSize || 0);
+    }
+  });
+
+  useEffect(() => {
+    if (window.document.querySelector("header")) {
+      headerObserver.observe(window.document.querySelector("header")!);
+      () => {
+        headerObserver.unobserve(window.document.querySelector("header")!);
+      };
+    }
+    if (window.document.querySelector("footer#fixed")) {
+      footerObserver.observe(window.document.querySelector("footer#fixed")!);
+      () => {
+        footerObserver.unobserve(
+          window.document.querySelector("footer#fixed")!
+        );
+      };
+    }
+  });
+
+  const layoutValue = useMemo(() => {
+    return {
       fixedHeight: { footer: fixedFooterHeight, header: fixedHeaderHeight },
-    }),
-    [fixedFooterHeight, fixedHeaderHeight]
-  );
+    };
+  }, [fixedFooterHeight, fixedHeaderHeight]);
 
   return (
     <LayoutContext.Provider value={layoutValue}>
