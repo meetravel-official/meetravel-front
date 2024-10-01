@@ -63,6 +63,8 @@ const MatchingButton = () => {
   const { handleOnOpenMatchingProcessModal } = useMatchingProcessModal();
   const { handleOnOpenEditModal } = useEditModal();
 
+  const [postFormValue, setPostFormValue] = useState<MatchingForm>();
+
   const { form, registerField, invalidFields } = useForm<MatchingForm>({
     initialValues: {
       duration: "",
@@ -134,6 +136,7 @@ const MatchingButton = () => {
             ? (value.keyword.value as unknown as string[])
             : [],
         };
+        setPostFormValue(postValue);
         console.log("postValue", postValue);
         if (prevMatchingFormData) {
           console.log("수정");
@@ -261,7 +264,7 @@ const MatchingButton = () => {
         <MatchingProcessModal />
       </Potal>
       <Potal>
-        <EditModal form={form} />
+        <EditModal form={postFormValue} />
       </Potal>
     </Fragment>
   );

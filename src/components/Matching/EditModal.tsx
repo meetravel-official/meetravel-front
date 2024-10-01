@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import { Fragment } from "react";
 import { useEditModal, useMatchingProcessModal } from "states/useMatching";
 
-import { usePutMatchingForm } from "@/api/hooks/matching";
+import { usePostMatchingForm } from "@/api/hooks/matching";
 import { ReactComponent as ExclamationCircleIcon } from "@/assets/icons/exclamation-circle.svg";
 import { cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
@@ -14,13 +14,16 @@ import { Typography } from "../Typography/Typography";
 const EditModal = ({ form }: { form?: any }) => {
   const { isOpenEditModal, handleOnCloseEditModal } = useEditModal();
   const { handleOnOpenMatchingProcessModal } = useMatchingProcessModal();
-  const { mutateAsync: mutateMatchingForm } = usePutMatchingForm();
+  const mutationPostMatchingForm = usePostMatchingForm();
 
-  const handleOnEditMatchingForm = async () => {
+  const handleOnEditMatchingForm = () => {
     try {
-      await mutateMatchingForm(form);
-      handleOnOpenMatchingProcessModal();
-      handleOnCloseEditModal();
+      mutationPostMatchingForm.mutate(form, {
+        onSuccess: () => {
+          handleOnOpenMatchingProcessModal();
+          handleOnCloseEditModal();
+        },
+      });
     } catch (error) {
       console.error(error);
     }

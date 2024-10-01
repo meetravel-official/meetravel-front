@@ -36,10 +36,3 @@ export const useGetMatchingForm = () => {
     enabled: false,
   });
 };
-
-export const usePutMatchingForm = () => {
-  return useMutation<AxiosResponse, AxiosError, IUpdateMatchingForm>({
-    mutationFn: (data) => api.put(matchingApiRoute.matchingForm, data),
-    retry: false,
-  });
-};
