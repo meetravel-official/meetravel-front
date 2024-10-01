@@ -1,5 +1,4 @@
 import { css } from "@emotion/react";
-import * as Popover from "@radix-ui/react-popover";
 import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { Fragment, useEffect, useMemo, useState } from "react";
@@ -17,7 +16,6 @@ import {
   GetMyPageResponseScheduleTypeEnum,
   GetMyPageResponseTravelFrequencyEnum,
 } from "@/api/interfaces/user";
-import { ReactComponent as CameraIcon } from "@/assets/icons/camera.svg";
 import { ReactComponent as ExclamationCircleIcon } from "@/assets/icons/exclamation-circle.svg";
 import { ReactComponent as PlanImpromptuIcon } from "@/assets/icons/plan-impromptu.svg";
 import { ReactComponent as PlanPlannedIcon } from "@/assets/icons/plan-planned.svg";
@@ -37,15 +35,12 @@ import {
   SIGN_UP_TRAVEL_FREQUENCY_TYPE,
 } from "@/constants/signUp";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
-import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
 
 import {
   cssDisableEditAreaStyle,
   cssEditProfileImgBoxStyle,
-  cssEditProfileImgButtonStyle,
   cssFormItemStyle,
-  cssPopOverContentStyle,
   cssRadioButtonStyle,
 } from "./ProfileEditModal.styles";
 
@@ -56,7 +51,6 @@ export const ProfileEditModal = () => {
     isClick: boolean;
     isDuplicated: boolean;
   }>({ isClick: false, isDuplicated: false });
-  const [isOpenPopover, setIsOpenPopover] = useState(false);
   const [isOpenCancelModal, setIsOpenCancelModal] = useState(false);
 
   const { isOpenEditModal, handleOnCloseEditModal } = useProfile();
@@ -100,7 +94,7 @@ export const ProfileEditModal = () => {
       },
     });
 
-  const handleCheckNickname = async () => {
+  const handleCheckNickname = () => {
     if (!!form.nickname.value && !form.nickname.error) {
       mutate(form.nickname.value, {
         onSuccess: (res) => {
@@ -164,14 +158,6 @@ export const ProfileEditModal = () => {
     registerField(type).onChange(lastSelect || "");
   };
 
-  const handleOnOpenPopOver = () => {
-    setIsOpenPopover(true);
-  };
-
-  const handleOnClosePopOver = () => {
-    setIsOpenPopover(false);
-  };
-
   const handleOnClickClose = () => {
     setIsOpenCancelModal(true);
     resetFields();
@@ -213,7 +199,6 @@ export const ProfileEditModal = () => {
 
   const handleOnCloseEditModalAll = () => {
     handleOnCloseCancelModal();
-    handleOnClosePopOver();
     handleOnCloseEditModal();
   };
 
@@ -267,36 +252,14 @@ export const ProfileEditModal = () => {
         }
       >
         <div css={cssAlignVerticalStyle({ gap: 16, alignItems: "center" })}>
-          {/* <div css={cssEditProfileImgBoxStyle}>
-            <UserAvatar profileUrl={form.profileImageUrl.value} size={80} />
-            <Popover.Root open={isOpenPopover}>
-              <Popover.Trigger asChild>
-                <button
-                  css={cssEditProfileImgButtonStyle}
-                  onClick={handleOnOpenPopOver}
-                >
-                  <CameraIcon />
-                </button>
-              </Popover.Trigger>
-              <Popover.Portal>
-                <Popover.Content
-                  css={cssPopOverContentStyle}
-                  onInteractOutside={handleOnClosePopOver}
-                >
-                  <button css={cssDefaultBtnStyle}>
-                    <Typography color={COLORS.GRAY4} weight={700} size="16">
-                      이미지 삭제
-                    </Typography>
-                  </button>
-                  <button css={cssDefaultBtnStyle}>
-                    <Typography color={COLORS.GRAY4} weight={700} size="16">
-                      업로드
-                    </Typography>
-                  </button>
-                </Popover.Content>
-              </Popover.Portal>
-            </Popover.Root>
-          </div> */}
+          <div css={cssEditProfileImgBoxStyle}>
+            <UserAvatar.Upload
+              defaultProfileUrl={profileData?.profileImageUrl}
+              onChange={(file) => {
+                console.log(file);
+              }}
+            />
+          </div>
           <Form
             formValue={form}
             formStyle={css`
