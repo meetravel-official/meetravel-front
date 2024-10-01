@@ -50,7 +50,7 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
   // zustand
   const { setDisabled } = useSignUpState();
 
-  const { mutate } = useGetCheckNickname();
+  const { mutate, isPending: isPendingCheckNickname } = useGetCheckNickname();
 
   const { onChange: onChangeYear } = registerField("birthDayYear");
   const { onChange: onChangeMonth } = registerField("birthDayMonth");
@@ -248,12 +248,13 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
             <Button
               bgColor={COLORS.PINK2}
               detailStyle={css`
-                width: 91px;
+                max-width: 120px;
                 box-sizing: border-box;
                 padding: 14px 16px;
                 white-space: nowrap;
               `}
               onClick={handleCheckNickname}
+              loading={isPendingCheckNickname}
               disabled={
                 form.nickname?.value === checkNickname.value ||
                 !!form.nickname?.error
