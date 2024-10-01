@@ -1,5 +1,4 @@
 import { css } from "@emotion/react";
-import * as Popover from "@radix-ui/react-popover";
 import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
 import { useSignUpState } from "states/useSignUp";
@@ -7,7 +6,6 @@ import { numberRegex } from "utils/regex-utils";
 
 import { useGetCheckNickname } from "@/api/hooks/auth";
 import { IProfile } from "@/api/interfaces/kakaoSignUpInterface";
-import { ReactComponent as CameraIcon } from "@/assets/icons/camera.svg";
 import { Button, Typography, UserAvatar } from "@/components";
 import Form from "@/components/Form/Form";
 import { FormItem } from "@/components/Form/FormItem";
@@ -16,17 +14,13 @@ import Input from "@/components/Input/Input";
 import RadioButtonGroup from "@/components/RadioButton/RadioButtonGroup";
 import { SIGN_UP_GENDER_TYPE } from "@/constants/signUp";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
-import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
 
 import {
   cssDateInputBoxStyle,
   cssDateInputInnerStyle,
   cssDateInputStyle,
-  cssEditProfileImgBoxStyle,
-  cssEditProfileImgButtonStyle,
   cssFormItemStyle,
-  cssPopOverContentStyle,
   cssRadioButtonStyle,
 } from "../styles/SignUpInnerContents.styles";
 
@@ -45,10 +39,9 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
     isDuplicated: boolean;
     value: string;
   }>({ isClick: false, isDuplicated: false, value: "" });
-  const [isOpenPopover, setIsOpenPopover] = useState(false);
 
   // zustand
-  const { setDisabled } = useSignUpState();
+  const { setDisabled, setFile } = useSignUpState();
 
   const { mutate, isPending: isPendingCheckNickname } = useGetCheckNickname();
 
@@ -151,14 +144,6 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
     }
   };
 
-  const handleOnOpenPopOver = () => {
-    setIsOpenPopover(true);
-  };
-
-  const handleOnClosePopOver = () => {
-    setIsOpenPopover(false);
-  };
-
   useEffect(() => {
     if (
       checkNickname.isClick &&
@@ -170,37 +155,15 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
   }, [checkNickname, form.nickname?.value, setDisabled]);
 
   return (
-    <Form formValue={form}>
-      {/* <div css={cssEditProfileImgBoxStyle}>
-        <UserAvatar profileUrl={form.profileImageUrl?.value} size={80} />
-        <Popover.Root open={isOpenPopover}>
-          <Popover.Trigger asChild>
-            <button
-              css={cssEditProfileImgButtonStyle}
-              onClick={handleOnOpenPopOver}
-            >
-              <CameraIcon />
-            </button>
-          </Popover.Trigger>
-          <Popover.Portal>
-            <Popover.Content
-              css={cssPopOverContentStyle}
-              onInteractOutside={handleOnClosePopOver}
-            >
-              <button css={cssDefaultBtnStyle}>
-                <Typography color={COLORS.GRAY4} weight={700} size="16">
-                  이미지 삭제
-                </Typography>
-              </button>
-              <button css={cssDefaultBtnStyle}>
-                <Typography color={COLORS.GRAY4} weight={700} size="16">
-                  업로드
-                </Typography>
-              </button>
-            </Popover.Content>
-          </Popover.Portal>
-        </Popover.Root>
-      </div> */}
+    <Form
+      formValue={form}
+      formStyle={cssAlignVerticalStyle({ alignItems: "center" })}
+    >
+      <UserAvatar.Upload
+        onChange={(file) => {
+          setFile(file);
+        }}
+      />
       <FormItem
         label="이름"
         name="name"

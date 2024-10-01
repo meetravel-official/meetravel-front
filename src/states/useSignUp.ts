@@ -8,10 +8,12 @@ interface ISignUpState {
   agreeTermsOfUse: boolean;
   profileInfo: IProfile;
   isDisabled: boolean;
+  file?: File | null;
   setAgreePrivacy: (agreePrivacy: boolean) => void;
   setAgreeTermsOfUse: (agreeTermsOfUse: boolean) => void;
   setProfileInfo: (profileInfo: IProfile) => void;
   setDisabled: (isDisabled: boolean) => void;
+  setFile: (file?: File | null) => void;
 }
 
 export const useSignUpState = create<ISignUpState>((set) => {
@@ -30,9 +32,11 @@ export const useSignUpState = create<ISignUpState>((set) => {
       phoneNumber: "",
       profileImageUrl: "",
     },
+    file: null,
     setAgreePrivacy: (agreePrivacy) => set({ agreePrivacy }),
     setAgreeTermsOfUse: (agreeTermsOfUse) => set({ agreeTermsOfUse }),
     setProfileInfo: (profileInfo) => set({ profileInfo }),
     setDisabled: (isDisabled) => set({ isDisabled }),
+    setFile: (file) => set({ file }),
   };
 });

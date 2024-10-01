@@ -8,6 +8,7 @@ import { useSignUpState } from "states/useSignUp";
 import { nicknameRegex, phoneNumberRegex } from "utils/regex-utils";
 
 import { usePostSignUp } from "@/api/hooks/auth";
+import { usePostFileUpload } from "@/api/hooks/file";
 import {
   IPostKaKaoSignUpRequest,
   IProfile,
@@ -34,9 +35,11 @@ export const SignUpLayout = () => {
 
   const navigate = useNavigate();
 
-  const { profileInfo, setProfileInfo, isDisabled } = useSignUpState();
+  const { profileInfo, setProfileInfo, isDisabled, file } = useSignUpState();
 
   const mutationSignUp = usePostSignUp();
+  const { mutateAsync: mutateFile, isPending: isPendingFile } =
+    usePostFileUpload("PROFILE");
 
   const profileFormProps = useForm<IProfile>({
     initialValues: profileInfo,
@@ -48,7 +51,6 @@ export const SignUpLayout = () => {
       "birthDayDate",
       "gender",
       "phoneNumber",
-      // "profileImageUrl",
     ],
     validate: {
       name: (value) => {
@@ -218,6 +220,13 @@ export const SignUpLayout = () => {
       handleOnClickSubmit: () => {
         travelProfileFormProps.invalidFields(async ({ errors, value }) => {
           if (!errors) {
+            let fileUrl;
+            if (file) {
+              const formData = new FormData();
+              formData.append("file", file);
+              const fileUrlData = await mutateFile(formData);
+              fileUrl = fileUrlData?.fileUrl;
+            }
             const mutationData = {
               ...profileInfo,
               birthDate: `${profileInfo?.birthDayYear || ""}-${
@@ -229,6 +238,7 @@ export const SignUpLayout = () => {
               hobby: value.hobby?.value || undefined,
               mbti: value.mbti?.value || undefined,
               intro: value.intro?.value || undefined,
+              profileImageUrl: fileUrl || null,
             } as IPostKaKaoSignUpRequest;
             await mutationSignUp.mutateAsync(
               { ...mutationData },
