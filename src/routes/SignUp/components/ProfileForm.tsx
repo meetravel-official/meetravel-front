@@ -170,12 +170,7 @@ export const ProfileForm = ({ form, registerField }: ProfileFormProps) => {
   }, [checkNickname, form.nickname?.value, setDisabled]);
 
   return (
-    <Form
-      formValue={form}
-      formStyle={css`
-        padding-bottom: 80px;
-      `}
-    >
+    <Form formValue={form}>
       {/* <div css={cssEditProfileImgBoxStyle}>
         <UserAvatar profileUrl={form.profileImageUrl?.value} size={80} />
         <Popover.Root open={isOpenPopover}>
