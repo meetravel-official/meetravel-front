@@ -26,7 +26,21 @@ export const useGetChatUsers = (chatRoomId: string) => {
 export const usePostJoinChatRoom = () => {
   return useMutation<AxiosResponse, AxiosError, number>({
     mutationFn: (chatRoomId: number) => {
-      return api.post(chatApiRoute.chatRooms__join, chatRoomId);
+      return api.post(
+        `${chatApiRoute.chatRooms__join}/${chatRoomId}`,
+        undefined
+      );
+    },
+  });
+};
+
+export const usePostLeaveChatRoom = () => {
+  return useMutation<AxiosResponse, AxiosError, number>({
+    mutationFn: (chatRoomId: number) => {
+      return api.post(
+        `${chatApiRoute.chatRooms__leave}/${chatRoomId}`,
+        undefined
+      );
     },
   });
 };
@@ -44,15 +58,6 @@ export const usePostChatRooms = () => {
   return useMutation<IChatRoomsResponse, AxiosError, PostChatRoomsParams>({
     mutationFn: (params: PostChatRoomsParams) => {
       return api.post(chatApiRoute.chatRooms, params);
-    },
-    onSuccess: (res) => {
-      if (res.chatRoomId) {
-        usePostJoinChatRoom().mutate(res.chatRoomId);
-        console.log("입장 성공");
-      }
-    },
-    onError: () => {
-      console.log("생성 실패");
     },
   });
 };
