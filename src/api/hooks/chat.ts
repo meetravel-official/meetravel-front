@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
 
 import {
@@ -77,14 +77,39 @@ export interface IGetChatRoomMessagesResponse {
   totalElements: number;
   totalPages: number;
   content: IChatMessageData[];
+  number: number;
 }
 
 export const useGetChatRoomMessages = (params: IGetChatRoomMessagesParams) => {
-  return useQuery<IGetChatRoomMessagesResponse, AxiosError>({
-    queryKey: ["useGetChatRoomMessages", params.page],
-    queryFn: () =>
+  return useInfiniteQuery<IGetChatRoomMessagesResponse, AxiosError>({
+    queryKey: ["useGetChatRoomMessages"],
+    queryFn: ({ pageParam }) =>
       api.get(`${chatApiRoute.chatRooms}/${params.chatRoomId}/messages`, {
-        params,
+        params: {
+          chatRoomId: params.chatRoomId,
+          lastChatMessageId: params.lastChatMessageId,
+          page: pageParam,
+          pageSize: params.pageSize,
+        },
       }),
+    initialPageParam: 0,
+    getNextPageParam: (lastData) => {
+      if (lastData.number < lastData.totalPages) return lastData.number + 1;
+    },
+    getPreviousPageParam: (firstPage) => {
+      if (firstPage.number > 1) return firstPage.number - 1;
+    },
+    select: (data) => ({
+      pages: data.pages
+        .map((page, index) => {
+          const reversedContent = [...page.content].reverse();
+          return {
+            ...page,
+            content: reversedContent,
+          };
+        })
+        .reverse(),
+      pageParams: [...data.pageParams].reverse(),
+    }),
   });
 };
