@@ -48,3 +48,11 @@ export const useDeleteUser = () => {
     },
   });
 };
+
+export const useGetOtherProfile = (otherUserId?: string) => {
+  return useQuery<GetMyPageResponse, AxiosError>({
+    queryKey: ["useGetOtherProfile", otherUserId],
+    queryFn: () => api.get(userApiRoute.otherProfile(otherUserId || "")),
+    enabled: !!otherUserId,
+  });
+};

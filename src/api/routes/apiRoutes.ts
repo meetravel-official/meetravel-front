@@ -46,4 +46,6 @@ export const userApiRoute = {
   userNickname: `${API_URL}/users/nickname`,
   usersDelete: `${API_URL}/users/delete`,
   userProfileImage: `${API_URL}/users/profileImage`,
+  otherProfile: (otherUserId: string) =>
+    `${API_URL}/users/otherUser/profile?otherUserId=${otherUserId}`,
 };
