@@ -5,7 +5,8 @@ import { useHeaderState } from "states/useHeader";
 import { checkUser } from "utils/check-user";
 import { removeUserCookie } from "utils/token-utils";
 
-import { useDeleteUser, usePostSignOut } from "@/api/hooks/auth";
+import { usePostSignOut } from "@/api/hooks/auth";
+import { useDeleteUser } from "@/api/hooks/user";
 import { ReactComponent as BellInfoIcon } from "@/assets/icons/bell-info.svg";
 import { ReactComponent as ExclamationCircleIcon } from "@/assets/icons/exclamation-circle.svg";
 import { ReactComponent as QnaIcon } from "@/assets/icons/qna.svg";

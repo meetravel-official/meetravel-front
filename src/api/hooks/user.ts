@@ -7,25 +7,25 @@ import {
   UpdateNicknameRequest,
 } from "../interfaces/user";
 import { api } from "../request";
-import { authApiRoute } from "../routes/apiRoutes";
+import { userApiRoute } from "../routes/apiRoutes";
 
 export const useGetMyPage = () => {
   return useQuery<GetMyPageResponse, AxiosError>({
     queryKey: ["useGetMyPage"],
-    queryFn: () => api.get(authApiRoute.getMyPage),
+    queryFn: () => api.get(userApiRoute.getMyPage),
   });
 };
 
 export const usePutInfo = () => {
   return useMutation<AxiosResponse, AxiosError, UpdateMyPageInfoRequest>({
-    mutationFn: (data) => api.put(authApiRoute.userInfo, data),
+    mutationFn: (data) => api.put(userApiRoute.userInfo, data),
     retry: false,
   });
 };
 
 export const usePutNickname = () => {
   return useMutation<AxiosResponse, AxiosError, UpdateNicknameRequest>({
-    mutationFn: (data) => api.put(authApiRoute.userNickname, data),
+    mutationFn: (data) => api.put(userApiRoute.userNickname, data),
     retry: false,
   });
 };
@@ -37,6 +37,14 @@ export const usePutUserProfileImage = () => {
     { profileImageUrl?: string | null }
   >({
     mutationFn: (profileImageUrl) =>
-      api.put(authApiRoute.userProfileImage, profileImageUrl),
+      api.put(userApiRoute.userProfileImage, profileImageUrl),
+  });
+};
+
+export const useDeleteUser = () => {
+  return useMutation<AxiosResponse, AxiosError>({
+    mutationFn: () => {
+      return api.delete(userApiRoute.usersDelete);
+    },
   });
 };
