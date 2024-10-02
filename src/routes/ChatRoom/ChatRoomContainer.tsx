@@ -267,11 +267,8 @@ const ChatRoomContainer = checkUser(() => {
               );
             })}
           </div>
-          <div
-            css={css`
-              height: 39px;
-            `}
-          />
+
+          <br />
           <div ref={infiniteRef} />
 
           {travelInfoItemList.map((item, index) => {
