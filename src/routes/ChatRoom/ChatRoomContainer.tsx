@@ -1,8 +1,17 @@
 import { css } from "@emotion/react";
 import { CompatClient, Stomp } from "@stomp/stompjs";
+import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import Cookies from "js-cookie";
-import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { useInView } from "react-intersection-observer";
 import { useLocation } from "react-router-dom";
 import { TravelPlanModal } from "routes/Chat/components/TravelPlanModal/TravelPlanModal";
 import SockJS from "sockjs-client";
@@ -64,20 +73,35 @@ const ChatRoomContainer = checkUser(() => {
   const [chatMessageGroups, setChatMessageGroups] = useState<
     IChatMessageData[]
   >([]);
+  const queryClient = useQueryClient();
+  const [isMounted, setIsMounted] = useState(false);
 
-  const [chatMessagesHistory, setChatMessagesHistory] = useState<
-    IChatMessageData[]
-  >([]);
   const [chatMessagesHistoryParams, setChatMessagesHistoryParams] =
     useState<IGetChatRoomMessagesParams>({
       chatRoomId: Number(chatRoomId) ?? 1,
-      page: 1,
+      page: 0,
       pageSize: 10,
     });
 
-  const { data: chatMessagesHistoryData } = useGetChatRoomMessages(
-    chatMessagesHistoryParams
-  );
+  const {
+    data: chatMessagesHistoryData,
+    fetchNextPage,
+    isFetching,
+  } = useGetChatRoomMessages(chatMessagesHistoryParams);
+  const { ref: infiniteRef, inView } = useInView({
+    threshold: 0,
+  });
+  const [prevHeight, setPrevHeight] = useState(0);
+
+  const travelInfoItemList = useMemo(() => {
+    if (
+      chatMessagesHistoryData?.pages &&
+      chatMessagesHistoryData?.pages.length > 0
+    ) {
+      return chatMessagesHistoryData.pages.flatMap((page) => page.content);
+    }
+    return [];
+  }, [chatMessagesHistoryData?.pages]);
 
   let prevUserId: string;
 
@@ -85,10 +109,17 @@ const ChatRoomContainer = checkUser(() => {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const enterPressed = useRef(false);
+  const chatRef = useRef<HTMLDivElement>(null);
 
-  // 스크롤을 제일 아래로 내리는 함수
-  // 일단은 내가 메세지 전송할때만 아래로 내리도록 함
-  const scrollToBottom = () => {
+  const scrollToBottomFLD = () => {
+    if (messagesEndRef.current) {
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView();
+      }, 100);
+    }
+  };
+
+  const scrollToBottomFWS = () => {
     if (messagesEndRef.current) {
       setTimeout(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -97,14 +128,28 @@ const ChatRoomContainer = checkUser(() => {
   };
 
   useEffect(() => {
-    console.log("chatMessagesHistoryData", chatMessagesHistoryData);
-    if (chatMessagesHistoryData) {
-      setChatMessagesHistory((prev) => [
-        ...chatMessagesHistoryData.content.reverse(),
-        ...prev,
-      ]);
+    if (!isFetching && !isMounted) {
+      setTimeout(() => {
+        if (chatRef.current) scrollToBottomFLD();
+      }, 0);
+      setIsMounted(true);
     }
-  }, [chatMessagesHistoryData, chatRoomId]);
+  }, [isFetching, isMounted]);
+
+  useEffect(() => {
+    if (inView && isMounted) {
+      setPrevHeight(chatRef?.current?.scrollHeight || 0);
+      fetchNextPage();
+    }
+  }, [fetchNextPage, inView, isMounted]);
+
+  useEffect(() => {
+    if (prevHeight > 0 && chatRef.current && !isFetching) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight - prevHeight;
+    }
+  }, [prevHeight, isFetching]);
+
+  /////소켓 관련////
 
   const connectHandler = () => {
     setTimeout(() => {
@@ -135,7 +180,7 @@ const ChatRoomContainer = checkUser(() => {
                 ...prevGroups,
                 JSON.parse(message.body),
               ]);
-              scrollToBottom();
+              scrollToBottomFWS();
             },
             {
               Authorization: `Bearer ${token}`,
@@ -154,6 +199,7 @@ const ChatRoomContainer = checkUser(() => {
       client.current?.unsubscribe(
         `/exchange/chat.exchange/chat.rooms.${chatRoomId}`
       );
+      queryClient.removeQueries({ queryKey: ["useGetChatRoomMessages"] });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -167,7 +213,7 @@ const ChatRoomContainer = checkUser(() => {
 
   const addMessage = useCallback(() => {
     if (inputText !== "") {
-      scrollToBottom();
+      scrollToBottomFWS();
       setInputText("");
       client?.current?.send(
         "/pub/chat.send",
@@ -198,7 +244,7 @@ const ChatRoomContainer = checkUser(() => {
           titleContent={<TitleHeader data={chatUsersData} />}
           prefixStyle={cssBackHeaderPrefixStyle}
         />
-        <div css={cssMessageListStyle}>
+        <div ref={chatRef} css={cssMessageListStyle}>
           <div
             css={css`
               position: fixed;
@@ -221,42 +267,11 @@ const ChatRoomContainer = checkUser(() => {
               );
             })}
           </div>
-          {/**여기에 채팅내용이 올라갑니다 */}
-          {/* TODO: 매칭이 완료되고 여행이 시작할때 어드민 메세지를 추가해주어야합니다 */}
-          <div
-            css={css`
-              height: 39px;
-            `}
-          />
-          {
-            <div
-              css={css`
-                display: flex;
-                justify-content: center;
-              `}
-            >
-              <Button
-                detailStyle={css`
-                  width: fit-content;
-                  border: 1px solid ${COLORS.PINK2};
-                  margin-top: 40px;
-                  height: 30px;
-                  color: ${COLORS.PINK2};
-                `}
-                onClick={() => {
-                  setChatMessagesHistoryParams({
-                    chatRoomId: Number(chatRoomId) ?? 1,
-                    page: (chatMessagesHistoryParams.page ?? 0) + 1,
-                    pageSize: 10,
-                  });
-                }}
-              >
-                이전 대화 내역 불러오기
-              </Button>
-            </div>
-          }
 
-          {chatMessagesHistory.map((item, index) => {
+          <br />
+          <div ref={infiniteRef} />
+
+          {travelInfoItemList.map((item, index) => {
             const isSameUser = prevUserId === item.userId;
             prevUserId = item.userId;
             if (item.type === "CHAT")
