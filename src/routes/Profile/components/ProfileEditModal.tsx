@@ -60,7 +60,6 @@ export const ProfileEditModal = () => {
   const [isOpenCancelModal, setIsOpenCancelModal] = useState(false);
 
   const { isOpenEditModal, handleOnCloseEditModal } = useProfile();
-  const [file, setFile] = useState<File>();
 
   const queryClient = useQueryClient();
   const { data: profileData, isLoading } = useGetMyPage();
@@ -72,6 +71,8 @@ export const ProfileEditModal = () => {
     usePostFileUpload("PROFILE");
   const { mutateAsync: mutateProfileImage, isPending: isPendingProfileImage } =
     usePutUserProfileImage();
+
+  const [file, setFile] = useState<File | string | undefined>();
 
   const { form, registerField, resetFields, invalidFields, setFields } =
     useForm({
@@ -185,15 +186,18 @@ export const ProfileEditModal = () => {
 
       invalidFields(async ({ value }) => {
         if (file) {
-          const formData = new FormData();
-          formData.append("file", file);
-          const fileUrlData = await mutateFile(formData);
-          if (fileUrlData && fileUrlData.fileUrl) {
-            await mutateProfileImage({ profileImageUrl: fileUrlData.fileUrl });
+          if (typeof file !== "string") {
+            const formData = new FormData();
+            formData.append("file", file);
+            const fileUrlData = await mutateFile(formData);
+            if (fileUrlData && fileUrlData.fileUrl) {
+              await mutateProfileImage({
+                profileImageUrl: fileUrlData.fileUrl,
+              });
+            }
           }
         } else {
-          if (!profileData?.profileImageUrl)
-            await mutateProfileImage({ profileImageUrl: null });
+          await mutateProfileImage({ profileImageUrl: null });
         }
 
         await mutateNickname({ nickname: value.nickname.value || "" });
@@ -252,6 +256,7 @@ export const ProfileEditModal = () => {
   }, []);
 
   useEffect(() => {
+    setFile(profileData?.profileImageUrl);
     setFields({
       nickname: profileData?.nickname,
       travelFrequency: profileData?.travelFrequency,
