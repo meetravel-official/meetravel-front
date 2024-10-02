@@ -1,12 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { ReactComponent as ReportIcon } from "@/assets/icons/report.svg";
 import { Typography } from "@/components";
 import BorderModal from "@/components/BorderModal/BorderModal";
 import { ProfileForm } from "@/components/ProfileForm/ProfileForm";
 import { cssAlignHorizontalStyle } from "@/styles/align";
-import { cssDefaultBtnStyle } from "@/styles/button";
 import { COLORS } from "@/styles/color";
 
 interface ProfileFullModalProps {
@@ -63,7 +61,6 @@ export const ProfileFullModal = ({
       isOpen={isOpen}
       onClose={handleOnClose}
     >
-      {/* TODO: 타인의 프로필 조회하기 추가되면 수정 */}
       <ProfileForm userId={userId} />
     </BorderModal>
   );

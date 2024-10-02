@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import { TravelPlanModal } from "routes/Chat/components/TravelPlanModal/TravelPlanModal";
 import SockJS from "sockjs-client";
 import {
+  useChatProfile,
   useChatUsers,
   useProfileFullModal,
   useProfileModal,
@@ -59,6 +60,7 @@ const ChatRoomContainer = checkUser(() => {
 
   const { data: chatUsersData } = useGetChatUsers(chatRoomId ?? "1");
   const { setChatUsersData } = useChatUsers();
+  const { profileData } = useChatProfile();
   const [chatMessageGroups, setChatMessageGroups] = useState<
     IChatMessageData[]
   >([]);
@@ -422,6 +424,7 @@ const ChatRoomContainer = checkUser(() => {
       <ProfileFullModal
         isOpen={isOpenProfileFullModal}
         onClose={handleOnCloseProfileFullModal}
+        userId={profileData?.userId}
       />
     </Fragment>
   );

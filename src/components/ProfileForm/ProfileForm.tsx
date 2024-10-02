@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-import { useGetMyPage } from "@/api/hooks/user";
+import { useGetMyPage, useGetOtherProfile } from "@/api/hooks/user";
 import { ReactComponent as IntroduceIcon } from "@/assets/icons/introduce-me.svg";
 import { Typography, UserAvatar } from "@/components";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
@@ -14,9 +14,12 @@ interface ProfileFormProps {
 }
 
 export const ProfileForm = ({ userId, isMy }: ProfileFormProps) => {
-  const { data: myProfileData, isLoading } = useGetMyPage();
+  const { data: myProfileData, isLoading: isLoadingMy } = useGetMyPage();
+  const { data: otherProfileData, isLoading: isLoadingOther } =
+    useGetOtherProfile(userId);
 
-  const profileData = isMy ? myProfileData : undefined;
+  const profileData = isMy ? myProfileData : otherProfileData;
+  const isLoading = isMy ? isLoadingMy : isLoadingOther;
 
   return isLoading ? (
     <div

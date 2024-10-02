@@ -35,12 +35,17 @@ export const authApiRoute = {
   }) =>
     `${API_URL}/auth/kakao/login?authorizationCode=${authorizationCode}&redirectUri=${redirectUri}`, // 카카오 로그인 인가코드를 서버로 전송
   postSignUp: `${API_URL}/signup`, // 회원가입
-  postLogOut: `${API_URL}/users/logout`, // 로그아웃
-  getMyPage: `${API_URL}/users/my-page`, // 마이페이지 조회
   getCheckNickname: (nickName: string) =>
     `${API_URL}/signup/check-nickname?nickName=${nickName}`, // 닉네임 중복 확인
+  postLogOut: `${API_URL}/users/logout`, // 로그아웃
+};
+
+export const userApiRoute = {
+  getMyPage: `${API_URL}/users/my-page`, // 마이페이지 조회
   userInfo: `${API_URL}/users/info`,
   userNickname: `${API_URL}/users/nickname`,
   usersDelete: `${API_URL}/users/delete`,
   userProfileImage: `${API_URL}/users/profileImage`,
+  otherProfile: (otherUserId: string) =>
+    `${API_URL}/users/otherUser/profile?otherUserId=${otherUserId}`,
 };
