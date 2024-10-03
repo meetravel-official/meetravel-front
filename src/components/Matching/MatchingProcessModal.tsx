@@ -53,7 +53,7 @@ const MatchingProcessModal = () => {
       refetch() //매칭 결과 조회
         .then((res) => {
           console.log("res", res);
-          if (res.data?.matchingFormId === null && myMatchingFormId) {
+          if (res.data?.chatRoomId === null && myMatchingFormId) {
             //매칭 결과가 없을때 새 채팅방 생성 및 입장
             mutationPostChatRooms.mutate(
               { matchingFormId: myMatchingFormId },
@@ -67,9 +67,9 @@ const MatchingProcessModal = () => {
                 },
               }
             );
-          } else if (res.data?.matchingFormId) {
+          } else if (res.data?.chatRoomId) {
             //매칭 결과가 있을때 해당 채팅방 입장
-            mutationPostJoinChatRoom.mutate(Number(res.data.matchingFormId));
+            mutationPostJoinChatRoom.mutate(res.data.chatRoomId);
           }
           setTimeout(() => {
             toast.success("매칭이 완료되었습니다.");
