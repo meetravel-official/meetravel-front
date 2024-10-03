@@ -71,7 +71,7 @@ const ReportModal = ({ data }: { data?: IUserDetailData[] }) => {
         `}
       >
         {data?.map((item, index) => {
-          if (item.userId === myUserId) return null;
+          if (item.userId === myUserId || item.userId === "1@bot") return null;
           return <UserItem key={index} data={item} />;
         })}
       </div>
