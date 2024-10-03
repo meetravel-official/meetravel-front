@@ -192,13 +192,21 @@ const ChatRoomContainer = checkUser(() => {
   };
 
   useEffect(() => {
-    connectHandler();
+    try {
+      connectHandler();
+    } catch (e) {
+      console.log("연결 오류");
+    }
     return () => {
       console.log("////////");
       console.log("unsubscribe");
-      client.current?.unsubscribe(
-        `/exchange/chat.exchange/chat.rooms.${chatRoomId}`
-      );
+      try {
+        client.current?.unsubscribe(
+          `/exchange/chat.exchange/chat.rooms.${chatRoomId}`
+        );
+      } catch (e) {
+        console.log("연결 오류");
+      }
       queryClient.removeQueries({ queryKey: ["useGetChatRoomMessages"] });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
