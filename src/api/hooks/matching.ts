@@ -14,7 +14,8 @@ export const usePostMatchingForm = () => {
 };
 
 interface IMatchingResult {
-  matchingFormId: string | null;
+  matchingFormId: number | null;
+  chatRoomId: number | null;
 }
 
 export const useGetMatchingResult = (matchingFormId: number) => {
