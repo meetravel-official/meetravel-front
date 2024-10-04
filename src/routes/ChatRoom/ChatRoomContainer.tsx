@@ -432,7 +432,7 @@ const ChatRoomContainer = checkUser(() => {
           travelEndDate: dayjs(chatUsersData?.travelPlanDate.endDate).format(
             "YYYY-MM-DD"
           ),
-          keyword: ["산", "도시", "야경"],
+          keyword: chatUsersData?.travelKeywords,
         }}
       />
 

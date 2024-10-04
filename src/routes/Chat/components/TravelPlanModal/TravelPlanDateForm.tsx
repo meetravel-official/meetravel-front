@@ -18,7 +18,7 @@ interface TravelPlanDateFormProps {
   matchingInfo: {
     travelStartDate: string;
     travelEndDate: string;
-    keyword: string[];
+    keyword?: string[];
   };
 }
 export const TravelPlanDateForm = ({

@@ -2,6 +2,7 @@ import { dummyTravelInfo } from "dummies/travel";
 import { useCallback, useMemo, useState } from "react";
 import {
   cssInputFullWidthStyle,
+  cssTravelPlaceItemEmptyStyle,
   cssTravelPlanContentTypeBtnBoxStyle,
   cssTravelPlanContentTypeBtnStyle,
   cssTravelPlanDateFormItemStyle,
@@ -34,6 +35,8 @@ export const TravelPlanDateFormItem = ({
     setSelectedContentType(value);
     setPageNum(0);
   }, []);
+
+  const isEmpty = true; // TODO: api 붙이면서 추후 수정
 
   const maxPage = useMemo(() => {
     switch (selectedContentType) {
@@ -113,18 +116,33 @@ export const TravelPlanDateFormItem = ({
               숙박
             </RadioButtonGroup.RadioButton>
           </RadioButtonGroup>
-          <div css={cssAlignVerticalStyle({ gap: 16 })}>
-            <div css={cssAlignVerticalStyle({ gap: 8 })}>
-              <TravelPlaceSelectItem
-                travelInfo={dummyTravelInfo}
-                selected={selectedContentIdList.includes(
-                  dummyTravelInfo.contentid
-                )}
-                onSelect={handleOnSelectPlace}
+          {isEmpty ? (
+            <div css={cssTravelPlaceItemEmptyStyle}>
+              <Typography size="16" weight="bold" color={COLORS.GRAY4}>
+                아직 공유된 여행 정보가 없어요!
+              </Typography>
+              <Typography size="12" color={COLORS.GRAY3}>
+                여행 정보 탭에서 마음에 드는 장소를 공유해주세요.
+              </Typography>
+            </div>
+          ) : (
+            <div css={cssAlignVerticalStyle({ gap: 16 })}>
+              <div css={cssAlignVerticalStyle({ gap: 8 })}>
+                <TravelPlaceSelectItem
+                  travelInfo={dummyTravelInfo}
+                  selected={selectedContentIdList.includes(
+                    dummyTravelInfo.contentid
+                  )}
+                  onSelect={handleOnSelectPlace}
+                />
+              </div>
+              <Pagination
+                page={pageNum}
+                maxPage={maxPage}
+                setPage={setPageNum}
               />
             </div>
-            <Pagination page={pageNum} maxPage={maxPage} setPage={setPageNum} />
-          </div>
+          )}
         </div>
       </div>
     </div>

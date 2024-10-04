@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { useEffect } from "react";
 
 import { ITravelPlan } from "@/api/interfaces/travelPlan";
 import { Button, Typography } from "@/components";
@@ -19,7 +20,7 @@ interface TravelPlanModalProps {
   matchingInfo: {
     travelStartDate: string;
     travelEndDate: string;
-    keyword: string[];
+    keyword?: string[];
   };
 }
 
@@ -28,12 +29,17 @@ export const TravelPlanModal = ({
   onClose,
   matchingInfo,
 }: TravelPlanModalProps) => {
-  const { form, registerField, invalidFields } = useForm<ITravelPlan>({
-    initialValues: {
-      keyword: [],
-      travelPlan: [],
-    },
-  });
+  const { form, registerField, invalidFields, setFields } =
+    useForm<ITravelPlan>({
+      initialValues: {
+        keyword: matchingInfo.keyword || [],
+        travelPlan: [],
+      },
+    });
+
+  useEffect(() => {
+    setFields(matchingInfo);
+  }, [matchingInfo, setFields]);
 
   return (
     <BorderModal
@@ -46,56 +52,59 @@ export const TravelPlanModal = ({
         </Typography>
       }
     >
-      <Form
-        formValue={form}
-        onSubmit={() => {
-          invalidFields(({ errors, value }) => {
-            if (errors) {
-              console.log("error in if", errors);
-            } else {
-              console.log("error in else", value);
-            }
-          });
-        }}
-      >
-        <div css={cssAlignVerticalStyle({ gap: 48 })}>
-          <div css={cssAlignVerticalStyle({ gap: 32 })}>
-            <FormItem name="keyword" label="이번 여행의 테마는">
-              <CheckButtonGroup
-                {...registerField<"keyword">("keyword")}
-                gridDetailStyle={css`
-                  all: unset;
-                  display: flex;
-                  flex-wrap: wrap;
-                  gap: 8px 4px;
-                `}
-                maxSelect={3}
-              >
-                {tagKeywordList.map((tag) => (
-                  <CheckButtonGroup.CheckTag
-                    value={tag}
-                    key={tag}
-                    icon={<TagKeyword keyword={tag} returnType="icon" />}
-                  >
-                    {tag}
-                  </CheckButtonGroup.CheckTag>
-                ))}
-              </CheckButtonGroup>
-            </FormItem>
-            <TravelPlanDateForm matchingInfo={matchingInfo} />
-          </div>
-          <div css={cssAlignVerticalStyle({ gap: 16 })}>
-            <Typography size="12" color={COLORS.GRAY3}>
-              *장소 확정은 최대 한 항목당 2개까지만 가능해요.
+      <div css={cssAlignVerticalStyle({ gap: 48 })}>
+        <Form
+          formValue={form}
+          onSubmit={() => {
+            invalidFields(({ errors, value }) => {
+              if (errors) {
+                console.log("error in if", errors);
+              } else {
+                console.log("error in else", value);
+              }
+            });
+          }}
+          formStyle={css`
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+          `}
+        >
+          <FormItem name="keyword" label="이번 여행의 테마는">
+            <CheckButtonGroup
+              {...registerField<"keyword">("keyword")}
+              gridDetailStyle={css`
+                all: unset;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px 4px;
+              `}
+              maxSelect={3}
+            >
+              {tagKeywordList.map((tag) => (
+                <CheckButtonGroup.CheckTag
+                  value={tag}
+                  key={tag}
+                  icon={<TagKeyword keyword={tag} returnType="icon" />}
+                >
+                  {tag}
+                </CheckButtonGroup.CheckTag>
+              ))}
+            </CheckButtonGroup>
+          </FormItem>
+          <TravelPlanDateForm matchingInfo={matchingInfo} />
+        </Form>
+        <div css={cssAlignVerticalStyle({ gap: 16 })}>
+          <Typography size="12" color={COLORS.GRAY3}>
+            *장소 확정은 최대 한 항목당 2개까지만 가능해요.
+          </Typography>
+          <Button bgColor={COLORS.PINK3} color={COLORS.WHITE} height="large">
+            <Typography color={COLORS.WHITE} weight={700} size="16">
+              저장
             </Typography>
-            <Button bgColor={COLORS.PINK3} color={COLORS.WHITE} height="large">
-              <Typography color={COLORS.WHITE} weight={700} size="16">
-                저장
-              </Typography>
-            </Button>
-          </div>
+          </Button>
         </div>
-      </Form>
+      </div>
     </BorderModal>
   );
 };

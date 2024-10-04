@@ -62,3 +62,11 @@ export const cssTravelPlanContentTypeBtnStyle = css`
   padding: 14px 0;
   height: max-content;
 `;
+
+export const cssTravelPlaceItemEmptyStyle = css`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  padding: 30px 0;
+`;
