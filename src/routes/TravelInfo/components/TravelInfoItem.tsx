@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 
+import { usePostSharePlace } from "@/api/hooks/place";
 import { IAreaBasedList } from "@/api/interfaces/visitKorea";
 import { ReactComponent as HearIcon } from "@/assets/icons/heart.svg";
 import { ReactComponent as PinIcon } from "@/assets/icons/pin.svg";
@@ -28,6 +30,8 @@ export const TravelInfoItem = ({
   travelInfo,
   onClickItem,
 }: TravelInfoItemProps) => {
+  const { mutate, isPending } = usePostSharePlace();
+
   const [isLike, setIsLike] = useState(
     travelInfo.contentid ? !!localStorage.getItem(travelInfo.contentid) : false
   );
@@ -82,7 +86,18 @@ export const TravelInfoItem = ({
   };
 
   const handleOnShare = () => {
-    handleOnCloseShareModal();
+    if (travelInfo.contentid)
+      mutate(travelInfo.contentid, {
+        onSuccess: () => {
+          toast.success("채팅방에 공유되었습니다.");
+        },
+        onError: () => {
+          toast.error("잠시 후 다시 시도해주세요.");
+        },
+        onSettled: () => {
+          handleOnCloseShareModal();
+        },
+      });
   };
 
   return (
@@ -153,6 +168,7 @@ export const TravelInfoItem = ({
               bgColor={COLORS.PINK3}
               color={COLORS.WHITE}
               onClick={handleOnShare}
+              loading={isPending}
             >
               공유하기
             </Button>
