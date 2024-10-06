@@ -9,6 +9,6 @@ export const useGetTravelPlan = (chatRoomId?: number) => {
   return useQuery<TravelPlan, AxiosError>({
     queryKey: ["useGetTravelPlan", chatRoomId],
     queryFn: () => api.get(travelApiRoute.travelPlan(chatRoomId || -1)),
-    enabled: !!chatRoomId,
+    enabled: false,
   });
 };

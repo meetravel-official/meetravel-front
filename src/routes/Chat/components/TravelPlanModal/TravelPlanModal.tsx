@@ -26,7 +26,7 @@ export const TravelPlanModal = ({
 }: TravelPlanModalProps) => {
   const chatRoomIdNum = chatRoomId ? parseInt(chatRoomId) : undefined;
 
-  const { data } = useGetTravelPlan(chatRoomIdNum);
+  const { data, refetch } = useGetTravelPlan(chatRoomIdNum);
 
   const { travelKeyword, setTravelKeyword, setDailyPlans } = useTravelPlan();
 
@@ -36,6 +36,10 @@ export const TravelPlanModal = ({
       setDailyPlans(data.dailyPlans);
     }
   }, [data, setDailyPlans, setTravelKeyword]);
+
+  useEffect(() => {
+    if (chatRoomIdNum && isOpen) refetch();
+  }, [chatRoomIdNum, isOpen, refetch]);
 
   const handleOnSubmit = () => {
     console.log(travelKeyword);
