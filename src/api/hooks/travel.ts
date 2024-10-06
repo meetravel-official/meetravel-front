@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
-import { ITravelPlan } from "../interfaces/travelPlan";
+import { TravelPlan } from "../interfaces/travel";
 import { api } from "../request";
 import { travelApiRoute } from "../routes/apiRoutes";
 
 export const useGetTravelPlan = (chatRoomId?: number) => {
-  return useQuery<ITravelPlan, AxiosError>({
+  return useQuery<TravelPlan, AxiosError>({
     queryKey: ["useGetTravelPlan", chatRoomId],
     queryFn: () => api.get(travelApiRoute.travelPlan(chatRoomId || -1)),
     enabled: !!chatRoomId,
