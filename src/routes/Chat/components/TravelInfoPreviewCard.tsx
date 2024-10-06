@@ -13,9 +13,11 @@ import {
 
 interface TravelInfoPreviewCardProps {
   travelInfo: IAreaBasedList;
+  disabled?: boolean;
 }
 export const TravelInfoPreviewCard = ({
   travelInfo,
+  disabled,
 }: TravelInfoPreviewCardProps) => {
   const [isOpenDetailModal, setIsOpenDetailModal] = useState(false);
 
@@ -25,7 +27,11 @@ export const TravelInfoPreviewCard = ({
 
   return (
     <Fragment>
-      <button css={cssTravelInfoPreviewCardStyle} onClick={handleOnOpenDetail}>
+      <button
+        css={cssTravelInfoPreviewCardStyle}
+        disabled={disabled}
+        onClick={handleOnOpenDetail}
+      >
         <div css={cssTravelInfoPreviewCardImageStyle}>
           <Image
             src={travelInfo.firstimage || ""}

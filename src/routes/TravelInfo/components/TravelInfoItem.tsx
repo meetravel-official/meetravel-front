@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { TravelInfoPreviewCard } from "routes/Chat/components/TravelInfoPreviewCard";
 
 import { usePostSharePlace } from "@/api/hooks/place";
 import { IAreaBasedList } from "@/api/interfaces/visitKorea";
@@ -9,7 +10,7 @@ import { ReactComponent as PinIcon } from "@/assets/icons/pin.svg";
 import { ReactComponent as ShareIcon } from "@/assets/icons/share.svg";
 import { Button, Image, Typography } from "@/components";
 import Modal from "@/components/Modal/Modal";
-import { cssAlignHorizontalStyle } from "@/styles/align";
+import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
 import {
@@ -169,26 +170,33 @@ export const TravelInfoItem = ({
           <div css={cssAlignHorizontalStyle({ gap: 4, width: "100%" })}>
             <Button
               bgColor={COLORS.PINK3}
-              color={COLORS.WHITE}
               onClick={handleOnShare}
               loading={isPending}
             >
-              공유하기
+              <Typography color={COLORS.WHITE} size="16" weight={700}>
+                공유하기
+              </Typography>
             </Button>
-            <Button
-              bgColor={COLORS.GRAY1}
-              color={COLORS.GRAY3}
-              onClick={handleOnCloseShareModal}
-            >
-              취소
+            <Button bgColor={COLORS.GRAY1} onClick={handleOnCloseShareModal}>
+              <Typography color={COLORS.GRAY3} size="16" weight={700}>
+                취소
+              </Typography>
             </Button>
           </div>
         }
       >
         <div css={cssShareModalContentStyle}>
-          <Typography color={COLORS.GRAY4} size="16">
-            여행 진행 중인 채팅방에 이 장소를 공유할까요?
-          </Typography>
+          <div css={cssAlignVerticalStyle({ gap: 16 })}>
+            <div css={cssAlignVerticalStyle}>
+              <Typography color={COLORS.GRAY4} size="14">
+                여행 진행 중인 채팅방에
+              </Typography>
+              <Typography color={COLORS.GRAY4} size="14">
+                이 장소를 공유할까요?
+              </Typography>
+            </div>
+            <TravelInfoPreviewCard travelInfo={travelInfo} disabled />
+          </div>
         </div>
       </Modal>
     </div>
