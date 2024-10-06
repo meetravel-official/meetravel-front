@@ -323,11 +323,6 @@ export const SampleContainer = () => {
         onClose={() => {
           setIsOpenTravelPlanModal(false);
         }}
-        matchingInfo={{
-          travelStartDate: "2024-08-11",
-          travelEndDate: "2024-08-13",
-          keyword: ["산", "도시", "야경"],
-        }}
       />{" "}
       <Button onClick={handleLogOut}>로그아웃</Button>
       <ProfileFullModal

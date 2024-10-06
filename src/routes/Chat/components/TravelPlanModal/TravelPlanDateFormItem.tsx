@@ -1,4 +1,3 @@
-import { dummyTravelPlace } from "dummies/travel";
 import { useCallback, useMemo, useState } from "react";
 import {
   cssInputFullWidthStyle,
@@ -7,8 +6,9 @@ import {
   cssTravelPlanContentTypeBtnStyle,
   cssTravelPlanDateFormItemStyle,
 } from "routes/Chat/styles/TravelPlanModal.styles";
+import { useTravelPlan } from "states/useTravelPlan";
 
-import { IAreaBasedList } from "@/api/interfaces/visitKorea";
+import { TravelPlace } from "@/api/interfaces/travel";
 import { Typography } from "@/components";
 import Input from "@/components/Input/Input";
 import { Pagination } from "@/components/Pagination/Pagination";
@@ -22,19 +22,23 @@ interface TravelPlanDateFormItemProps {
   isView: boolean;
 }
 export const TravelPlanDateFormItem = ({
+  date,
   isView,
 }: TravelPlanDateFormItemProps) => {
+  const { dailyPlans } = useTravelPlan();
+
   const [selectedContentType, setSelectedContentType] =
     useState<string>("travel");
   const [pageNum, setPageNum] = useState<number>(0);
   const [selectedPlaceIdList, setSelectedPlaceIdList] = useState<string[]>([]);
 
-  const handleOnChangeContentType = useCallback((value: string) => {
-    setSelectedContentType(value);
-    setPageNum(0);
-  }, []);
+  const dailyPlan = useMemo(() => {
+    return dailyPlans.filter((dailyPlan) => dailyPlan.planDate === date)[0];
+  }, [dailyPlans, date]);
 
-  const isEmpty = true; // TODO: api 붙이면서 추후 수정
+  const dailyTravelPlaces = useMemo(() => {
+    return dailyPlan.travelPlaces;
+  }, [dailyPlan.travelPlaces]);
 
   const maxPage = useMemo(() => {
     switch (selectedContentType) {
@@ -48,6 +52,11 @@ export const TravelPlanDateFormItem = ({
         return 3;
     }
   }, [selectedContentType]);
+
+  const handleOnChangeContentType = useCallback((value: string) => {
+    setSelectedContentType(value);
+    setPageNum(0);
+  }, []);
 
   const handleOnSelectPlace = useCallback(
     (travelPlace: TravelPlace) => {
@@ -74,6 +83,7 @@ export const TravelPlanDateFormItem = ({
         <Input
           placeholder="처음 모일 땐 개방적인 곳을 추천해요."
           detailStyle={cssInputFullWidthStyle}
+          defaultValue={dailyPlan.meetPlace}
         />
       </div>
       <div css={cssAlignVerticalStyle({ gap: 8, alignItems: "flex-start" })}>
@@ -83,6 +93,7 @@ export const TravelPlanDateFormItem = ({
         <Input
           placeholder="사람들과 충분한 대화 후 결정해요."
           detailStyle={cssInputFullWidthStyle}
+          defaultValue={dailyPlan.meetTime}
         />
       </div>
       <div css={cssAlignVerticalStyle({ gap: 12, alignItems: "flex-start" })}>
@@ -114,7 +125,7 @@ export const TravelPlanDateFormItem = ({
               숙박
             </RadioButtonGroup.RadioButton>
           </RadioButtonGroup>
-          {isEmpty ? (
+          {dailyTravelPlaces.length === 0 ? (
             <div css={cssTravelPlaceItemEmptyStyle}>
               <Typography size="16" weight="bold" color={COLORS.GRAY4}>
                 아직 공유된 여행 정보가 없어요!
@@ -126,11 +137,14 @@ export const TravelPlanDateFormItem = ({
           ) : (
             <div css={cssAlignVerticalStyle({ gap: 16 })}>
               <div css={cssAlignVerticalStyle({ gap: 8 })}>
-                <TravelPlaceSelectItem
-                  travelPlace={dummyTravelPlace}
-                  selected={dummyTravelPlace.isPicked}
-                  onSelect={handleOnSelectPlace}
-                />
+                {dailyTravelPlaces.map((place) => (
+                  <TravelPlaceSelectItem
+                    key={place.placeId}
+                    travelPlace={place}
+                    selected={place.isPicked}
+                    onSelect={handleOnSelectPlace}
+                  />
+                ))}
               </div>
               <Pagination
                 page={pageNum}
