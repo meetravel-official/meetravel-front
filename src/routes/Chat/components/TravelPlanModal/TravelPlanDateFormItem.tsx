@@ -1,4 +1,4 @@
-import { dummyTravelInfo } from "dummies/travel";
+import { dummyTravelPlace } from "dummies/travel";
 import { useCallback, useMemo, useState } from "react";
 import {
   cssInputFullWidthStyle,
@@ -27,9 +27,7 @@ export const TravelPlanDateFormItem = ({
   const [selectedContentType, setSelectedContentType] =
     useState<string>("travel");
   const [pageNum, setPageNum] = useState<number>(0);
-  const [selectedContentIdList, setSelectedContentIdList] = useState<string[]>(
-    []
-  );
+  const [selectedPlaceIdList, setSelectedPlaceIdList] = useState<string[]>([]);
 
   const handleOnChangeContentType = useCallback((value: string) => {
     setSelectedContentType(value);
@@ -52,19 +50,19 @@ export const TravelPlanDateFormItem = ({
   }, [selectedContentType]);
 
   const handleOnSelectPlace = useCallback(
-    (info: IAreaBasedList) => {
-      if (info.contentid) {
-        if (selectedContentIdList.includes(info.contentid)) {
-          const filteredContentIdList = selectedContentIdList.filter(
-            (contentId) => contentId !== info.contentid
+    (travelPlace: TravelPlace) => {
+      if (travelPlace.placeId) {
+        if (selectedPlaceIdList.includes(travelPlace.placeId)) {
+          const filteredContentIdList = selectedPlaceIdList.filter(
+            (contentId) => contentId !== travelPlace.placeId
           );
-          setSelectedContentIdList([...filteredContentIdList]);
+          setSelectedPlaceIdList([...filteredContentIdList]);
         } else {
-          setSelectedContentIdList([...selectedContentIdList, info.contentid]);
+          setSelectedPlaceIdList([...selectedPlaceIdList, travelPlace.placeId]);
         }
       }
     },
-    [selectedContentIdList]
+    [selectedPlaceIdList]
   );
 
   return (
@@ -129,10 +127,8 @@ export const TravelPlanDateFormItem = ({
             <div css={cssAlignVerticalStyle({ gap: 16 })}>
               <div css={cssAlignVerticalStyle({ gap: 8 })}>
                 <TravelPlaceSelectItem
-                  travelInfo={dummyTravelInfo}
-                  selected={selectedContentIdList.includes(
-                    dummyTravelInfo.contentid
-                  )}
+                  travelPlace={dummyTravelPlace}
+                  selected={dummyTravelPlace.isPicked}
                   onSelect={handleOnSelectPlace}
                 />
               </div>

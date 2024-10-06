@@ -1,9 +1,9 @@
-import { dummyTravelInfo } from "dummies/travel";
+import { dummyTravelPlace } from "dummies/travel";
 import { Fragment, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { ChatStatus, IChatData } from "@/api/interfaces/chat";
-import { IAreaBasedList } from "@/api/interfaces/visitKorea";
+import { TravelPlace } from "@/api/interfaces/travel";
 import { ReactComponent as CheckIcon } from "@/assets/icons/check-circle.svg";
 import { ReactComponent as ExclamationIcon } from "@/assets/icons/exclamation-circle.svg";
 import { Button, Typography } from "@/components";
@@ -32,28 +32,7 @@ export const TravelReviewModal = ({
 TravelReviewModalProps) => {
   const navigate = useNavigate();
 
-  const travelPlaceList: IAreaBasedList[] = [
-    {
-      ...dummyTravelInfo,
-      contentid: "1",
-      contenttypeid: "12",
-    },
-    {
-      ...dummyTravelInfo,
-      contentid: "2",
-      contenttypeid: "39",
-    },
-    {
-      ...dummyTravelInfo,
-      contentid: "3",
-      contenttypeid: "39",
-    },
-    {
-      ...dummyTravelInfo,
-      contentid: "4",
-      contenttypeid: "32",
-    },
-  ];
+  const travelPlaceList: TravelPlace[] = [dummyTravelPlace];
 
   const [selectedContentIdList, setSelectedContentIdList] = useState<string[]>(
     []
@@ -79,17 +58,17 @@ TravelReviewModalProps) => {
   ];
 
   const handleOnHeartTravelPlace = useCallback(
-    (travelPlace: IAreaBasedList) => {
-      if (travelPlace.contentid)
-        if (selectedContentIdList.includes(travelPlace.contentid)) {
+    (travelPlace: TravelPlace) => {
+      if (travelPlace.placeId)
+        if (selectedContentIdList.includes(travelPlace.placeId)) {
           const filteredList = selectedContentIdList.filter(
-            (id) => id !== travelPlace.contentid
+            (id) => id !== travelPlace.placeId
           );
           setSelectedContentIdList([...filteredList]);
         } else {
           setSelectedContentIdList([
             ...selectedContentIdList,
-            travelPlace.contentid,
+            travelPlace.placeId,
           ]);
         }
     },
@@ -210,19 +189,13 @@ TravelReviewModalProps) => {
                   {travelPlaceList
                     .filter(
                       (travelPlace) =>
-                        travelPlace.contenttypeid === item.contenttypeid
+                        travelPlace.placeType === item.contenttypeid
                     )
                     .map((travelPlace) => (
                       <TravelPlaceSelectItem
-                        key={travelPlace.contentid}
-                        travelInfo={travelPlace}
-                        selected={
-                          travelPlace.contentid
-                            ? selectedContentIdList.includes(
-                                travelPlace.contentid
-                              )
-                            : false
-                        }
+                        key={travelPlace.placeId}
+                        travelPlace={travelPlace}
+                        selected={travelPlace.isPicked}
                         onSelect={handleOnHeartTravelPlace}
                         disabled={!isEnableReview}
                       />

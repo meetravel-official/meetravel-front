@@ -1,3 +1,5 @@
+import { TravelPlace } from "@/api/interfaces/travel";
+
 export const dummyTravelInfo = {
   addr1: "경상북도 안동시 하회남촌길 69-5",
   addr2: "",
@@ -22,4 +24,14 @@ export const dummyTravelInfo = {
   tel: "054-855-8552",
   title: "가경재 [한국관광 품질인증/Korea Quality]",
   zipcode: "36760",
+};
+
+export const dummyTravelPlace: TravelPlace = {
+  placeId: dummyTravelInfo.contentid,
+  placeAddress1: dummyTravelInfo.addr1,
+  placeAddress2: dummyTravelInfo.addr2,
+  placeImageUrl: dummyTravelInfo.firstimage,
+  placeTitle: dummyTravelInfo.title,
+  placeType: dummyTravelInfo.contenttypeid,
+  isPicked: false,
 };
