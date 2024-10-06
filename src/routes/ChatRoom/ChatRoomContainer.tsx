@@ -425,15 +425,7 @@ const ChatRoomContainer = checkUser(() => {
         onClose={() => {
           setIsOpenTravelPlanModal(false);
         }}
-        matchingInfo={{
-          travelStartDate: dayjs(
-            chatUsersData?.travelPlanDate.startDate
-          ).format("YYYY-MM-DD"),
-          travelEndDate: dayjs(chatUsersData?.travelPlanDate.endDate).format(
-            "YYYY-MM-DD"
-          ),
-          keyword: chatUsersData?.travelKeywords,
-        }}
+        chatRoomId={chatRoomId}
       />
 
       <ReportModal data={chatUsersData?.joinedUsers} />

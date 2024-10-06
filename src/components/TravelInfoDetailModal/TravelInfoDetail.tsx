@@ -3,11 +3,7 @@ import dayjs from "dayjs";
 import { Fragment, useCallback, useEffect, useMemo } from "react";
 
 import { useGetDetailCommon, useGetDetailIntro } from "@/api/hooks/visitKorea";
-import {
-  IAreaBasedList,
-  IDetailCommon,
-  IDetailIntro,
-} from "@/api/interfaces/visitKorea";
+import { IDetailCommon, IDetailIntro } from "@/api/interfaces/visitKorea";
 import { ReactComponent as CalendarIcon } from "@/assets/icons/calendar.svg";
 import { ReactComponent as CarIcon } from "@/assets/icons/car.svg";
 import { ReactComponent as CheckCalendarIcon } from "@/assets/icons/check-calendar.svg";
@@ -29,17 +25,17 @@ import {
 } from "./TravelInfoDetailModal.styles";
 
 interface TravelInfoDetailProps {
-  travelInfo?: IAreaBasedList;
+  travelId?: string;
 }
 
-export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
+export const TravelInfoDetail = ({ travelId }: TravelInfoDetailProps) => {
   const { kakao } = window;
 
   const { data: detailCommonData, isLoading: isLoadingDetailCommon } =
-    useGetDetailCommon(travelInfo?.contentid);
+    useGetDetailCommon(travelId);
   const { data: detailIntroData, isLoading: isLoadingDetailIntro } =
     useGetDetailIntro({
-      contentId: travelInfo?.contentid,
+      contentId: travelId,
       contentTypeId:
         detailCommonData?.data.response.body.items.item?.[0].contenttypeid,
     });
@@ -56,16 +52,16 @@ export const TravelInfoDetail = ({ travelInfo }: TravelInfoDetailProps) => {
 
   const travelCommonInfo = useMemo(() => {
     return {
-      mapx: travelInfo?.mapx || detailCommon?.mapx,
-      mapy: travelInfo?.mapy || detailCommon?.mapy,
-      title: travelInfo?.title || detailCommon?.title,
-      mlevel: travelInfo?.mlevel || detailCommon?.mlevel,
-      firstimage: travelInfo?.firstimage || detailCommon?.firstimage,
-      addr1: travelInfo?.addr1 || detailCommon?.addr1,
-      addr2: travelInfo?.addr2 || detailCommon?.addr2,
-      tel: travelInfo?.tel || detailCommon?.tel,
+      mapx: detailCommon?.mapx,
+      mapy: detailCommon?.mapy,
+      title: detailCommon?.title,
+      mlevel: detailCommon?.mlevel,
+      firstimage: detailCommon?.firstimage,
+      addr1: detailCommon?.addr1,
+      addr2: detailCommon?.addr2,
+      tel: detailCommon?.tel,
     };
-  }, [travelInfo, detailCommon]);
+  }, [detailCommon]);
 
   const detailItem = useMemo(() => {
     return [

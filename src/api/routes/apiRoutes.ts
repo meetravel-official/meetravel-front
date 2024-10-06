@@ -49,3 +49,12 @@ export const userApiRoute = {
   otherProfile: (otherUserId: string) =>
     `${API_URL}/users/otherUser/profile?otherUserId=${otherUserId}`,
 };
+
+export const travelApiRoute = {
+  travelPlan: (chatRoomId: number) =>
+    `${API_URL}/travels/plans/chat-rooms/${chatRoomId}`,
+};
+
+export const placeApiRoute = {
+  share: (placeId: string) => `${API_URL}/places/share/${placeId}`,
+};

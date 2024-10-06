@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 
-import { IAreaBasedList } from "@/api/interfaces/visitKorea";
+import { TravelPlace } from "@/api/interfaces/travel";
 import { ReactComponent as HearIcon } from "@/assets/icons/heart.svg";
 import { Image, Typography } from "@/components";
 import { cssAlignVerticalStyle } from "@/styles/align";
@@ -15,14 +15,14 @@ import {
 } from "./TravelPlaceSelectItem.styles";
 
 interface TravelPlaceSelectItemProps {
-  travelInfo: IAreaBasedList;
+  travelPlace: TravelPlace;
   selected?: boolean;
-  onSelect: (travelInfo: IAreaBasedList) => void;
+  onSelect: (travelPlace: TravelPlace) => void;
   disabled?: boolean;
 }
 
 export const TravelPlaceSelectItem = ({
-  travelInfo,
+  travelPlace,
   selected,
   disabled,
   onSelect,
@@ -36,7 +36,7 @@ export const TravelPlaceSelectItem = ({
 
   const handleOnClickHeart = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault();
-    onSelect(travelInfo);
+    onSelect(travelPlace);
   };
 
   return (
@@ -47,7 +47,7 @@ export const TravelPlaceSelectItem = ({
           onClick={handleOnOpenDetail}
         >
           <Image
-            src={travelInfo.firstimage || ""}
+            src={travelPlace.placeImageUrl || ""}
             alt="travel-info"
             width="100px"
             height="61px"
@@ -62,10 +62,10 @@ export const TravelPlaceSelectItem = ({
             css={cssAlignVerticalStyle({ gap: 4, alignItems: "flex-start" })}
           >
             <Typography color={COLORS.GRAY5} weight={700} size="16">
-              {travelInfo.title}
+              {travelPlace.placeTitle}
             </Typography>
             <Typography color={COLORS.GRAY4} weight={400} size="12">
-              {travelInfo.addr1} {travelInfo.addr2}
+              {travelPlace.placeAddress1} {travelPlace.placeAddress2}
             </Typography>
           </div>
         </button>
@@ -82,7 +82,7 @@ export const TravelPlaceSelectItem = ({
         onClose={() => {
           setIsOpenDetailModal(false);
         }}
-        travelInfo={travelInfo}
+        travelId={travelPlace.placeId}
       />
     </Fragment>
   );

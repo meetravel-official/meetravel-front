@@ -25,7 +25,7 @@ export const TravelInfoContainer = checkUser(() => {
       <TravelInfoDetailModal
         isOpen={isOpenTravelInfoDetailModal}
         onClose={() => setIsOpenTravelInfoDetailModal(false)}
-        travelInfo={selectedContent}
+        travelId={selectedContent?.contentid}
       />
     </Fragment>
   );
