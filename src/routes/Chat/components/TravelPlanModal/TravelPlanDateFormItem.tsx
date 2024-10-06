@@ -27,34 +27,36 @@ export const TravelPlanDateFormItem = ({
 }: TravelPlanDateFormItemProps) => {
   const { dailyPlans } = useTravelPlan();
 
-  const [selectedContentType, setSelectedContentType] =
-    useState<string>("travel");
+  const [selectedPlaceType, setSelectedPlaceType] = useState<string>("관광");
+
+  const pageSize = 3;
   const [pageNum, setPageNum] = useState<number>(0);
+
   const [selectedPlaceIdList, setSelectedPlaceIdList] = useState<string[]>([]);
 
   const dailyPlan = useMemo(() => {
     return dailyPlans.filter((dailyPlan) => dailyPlan.planDate === date)[0];
   }, [dailyPlans, date]);
 
-  const dailyTravelPlaces = useMemo(() => {
-    return dailyPlan.travelPlaces;
-  }, [dailyPlan.travelPlaces]);
+  const dailyTravelPlacesByPlaceType = useMemo(() => {
+    return dailyPlan.travelPlaces.filter(
+      (place) => place.placeType === selectedPlaceType
+    );
+  }, [dailyPlan.travelPlaces, selectedPlaceType]);
+
+  const travelPlaceByPage = useMemo(() => {
+    return dailyTravelPlacesByPlaceType.slice(
+      pageNum * pageSize,
+      pageNum * pageSize + pageSize
+    );
+  }, [dailyTravelPlacesByPlaceType, pageNum]);
 
   const maxPage = useMemo(() => {
-    switch (selectedContentType) {
-      case "travel":
-        return 3;
-      case "eat":
-        return 2;
-      case "sleep":
-        return 1;
-      default:
-        return 3;
-    }
-  }, [selectedContentType]);
+    return Math.ceil(dailyTravelPlacesByPlaceType.length / pageSize);
+  }, [dailyTravelPlacesByPlaceType.length]);
 
-  const handleOnChangeContentType = useCallback((value: string) => {
-    setSelectedContentType(value);
+  const handleOnChangePlaceType = useCallback((value: string) => {
+    setSelectedPlaceType(value);
     setPageNum(0);
   }, []);
 
@@ -103,29 +105,29 @@ export const TravelPlanDateFormItem = ({
         <div css={cssAlignVerticalStyle({ gap: 16 })}>
           <RadioButtonGroup
             gridDetailStyle={cssTravelPlanContentTypeBtnBoxStyle}
-            defaultValue={selectedContentType}
-            onChange={handleOnChangeContentType}
+            defaultValue={selectedPlaceType}
+            onChange={handleOnChangePlaceType}
           >
             <RadioButtonGroup.RadioButton
               detailStyle={cssTravelPlanContentTypeBtnStyle}
-              value="travel"
+              value="관광"
             >
               관광
             </RadioButtonGroup.RadioButton>
             <RadioButtonGroup.RadioButton
               detailStyle={cssTravelPlanContentTypeBtnStyle}
-              value="eat"
+              value="식당"
             >
-              식사
+              식당
             </RadioButtonGroup.RadioButton>
             <RadioButtonGroup.RadioButton
               detailStyle={cssTravelPlanContentTypeBtnStyle}
-              value="sleep"
+              value="숙박"
             >
               숙박
             </RadioButtonGroup.RadioButton>
           </RadioButtonGroup>
-          {dailyTravelPlaces.length === 0 ? (
+          {dailyTravelPlacesByPlaceType.length === 0 ? (
             <div css={cssTravelPlaceItemEmptyStyle}>
               <Typography size="16" weight="bold" color={COLORS.GRAY4}>
                 아직 공유된 여행 정보가 없어요!
@@ -137,7 +139,7 @@ export const TravelPlanDateFormItem = ({
           ) : (
             <div css={cssAlignVerticalStyle({ gap: 16 })}>
               <div css={cssAlignVerticalStyle({ gap: 8 })}>
-                {dailyTravelPlaces.map((place) => (
+                {travelPlaceByPage.map((place) => (
                   <TravelPlaceSelectItem
                     key={place.placeId}
                     travelPlace={place}
