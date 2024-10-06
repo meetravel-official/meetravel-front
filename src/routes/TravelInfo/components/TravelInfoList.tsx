@@ -6,10 +6,10 @@ import { useTravelInfo } from "states/useTravelInfo";
 import { useGetAreaBasedList } from "@/api/hooks/visitKorea";
 import { IAreaBasedList } from "@/api/interfaces/visitKorea";
 import NotFound from "@/components/NotFound/NotFound";
+import { Spin } from "@/components/Spin/Spin";
 import { cssAlignVerticalStyle } from "@/styles/align";
 
 import { TravelInfoItem } from "./TravelInfoItem";
-import { Spin } from "@/components/Spin/Spin";
 
 export const TravelInfoList = () => {
   const { searchValue, setSelectedContent, setIsOpenTravelInfoDetailModal } =
