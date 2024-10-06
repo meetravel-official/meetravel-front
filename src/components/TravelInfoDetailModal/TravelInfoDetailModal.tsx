@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { IAreaBasedList } from "@/api/interfaces/visitKorea";
 import BorderModal from "@/components/BorderModal/BorderModal";
 
 import { TravelInfoDetail } from "./TravelInfoDetail";
@@ -9,13 +8,13 @@ import { TravelInfoDetail } from "./TravelInfoDetail";
 interface TravelInfoDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
-  travelInfo?: IAreaBasedList;
+  travelId?: string;
 }
 
 export const TravelInfoDetailModal = ({
   isOpen,
   onClose,
-  travelInfo,
+  travelId,
 }: TravelInfoDetailModalProps) => {
   const navigate = useNavigate();
 
@@ -45,7 +44,7 @@ export const TravelInfoDetailModal = ({
 
   return (
     <BorderModal modalType="full" isOpen={isOpen} onClose={handleOnClose}>
-      <TravelInfoDetail travelInfo={travelInfo} />
+      <TravelInfoDetail travelId={travelId} />
     </BorderModal>
   );
 };

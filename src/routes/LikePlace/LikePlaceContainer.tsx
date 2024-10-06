@@ -61,7 +61,7 @@ export const LikePlaceContainer = checkUser(() => {
       <TravelInfoDetailModal
         isOpen={isOpenTravelInfoDetailModal}
         onClose={() => setIsOpenTravelInfoDetailModal(false)}
-        travelInfo={selectedContent}
+        travelId={selectedContent?.contentid}
       />
     </div>
   );

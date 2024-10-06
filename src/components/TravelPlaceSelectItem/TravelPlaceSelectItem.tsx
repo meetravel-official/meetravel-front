@@ -82,7 +82,7 @@ export const TravelPlaceSelectItem = ({
         onClose={() => {
           setIsOpenDetailModal(false);
         }}
-        travelInfo={travelInfo}
+        travelId={travelInfo.contentId}
       />
     </Fragment>
   );

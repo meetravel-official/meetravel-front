@@ -49,7 +49,7 @@ export const TravelInfoPreviewCard = ({
         onClose={() => {
           setIsOpenDetailModal(false);
         }}
-        travelInfo={travelInfo}
+        travelId={travelInfo.contentid}
       />
     </Fragment>
   );
