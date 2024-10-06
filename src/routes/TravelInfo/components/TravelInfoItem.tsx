@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -30,6 +31,7 @@ export const TravelInfoItem = ({
   travelInfo,
   onClickItem,
 }: TravelInfoItemProps) => {
+  const queryClient = useQueryClient();
   const { mutate, isPending } = usePostSharePlace();
 
   const [isLike, setIsLike] = useState(
@@ -90,6 +92,7 @@ export const TravelInfoItem = ({
       mutate(travelInfo.contentid, {
         onSuccess: () => {
           toast.success("채팅방에 공유되었습니다.");
+          queryClient.invalidateQueries({ queryKey: ["useGetTravelPlan"] });
         },
         onError: () => {
           toast.error("잠시 후 다시 시도해주세요.");
