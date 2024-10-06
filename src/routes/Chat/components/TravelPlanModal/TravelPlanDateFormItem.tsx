@@ -25,35 +25,33 @@ export const TravelPlanDateFormItem = ({
   date,
   isView,
 }: TravelPlanDateFormItemProps) => {
-  const { dailyPlans } = useTravelPlan();
+  const { dailyPlans, setDailyPlan } = useTravelPlan();
 
   const [selectedPlaceType, setSelectedPlaceType] = useState<string>("관광");
 
   const pageSize = 3;
   const [pageNum, setPageNum] = useState<number>(0);
 
-  const [selectedPlaceIdList, setSelectedPlaceIdList] = useState<string[]>([]);
-
   const dailyPlan = useMemo(() => {
     return dailyPlans.filter((dailyPlan) => dailyPlan.planDate === date)[0];
   }, [dailyPlans, date]);
 
   const dailyTravelPlacesByPlaceType = useMemo(() => {
-    return dailyPlan.travelPlaces.filter(
+    return dailyPlan?.travelPlaces.filter(
       (place) => place.placeType === selectedPlaceType
     );
-  }, [dailyPlan.travelPlaces, selectedPlaceType]);
+  }, [dailyPlan, selectedPlaceType]);
 
   const travelPlaceByPage = useMemo(() => {
-    return dailyTravelPlacesByPlaceType.slice(
+    return dailyTravelPlacesByPlaceType?.slice(
       pageNum * pageSize,
       pageNum * pageSize + pageSize
     );
   }, [dailyTravelPlacesByPlaceType, pageNum]);
 
   const maxPage = useMemo(() => {
-    return Math.ceil(dailyTravelPlacesByPlaceType.length / pageSize);
-  }, [dailyTravelPlacesByPlaceType.length]);
+    return Math.ceil((dailyTravelPlacesByPlaceType?.length || 0) / pageSize);
+  }, [dailyTravelPlacesByPlaceType]);
 
   const handleOnChangePlaceType = useCallback((value: string) => {
     setSelectedPlaceType(value);
@@ -62,18 +60,23 @@ export const TravelPlanDateFormItem = ({
 
   const handleOnSelectPlace = useCallback(
     (travelPlace: TravelPlace) => {
-      if (travelPlace.placeId) {
-        if (selectedPlaceIdList.includes(travelPlace.placeId)) {
-          const filteredContentIdList = selectedPlaceIdList.filter(
-            (contentId) => contentId !== travelPlace.placeId
-          );
-          setSelectedPlaceIdList([...filteredContentIdList]);
+      if (dailyPlan) {
+        const newDailyPlan = dailyPlan;
+        const newTravelPlace = dailyPlan.travelPlaces;
+        const changeIndex = newTravelPlace.findIndex(
+          (place) => place.placeId === travelPlace.placeId
+        );
+        if (travelPlace.isPicked) {
+          newTravelPlace[changeIndex] = { ...travelPlace, isPicked: false };
         } else {
-          setSelectedPlaceIdList([...selectedPlaceIdList, travelPlace.placeId]);
+          newTravelPlace[changeIndex] = { ...travelPlace, isPicked: true };
         }
+        newDailyPlan.travelPlaces = newTravelPlace;
+        setDailyPlan({ ...newDailyPlan });
       }
     },
-    [selectedPlaceIdList]
+
+    [dailyPlan, setDailyPlan]
   );
 
   return (
@@ -85,7 +88,7 @@ export const TravelPlanDateFormItem = ({
         <Input
           placeholder="처음 모일 땐 개방적인 곳을 추천해요."
           detailStyle={cssInputFullWidthStyle}
-          defaultValue={dailyPlan.meetPlace}
+          defaultValue={dailyPlan?.meetPlace}
         />
       </div>
       <div css={cssAlignVerticalStyle({ gap: 8, alignItems: "flex-start" })}>
@@ -95,7 +98,7 @@ export const TravelPlanDateFormItem = ({
         <Input
           placeholder="사람들과 충분한 대화 후 결정해요."
           detailStyle={cssInputFullWidthStyle}
-          defaultValue={dailyPlan.meetTime}
+          defaultValue={dailyPlan?.meetTime}
         />
       </div>
       <div css={cssAlignVerticalStyle({ gap: 12, alignItems: "flex-start" })}>
@@ -127,7 +130,7 @@ export const TravelPlanDateFormItem = ({
               숙박
             </RadioButtonGroup.RadioButton>
           </RadioButtonGroup>
-          {dailyTravelPlacesByPlaceType.length === 0 ? (
+          {dailyTravelPlacesByPlaceType?.length === 0 ? (
             <div css={cssTravelPlaceItemEmptyStyle}>
               <Typography size="16" weight="bold" color={COLORS.GRAY4}>
                 아직 공유된 여행 정보가 없어요!
@@ -139,7 +142,7 @@ export const TravelPlanDateFormItem = ({
           ) : (
             <div css={cssAlignVerticalStyle({ gap: 16 })}>
               <div css={cssAlignVerticalStyle({ gap: 8 })}>
-                {travelPlaceByPage.map((place) => (
+                {travelPlaceByPage?.map((place) => (
                   <TravelPlaceSelectItem
                     key={place.placeId}
                     travelPlace={place}
