@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import { toast } from "react-toastify";
 import { useTravelPlan } from "states/useTravelPlan";
 
 import { useGetTravelPlan } from "@/api/hooks/travel";
@@ -28,7 +29,8 @@ export const TravelPlanModal = ({
 
   const { data, refetch } = useGetTravelPlan(chatRoomIdNum);
 
-  const { travelKeyword, setTravelKeyword, setDailyPlans } = useTravelPlan();
+  const { travelKeyword, dailyPlans, setTravelKeyword, setDailyPlans } =
+    useTravelPlan();
 
   useEffect(() => {
     if (data) {
@@ -41,9 +43,12 @@ export const TravelPlanModal = ({
     if (chatRoomIdNum && isOpen) refetch();
   }, [chatRoomIdNum, isOpen, refetch]);
 
-  const handleOnSubmit = () => {
+  const handleOnSubmit = useCallback(() => {
     console.log(travelKeyword);
-  };
+    console.log(dailyPlans);
+    toast.success("저장되었습니다.");
+    onClose();
+  }, [dailyPlans, onClose, travelKeyword]);
 
   return (
     <BorderModal
