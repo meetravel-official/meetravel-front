@@ -1,12 +1,12 @@
 import { create } from "zustand";
 
-import { DailyPlan } from "@/api/interfaces/travel";
+import { DailyPlan, TravelKeywords } from "@/api/interfaces/travel";
 
 interface ITravelPlanState {
-  travelKeyword: string[];
+  travelKeyword: TravelKeywords;
   dailyPlans: DailyPlan[];
   selectedDateIndex: number;
-  setTravelKeyword: (travelKeyword: string[]) => void;
+  setTravelKeyword: (travelKeyword: TravelKeywords) => void;
   setDailyPlans: (dailyPlanList: DailyPlan[]) => void;
   setDailyPlan: (DailyPlan: DailyPlan) => void;
   setSelectedDateIndex: (index: number) => void;
