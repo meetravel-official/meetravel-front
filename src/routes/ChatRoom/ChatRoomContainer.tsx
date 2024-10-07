@@ -1,3 +1,5 @@
+import "dayjs/locale/ko";
+
 import { css } from "@emotion/react";
 import { CompatClient, Stomp } from "@stomp/stompjs";
 import { useQueryClient } from "@tanstack/react-query";
@@ -52,6 +54,7 @@ import LeaveModal from "./components/LeaveModal";
 import { ProfileFullModal } from "./components/ProfileFullModal";
 import ReportModal from "./components/ReportModal";
 import TitleHeader from "./components/TitleHeader";
+dayjs.locale("ko");
 
 const ChatRoomContainer = checkUser(() => {
   const client = useRef<CompatClient>();
@@ -103,7 +106,8 @@ const ChatRoomContainer = checkUser(() => {
     return [];
   }, [chatMessagesHistoryData?.pages]);
 
-  let prevUserId: string;
+  const prevUserId = useRef<string>();
+  const preSendAt = useRef("1999-01-01");
 
   const token = Cookies.get("accessToken");
 
@@ -245,6 +249,70 @@ const ChatRoomContainer = checkUser(() => {
     setIsOpenTravelPlanModal(true);
   };
 
+  const RenderMessageList = useCallback((messageList: IChatMessageData[]) => {
+    return messageList.map((item, index) => {
+      const isSameUser = prevUserId.current === item.userId;
+      const isSameSendAt =
+        dayjs(preSendAt.current).format("YYYY-MM-DD") ===
+        dayjs(item.sendAt).format("YYYY-MM-DD");
+
+      prevUserId.current = item.userId;
+      preSendAt.current = item.sendAt ?? "1999-01-01";
+      const dateView = (
+        <div
+          css={css`
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+          `}
+        >
+          <Typography size={14} color={COLORS.GRAY4}>
+            {dayjs(item.sendAt).format("YY-MM-DD ddd")}요일
+          </Typography>
+        </div>
+      );
+      let messageView;
+      if (item.type === "CHAT")
+        messageView = (
+          <MessageItem
+            key={item.chatMessageId}
+            type="me"
+            data={item}
+            isSameUser={isSameUser}
+          />
+        );
+      else if (item.type === "BOT")
+        messageView = (
+          <MessageItem
+            key={item.chatMessageId}
+            type="admin"
+            data={item}
+            isSameUser={isSameUser}
+          />
+        );
+      else if (item.type === "JOIN" || item.type === "LEAVE")
+        messageView = (
+          <div
+            css={css`
+              display: flex;
+              justify-content: center;
+              margin-top: 20px;
+            `}
+          >
+            <Typography size={14} color={COLORS.GRAY2}>
+              -{item.message}-
+            </Typography>
+          </div>
+        );
+      return (
+        <Fragment key={item.chatMessageId}>
+          {!isSameSendAt && dateView}
+          {messageView}
+        </Fragment>
+      );
+    });
+  }, []);
+
   return (
     <Fragment>
       <div className="chat-room">
@@ -275,78 +343,10 @@ const ChatRoomContainer = checkUser(() => {
               );
             })}
           </div>
-
           <br />
           <div ref={infiniteRef} />
-
-          {travelInfoItemList.map((item, index) => {
-            const isSameUser = prevUserId === item.userId;
-            prevUserId = item.userId;
-            if (item.type === "CHAT")
-              return (
-                <MessageItem
-                  key={item.chatMessageId}
-                  type="me"
-                  data={item}
-                  isSameUser={isSameUser}
-                />
-              );
-            else if (item.type === "BOT")
-              return (
-                <MessageItem
-                  key={item.chatMessageId}
-                  type="admin"
-                  data={item}
-                  isSameUser={isSameUser}
-                />
-              );
-            else if (item.type === "JOIN" || item.type === "LEAVE")
-              return (
-                <div
-                  css={css`
-                    display: flex;
-                    justify-content: center;
-                    margin: 20px 0;
-                  `}
-                >
-                  <Typography size={14} color={COLORS.GRAY2}>
-                    -{item.message}-
-                  </Typography>
-                </div>
-              );
-          })}
-
-          {chatMessageGroups.map((item, index) => {
-            const isSameUser = prevUserId === item.userId;
-            prevUserId = item.userId;
-            if (item.type === "CHAT")
-              return (
-                <MessageItem
-                  key={item.chatMessageId}
-                  type="me"
-                  data={item}
-                  isSameUser={isSameUser}
-                />
-              );
-            else if (item.type === "BOT")
-              return (
-                <MessageItem
-                  key={item.chatMessageId}
-                  type="admin"
-                  data={item}
-                  isSameUser={isSameUser}
-                />
-              );
-            else if (item.type === "JOIN" || item.type === "LEAVE")
-              return (
-                <MessageItem
-                  key={item.chatMessageId}
-                  type="admin"
-                  data={item}
-                  isSameUser={isSameUser}
-                />
-              );
-          })}
+          {RenderMessageList(travelInfoItemList)}
+          {RenderMessageList(chatMessageGroups)}
           {/**여기까지 채팅입니다 */}
           <div ref={messagesEndRef}></div>
         </div>
