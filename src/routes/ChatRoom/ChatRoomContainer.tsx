@@ -59,7 +59,6 @@ dayjs.locale("ko");
 const ChatRoomContainer = checkUser(() => {
   const client = useRef<CompatClient>();
   const [inputText, setInputText] = useState<string>();
-  const [chatMessage, setChatMessage] = useState<IChatMessageData>();
   const { isOpenProfileModal, handleOnCloseProfileModal } = useProfileModal();
   const { isOpenProfileFullModal, handleOnCloseProfileFullModal } =
     useProfileFullModal();
@@ -185,6 +184,14 @@ const ChatRoomContainer = checkUser(() => {
                 JSON.parse(message.body),
               ]);
               scrollToBottomFWS();
+              if (
+                JSON.parse(message.body)?.type === "JOIN" ||
+                JSON.parse(message.body)?.type === "LEAVE"
+              ) {
+                queryClient.invalidateQueries({
+                  queryKey: ["useGetChatUsers"],
+                });
+              }
             },
             {
               Authorization: `Bearer ${token}`,
@@ -244,6 +251,8 @@ const ChatRoomContainer = checkUser(() => {
   useEffect(() => {
     console.log("chatMessageGroups", chatMessageGroups);
   }, [chatMessageGroups]);
+
+  //////////////////////////
 
   const handleOnOpenTravelPlanModal = () => {
     setIsOpenTravelPlanModal(true);
