@@ -28,6 +28,7 @@ const ChatItem = ({ chatData, statusVisible }: ChatItemProps) => {
         css={css`
           display: flex;
           justify-content: space-between;
+          align-items: center;
         `}
       >
         <Typography
@@ -66,6 +67,7 @@ const ChatItem = ({ chatData, statusVisible }: ChatItemProps) => {
                 color: ${chatData.status === ChatStatus.DONE
                   ? COLORS.GRAY2
                   : COLORS.GRAY4};
+                flex-shrink: 0;
               `}
               svgColor={
                 chatData.status === ChatStatus.DONE
