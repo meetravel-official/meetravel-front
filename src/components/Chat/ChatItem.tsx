@@ -28,6 +28,7 @@ const ChatItem = ({ chatData, statusVisible }: ChatItemProps) => {
         css={css`
           display: flex;
           justify-content: space-between;
+          align-items: center;
         `}
       >
         <Typography
