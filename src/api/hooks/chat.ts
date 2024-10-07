@@ -3,18 +3,14 @@ import { AxiosError, AxiosResponse } from "axios";
 
 import {
   IChatMessageData,
+  IChatRoomListResponse,
   IChatUserData,
-  IMatchingData,
 } from "../interfaces/chat";
 import { api } from "../request";
 import { chatApiRoute } from "../routes/apiRoutes";
 
-interface IChatRoomsResponse {
-  chatRooms: IMatchingData[];
-}
-
 export const useGetChatRooms = () => {
-  return useQuery<IChatRoomsResponse, AxiosError>({
+  return useQuery<IChatRoomListResponse, AxiosError>({
     queryKey: ["useGetChatRooms"],
     queryFn: () => api.get(chatApiRoute.chatRooms),
   });
