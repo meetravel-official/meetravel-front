@@ -3,7 +3,7 @@ import { useCallback, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useTravelPlan } from "states/useTravelPlan";
 
-import { useGetTravelPlan } from "@/api/hooks/travel";
+import { useGetTravelPlan, usePutTravelPlanKeywords } from "@/api/hooks/travel";
 import { Button, Typography } from "@/components";
 import BorderModal from "@/components/BorderModal/BorderModal";
 import CheckButtonGroup from "@/components/CheckButton/CheckButtonGroup";
@@ -28,6 +28,8 @@ export const TravelPlanModal = ({
   const chatRoomIdNum = chatRoomId ? parseInt(chatRoomId) : undefined;
 
   const { data, refetch } = useGetTravelPlan(chatRoomIdNum);
+  const { mutateAsync: mutateAsyncKeywords, isPending: isPendingKeyword } =
+    usePutTravelPlanKeywords(chatRoomIdNum);
 
   const { travelKeyword, dailyPlans, setTravelKeyword, setDailyPlans } =
     useTravelPlan();
@@ -43,12 +45,17 @@ export const TravelPlanModal = ({
     if (chatRoomIdNum && isOpen) refetch();
   }, [chatRoomIdNum, isOpen, refetch]);
 
-  const handleOnSubmit = useCallback(() => {
+  const handleOnSubmit = useCallback(async () => {
     console.log(travelKeyword);
     console.log(dailyPlans);
-    toast.success("저장되었습니다.");
-    onClose();
-  }, [dailyPlans, onClose, travelKeyword]);
+    try {
+      await mutateAsyncKeywords(travelKeyword);
+      toast.success("저장되었습니다.");
+      onClose();
+    } catch (error) {
+      toast.error("잠시 후 시도해주세요.");
+    }
+  }, [dailyPlans, mutateAsyncKeywords, onClose, travelKeyword]);
 
   return (
     <BorderModal
@@ -97,6 +104,7 @@ export const TravelPlanModal = ({
             color={COLORS.WHITE}
             height="large"
             onClick={handleOnSubmit}
+            loading={isPendingKeyword}
           >
             <Typography color={COLORS.WHITE} weight={700} size="16">
               저장

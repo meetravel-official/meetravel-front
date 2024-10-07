@@ -53,6 +53,8 @@ export const userApiRoute = {
 export const travelApiRoute = {
   travelPlan: (chatRoomId: number) =>
     `${API_URL}/travels/plans/chat-rooms/${chatRoomId}`,
+  travelPlanKeywords: (chatRoomId: number) =>
+    `${API_URL}/travels/plans/keywords/chat-rooms/${chatRoomId}`,
 };
 
 export const placeApiRoute = {
