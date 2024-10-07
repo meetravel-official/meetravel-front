@@ -66,6 +66,7 @@ const ChatItem = ({ chatData, statusVisible }: ChatItemProps) => {
                 color: ${chatData.status === ChatStatus.DONE
                   ? COLORS.GRAY2
                   : COLORS.GRAY4};
+                flex-shrink: 0;
               `}
               svgColor={
                 chatData.status === ChatStatus.DONE
