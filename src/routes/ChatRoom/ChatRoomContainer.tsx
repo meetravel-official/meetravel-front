@@ -62,6 +62,7 @@ const ChatRoomContainer = checkUser(() => {
   const { isOpenProfileModal, handleOnCloseProfileModal } = useProfileModal();
   const { isOpenProfileFullModal, handleOnCloseProfileFullModal } =
     useProfileFullModal();
+  const [isConnect, setIsConnect] = useState(false);
 
   const [isOpenTravelPlanModal, setIsOpenTravelPlanModal] = useState(false);
 
@@ -162,6 +163,16 @@ const ChatRoomContainer = checkUser(() => {
         );
         return sock;
       });
+      client.current.onStompError = (frame) => {
+        console.log(
+          "Socket is closed. Reconnect will be attempted in 1 second.",
+          frame
+        );
+        if (isConnect)
+          setTimeout(function () {
+            connectHandler();
+          }, 1000);
+      };
 
       client.current.debug = function (message) {
         if (!message.includes("PONG") && !message.includes("PING")) {
@@ -204,6 +215,7 @@ const ChatRoomContainer = checkUser(() => {
 
   useEffect(() => {
     try {
+      setIsConnect(true);
       connectHandler();
     } catch (e) {
       console.log("연결 오류");
@@ -212,6 +224,7 @@ const ChatRoomContainer = checkUser(() => {
       console.log("////////");
       console.log("unsubscribe");
       try {
+        setIsConnect(false);
         client.current?.unsubscribe(
           `/exchange/chat.exchange/chat.rooms.${chatRoomId}`
         );
