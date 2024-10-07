@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode, useCallback, useEffect, useRef } from "react";
 
 import {
   cssCarouselDotBoxStyle,
@@ -12,6 +12,10 @@ interface CarouselProps {
   children: ReactNode[];
 }
 export const Carousel = ({ children }: CarouselProps) => {
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const startX = useRef<number>(0);
+  const moveX = useRef<number>(0);
+
   const [currentIndex, setCurrentIndex] = React.useState<number>(1);
 
   const infiniteArray = (arr: ReactNode[]) => {
@@ -24,6 +28,29 @@ export const Carousel = ({ children }: CarouselProps) => {
   const handleOnClick = (index: number) => {
     setCurrentIndex(index);
   };
+
+  const handleOnTouchDown = (event: TouchEvent) => {
+    startX.current = event.touches[0].clientX;
+  };
+
+  const handleOnTouchMove = useCallback(
+    (event: TouchEvent) => {
+      if (startX.current)
+        moveX.current = event.touches[0].clientX - startX.current;
+      if (moveX.current > 50) {
+        setCurrentIndex((prevIndex) => (prevIndex > 1 ? prevIndex - 1 : 1));
+        startX.current = 0;
+        moveX.current = 0;
+      } else if (moveX.current < -50) {
+        setCurrentIndex((prevIndex) =>
+          prevIndex < children.length ? prevIndex + 1 : children.length
+        );
+        startX.current = 0;
+        moveX.current = 0;
+      }
+    },
+    [children.length]
+  );
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -39,8 +66,19 @@ export const Carousel = ({ children }: CarouselProps) => {
     };
   });
 
+  useEffect(() => {
+    const carouselElement = carouselRef.current;
+    carouselElement?.addEventListener("touchstart", handleOnTouchDown);
+    carouselElement?.addEventListener("touchmove", handleOnTouchMove);
+
+    return () => {
+      carouselElement?.removeEventListener("touchstart", handleOnTouchDown);
+      carouselElement?.removeEventListener("touchmove", handleOnTouchMove);
+    };
+  }, [handleOnTouchMove]);
+
   return (
-    <div css={cssCarouselStyle}>
+    <div css={cssCarouselStyle} ref={carouselRef}>
       <div css={cssCarouselInnerStyle(currentIndex, children.length)}>
         {infiniteArray(children).map((child, index) => (
           <div css={cssCarouselItemStyle} key={index}>
