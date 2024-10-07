@@ -109,3 +109,10 @@ export const useGetChatRoomMessages = (params: IGetChatRoomMessagesParams) => {
     }),
   });
 };
+
+export const useGetLiveChatRoom = () => {
+  return useQuery<IChatRoomListResponse, AxiosError>({
+    queryKey: ["useGetLiveChatRoom"],
+    queryFn: () => api.get(chatApiRoute.chatRoomsSearchLive),
+  });
+};
