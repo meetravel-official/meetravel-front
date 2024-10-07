@@ -140,7 +140,11 @@ export const EnterChatRoomModal = ({
           </div>
           <div
             css={css`
-              ${cssAlignHorizontalStyle({ gap: 4, wrap: "wrap" })}
+              ${cssAlignHorizontalStyle({
+                gap: 4,
+                wrap: "wrap",
+                justifyContent: "center",
+              })}
               padding: 1px;
             `}
           >

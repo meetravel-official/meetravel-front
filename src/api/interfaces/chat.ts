@@ -68,3 +68,7 @@ export interface IChatUserData {
   travelKeywords: string[];
   travelPlanDate: IDuration;
 }
+
+export interface IChatRoomListResponse {
+  chatRooms: IMatchingData[];
+}

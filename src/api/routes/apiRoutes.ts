@@ -18,6 +18,7 @@ export const chatApiRoute = {
   chatRooms: `${API_URL}/chat-rooms`, //내 채팅방 목록
   chatRooms__join: `${API_URL}/chat-rooms/join`, //채팅방 입장
   chatRooms__leave: `${API_URL}/chat-rooms/leave`, //채팅방 퇴장
+  chatRoomsSearchLive: `${API_URL}/chat-rooms/search/live`, //실시간 여행 매칭
 };
 
 export const matchingApiRoute = {

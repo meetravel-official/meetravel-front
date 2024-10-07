@@ -1,9 +1,9 @@
-import { dummyChatData } from "dummies/chat";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { checkUser } from "utils/check-user";
 
-import { ChatStatus, IChatData } from "@/api/interfaces/chat";
+import { useGetLiveChatRoom } from "@/api/hooks/chat";
+import { ChatStatus, IMatchingData } from "@/api/interfaces/chat";
 import { ReactComponent as Bell } from "@/assets/icons/bell.svg";
 import { ReactComponent as Heart } from "@/assets/icons/heart.svg";
 import { Button, Typography } from "@/components";
@@ -20,25 +20,17 @@ import { cssHomeContainerStyle } from "./HomeContainer.styles";
 export const HomeContainer = checkUser(() => {
   const navigate = useNavigate();
 
+  const { data } = useGetLiveChatRoom();
+
   const pageSize = 3;
   const [page, setPage] = useState<number>(0);
 
-  const [selectedChatData, setSelectedChatData] = useState<IChatData>();
+  const [selectedChatData, setSelectedChatData] = useState<IMatchingData>();
   const [isOpenEnterChatModal, setIsOpenEnterChatModal] = useState(false);
 
   const chatDataList = useMemo(() => {
-    const arr = [];
-    for (let i = 0; i < 9; i++) {
-      arr.push({
-        ...dummyChatData,
-        isActive: false,
-        status: ChatStatus.INPROGRESS,
-        title: "채팅방 " + i.toString(),
-        link: "/chat/" + i.toString(),
-      });
-    }
-    return arr;
-  }, []);
+    return data?.chatRooms || [];
+  }, [data?.chatRooms]);
 
   const chatDataListByPage = useMemo(() => {
     return chatDataList.slice(page * 3, page * 3 + 3);
@@ -48,13 +40,28 @@ export const HomeContainer = checkUser(() => {
     return Math.ceil(chatDataList.length / pageSize);
   }, [chatDataList]);
 
-  const handleOnClickChat = (chatData: IChatData) => {
+  const handleOnClickChat = (chatData: IMatchingData) => {
     setSelectedChatData(chatData);
     setIsOpenEnterChatModal(true);
   };
 
   const handleOnCloseEnterChatModal = () => {
     setIsOpenEnterChatModal(false);
+  };
+
+  const convertChatData = (chatData?: IMatchingData) => {
+    if (chatData)
+      return {
+        ...chatData,
+        status: ChatStatus.INPROGRESS,
+        isActive: false,
+        tags: chatData.travelKeywords,
+        link: `/chat/${chatData.chatRoomId}`,
+        title: chatData.area.areaName,
+        startDate: chatData.travelPlanDate.startDate,
+        endDate: chatData.travelPlanDate.endDate,
+        person: chatData.persons,
+      };
   };
 
   return (
@@ -93,38 +100,40 @@ export const HomeContainer = checkUser(() => {
             </Button>
           </div>
 
-          {/* <div
-            css={cssAlignVerticalStyle({ gap: 8, alignItems: "flex-start" })}
-          >
-            <Typography color={COLORS.GRAY3} weight="bold" size={16}>
-              실시간 여행 매칭
-            </Typography>
-            <div css={cssAlignVerticalStyle({ gap: 16 })}>
-              <div
-                css={cssAlignVerticalStyle({
-                  gap: 8,
-                  alignItems: "flex-start",
-                })}
-              >
-                {chatDataListByPage.map((chatData) => (
-                  <button
-                    key={chatData.link}
-                    css={cssDefaultBtnStyle({ width: "100%" })}
-                    onClick={() => handleOnClickChat(chatData)}
-                  >
-                    <ChatItem chatData={chatData} />
-                  </button>
-                ))}
+          {chatDataList.length > 0 && (
+            <div
+              css={cssAlignVerticalStyle({ gap: 8, alignItems: "flex-start" })}
+            >
+              <Typography color={COLORS.GRAY3} weight="bold" size={16}>
+                실시간 여행 매칭
+              </Typography>
+              <div css={cssAlignVerticalStyle({ gap: 16 })}>
+                <div
+                  css={cssAlignVerticalStyle({
+                    gap: 8,
+                    alignItems: "flex-start",
+                  })}
+                >
+                  {chatDataListByPage.map((chatData) => (
+                    <button
+                      key={chatData.chatRoomId}
+                      css={cssDefaultBtnStyle({ width: "100%" })}
+                      onClick={() => handleOnClickChat(chatData)}
+                    >
+                      <ChatItem chatData={convertChatData(chatData)!} />
+                    </button>
+                  ))}
+                </div>
+                <Pagination page={page} maxPage={maxPage} setPage={setPage} />
               </div>
-              <Pagination page={page} maxPage={maxPage} setPage={setPage} />
             </div>
-          </div> */}
+          )}
         </div>
       </div>
       <EnterChatRoomModal
         isOpen={isOpenEnterChatModal}
         onClose={handleOnCloseEnterChatModal}
-        chatData={selectedChatData}
+        chatData={convertChatData(selectedChatData)}
       />
     </div>
   );
