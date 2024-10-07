@@ -269,7 +269,12 @@ export const TravelInfoDetail = ({ travelId }: TravelInfoDetailProps) => {
 
       marker.setMap(map);
     }
-  }, [kakao?.maps, travelCommonInfo]);
+  }, [
+    isLoadingDetailCommon,
+    isLoadingDetailIntro,
+    kakao.maps,
+    travelCommonInfo,
+  ]);
 
   return isLoadingDetailCommon || isLoadingDetailIntro ? (
     <div
