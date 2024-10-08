@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import { useCallback, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useTravelPlan } from "states/useTravelPlan";
 
@@ -27,6 +28,8 @@ export const TravelPlanModal = ({
   onClose,
   chatRoomId,
 }: TravelPlanModalProps) => {
+  const navigate = useNavigate();
+
   const chatRoomIdNum = chatRoomId ? parseInt(chatRoomId) : undefined;
 
   const { data, refetch, isLoading, isRefetching, error } =
@@ -36,6 +39,23 @@ export const TravelPlanModal = ({
 
   const { travelKeyword, dailyPlans, setTravelKeyword, setDailyPlans } =
     useTravelPlan();
+
+  const handleOnClickClose = () => {
+    onClose();
+    navigate(-1);
+  };
+
+  const handleOnSubmit = useCallback(async () => {
+    console.log(travelKeyword);
+    console.log(dailyPlans);
+    try {
+      await mutateAsyncKeywords(travelKeyword);
+      toast.success("저장되었습니다.");
+      onClose();
+    } catch (error) {
+      toast.error("잠시 후 시도해주세요.");
+    }
+  }, [dailyPlans, mutateAsyncKeywords, onClose, travelKeyword]);
 
   useEffect(() => {
     if (data) {
@@ -51,23 +71,30 @@ export const TravelPlanModal = ({
     if (chatRoomIdNum && isOpen) refetch();
   }, [chatRoomIdNum, isOpen, refetch]);
 
-  const handleOnSubmit = useCallback(async () => {
-    console.log(travelKeyword);
-    console.log(dailyPlans);
-    try {
-      await mutateAsyncKeywords(travelKeyword);
-      toast.success("저장되었습니다.");
+  useEffect(() => {
+    if (isOpen)
+      navigate("", {
+        state: { isModal: true },
+      });
+  }, [navigate, isOpen]);
+
+  useEffect(() => {
+    window.addEventListener("popstate", () => {
       onClose();
-    } catch (error) {
-      toast.error("잠시 후 시도해주세요.");
-    }
-  }, [dailyPlans, mutateAsyncKeywords, onClose, travelKeyword]);
+    });
+    return () => {
+      window.removeEventListener("popstate", () => {
+        onClose();
+      });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <BorderModal
       modalType="full"
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleOnClickClose}
       title={
         <Typography size="20" color={COLORS.GRAY3} weight={700}>
           여행 계획서
