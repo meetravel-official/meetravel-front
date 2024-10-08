@@ -8,6 +8,7 @@ import { Button, Typography } from "@/components";
 import BorderModal from "@/components/BorderModal/BorderModal";
 import CheckButtonGroup from "@/components/CheckButton/CheckButtonGroup";
 import { FormItem } from "@/components/Form/FormItem";
+import NotFound from "@/components/NotFound/NotFound";
 import { Spin } from "@/components/Spin/Spin";
 import TagKeyword, { tagKeywordList } from "@/components/TagKeyword/TagKeyword";
 import { cssAlignVerticalStyle } from "@/styles/align";
@@ -28,7 +29,7 @@ export const TravelPlanModal = ({
 }: TravelPlanModalProps) => {
   const chatRoomIdNum = chatRoomId ? parseInt(chatRoomId) : undefined;
 
-  const { data, refetch, isLoading, isRefetching } =
+  const { data, refetch, isLoading, isRefetching, error } =
     useGetTravelPlan(chatRoomIdNum);
   const { mutateAsync: mutateAsyncKeywords, isPending: isPendingKeyword } =
     usePutTravelPlanKeywords(chatRoomIdNum);
@@ -40,6 +41,9 @@ export const TravelPlanModal = ({
     if (data) {
       setTravelKeyword(data.travelKeywords);
       setDailyPlans(data.dailyPlans);
+    } else {
+      setTravelKeyword([]);
+      setDailyPlans([]);
     }
   }, [data, setDailyPlans, setTravelKeyword]);
 
@@ -79,6 +83,17 @@ export const TravelPlanModal = ({
         >
           <Spin size={36} />
         </div>
+      ) : error ? (
+        <NotFound
+          mainText="잘못된 요청"
+          subText={
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (error.response?.data as any)?.message || "잠시 후 시도해주세요."
+          }
+          detailStyle={css`
+            margin-top: 100px;
+          `}
+        />
       ) : (
         <div css={cssAlignVerticalStyle({ gap: 48 })}>
           <div css={cssAlignVerticalStyle({ gap: 32 })}>
