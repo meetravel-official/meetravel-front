@@ -95,8 +95,11 @@ export const TravelInfoItem = ({
           toast.success("채팅방에 공유되었습니다.");
           queryClient.invalidateQueries({ queryKey: ["useGetTravelPlan"] });
         },
-        onError: () => {
-          toast.error("잠시 후 다시 시도해주세요.");
+        onError: (err) => {
+          toast.error(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (err.response?.data as any)?.message || "잠시 후 시도해주세요."
+          );
         },
         onSettled: () => {
           handleOnCloseShareModal();
