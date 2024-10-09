@@ -61,6 +61,7 @@ export const HomeContainer = checkUser(() => {
         startDate: chatData.travelPlanDate.startDate,
         endDate: chatData.travelPlanDate.endDate,
         person: chatData.persons,
+        subTitle: chatData.detailArea.areaName,
       };
   };
 
