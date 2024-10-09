@@ -40,9 +40,7 @@ export const EnterChatRoomModal = ({
   const isInprogress = chatData?.status === ChatStatus.INPROGRESS;
 
   const [isOpenTravelReviewModal, setIsOpenTravelReviewModal] = useState(false);
-  const [myMatchingFormId, setMyMatchingFormId] = useState<number>();
 
-  const { refetch: refetchMyMatchingFormId } = useGetMatchingForm();
   const { refetch: refetchMyChatRoom } = useGetChatRooms();
   const mutationPostLeaveChatRoom = usePostLeaveChatRoom();
   const mutationPostJoinChatRoom = usePostJoinChatRoom();
@@ -73,7 +71,7 @@ export const EnterChatRoomModal = ({
         }
       });
 
-      // navigate(pageRoutes.CHAT);
+      navigate(pageRoutes.CHAT);
       onClose();
     }
   };
@@ -86,19 +84,6 @@ export const EnterChatRoomModal = ({
   const handleOnCloseTravelReviewModal = () => {
     setIsOpenTravelReviewModal(false);
   };
-
-  useEffect(() => {
-    if (isOpen) {
-      console.log("myMatchingFormId", myMatchingFormId);
-      refetchMyMatchingFormId().then((res) => {
-        console.log("resdsds", res);
-        if (res.data?.matchingFormId) {
-          setMyMatchingFormId(res.data?.matchingFormId);
-        }
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, refetchMyMatchingFormId]);
 
   return (
     <Fragment>
