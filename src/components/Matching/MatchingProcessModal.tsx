@@ -61,7 +61,9 @@ const MatchingProcessModal = () => {
                 onSuccess: (res: { chatRoomId: number }) => {
                   console.log("redds", res.chatRoomId);
                   if (res.chatRoomId) {
-                    mutationPostJoinChatRoom.mutate(res.chatRoomId);
+                    mutationPostJoinChatRoom.mutate({
+                      chatRoomId: res.chatRoomId,
+                    });
                     console.log("입장 성공");
                   }
                 },
@@ -69,7 +71,9 @@ const MatchingProcessModal = () => {
             );
           } else if (res.data?.chatRoomId) {
             //매칭 결과가 있을때 해당 채팅방 입장
-            mutationPostJoinChatRoom.mutate(res.data.chatRoomId);
+            mutationPostJoinChatRoom.mutate({
+              chatRoomId: res.data.chatRoomId,
+            });
           }
           setTimeout(() => {
             toast.success("매칭이 완료되었습니다.");

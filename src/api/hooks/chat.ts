@@ -3,18 +3,14 @@ import { AxiosError, AxiosResponse } from "axios";
 
 import {
   IChatMessageData,
+  IChatRoomListResponse,
   IChatUserData,
-  IMatchingData,
 } from "../interfaces/chat";
 import { api } from "../request";
 import { chatApiRoute } from "../routes/apiRoutes";
 
-interface IChatRoomsResponse {
-  chatRooms: IMatchingData[];
-}
-
 export const useGetChatRooms = () => {
-  return useQuery<IChatRoomsResponse, AxiosError>({
+  return useQuery<IChatRoomListResponse, AxiosError>({
     queryKey: ["useGetChatRooms"],
     queryFn: () => api.get(chatApiRoute.chatRooms),
   });
@@ -27,13 +23,14 @@ export const useGetChatUsers = (chatRoomId: string) => {
   });
 };
 
+interface PostJoinChatRoomParams {
+  chatRoomId: number;
+}
+
 export const usePostJoinChatRoom = () => {
-  return useMutation<AxiosResponse, AxiosError, number>({
-    mutationFn: (chatRoomId: number) => {
-      return api.post(
-        `${chatApiRoute.chatRooms__join}/${chatRoomId}`,
-        undefined
-      );
+  return useMutation<AxiosResponse, AxiosError, PostJoinChatRoomParams>({
+    mutationFn: ({ chatRoomId }: PostJoinChatRoomParams) => {
+      return api.post(`${chatApiRoute.chatRooms__join}/${chatRoomId}`, {});
     },
   });
 };
@@ -111,5 +108,12 @@ export const useGetChatRoomMessages = (params: IGetChatRoomMessagesParams) => {
         .reverse(),
       pageParams: [...data.pageParams].reverse(),
     }),
+  });
+};
+
+export const useGetLiveChatRoom = () => {
+  return useQuery<IChatRoomListResponse, AxiosError>({
+    queryKey: ["useGetLiveChatRoom"],
+    queryFn: () => api.get(chatApiRoute.chatRoomsSearchLive),
   });
 };

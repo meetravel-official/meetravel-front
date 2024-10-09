@@ -36,7 +36,7 @@ const ChatItem = ({ chatData, statusVisible }: ChatItemProps) => {
           weight={700}
           color={chatData.isActive ? COLORS.PINK3 : COLORS.GRAY4}
         >
-          {chatData.title}
+          {chatData.title} {chatData.subTitle}
         </Typography>
         <div className="chat-gender">
           <Typography size={16} weight={700} color={COLORS.GRAY3}>
