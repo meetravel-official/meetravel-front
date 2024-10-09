@@ -30,6 +30,7 @@ export interface IChatData {
   title: string;
   tags: string[];
   link?: string;
+  chatRoomId?: number;
 }
 
 export interface IMatchingData {

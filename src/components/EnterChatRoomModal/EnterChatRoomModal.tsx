@@ -1,11 +1,18 @@
 import { css } from "@emotion/react";
 import dayjs from "dayjs";
-import { Fragment, ReactNode, useState } from "react";
+import { Fragment, ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TravelReviewModal } from "routes/Chat/components/TravelReviewModal/TravelReviewModal";
 
+import {
+  useGetChatRooms,
+  usePostJoinChatRoom,
+  usePostLeaveChatRoom,
+} from "@/api/hooks/chat";
+import { useGetMatchingForm } from "@/api/hooks/matching";
 import { ChatStatus, IChatData } from "@/api/interfaces/chat";
 import { ReactComponent as LogoIcon } from "@/assets/icons/logo.svg";
+import { pageRoutes } from "@/routes";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
 import { COLORS } from "@/styles/color";
 
@@ -33,6 +40,12 @@ export const EnterChatRoomModal = ({
   const isInprogress = chatData?.status === ChatStatus.INPROGRESS;
 
   const [isOpenTravelReviewModal, setIsOpenTravelReviewModal] = useState(false);
+  const [myMatchingFormId, setMyMatchingFormId] = useState<number>();
+
+  const { refetch: refetchMyMatchingFormId } = useGetMatchingForm();
+  const { refetch: refetchMyChatRoom } = useGetChatRooms();
+  const mutationPostLeaveChatRoom = usePostLeaveChatRoom();
+  const mutationPostJoinChatRoom = usePostJoinChatRoom();
 
   const convertDate = (date?: string) => {
     if (date) return dayjs(date, "YYYY-MM-DD").format("YYYY년 MM월 DD일");
@@ -40,8 +53,27 @@ export const EnterChatRoomModal = ({
   };
 
   const handleOnEnterChatRoom = () => {
-    if (chatData?.link) {
-      navigate(chatData?.link);
+    if (chatData) {
+      refetchMyChatRoom().then((res) => {
+        if (res.data?.chatRooms[0]?.chatRoomId) {
+          console.log("채팅방이 있습니다.");
+          mutationPostLeaveChatRoom.mutate(res.data?.chatRooms[0]?.chatRoomId, {
+            onSuccess: () => {
+              console.log("채팅방 나가기 성공");
+              mutationPostJoinChatRoom.mutate({
+                chatRoomId: chatData.chatRoomId ?? 0,
+              });
+            },
+          });
+        } else {
+          console.log("채팅방이 없습니다.");
+          mutationPostJoinChatRoom.mutate({
+            chatRoomId: chatData.chatRoomId ?? 0,
+          });
+        }
+      });
+
+      // navigate(pageRoutes.CHAT);
       onClose();
     }
   };
@@ -54,6 +86,19 @@ export const EnterChatRoomModal = ({
   const handleOnCloseTravelReviewModal = () => {
     setIsOpenTravelReviewModal(false);
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      console.log("myMatchingFormId", myMatchingFormId);
+      refetchMyMatchingFormId().then((res) => {
+        console.log("resdsds", res);
+        if (res.data?.matchingFormId) {
+          setMyMatchingFormId(res.data?.matchingFormId);
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, refetchMyMatchingFormId]);
 
   return (
     <Fragment>

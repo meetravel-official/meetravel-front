@@ -23,13 +23,14 @@ export const useGetChatUsers = (chatRoomId: string) => {
   });
 };
 
+interface PostJoinChatRoomParams {
+  chatRoomId: number;
+}
+
 export const usePostJoinChatRoom = () => {
-  return useMutation<AxiosResponse, AxiosError, number>({
-    mutationFn: (chatRoomId: number) => {
-      return api.post(
-        `${chatApiRoute.chatRooms__join}/${chatRoomId}`,
-        undefined
-      );
+  return useMutation<AxiosResponse, AxiosError, PostJoinChatRoomParams>({
+    mutationFn: ({ chatRoomId }: PostJoinChatRoomParams) => {
+      return api.post(`${chatApiRoute.chatRooms__join}/${chatRoomId}`, {});
     },
   });
 };
