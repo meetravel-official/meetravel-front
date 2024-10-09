@@ -286,7 +286,7 @@ export const SignUpLayout = () => {
               bgColor={COLORS.PINK3}
               onClick={stepList[step.current].handleOnClickSubmit}
               disabled={isDisabled}
-              loading={mutationSignUp.isPending}
+              loading={mutationSignUp.isPending || isPendingFile}
             >
               <Typography color={COLORS.WHITE} weight="bold" size={16}>
                 {step.isLast ? "시작하기!" : "다음"}

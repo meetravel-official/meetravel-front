@@ -1,6 +1,4 @@
 import { css } from "@emotion/react";
-import { group } from "console";
-import { on } from "events";
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import {
@@ -8,7 +6,6 @@ import {
   useMatchingModal,
   useMatchingProcessModal,
 } from "states/useMatching";
-
 
 import { useGetMatchingForm, usePostMatchingForm } from "@/api/hooks/matching";
 import { ReactComponent as Group } from "@/assets/icons/group.svg";
@@ -162,7 +159,6 @@ const MatchingButton = () => {
     prevMatchingFormData,
   ]);
 
-
   const isEnableNextPage = useMemo(() => {
     if (step.current === 0) {
       return checkNotEmpty([form.startDate, form.endDate, form.duration]);
@@ -241,6 +237,7 @@ const MatchingButton = () => {
                     handleOnSubmit();
                   } else step.handleOnClickNext();
                 }}
+                loading={mutationPostMatchingForm.isPending}
                 disabled={!isEnableNextPage}
               >
                 {step.current === 2

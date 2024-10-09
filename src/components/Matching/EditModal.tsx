@@ -65,6 +65,10 @@ const EditModal = ({ form }: { form?: any }) => {
               console.log("수정할래요");
               handleOnEditMatchingForm();
             }}
+            loading={
+              mutationPostLeaveChatRoom.isPending ||
+              mutationPostMatchingForm.isPending
+            }
           >
             <Typography color={COLORS.WHITE} size="16" weight={700}>
               수정할래요!
