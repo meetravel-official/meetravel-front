@@ -31,11 +31,13 @@ export interface IChatData {
   tags: string[];
   link?: string;
   chatRoomId?: number;
+  subTitle?: string;
 }
 
 export interface IMatchingData {
   chatRoomId: number;
   area: IArea;
+  detailArea: IArea;
   persons: IPerson;
   travelKeywords: string[];
   travelPlanDate: IDuration;
