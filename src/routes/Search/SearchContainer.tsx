@@ -1,9 +1,10 @@
 import { css } from "@emotion/react";
-import { dummyChatData } from "dummies/chat";
 import { useMemo, useState } from "react";
+import { useSearch } from "states/useSearch";
 import { checkUser } from "utils/check-user";
 
-import { ChatStatus, IChatData } from "@/api/interfaces/chat";
+import { useGetSearchChatRoom } from "@/api/hooks/chat";
+import { ChatStatus, IMatchingData } from "@/api/interfaces/chat";
 import ChatItem from "@/components/Chat/ChatItem";
 import { EnterChatRoomModal } from "@/components/EnterChatRoomModal/EnterChatRoomModal";
 import NotFound from "@/components/NotFound/NotFound";
@@ -11,24 +12,18 @@ import { cssAlignVerticalStyle } from "@/styles/align";
 import { cssDefaultBtnStyle } from "@/styles/button";
 
 export const SearchContainer = checkUser(() => {
-  const [selectedChatData, setSelectedChatData] = useState<IChatData>();
+  const [selectedChatData, setSelectedChatData] = useState<IMatchingData>();
   const [isOpenEnterChatModal, setIsOpenEnterChatModal] = useState(false);
 
-  const chatDataList = useMemo(() => {
-    const arr: IChatData[] = [];
-    // for (let i = 0; i < 10; i++) {
-    //   arr.push({
-    //     ...dummyChatData,
-    //     isActive: false,
-    //     status: ChatStatus.INPROGRESS,
-    //     title: "채팅방" + i.toString(),
-    //     link: "/chat/" + i.toString(),
-    //   });
-    // }
-    return arr;
-  }, []);
+  const { searchValue } = useSearch();
 
-  const handleOnClickChat = (chatData: IChatData) => {
+  const { data: chatRoomListData } = useGetSearchChatRoom(searchValue);
+
+  const chatDataList: IMatchingData[] = useMemo(() => {
+    return chatRoomListData?.chatRooms || [];
+  }, [chatRoomListData?.chatRooms]);
+
+  const handleOnClickChat = (chatData: IMatchingData) => {
     setSelectedChatData(chatData);
     setIsOpenEnterChatModal(true);
   };
@@ -37,16 +32,31 @@ export const SearchContainer = checkUser(() => {
     setIsOpenEnterChatModal(false);
   };
 
+  const convertChatData = (chatData?: IMatchingData) => {
+    if (chatData)
+      return {
+        ...chatData,
+        status: ChatStatus.INPROGRESS,
+        isActive: false,
+        tags: chatData.travelKeywords,
+        link: `/chat/${chatData.chatRoomId}`,
+        title: chatData.area.areaName,
+        startDate: chatData.travelPlanDate.startDate,
+        endDate: chatData.travelPlanDate.endDate,
+        person: chatData.persons,
+      };
+  };
+
   return (
     <div css={cssAlignVerticalStyle({ gap: 8 })}>
       {chatDataList && chatDataList.length > 0 ? (
         chatDataList.map((chatData) => (
           <button
-            key={chatData.link}
+            key={chatData.chatRoomId}
             css={cssDefaultBtnStyle({ width: "100%" })}
             onClick={() => handleOnClickChat(chatData)}
           >
-            <ChatItem chatData={chatData} />
+            <ChatItem chatData={convertChatData(chatData)!} />
           </button>
         ))
       ) : (
@@ -60,7 +70,7 @@ export const SearchContainer = checkUser(() => {
       <EnterChatRoomModal
         isOpen={isOpenEnterChatModal}
         onClose={handleOnCloseEnterChatModal}
-        chatData={selectedChatData}
+        chatData={convertChatData(selectedChatData)}
       />
     </div>
   );
