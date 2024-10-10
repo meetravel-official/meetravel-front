@@ -1,16 +1,17 @@
 import { create } from "zustand";
 
-interface ISearch {
-  area?: { code: string; label: string };
-  order?: { code: string; label: string };
-}
+import { ISearchChat } from "@/api/interfaces/chat";
+
+const defaultSearchValue: ISearchChat = {
+  sort: "CREATED_LATEST",
+};
 
 interface ISearchState {
-  searchValue?: ISearch;
-  setSearchValue: (searchValue: ISearch) => void;
+  searchValue: ISearchChat;
+  setSearchValue: (searchValue: ISearchChat) => void;
 }
 
 export const useSearch = create<ISearchState>((set) => ({
-  searchValue: undefined,
+  searchValue: defaultSearchValue,
   setSearchValue: (searchValue) => set({ searchValue }),
 }));

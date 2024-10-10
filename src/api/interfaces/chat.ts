@@ -72,3 +72,13 @@ export interface IChatUserData {
 export interface IChatRoomListResponse {
   chatRooms: IMatchingData[];
 }
+
+export type SortType = "CREATED_LATEST" | "QUICK_LATEST";
+
+export interface ISearchChat {
+  query?: string;
+  areaCode?: string;
+  sort?: SortType;
+  page?: number;
+  pageSize?: number;
+}

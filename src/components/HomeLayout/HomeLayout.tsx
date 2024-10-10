@@ -1,9 +1,10 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useSearch } from "states/useSearch";
 import { getShortAreaName } from "utils/area-utils";
 
 import { useGetAreaCode } from "@/api/hooks/visitKorea";
+import { SortType } from "@/api/interfaces/chat";
 import { IAriaCode } from "@/api/interfaces/visitKorea";
 import { ReactComponent as Back } from "@/assets/icons/back.svg";
 import { pageRoutes } from "@/routes";
@@ -27,9 +28,9 @@ export const HomeLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { data: areaCodeData } = useGetAreaCode();
-
   const { searchValue, setSearchValue } = useSearch();
+
+  const { data: areaCodeData } = useGetAreaCode();
 
   const isSearchMode = useMemo(() => {
     return location.pathname.includes(pageRoutes.SEARCH);
@@ -47,43 +48,48 @@ export const HomeLayout = () => {
     return [];
   }, [areaCodeData]);
 
-  const orderList = useMemo(() => {
-    //TODO: 정렬 항목 뭐뭐 있었는지 찾아보기
+  const sortList: { code: SortType; label: string }[] = useMemo(() => {
     return [
       {
-        code: "최신순",
+        code: "CREATED_LATEST",
         label: "최신순",
       },
       {
-        code: "빠른 출발 순",
+        code: "QUICK_LATEST",
         label: "빠른 출발 순",
-      },
-      {
-        code: "인기순",
-        label: "인기순",
       },
     ];
   }, []);
 
-  const handleOnSelectArea = (selectedArea: {
-    code: string;
-    label: string;
-  }) => {
-    setSearchValue({
-      ...searchValue,
-      area: selectedArea,
-    });
-  };
+  const handleOnSelectArea = useCallback(
+    (selectedArea: { code: string; label: string }) => {
+      setSearchValue({
+        ...searchValue,
+        areaCode: selectedArea.code,
+      });
+    },
+    [searchValue, setSearchValue]
+  );
 
-  const handleOnSelectOrder = (selectedOrder: {
-    code: string;
-    label: string;
-  }) => {
-    setSearchValue({
-      ...searchValue,
-      order: selectedOrder,
-    });
-  };
+  const handleOnSelectSort = useCallback(
+    (selectedOrder: { code: SortType; label: string }) => {
+      setSearchValue({
+        ...searchValue,
+        sort: selectedOrder.code,
+      });
+    },
+    [searchValue, setSearchValue]
+  );
+
+  const handleOnClickSearchQuery = useCallback(
+    (inputValue?: string) => {
+      setSearchValue({
+        ...searchValue,
+        query: inputValue,
+      });
+    },
+    [searchValue, setSearchValue]
+  );
 
   const handleOnClickBack = () => {
     navigate(-1);
@@ -100,11 +106,19 @@ export const HomeLayout = () => {
               <button css={cssDefaultBtnStyle} onClick={handleOnClickBack}>
                 <Back />
               </button>
-              <SearchInput placeholder="어디로 떠나고 싶으세요?" />
+              <SearchInput
+                placeholder="어디로 떠나고 싶으세요?"
+                value={searchValue.query}
+                onClickSearch={handleOnClickSearchQuery}
+              />
             </div>
             <div css={cssAlignHorizontalStyle({ gap: 8 })}>
               <SelectByModal
-                value={searchValue?.area?.label}
+                value={
+                  areaCodeList.filter(
+                    (item) => item.code === searchValue?.areaCode
+                  )?.[0]?.label
+                }
                 placeholder="지역 선택"
                 options={areaCodeList}
                 width={106}
@@ -112,11 +126,15 @@ export const HomeLayout = () => {
                 optionListStyle={cssAreaCodeListStyle}
               />
               <SelectByModal
-                value={searchValue?.order?.label}
+                value={
+                  sortList.filter(
+                    (item) => item.code === searchValue?.sort
+                  )?.[0]?.label
+                }
                 placeholder="인기순"
-                options={orderList}
+                options={sortList}
                 width={100}
-                onSelect={handleOnSelectOrder}
+                onSelect={handleOnSelectSort}
               />
             </div>
           </div>
