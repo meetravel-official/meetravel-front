@@ -129,7 +129,7 @@ export const useGetSearchChatRoom = (params: ISearchChat) => {
       }),
     initialPageParam: 0,
     getNextPageParam: (lastData) => {
-      if (lastData.chatRooms.number < lastData.chatRooms.totalPages)
+      if (lastData.chatRooms.number < lastData.chatRooms.totalPages - 1)
         return lastData.chatRooms.number + 1;
     },
     getPreviousPageParam: (firstPage) => {
