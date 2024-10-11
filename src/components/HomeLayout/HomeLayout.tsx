@@ -5,7 +5,6 @@ import { getShortAreaName } from "utils/area-utils";
 
 import { useGetAreaCode } from "@/api/hooks/visitKorea";
 import { SortType } from "@/api/interfaces/chat";
-import { IAriaCode } from "@/api/interfaces/visitKorea";
 import { ReactComponent as Back } from "@/assets/icons/back.svg";
 import { pageRoutes } from "@/routes";
 import { cssAlignHorizontalStyle, cssAlignVerticalStyle } from "@/styles/align";
@@ -36,16 +35,23 @@ export const HomeLayout = () => {
     return location.pathname.includes(pageRoutes.SEARCH);
   }, [location.pathname]);
 
-  const areaCodeList = useMemo(() => {
+  const areaCodeList: { code?: string; label: string }[] = useMemo(() => {
+    const arr = [];
+    arr.push({
+      code: "",
+      label: "전국",
+    });
+
     if (areaCodeData?.data.response?.body?.items?.item) {
-      return areaCodeData.data.response.body.items.item.map(
-        (item: IAriaCode) => ({
-          code: item.code,
-          label: getShortAreaName(item.name),
-        })
-      );
+      const areaList = areaCodeData?.data.response?.body?.items?.item;
+      for (let i = 0; i < areaList.length; i++) {
+        arr.push({
+          code: areaList[i].name,
+          label: getShortAreaName(areaList[i].name),
+        });
+      }
     }
-    return [];
+    return arr;
   }, [areaCodeData]);
 
   const sortList: { code: SortType; label: string }[] = useMemo(() => {
