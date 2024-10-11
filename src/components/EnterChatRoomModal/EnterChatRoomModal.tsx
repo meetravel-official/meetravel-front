@@ -51,8 +51,9 @@ export const EnterChatRoomModal = ({
   };
 
   const handleOnLinkNewChatRoom = () => {
-    navigate(pageRoutes.CHAT);
     onClose();
+    refetchMyChatRoom();
+    navigate(pageRoutes.CHAT);
   };
 
   const handleOnEnterChatRoom = () => {
