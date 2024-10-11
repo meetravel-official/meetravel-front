@@ -4,6 +4,8 @@ import { ISearchChat } from "@/api/interfaces/chat";
 
 const defaultSearchValue: ISearchChat = {
   sort: "CREATED_LATEST",
+  page: 0,
+  pageSize: 10,
 };
 
 interface ISearchState {

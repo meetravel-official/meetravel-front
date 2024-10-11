@@ -6,6 +6,7 @@ import {
   IChatRoomListResponse,
   IChatUserData,
   ISearchChat,
+  ISearchChatRoomListResponse,
 } from "../interfaces/chat";
 import { api } from "../request";
 import { chatApiRoute } from "../routes/apiRoutes";
@@ -120,9 +121,19 @@ export const useGetLiveChatRoom = () => {
 };
 
 export const useGetSearchChatRoom = (params: ISearchChat) => {
-  return useQuery<IChatRoomListResponse, AxiosError>({
+  return useInfiniteQuery<ISearchChatRoomListResponse, AxiosError>({
     queryKey: ["useGetSearchChatRoom", Object.values(params)],
-    queryFn: () =>
-      api.get(chatApiRoute.chatRoomsSearch, { params: { ...params } }),
+    queryFn: ({ pageParam }) =>
+      api.get(chatApiRoute.chatRoomsSearch, {
+        params: { ...params, page: pageParam },
+      }),
+    initialPageParam: 0,
+    getNextPageParam: (lastData) => {
+      if (lastData.chatRooms.number < lastData.chatRooms.totalPages)
+        return lastData.chatRooms.number + 1;
+    },
+    getPreviousPageParam: (firstPage) => {
+      if (firstPage.chatRooms.number > 1) return firstPage.chatRooms.number - 1;
+    },
   });
 };

@@ -85,3 +85,34 @@ export interface ISearchChat {
   page?: number;
   pageSize?: number;
 }
+
+export interface ISearchChatRoomListResponse {
+  chatRooms: {
+    totalElements: number;
+    totalPages: number;
+    size: number;
+    content: IMatchingData[];
+    number: number;
+    sort: {
+      empty: boolean;
+      sorted: boolean;
+      unsorted: boolean;
+    };
+    numberOfElements: number;
+    pageable: {
+      offset: number;
+      sort: {
+        empty: boolean;
+        sorted: boolean;
+        unsorted: boolean;
+      };
+      paged: boolean;
+      pageNumber: number;
+      pageSize: number;
+      unpaged: boolean;
+    };
+    first: boolean;
+    last: boolean;
+    empty: boolean;
+  };
+}
