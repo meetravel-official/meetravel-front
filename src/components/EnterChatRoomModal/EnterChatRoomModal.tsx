@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import dayjs from "dayjs";
-import { Fragment, ReactNode, useEffect, useState } from "react";
+import { Fragment, ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TravelReviewModal } from "routes/Chat/components/TravelReviewModal/TravelReviewModal";
 
@@ -9,7 +9,6 @@ import {
   usePostJoinChatRoom,
   usePostLeaveChatRoom,
 } from "@/api/hooks/chat";
-import { useGetMatchingForm } from "@/api/hooks/matching";
 import { ChatStatus, IChatData } from "@/api/interfaces/chat";
 import { ReactComponent as LogoIcon } from "@/assets/icons/logo.svg";
 import { pageRoutes } from "@/routes";
@@ -41,7 +40,7 @@ export const EnterChatRoomModal = ({
 
   const [isOpenTravelReviewModal, setIsOpenTravelReviewModal] = useState(false);
 
-  const { refetch: refetchMyChatRoom } = useGetChatRooms();
+  const { refetch: refetchMyChatRoom, isRefetching } = useGetChatRooms();
   const mutationPostLeaveChatRoom = usePostLeaveChatRoom();
   const mutationPostJoinChatRoom = usePostJoinChatRoom();
 
@@ -104,7 +103,15 @@ export const EnterChatRoomModal = ({
         footer={
           isInprogress ? (
             <Fragment>
-              <Button bgColor={COLORS.PINK3} onClick={handleOnEnterChatRoom}>
+              <Button
+                bgColor={COLORS.PINK3}
+                onClick={handleOnEnterChatRoom}
+                loading={
+                  isRefetching ||
+                  mutationPostJoinChatRoom.isPending ||
+                  mutationPostLeaveChatRoom.isPending
+                }
+              >
                 <Typography size="16" color={COLORS.WHITE} weight={700}>
                   참여할래요!
                 </Typography>
