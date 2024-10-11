@@ -50,6 +50,11 @@ export const EnterChatRoomModal = ({
     return "-";
   };
 
+  const handleOnLinkNewChatRoom = () => {
+    navigate(pageRoutes.CHAT);
+    onClose();
+  };
+
   const handleOnEnterChatRoom = () => {
     if (chatData) {
       refetchMyChatRoom().then((res) => {
@@ -58,21 +63,24 @@ export const EnterChatRoomModal = ({
           mutationPostLeaveChatRoom.mutate(res.data?.chatRooms[0]?.chatRoomId, {
             onSuccess: () => {
               console.log("채팅방 나가기 성공");
-              mutationPostJoinChatRoom.mutate({
-                chatRoomId: chatData.chatRoomId ?? 0,
-              });
+              mutationPostJoinChatRoom.mutate(
+                {
+                  chatRoomId: chatData.chatRoomId ?? 0,
+                },
+                { onSuccess: () => handleOnLinkNewChatRoom() }
+              );
             },
           });
         } else {
           console.log("채팅방이 없습니다.");
-          mutationPostJoinChatRoom.mutate({
-            chatRoomId: chatData.chatRoomId ?? 0,
-          });
+          mutationPostJoinChatRoom.mutate(
+            {
+              chatRoomId: chatData.chatRoomId ?? 0,
+            },
+            { onSuccess: () => handleOnLinkNewChatRoom() }
+          );
         }
       });
-
-      navigate(pageRoutes.CHAT);
-      onClose();
     }
   };
 
