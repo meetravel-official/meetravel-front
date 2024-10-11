@@ -114,7 +114,6 @@ export const HomeLayout = () => {
               </button>
               <SearchInput
                 placeholder="어디로 떠나고 싶으세요?"
-                value={searchValue.query}
                 onClickSearch={handleOnClickSearchQuery}
               />
             </div>
