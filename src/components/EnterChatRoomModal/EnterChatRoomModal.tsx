@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import dayjs from "dayjs";
-import { Fragment, ReactNode, useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TravelReviewModal } from "routes/Chat/components/TravelReviewModal/TravelReviewModal";
 import { getShortAreaName } from "utils/area-utils";
@@ -25,8 +25,6 @@ interface EnterChatRoomModalProps {
   isOpen: boolean;
   onClose: () => void;
   chatData?: IChatData;
-  title?: string;
-  footer?: ReactNode;
   closableIcon?: boolean;
 }
 export const EnterChatRoomModal = ({
