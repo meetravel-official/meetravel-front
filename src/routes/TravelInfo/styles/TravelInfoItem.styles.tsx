@@ -67,6 +67,8 @@ export const cssTravelInfoItemDescStyle = css`
 `;
 
 export const cssTransparentButtonStyle = (padding?: string) => css`
+  all: unset;
+
   height: 100%;
   width: 100%;
 

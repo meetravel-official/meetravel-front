@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getShortAreaName } from "utils/area-utils";
 import { checkUser } from "utils/check-user";
 
 import { useGetLiveChatRoom } from "@/api/hooks/chat";
@@ -57,7 +58,7 @@ export const HomeContainer = checkUser(() => {
         isActive: false,
         tags: chatData.travelKeywords,
         link: `/chat/${chatData.chatRoomId}`,
-        title: chatData.area.areaName,
+        title: getShortAreaName(chatData.area.areaName),
         startDate: chatData.travelPlanDate.startDate,
         endDate: chatData.travelPlanDate.endDate,
         person: chatData.persons,

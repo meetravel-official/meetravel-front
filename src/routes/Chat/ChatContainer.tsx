@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import { chatData1 } from "dummies/chat";
 import { Fragment, ReactNode, useState } from "react";
 import { Link } from "react-router-dom";
+import { getShortAreaName } from "utils/area-utils";
 import { checkUser } from "utils/check-user";
 
 import { useGetChatRooms } from "@/api/hooks/chat";
@@ -111,7 +112,7 @@ export const ChatContainer = checkUser(() => {
                     isActive: true,
                     tags: chatData.travelKeywords,
                     link: `/chat/${chatData.chatRoomId}`,
-                    title: chatData.area.areaName,
+                    title: getShortAreaName(chatData.area.areaName),
                     startDate: chatData.travelPlanDate.startDate,
                     endDate: chatData.travelPlanDate.endDate,
                     person: chatData.persons,

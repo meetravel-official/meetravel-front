@@ -138,7 +138,7 @@ export const HomeLayout = () => {
                 }
                 placeholder="인기순"
                 options={sortList}
-                width={100}
+                width={130}
                 onSelect={handleOnSelectSort}
               />
             </div>
