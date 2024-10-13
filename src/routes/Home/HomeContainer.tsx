@@ -58,7 +58,7 @@ export const HomeContainer = checkUser(() => {
         isActive: false,
         tags: chatData.travelKeywords,
         link: `/chat/${chatData.chatRoomId}`,
-        title: getShortAreaName(chatData.detailArea.areaName),
+        title: getShortAreaName(chatData.area.areaName),
         startDate: chatData.travelPlanDate.startDate,
         endDate: chatData.travelPlanDate.endDate,
         person: chatData.persons,
