@@ -1,8 +1,9 @@
 import { css } from "@emotion/react";
 import dayjs from "dayjs";
-import { Fragment, ReactNode, useState } from "react";
+import { Fragment, ReactNode, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TravelReviewModal } from "routes/Chat/components/TravelReviewModal/TravelReviewModal";
+import { getShortAreaName } from "utils/area-utils";
 
 import {
   useGetChatRooms,
@@ -43,6 +44,13 @@ export const EnterChatRoomModal = ({
   const { refetch: refetchMyChatRoom, isRefetching } = useGetChatRooms();
   const mutationPostLeaveChatRoom = usePostLeaveChatRoom();
   const mutationPostJoinChatRoom = usePostJoinChatRoom();
+
+  const chatTitle = useMemo(() => {
+    if (chatData?.title) {
+      return getShortAreaName(chatData.title) + " " + (chatData.subTitle || "");
+    }
+    return "해당";
+  }, [chatData]);
 
   const convertDate = (date?: string) => {
     if (date) return dayjs(date, "YYYY-MM-DD").format("YYYY년 MM월 DD일");
@@ -143,8 +151,8 @@ export const EnterChatRoomModal = ({
             <LogoIcon width={50} height={50} fill={COLORS.PINK3} />
             <Typography size="16" color={COLORS.PINK3} weight={700}>
               {isInprogress
-                ? `${chatData?.title || "해당"} 여행에 참여하시겠어요?`
-                : `${chatData?.title || ""} 여행 돌아보기`}
+                ? `${chatTitle} 여행에 참여하시겠어요?`
+                : `${chatTitle} 여행 돌아보기`}
             </Typography>
           </div>
           <div css={cssAlignVerticalStyle({ gap: 12 })}>
