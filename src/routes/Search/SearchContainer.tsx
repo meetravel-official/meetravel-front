@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useSearch } from "states/useSearch";
+import { getShortAreaName } from "utils/area-utils";
 import { checkUser } from "utils/check-user";
 
 import { useGetSearchChatRoom } from "@/api/hooks/chat";
@@ -59,10 +60,11 @@ export const SearchContainer = checkUser(() => {
         isActive: false,
         tags: chatData.travelKeywords,
         link: `/chat/${chatData.chatRoomId}`,
-        title: chatData.area.areaName + " " + chatData.detailArea.areaName,
+        title: getShortAreaName(chatData.area.areaName),
         startDate: chatData.travelPlanDate.startDate,
         endDate: chatData.travelPlanDate.endDate,
         person: chatData.persons,
+        subTitle: chatData.detailArea.areaName,
       };
   };
 
