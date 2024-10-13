@@ -59,7 +59,7 @@ export const SearchContainer = checkUser(() => {
         isActive: false,
         tags: chatData.travelKeywords,
         link: `/chat/${chatData.chatRoomId}`,
-        title: chatData.area.areaName,
+        title: chatData.area.areaName + " " + chatData.detailArea.areaName,
         startDate: chatData.travelPlanDate.startDate,
         endDate: chatData.travelPlanDate.endDate,
         person: chatData.persons,
