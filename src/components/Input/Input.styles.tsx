@@ -3,6 +3,8 @@ import { css, SerializedStyles } from "@emotion/react";
 import { COLORS } from "@/styles/color";
 
 export const cssInputStyle = (inputDetailStyle?: SerializedStyles) => css`
+  all: unset;
+
   outline: none;
   border: none;
   width: 100%;
