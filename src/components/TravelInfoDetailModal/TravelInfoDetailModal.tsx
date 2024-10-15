@@ -26,7 +26,7 @@ export const TravelInfoDetailModal = ({
   useEffect(() => {
     if (isOpen) {
       navigate("", {
-        state: { isModal: true },
+        state: { isOpenTravelInfoDetailModal: true },
       });
     }
   }, [isOpen, navigate]);

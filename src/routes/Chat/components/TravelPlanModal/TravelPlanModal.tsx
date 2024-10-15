@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
-import { useCallback, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useTravelPlan } from "states/useTravelPlan";
 
@@ -33,8 +33,11 @@ export const TravelPlanModal = ({
   chatRoomId,
 }: TravelPlanModalProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const chatRoomIdNum = chatRoomId ? parseInt(chatRoomId) : undefined;
+
+  const [locationKey, setLocationKey] = useState<string | null>(null);
 
   const { data, refetch, isLoading, isRefetching, error } =
     useGetTravelPlan(chatRoomIdNum);
@@ -51,10 +54,15 @@ export const TravelPlanModal = ({
     setDailyPlans,
   } = useTravelPlan();
 
-  const handleOnClose = useCallback(() => {
-    setSelectedDateIndex(0);
-    onClose();
-  }, [onClose, setSelectedDateIndex]);
+  const handleOnClose = useCallback(
+    (e?: PopStateEvent) => {
+      if (!e || e.state.key === locationKey) {
+        setSelectedDateIndex(0);
+        onClose();
+      }
+    },
+    [locationKey, onClose, setSelectedDateIndex]
+  );
 
   const handleOnClickClose = useCallback(() => {
     handleOnClose();
@@ -102,23 +110,25 @@ export const TravelPlanModal = ({
   }, [chatRoomIdNum, isOpen, refetch]);
 
   useEffect(() => {
-    if (isOpen)
+    if (isOpen) {
       navigate("", {
         state: { isModal: true },
       });
+      setLocationKey(location.key);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, isOpen]);
 
   useEffect(() => {
-    window.addEventListener("popstate", () => {
-      handleOnClose();
+    window.addEventListener("popstate", (e) => {
+      handleOnClose(e);
     });
     return () => {
-      window.removeEventListener("popstate", () => {
-        handleOnClose();
+      window.removeEventListener("popstate", (e) => {
+        handleOnClose(e);
       });
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [handleOnClose]);
 
   return (
     <BorderModal
