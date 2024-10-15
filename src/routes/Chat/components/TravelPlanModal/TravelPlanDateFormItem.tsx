@@ -58,6 +58,17 @@ export const TravelPlanDateFormItem = ({
     setPageNum(0);
   }, []);
 
+  const handleOnChangeInput = useCallback(
+    (key: "meetPlace" | "meetTime", value: string) => {
+      if (dailyPlan) {
+        const newDailyPlan = dailyPlan;
+        newDailyPlan[key] = value;
+        setDailyPlan({ ...newDailyPlan });
+      }
+    },
+    [dailyPlan, setDailyPlan]
+  );
+
   const handleOnSelectPlace = useCallback(
     (travelPlace: TravelPlace) => {
       if (dailyPlan) {
@@ -88,7 +99,8 @@ export const TravelPlanDateFormItem = ({
         <Input
           placeholder="처음 모일 땐 개방적인 곳을 추천해요."
           detailStyle={cssInputFullWidthStyle}
-          defaultValue={dailyPlan?.meetPlace}
+          value={dailyPlan?.meetPlace}
+          onChange={(e) => handleOnChangeInput("meetPlace", e.target.value)}
         />
       </div>
       <div css={cssAlignVerticalStyle({ gap: 8, alignItems: "flex-start" })}>
@@ -98,7 +110,8 @@ export const TravelPlanDateFormItem = ({
         <Input
           placeholder="사람들과 충분한 대화 후 결정해요."
           detailStyle={cssInputFullWidthStyle}
-          defaultValue={dailyPlan?.meetTime}
+          value={dailyPlan?.meetTime}
+          onChange={(e) => handleOnChangeInput("meetTime", e.target.value)}
         />
       </div>
       <div css={cssAlignVerticalStyle({ gap: 12, alignItems: "flex-start" })}>

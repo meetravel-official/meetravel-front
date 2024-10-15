@@ -4,7 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useTravelPlan } from "states/useTravelPlan";
 
-import { useGetTravelPlan, usePutTravelPlanKeywords } from "@/api/hooks/travel";
+import {
+  useGetTravelPlan,
+  usePutTravelPlanDaily,
+  usePutTravelPlanKeywords,
+} from "@/api/hooks/travel";
 import { Button, Typography } from "@/components";
 import BorderModal from "@/components/BorderModal/BorderModal";
 import CheckButtonGroup from "@/components/CheckButton/CheckButtonGroup";
@@ -36,6 +40,8 @@ export const TravelPlanModal = ({
     useGetTravelPlan(chatRoomIdNum);
   const { mutateAsync: mutateAsyncKeywords, isPending: isPendingKeyword } =
     usePutTravelPlanKeywords(chatRoomIdNum);
+  const { mutateAsync: mutateAsyncDaily, isPending: isPendingDaily } =
+    usePutTravelPlanDaily(chatRoomIdNum);
 
   const { travelKeyword, dailyPlans, setTravelKeyword, setDailyPlans } =
     useTravelPlan();
@@ -46,16 +52,30 @@ export const TravelPlanModal = ({
   };
 
   const handleOnSubmit = useCallback(async () => {
-    console.log(travelKeyword);
-    console.log(dailyPlans);
     try {
       await mutateAsyncKeywords(travelKeyword);
+      await mutateAsyncDaily(
+        dailyPlans.map((plan) => ({
+          ...plan,
+          pickedTravelPlaceIds: plan.travelPlaces
+            .filter((place) => place.isPicked)
+            .map((place) => place.placeId),
+        }))
+      );
       toast.success("저장되었습니다.");
       onClose();
     } catch (error) {
-      toast.error("잠시 후 시도해주세요.");
+      toast.error(
+        (error as any).response.data?.message || "잠시 후 시도해주세요"
+      );
     }
-  }, [dailyPlans, mutateAsyncKeywords, onClose, travelKeyword]);
+  }, [
+    dailyPlans,
+    mutateAsyncDaily,
+    mutateAsyncKeywords,
+    onClose,
+    travelKeyword,
+  ]);
 
   useEffect(() => {
     if (data) {
@@ -158,7 +178,7 @@ export const TravelPlanModal = ({
               color={COLORS.WHITE}
               height="large"
               onClick={handleOnSubmit}
-              loading={isPendingKeyword}
+              loading={isPendingKeyword || isPendingDaily}
             >
               <Typography color={COLORS.WHITE} weight={700} size="16">
                 저장

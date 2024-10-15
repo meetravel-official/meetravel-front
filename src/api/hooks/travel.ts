@@ -1,7 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
-import { TravelKeywords, TravelPlan } from "../interfaces/travel";
+import {
+  DailyPlanPick,
+  TravelKeywords,
+  TravelPlan,
+} from "../interfaces/travel";
 import { api } from "../request";
 import { travelApiRoute } from "../routes/apiRoutes";
 
@@ -18,6 +22,16 @@ export const usePutTravelPlanKeywords = (chatRoomId?: number) => {
     mutationFn: (travelKeywords) =>
       api.put(travelApiRoute.travelPlanKeywords(chatRoomId || -1), {
         travelKeywords,
+      }),
+    retry: false,
+  });
+};
+
+export const usePutTravelPlanDaily = (chatRoomId?: number) => {
+  return useMutation<unknown, AxiosError, DailyPlanPick[]>({
+    mutationFn: (dailyPlans) =>
+      api.put(travelApiRoute.travelPlan(chatRoomId || -1), {
+        dailyPlans,
       }),
     retry: false,
   });
