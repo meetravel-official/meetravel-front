@@ -13,6 +13,7 @@ import { BackLayout, MainLayout, Meta, SimpleLayout } from "@/components";
 import { cssGlobalStyle } from "@/styles/globalStyle";
 
 import { ChatLayout } from "./components/ChatLayout/ChatLayout";
+import { ChatListLayout } from "./components/ChatListLayout/ChatListLayout";
 import { HomeLayout } from "./components/HomeLayout/HomeLayout";
 import { ProfileLayout } from "./components/ProfileLayout/ProfileLayout";
 import { SignUpLayout } from "./components/SignUpLayout/SignUpLayout";
@@ -31,7 +32,7 @@ const root = ReactDOM.createRoot(container as HTMLElement);
 
 const router = createBrowserRouter([
   {
-    element: <MainLayout />,
+    element: <ChatListLayout />,
     children: [{ path: pageRoutes.CHAT, Component: containerRoutes.CHAT }],
   },
   {

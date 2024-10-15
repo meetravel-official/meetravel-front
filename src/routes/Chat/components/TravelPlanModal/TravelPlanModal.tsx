@@ -4,7 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useTravelPlan } from "states/useTravelPlan";
 
-import { useGetTravelPlan, usePutTravelPlanKeywords } from "@/api/hooks/travel";
+import {
+  useGetTravelPlan,
+  usePutTravelPlanDaily,
+  usePutTravelPlanKeywords,
+} from "@/api/hooks/travel";
 import { Button, Typography } from "@/components";
 import BorderModal from "@/components/BorderModal/BorderModal";
 import CheckButtonGroup from "@/components/CheckButton/CheckButtonGroup";
@@ -36,26 +40,52 @@ export const TravelPlanModal = ({
     useGetTravelPlan(chatRoomIdNum);
   const { mutateAsync: mutateAsyncKeywords, isPending: isPendingKeyword } =
     usePutTravelPlanKeywords(chatRoomIdNum);
+  const { mutateAsync: mutateAsyncDaily, isPending: isPendingDaily } =
+    usePutTravelPlanDaily(chatRoomIdNum);
 
-  const { travelKeyword, dailyPlans, setTravelKeyword, setDailyPlans } =
-    useTravelPlan();
+  const {
+    travelKeyword,
+    dailyPlans,
+    setSelectedDateIndex,
+    setTravelKeyword,
+    setDailyPlans,
+  } = useTravelPlan();
 
-  const handleOnClickClose = () => {
+  const handleOnClose = useCallback(() => {
+    setSelectedDateIndex(0);
     onClose();
+  }, [onClose, setSelectedDateIndex]);
+
+  const handleOnClickClose = useCallback(() => {
+    handleOnClose();
     navigate(-1);
-  };
+  }, [handleOnClose, navigate]);
 
   const handleOnSubmit = useCallback(async () => {
-    console.log(travelKeyword);
-    console.log(dailyPlans);
     try {
       await mutateAsyncKeywords(travelKeyword);
+      await mutateAsyncDaily(
+        dailyPlans.map((plan) => ({
+          ...plan,
+          pickedTravelPlaceIds: plan.travelPlaces
+            .filter((place) => place.isPicked)
+            .map((place) => place.placeId),
+        }))
+      );
       toast.success("저장되었습니다.");
-      onClose();
+      handleOnClickClose();
     } catch (error) {
-      toast.error("잠시 후 시도해주세요.");
+      toast.error(
+        (error as any).response.data?.message || "잠시 후 시도해주세요"
+      );
     }
-  }, [dailyPlans, mutateAsyncKeywords, onClose, travelKeyword]);
+  }, [
+    dailyPlans,
+    mutateAsyncDaily,
+    mutateAsyncKeywords,
+    handleOnClickClose,
+    travelKeyword,
+  ]);
 
   useEffect(() => {
     if (data) {
@@ -80,11 +110,11 @@ export const TravelPlanModal = ({
 
   useEffect(() => {
     window.addEventListener("popstate", () => {
-      onClose();
+      handleOnClose();
     });
     return () => {
       window.removeEventListener("popstate", () => {
-        onClose();
+        handleOnClose();
       });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -158,7 +188,7 @@ export const TravelPlanModal = ({
               color={COLORS.WHITE}
               height="large"
               onClick={handleOnSubmit}
-              loading={isPendingKeyword}
+              loading={isPendingKeyword || isPendingDaily}
             >
               <Typography color={COLORS.WHITE} weight={700} size="16">
                 저장

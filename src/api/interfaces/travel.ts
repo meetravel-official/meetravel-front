@@ -15,6 +15,13 @@ export interface DailyPlan {
   travelPlaces: Array<TravelPlace>;
 }
 
+export interface DailyPlanPick {
+  planDate: string;
+  meetPlace: string;
+  meetTime: string;
+  pickedTravelPlaceIds: string[];
+}
+
 export type TravelKeywords = Array<string>;
 export interface TravelPlan {
   chatRoomId: number;
