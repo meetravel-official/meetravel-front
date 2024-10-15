@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
+import { toast } from "react-toastify";
 import {
   cssInputFullWidthStyle,
   cssTravelPlaceItemEmptyStyle,
@@ -80,14 +81,21 @@ export const TravelPlanDateFormItem = ({
         if (travelPlace.isPicked) {
           newTravelPlace[changeIndex] = { ...travelPlace, isPicked: false };
         } else {
-          newTravelPlace[changeIndex] = { ...travelPlace, isPicked: true };
+          const countPickPlace = dailyTravelPlacesByPlaceType.filter(
+            (place) => place.isPicked
+          ).length;
+          if (countPickPlace >= 2) {
+            toast.error("장소 확정은 최대 한 항목당 2개까지만 가능해요.");
+          } else {
+            newTravelPlace[changeIndex] = { ...travelPlace, isPicked: true };
+          }
         }
         newDailyPlan.travelPlaces = newTravelPlace;
         setDailyPlan({ ...newDailyPlan });
       }
     },
 
-    [dailyPlan, setDailyPlan]
+    [dailyPlan, setDailyPlan, dailyTravelPlacesByPlaceType]
   );
 
   return (
