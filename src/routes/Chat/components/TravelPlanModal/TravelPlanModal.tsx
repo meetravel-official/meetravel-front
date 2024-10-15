@@ -43,13 +43,23 @@ export const TravelPlanModal = ({
   const { mutateAsync: mutateAsyncDaily, isPending: isPendingDaily } =
     usePutTravelPlanDaily(chatRoomIdNum);
 
-  const { travelKeyword, dailyPlans, setTravelKeyword, setDailyPlans } =
-    useTravelPlan();
+  const {
+    travelKeyword,
+    dailyPlans,
+    setSelectedDateIndex,
+    setTravelKeyword,
+    setDailyPlans,
+  } = useTravelPlan();
 
-  const handleOnClickClose = () => {
+  const handleOnClose = useCallback(() => {
+    setSelectedDateIndex(0);
     onClose();
+  }, [onClose, setSelectedDateIndex]);
+
+  const handleOnClickClose = useCallback(() => {
+    handleOnClose();
     navigate(-1);
-  };
+  }, [handleOnClose, navigate]);
 
   const handleOnSubmit = useCallback(async () => {
     try {
@@ -63,7 +73,7 @@ export const TravelPlanModal = ({
         }))
       );
       toast.success("저장되었습니다.");
-      onClose();
+      handleOnClickClose();
     } catch (error) {
       toast.error(
         (error as any).response.data?.message || "잠시 후 시도해주세요"
@@ -73,7 +83,7 @@ export const TravelPlanModal = ({
     dailyPlans,
     mutateAsyncDaily,
     mutateAsyncKeywords,
-    onClose,
+    handleOnClickClose,
     travelKeyword,
   ]);
 
@@ -100,11 +110,11 @@ export const TravelPlanModal = ({
 
   useEffect(() => {
     window.addEventListener("popstate", () => {
-      onClose();
+      handleOnClose();
     });
     return () => {
       window.removeEventListener("popstate", () => {
-        onClose();
+        handleOnClose();
       });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
