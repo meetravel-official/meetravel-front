@@ -29,9 +29,6 @@ export const cssChatItemStyle = (chatData: IChatData) => css`
     : COLORS.GRAY1};
   border-radius: 8px;
   padding: 16px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px 0px;
 `;
 
 export const cssChatKeywordStyle = (chatData: IChatData) => css`
@@ -41,6 +38,7 @@ export const cssChatKeywordStyle = (chatData: IChatData) => css`
   background-color: ${chatData.status === ChatStatus.DONE
     ? COLORS.GRAY3
     : COLORS.WHITE};
+  width: max-content;
 `;
 
 export const cssChatStatusStyle = (chatData: IChatData) => css`
